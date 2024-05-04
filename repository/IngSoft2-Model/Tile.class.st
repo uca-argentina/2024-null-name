@@ -19,12 +19,12 @@ Tile class >> inPosition: aPosition [
 	^ (self new) inPosition: aPosition.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 Tile >> givePosition [
 	^position.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #initialization }
 Tile >> inPosition: aPosition [ 
 	position := aPosition.
 ]
