@@ -15,31 +15,33 @@ GameTest >> should: anErrorBlock raise: exceptionClass withMessage: anErrorMessa
 ]
 
 { #category : #tests }
+GameTest >> testGameCannotBeInitializedWithoutABoard [
+
+	| aBoard |
+	aBoard isNil.
+	self
+		should: [ Game withBoard: aBoard ]
+		raise: Error
+		withMessage: 'Game cannot be started without a board'
+]
+
+{ #category : #tests }
 GameTest >> testIfGameIsFinishedRerurnTrue [
 
-|aGame|.
+	| aGame aBoard |
+	aBoard := Board withTiles: 1.
+	aGame := Game withBoard:aBoard.
+	aGame endGame.
 
-aGame:= Game startGame.
-aGame endGame.
-
-self deny: (aGame isOngoing )
+	self deny: aGame isOngoing
 ]
 
 { #category : #tests }
 GameTest >> testIfGameIsNotFinishedRerurnFalse [
 
-|aGame|
+	| aGame aBoard |
+	aBoard := Board withTiles: 1.
+	aGame := Game withBoard:aBoard.
 
-aGame:= Game startGame.
-
-self assert: (aGame isOngoing)
-]
-
-{ #category : #tests }
-GameTest >> testIfGameNotStartedThrowError [
-
-| aGame |
-aGame:= Game new.
-
-self assert:(true)
+	self assert: aGame isOngoing
 ]

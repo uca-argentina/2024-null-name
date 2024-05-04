@@ -19,6 +19,14 @@ Game class >> startGame [
 ]
 
 { #category : #initialization }
+Game class >> withBoard: aBoard [
+
+	aBoard ifNil: [
+		Error signal: 'Game cannot be started without a board' ].
+	^ self new beginGame
+]
+
+{ #category : #initialization }
 Game >> beginGame [
 	isFinished := false
 ]
