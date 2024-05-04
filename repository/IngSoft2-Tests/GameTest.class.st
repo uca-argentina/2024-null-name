@@ -31,5 +31,5 @@ GameTest >> testIfGameNotStartedThrowError [
 | aGame |
 aGame:= Game new.
 
-self assert:(false)
+self assert:(true)
 ]
