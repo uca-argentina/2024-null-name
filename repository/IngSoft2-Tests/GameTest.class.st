@@ -9,10 +9,20 @@ GameTest >> testIfGameIsFinishedRerurnTrue [
 
 |aGame|.
 
-aGame:= Game new.
+aGame:= Game startGame.
 aGame endGame.
 
 self deny: (aGame isOngoing )
+]
+
+{ #category : #tests }
+GameTest >> testIfGameIsNotFinishedRerurnFalse [
+
+|aGame|
+
+aGame:= Game startGame.
+
+self assert: (aGame isOngoing)
 ]
 
 { #category : #tests }

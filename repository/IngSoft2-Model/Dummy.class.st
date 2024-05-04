@@ -1,3 +1,6 @@
+"
+Dummy class
+"
 Class {
 	#name : #Dummy,
 	#superclass : #Object,

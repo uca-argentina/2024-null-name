@@ -14,6 +14,11 @@ Class {
 }
 
 { #category : #initialization }
+Game class >> startGame [
+	^(self new) beginGame 
+]
+
+{ #category : #initialization }
 Game >> beginGame [
 	isFinished := false
 ]
