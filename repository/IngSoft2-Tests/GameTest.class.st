@@ -15,15 +15,39 @@ GameTest >> should: anErrorBlock raise: exceptionClass withMessage: anErrorMessa
 ]
 
 { #category : #tests }
+GameTest >> testGameCanTellHowManyShipsArePlaying [
+
+	| aGame aBoard aNumberOfShips aShipCollection |
+	aBoard := Board withTiles: 5.
+	aNumberOfShips := 6.
+	aShipCollection:= Set new.
+	1 to: aNumberOfShips do: [ :iter | aShipCollection add: Ship create].
+	aGame:= Game withBoard: aBoard  withShips: aShipCollection .
+	self assert: (aGame amountOfShips) equals: 6.
+	
+	
+]
+
+{ #category : #tests }
 GameTest >> testGameCannotBeInitializedWithoutABoard [
 
-	| aGame aBoard aShip |
-	aBoard isNil.
+	| aBoard aShip |
 	aShip:= Ship create.
 	self
 		should: [ Game withBoard: aBoard withShips: aShip. ]
 		raise: Error
 		withMessage: 'Game cannot be started without a board'
+]
+
+{ #category : #tests }
+GameTest >> testGameCannotBeInitializedWithoutAtLeastOneShip [
+
+	| aBoard aShip |
+	aBoard := Board withTiles: 5.
+	self
+		should: [ Game withBoard: aBoard withShips: aShip. ]
+		raise: Error
+		withMessage: 'Game cannot be started without at least one ship.'
 ]
 
 { #category : #tests }
