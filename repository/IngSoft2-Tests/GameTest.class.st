@@ -15,6 +15,17 @@ GameTest >> should: anErrorBlock raise: exceptionClass withMessage: anErrorMessa
 ]
 
 { #category : #tests }
+GameTest >> testGameCannotBeInitializedWithoutABoard [
+
+	| aBoard |
+	aBoard isNil.
+	self
+		should: [ Game withBoard: aBoard ]
+		raise: Error
+		withMessage: 'Game cannot be started without a board'
+]
+
+{ #category : #tests }
 GameTest >> testIfGameIsFinishedRerurnTrue [
 
 	| aGame aBoard |
