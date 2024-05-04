@@ -5,20 +5,26 @@ Class {
 	#name : #Board,
 	#superclass : #Object,
 	#instVars : [
-		'tiles'
+		'tiles',
+		'tileArray'
 	],
 	#category : #'IngSoft2-Model'
 }
 
 { #category : #initialization }
-Board class >> withTiles: numberOfTiles [ 
-	numberOfTiles<=0 ifTrue:[Error signal: 'Board tiles must be greater than 0'].
-	^ (self new) withAmoutTiles: numberOfTiles.
+Board class >> withTiles: anumberOfTiles [ 
+	| tiles |
+	anumberOfTiles<=0 ifTrue:[Error signal: 'Board tiles must be greater than 0'].
+	
+	tiles := OrderedCollection new.
+	1 to: anumberOfTiles do: [ :iter | tiles add: Tile new ].
+	
+	^ (self new) withAmoutTiles: tiles.
 ]
 
 { #category : #accessing }
 Board >> emptyTiles [
-	^tiles
+	^tileArray size
 ]
 
 { #category : #accessing }
@@ -27,6 +33,7 @@ Board >> numbOfTiles [
 ]
 
 { #category : #initialization }
-Board >> withAmoutTiles: numOfTiles [ 
-	tiles := numOfTiles .
+Board >> withAmoutTiles: aTileArray [ 
+	tileArray := aTileArray .
+	tiles := tileArray size.
 ]
