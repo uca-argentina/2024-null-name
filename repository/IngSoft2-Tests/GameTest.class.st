@@ -19,7 +19,7 @@ GameTest >> testGameCannotBeInitializedWithoutABoard [
 
 	| aGame aBoard aShip |
 	aBoard isNil.
-	aShip:= Ship inside: aBoard.
+	aShip:= Ship create.
 	self
 		should: [ Game withBoard: aBoard withShips: aShip. ]
 		raise: Error
@@ -31,7 +31,7 @@ GameTest >> testGameKnownsOwnBoard [
 
 	| aGame aBoard aShip |
 	aBoard := Board withTiles: 1.
-	aShip:= Ship inside: aBoard.
+	aShip:= Ship create.
 	aGame := Game withBoard: aBoard withShips: aShip.
 	self assert: (aGame board) equals: aBoard
 ]
@@ -41,7 +41,7 @@ GameTest >> testGameKnowsOwnShips [
 
 	| aGame aBoard aShip |
 	aBoard := Board withTiles: 1.
-	aShip:= Ship inside: aBoard.
+	aShip:= Ship create.
 	aGame := Game withBoard: aBoard withShips: aShip.
 
 	self assert: (aGame ships) equals: aShip
@@ -52,7 +52,7 @@ GameTest >> testIfGameIsFinishedRerurnTrue [
 
 	| aGame aBoard aShip |
 	aBoard := Board withTiles: 1.
-	aShip:= Ship inside: aBoard.
+	aShip:= Ship create.
 	aGame := Game withBoard: aBoard withShips: aShip.
 	aGame endGame.
 
@@ -64,7 +64,7 @@ GameTest >> testIfGameIsNotFinishedRerurnFalse [
 
 	| aGame aBoard aShip |
 	aBoard := Board withTiles: 1.
-	aShip:= Ship inside: aBoard.
+	aShip:= Ship create.
 	aGame := Game withBoard: aBoard withShips: aShip.
 
 	self assert: aGame isOngoing
