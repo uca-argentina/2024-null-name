@@ -17,6 +17,11 @@ Board class >> withTiles: numberOfTiles [
 ]
 
 { #category : #accessing }
+Board >> emptyTiles [
+	^tiles
+]
+
+{ #category : #accessing }
 Board >> numbOfTiles [
 	^ tiles.
 ]
