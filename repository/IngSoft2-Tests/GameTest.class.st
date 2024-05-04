@@ -17,10 +17,11 @@ GameTest >> should: anErrorBlock raise: exceptionClass withMessage: anErrorMessa
 { #category : #tests }
 GameTest >> testGameCannotBeInitializedWithoutABoard [
 
-	| aBoard |
+	| aGame aBoard aShip |
 	aBoard isNil.
+	aShip:= Ship inside: aBoard.
 	self
-		should: [ Game withBoard: aBoard ]
+		should: [ Game withBoard: aBoard withShips: aShip. ]
 		raise: Error
 		withMessage: 'Game cannot be started without a board'
 ]
@@ -35,11 +36,23 @@ GameTest >> testGameKnownsOwnBoard [
 ]
 
 { #category : #tests }
+GameTest >> testGameKnowsOwnShips [
+
+	| aGame aBoard aShip |
+	aBoard := Board withTiles: 1.
+	aShip:= Ship inside: aBoard.
+	aGame := Game withBoard: aBoard withShips: aShip.
+
+	self assert: (aGame ships) equals: aShip
+]
+
+{ #category : #tests }
 GameTest >> testIfGameIsFinishedRerurnTrue [
 
-	| aGame aBoard |
+	| aGame aBoard aShip |
 	aBoard := Board withTiles: 1.
-	aGame := Game withBoard:aBoard.
+	aShip:= Ship inside: aBoard.
+	aGame := Game withBoard: aBoard withShips: aShip.
 	aGame endGame.
 
 	self deny: aGame isOngoing
@@ -48,9 +61,10 @@ GameTest >> testIfGameIsFinishedRerurnTrue [
 { #category : #tests }
 GameTest >> testIfGameIsNotFinishedRerurnFalse [
 
-	| aGame aBoard |
+	| aGame aBoard aShip |
 	aBoard := Board withTiles: 1.
-	aGame := Game withBoard:aBoard.
+	aShip:= Ship inside: aBoard.
+	aGame := Game withBoard: aBoard withShips: aShip.
 
 	self assert: aGame isOngoing
 ]
