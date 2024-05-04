@@ -29,9 +29,10 @@ GameTest >> testGameCannotBeInitializedWithoutABoard [
 { #category : #tests }
 GameTest >> testGameKnownsOwnBoard [
 
-	| aBoard aGame |
+	| aGame aBoard aShip |
 	aBoard := Board withTiles: 1.
-	aGame:= Game withBoard: aBoard.
+	aShip:= Ship inside: aBoard.
+	aGame := Game withBoard: aBoard withShips: aShip.
 	self assert: (aGame board) equals: aBoard
 ]
 
