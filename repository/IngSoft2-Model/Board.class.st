@@ -19,7 +19,7 @@ Board class >> withTiles: anumberOfTiles [
 	tiles := OrderedCollection new.
 	1 to: anumberOfTiles do: [ :iter | tiles add: Tile new ].
 	
-	^ (self new) withAmoutTiles: tiles.
+	^ (self new) initializeWithAmoutTiles: tiles.
 ]
 
 { #category : #accessing }
@@ -27,13 +27,13 @@ Board >> emptyTiles [
 	^tileArray size
 ]
 
+{ #category : #initialization }
+Board >> initializeWithAmoutTiles: aTileArray [ 
+	tileArray := aTileArray .
+	tiles := tileArray size.
+]
+
 { #category : #accessing }
 Board >> numbOfTiles [
 	^ tiles.
-]
-
-{ #category : #initialization }
-Board >> withAmoutTiles: aTileArray [ 
-	tileArray := aTileArray .
-	tiles := tileArray size.
 ]

@@ -26,6 +26,15 @@ GameTest >> testGameCannotBeInitializedWithoutABoard [
 ]
 
 { #category : #tests }
+GameTest >> testGameKnownsOwnBoard [
+
+	| aBoard aGame |
+	aBoard := Board withTiles: 1.
+	aGame:= Game withBoard: aBoard.
+	self assert: (aGame board) equals: aBoard
+]
+
+{ #category : #tests }
 GameTest >> testIfGameIsFinishedRerurnTrue [
 
 	| aGame aBoard |

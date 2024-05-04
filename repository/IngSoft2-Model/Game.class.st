@@ -5,7 +5,8 @@ Class {
 	#name : #Game,
 	#superclass : #Object,
 	#instVars : [
-		'isFinished'
+		'isFinished',
+		'gameBoard'
 	],
 	#classInstVars : [
 		'isFinished'
@@ -14,21 +15,23 @@ Class {
 }
 
 { #category : #initialization }
-Game class >> startGame [
-	^(self new) beginGame 
-]
-
-{ #category : #initialization }
 Game class >> withBoard: aBoard [
 
 	aBoard ifNil: [
 		Error signal: 'Game cannot be started without a board' ].
-	^ self new beginGame
+	^ self new beginGameWith: aBoard
 ]
 
 { #category : #initialization }
-Game >> beginGame [
-	isFinished := false
+Game >> beginGameWith: aBoard [
+	isFinished := false.
+	gameBoard := aBoard.
+	
+]
+
+{ #category : #accessing }
+Game >> board [
+	^gameBoard
 ]
 
 { #category : #accessing }
