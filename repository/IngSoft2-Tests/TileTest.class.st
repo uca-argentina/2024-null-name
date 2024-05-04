@@ -16,7 +16,11 @@ TileTest >> should: anErrorBlock raise: exceptionClass withMessage: anErrorMessa
 
 { #category : #tests }
 TileTest >> testPositionCannotBeLessThan0 [
-	self should: [ Tile inPosition: -1 ] raise: Error withMessage: 'Tile cannot have a negative position'
+
+	self
+		should: [ Tile inPosition: -1 ]
+		raise: Error
+		withMessage: 'Tile cannot have a negative position'
 ]
 
 { #category : #tests }
