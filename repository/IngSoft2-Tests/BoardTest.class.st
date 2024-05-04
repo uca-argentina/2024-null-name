@@ -19,5 +19,8 @@ BoardTest >> testBoardCannotBeInitializedWithLessThanOneTile [
 
 	| numTiles |
 	numTiles := 0.
-	self should:[Board withTiles: numTiles] raise: Error withMessage:'Board tiles must be greater than 0'
+	self
+		should: [ Board withTiles: numTiles ]
+		raise: Error
+		withMessage: 'Board tiles must be greater than 0'
 ]
