@@ -24,6 +24,13 @@ Ship >> inTile: aPosition ofBoard: aBoard [
 	myBoard := aBoard.
 ]
 
+{ #category : #'as yet unclassified' }
+Ship >> moveTiles: anAmountOfTiles [
+
+	currentPosition := currentPosition + anAmountOfTiles min:
+		                   myBoard numbOfTiles
+]
+
 { #category : #accessing }
 Ship >> myBoard [
 	^ myBoard
