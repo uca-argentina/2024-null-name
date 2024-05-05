@@ -16,6 +16,11 @@ Ship class >> create [
 	^ (self new) inTile: 0.
 ]
 
+{ #category : #accessing }
+Ship >> givePosition [
+	^ currentPosition.
+]
+
 { #category : #initialization }
 Ship >> inTile: aPosition [
 	currentPosition := aPosition.
@@ -25,9 +30,4 @@ Ship >> inTile: aPosition [
 Ship >> moveTiles: anAmountOfTiles [
 
 	currentPosition := currentPosition + anAmountOfTiles.
-]
-
-{ #category : #accessing }
-Ship >> ownPosition [
-	^ currentPosition.
 ]
