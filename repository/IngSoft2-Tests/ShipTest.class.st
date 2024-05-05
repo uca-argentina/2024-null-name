@@ -15,11 +15,10 @@ self deny: aShip givePosition equals: -1
 ]
 
 { #category : #tests }
-ShipTest >> testWhenCreatedShipIsInFirstTileOfBoard [
-	| aShip aBoard |
-	aBoard := Board withTiles: 5.
+ShipTest >> testWhenCreatedShipIsInFirstPosition [
+	| aShip |
 	aShip := Ship create.
-	self assert: (aShip givePosition) equals: 0.
+	self assert: (aShip givePosition) equals: 1.
 ]
 
 { #category : #tests }
@@ -28,5 +27,5 @@ ShipTest >> testWhenShipMovesCurrentPositionChanges [
 	aBoard := Board withTiles: 5.
 	aShip := Ship create.
 	aShip moveTiles: 3.
-	self assert: (aShip givePosition) equals: 3.
+	self assert: (aShip givePosition) equals: 4.
 ]

@@ -13,7 +13,7 @@ Class {
 
 { #category : #'class initialization' }
 Ship class >> create [
-	^ (self new) inTile: 0.
+	^ (self new) inTile: 1.
 ]
 
 { #category : #accessing }
@@ -29,5 +29,5 @@ Ship >> inTile: aPosition [
 { #category : #modifying }
 Ship >> moveTiles: anAmountOfTiles [
 
-	currentPosition := currentPosition + anAmountOfTiles max: 0
+	currentPosition := currentPosition + anAmountOfTiles max: 1
 ]

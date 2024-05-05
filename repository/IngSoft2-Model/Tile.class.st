@@ -16,13 +16,13 @@ Class {
 
 { #category : #'class initialization' }
 Tile class >> inPosition: aPosition [ 
-	(aPosition < 0) ifTrue: [Error signal: 'Tile cannot have a negative position'].
+	(aPosition < 1) ifTrue: [Error signal: 'Tile cannot have a negative position'].
 	^ (self new) inPosition: aPosition.
 ]
 
 { #category : #'class initialization' }
 Tile class >> inPosition: aPosition withWormholeTo: aTilePosition [ 
-	(aPosition < 0) ifTrue: [Error signal: 'Tile cannot have a negative position'].
+	(aPosition < 1) ifTrue: [Error signal: 'Tile cannot have a negative position'].
 	^ (self new) inPosition: aPosition withWormholeTo: aTilePosition .
 ]
 

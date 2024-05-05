@@ -23,5 +23,5 @@ WormholeEffect >> applyOn: aShip [
 
 { #category : #'instance creation' }
 WormholeEffect >> fromTile: firstTilePosition toTile: endTilePosition [ 
-	wormholeDistance:= endTilePosition - firstTilePosition .
+	wormholeDistance:= (endTilePosition-1) - firstTilePosition .
 ]
