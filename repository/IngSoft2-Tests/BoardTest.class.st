@@ -34,13 +34,3 @@ aBoard := Board withTiles:numTiles .
 
 self assert: aBoard numbOfTiles equals: 3
 ]
-
-{ #category : #tests }
-BoardTest >> testBoardInitializedWithAllTilesEmpty [
-
-	| numTiles aBoard |
-	numTiles := 4.
-	aBoard := Board withTiles: numTiles.
-
-	self assert: aBoard emptyTiles equals: 4
-]

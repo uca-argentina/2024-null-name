@@ -3,7 +3,7 @@ null pattern implementation
 "
 Class {
 	#name : #NullEffect,
-	#superclass : #Object,
+	#superclass : #Effect,
 	#category : #'IngSoft2-Model'
 }
 

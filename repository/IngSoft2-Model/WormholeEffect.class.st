@@ -4,7 +4,7 @@ moves ship to another fixed position
 "
 Class {
 	#name : #WormholeEffect,
-	#superclass : #Object,
+	#superclass : #Effect,
 	#instVars : [
 		'wormholeDistance'
 	],
