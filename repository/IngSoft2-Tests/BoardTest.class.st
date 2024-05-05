@@ -15,6 +15,19 @@ BoardTest >> should: anErrorBlock raise: exceptionClass withMessage: anErrorMess
 ]
 
 { #category : #tests }
+BoardTest >> testBanana [
+
+| aBoard aWorholePositons |
+aWorholePositons := #(2 5).
+aBoard:=Board withTiles: 6 withWormHolePositions: aWorholePositons.
+
+self assert: (((aBoard tileInPosition: 2) hasEffect) isMemberOf: WormholeEffect)
+
+
+
+]
+
+{ #category : #tests }
 BoardTest >> testBoardCannotBeInitializedWithLessThanOneTile [
 
 	| numTiles |
