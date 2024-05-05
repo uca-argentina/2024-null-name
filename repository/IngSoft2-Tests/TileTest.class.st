@@ -29,3 +29,12 @@ TileTest >> testWhenAskedReturnPosition [
 	aTile:= Tile inPosition: 0.
 	self assert: (aTile givePosition) equals: 0.
 ]
+
+{ #category : #tests }
+TileTest >> testWhenTileAppliesNullEffectShipMoves0 [
+	| aTile aShip |
+	aTile:= Tile inPosition: 0.
+	aShip:= Ship create.
+	aTile applyEffectOn: aShip.
+	self assert: (aShip givePosition) equals: 0.
+]

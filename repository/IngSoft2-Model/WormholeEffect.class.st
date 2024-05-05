@@ -1,3 +1,7 @@
+"
+Wormhole effect
+moves ship to another fixed position
+"
 Class {
 	#name : #WormholeEffect,
 	#superclass : #Object,

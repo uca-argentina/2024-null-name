@@ -5,7 +5,7 @@ Class {
 }
 
 { #category : #tests }
-WormholeTest >> testBanana [
+WormholeTest >> testWhenApplyingWormholeEffectOnShipMoveAccordingly [
 	| aTile aTile2 aShip |
 	aShip:= Ship create.
 	aTile:= Tile inPosition: 2 withWormholeTo: 5.
