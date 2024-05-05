@@ -26,7 +26,7 @@ Ship >> inTile: aPosition [
 	currentPosition := aPosition.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #modifying }
 Ship >> moveTiles: anAmountOfTiles [
 
 	currentPosition := currentPosition + anAmountOfTiles.

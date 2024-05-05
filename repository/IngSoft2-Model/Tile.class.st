@@ -14,7 +14,7 @@ Class {
 	#category : #'IngSoft2-Model'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #'class initialization' }
 Tile class >> inPosition: aPosition [ 
 	(aPosition < 0) ifTrue: [Error signal: 'Tile cannot have a negative position'].
 	^ (self new) inPosition: aPosition.
