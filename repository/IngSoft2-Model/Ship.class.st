@@ -29,5 +29,5 @@ Ship >> inTile: aPosition [
 { #category : #modifying }
 Ship >> moveTiles: anAmountOfTiles [
 
-	currentPosition := currentPosition + anAmountOfTiles.
+	currentPosition := currentPosition + anAmountOfTiles max: 0
 ]
