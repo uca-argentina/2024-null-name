@@ -17,10 +17,12 @@ Board class >> withTiles: anumberOfTiles [
 ]
 
 { #category : #'class initialization' }
-Board class >> withTiles: anumberOfTiles withWormHolePositions: aWormHoleTilePair [
-	anumberOfTiles<=0 ifTrue:[Error signal: 'Board tiles must be greater than 0'].
+Board class >> withTiles: aNumberOfTiles withWormHolePositions: aWormHoleTilePair [
+	aNumberOfTiles strictlyPositive ifFalse:[Error signal: 'Board tiles must be greater than 0'].
 	
-	^ (self new) initializeWithAmoutTiles: anumberOfTiles  withWormHolePositions: (aWormHoleTilePair asSortedCollection).
+	aWormHoleTilePair do: [ :i | ((i <= aNumberOfTiles) and: i strictlyPositive ) ifFalse: [Error signal: 'Wormhole tiles are out of bounds']].
+	
+	^ (self new) initializeWithAmoutTiles: aNumberOfTiles  withWormHolePositions: (aWormHoleTilePair asSortedCollection).
 ]
 
 { #category : #initialization }
@@ -38,7 +40,7 @@ Board >> initializeWithAmoutTiles: anumberOfTiles withWormHolePositions: aWormHo
 	aTileArray := OrderedCollection new.
 	1 to: anumberOfTiles do: [ :i | 
 		 (aWormHoleTilePair includes: i)
-		ifTrue: [ aTileArray add: (Tile inPosition: i withWormholeTo:(aWormHoleTilePair select:[:index|index ~= i]))]
+		ifTrue: [ aTileArray add: (Tile inPosition: i withWormholeTo:(aWormHoleTilePair detect:[:index|index ~= i]))]
 		ifFalse: [aTileArray add: (Tile inPosition: i) ]].
 	tileArray := aTileArray.
 ]
@@ -48,7 +50,12 @@ Board >> numbOfTiles [
 	^ tileArray size.
 ]
 
+{ #category : #modifying }
+Board >> tileEffectOn: aShip [ 
+	(self tileInPosition: (aShip givePosition)) applyEffectOn: aShip.
+]
+
 { #category : #accessing }
-Board >> tileInPosition: anTilePosition [ 
-	^ tileArray at: anTilePosition
+Board >> tileInPosition: aTilePosition [ 
+	^ tileArray at: aTilePosition
 ]
