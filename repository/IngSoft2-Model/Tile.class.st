@@ -41,6 +41,11 @@ Tile >> hasEffect [
 	^effect 
 ]
 
+{ #category : #testing }
+Tile >> hasPosition: anPosition [
+	^ position == anPosition
+]
+
 { #category : #initialization }
 Tile >> inPosition: aPosition [ 
 	position := aPosition.

@@ -23,7 +23,7 @@ aShip:= Ship createWithName: 'Juan'.
 aShip moveTiles: 1.
 
 aBoard tileEffectOn: aShip.
-self assert: aShip givePosition equals: 5.
+self assert: (aShip givePosition) equals: 5.
 
 ]
 

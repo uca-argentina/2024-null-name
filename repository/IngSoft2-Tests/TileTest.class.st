@@ -27,7 +27,7 @@ TileTest >> testPositionCannotBeLessThan1 [
 TileTest >> testWhenAskedReturnPosition [
 	| aTile |
 	aTile:= Tile inPosition: 1.
-	self assert: (aTile givePosition) equals: 1.
+	self assert: (aTile hasPosition: 1).
 ]
 
 { #category : #tests }
