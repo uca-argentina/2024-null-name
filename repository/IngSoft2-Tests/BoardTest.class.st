@@ -19,7 +19,7 @@ BoardTest >> testBoardAppliesEffectWhenShipFallsOnSpecialTile [
 | aBoard aWormholePositons aShip |
 aWormholePositons := #(2 5).
 aBoard:=Board withTiles: 6 withWormHolePositions: aWormholePositons.
-aShip:= Ship create.
+aShip:= Ship createWithName: 'Juan'.
 aShip moveTiles: 1.
 
 aBoard tileEffectOn: aShip.

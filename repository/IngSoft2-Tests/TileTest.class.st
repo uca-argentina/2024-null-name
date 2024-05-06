@@ -34,7 +34,7 @@ TileTest >> testWhenAskedReturnPosition [
 TileTest >> testWhenTileAppliesNullEffectShipMoves0 [
 	| aTile aShip |
 	aTile:= Tile inPosition: 1.
-	aShip:= Ship create.
+	aShip:= Ship createWithName: 'Juan'.
 	aTile applyEffectOn: aShip.
 	self assert: (aShip givePosition) equals: 1.
 ]

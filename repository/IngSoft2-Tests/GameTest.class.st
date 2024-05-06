@@ -21,7 +21,7 @@ GameTest >> testGameCanTellHowManyShipsArePlaying [
 	aBoard := Board withTiles: 5.
 	aNumberOfShips := 6.
 	aShipCollection:= Set new.
-	1 to: aNumberOfShips do: [ :iter | aShipCollection add: Ship create].
+	1 to: aNumberOfShips do: [ :iter | aShipCollection add: (Ship createWithName: 'Juan')].
 	aGame:= Game withBoard: aBoard  withShips: aShipCollection .
 	self assert: (aGame amountOfShips) equals: 6.
 	
@@ -32,7 +32,7 @@ GameTest >> testGameCanTellHowManyShipsArePlaying [
 GameTest >> testGameCannotBeInitializedWithoutABoard [
 
 	| aBoard aShip |
-	aShip:= Ship create.
+	aShip:= Ship createWithName: 'Juan'.
 	self
 		should: [ Game withBoard: aBoard withShips: aShip. ]
 		raise: Error
@@ -55,7 +55,7 @@ GameTest >> testGameKnownsOwnBoard [
 
 	| aGame aBoard aShip |
 	aBoard := Board withTiles: 1.
-	aShip:= Ship create.
+	aShip:= Ship createWithName: 'Juan'.
 	aGame := Game withBoard: aBoard withShips: aShip.
 	self assert: (aGame board) equals: aBoard
 ]
@@ -65,7 +65,7 @@ GameTest >> testGameKnowsOwnShips [
 
 	| aGame aBoard aShip |
 	aBoard := Board withTiles: 1.
-	aShip:= Ship create.
+	aShip:= Ship createWithName: 'Juan'.
 	aGame := Game withBoard: aBoard withShips: aShip.
 
 	self assert: (aGame ships) equals: aShip
@@ -76,7 +76,7 @@ GameTest >> testIfGameIsFinishedRerurnTrue [
 
 	| aGame aBoard aShip |
 	aBoard := Board withTiles: 1.
-	aShip:= Ship create.
+	aShip:= Ship createWithName: 'Juan'.
 	aGame := Game withBoard: aBoard withShips: aShip.
 	aGame endGame.
 
@@ -88,7 +88,7 @@ GameTest >> testIfGameIsNotFinishedRerurnFalse [
 
 	| aGame aBoard aShip |
 	aBoard := Board withTiles: 1.
-	aShip:= Ship create.
+	aShip:= Ship createWithName: 'Juan'.
 	aGame := Game withBoard: aBoard withShips: aShip.
 
 	self assert: aGame isOngoing

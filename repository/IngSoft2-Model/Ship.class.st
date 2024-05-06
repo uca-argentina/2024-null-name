@@ -6,14 +6,15 @@ Class {
 	#name : #Ship,
 	#superclass : #Object,
 	#instVars : [
-		'currentPosition'
+		'currentPosition',
+		'playerName'
 	],
 	#category : #'IngSoft2-Model'
 }
 
 { #category : #'class initialization' }
-Ship class >> create [
-	^ (self new) inTile: 1.
+Ship class >> createWithName: aName [
+	^ (self new) inTile: 1 withName:aName.
 ]
 
 { #category : #accessing }
@@ -21,9 +22,16 @@ Ship >> givePosition [
 	^ currentPosition.
 ]
 
+{ #category : #testing }
+Ship >> hasName: aShip [ 
+	^ (playerName == aShip)
+]
+
 { #category : #initialization }
-Ship >> inTile: aPosition [
+Ship >> inTile: aPosition withName: aName [ 
 	currentPosition := aPosition.
+	playerName:=aName.
+	
 ]
 
 { #category : #modifying }

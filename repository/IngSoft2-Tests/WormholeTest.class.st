@@ -7,7 +7,7 @@ Class {
 { #category : #tests }
 WormholeTest >> testWhenApplyingWormholeEffectOnShipMoveAccordingly [
 	| aTile aTile2 aShip |
-	aShip:= Ship create.
+	aShip:= Ship createWithName: 'Juan'.
 	aTile:= Tile inPosition: 2 withWormholeTo: 5.
 	aTile2:= Tile inPosition: 5 withWormholeTo: 2.
 	aShip moveTiles: 1.
