@@ -16,12 +16,12 @@ Class {
 }
 
 { #category : #'class initialization' }
-Game class >> withBoard: aBoard withShips: aShipCollection [
+Game class >> withBoard: aBoard withPlayers: aNameCollection [
 	aBoard ifNil: [
 		Error signal: 'Game cannot be started without a board' ].
-	aShipCollection ifNil: [ 
+	aNameCollection ifNil: [ 
 		Error signal: 'Game cannot be started without at least one ship.' ].
-	^ self new beginGameWith: aBoard withShips: aShipCollection
+	^ self new beginGameWith: aBoard withPlayers: (aNameCollection asSet)
 ]
 
 { #category : #accessing }
@@ -30,9 +30,14 @@ Game >> amountOfShips [
 ]
 
 { #category : #initialization }
-Game >> beginGameWith: aBoard withShips: aShipCollection [
+Game >> beginGameWith: aBoard withPlayers: aNameCollection [
+	| aCollectionShips |
 	gameBoard := aBoard.
-	gameShips := aShipCollection.
+	aCollectionShips := OrderedCollection new.
+	1 to: (aNameCollection size) do: [ :iter | aCollectionShips add: (Ship createWithName: ((aNameCollection asOrderedCollection) at: iter))].
+	
+	gameShips:=aCollectionShips.
+	
 	isFinished := false.
 ]
 
@@ -49,9 +54,4 @@ Game >> endGame [
 { #category : #testing }
 Game >> isOngoing [
 	^ isFinished not.
-]
-
-{ #category : #accessing }
-Game >> ships [
-	^gameShips.
 ]

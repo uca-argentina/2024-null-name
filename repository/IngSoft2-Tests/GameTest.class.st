@@ -17,13 +17,18 @@ GameTest >> should: anErrorBlock raise: exceptionClass withMessage: anErrorMessa
 { #category : #tests }
 GameTest >> testGameCanTellHowManyShipsArePlaying [
 
-	| aGame aBoard aNumberOfShips aShipCollection |
+	| aGame aBoard aShipCollection aCollectionOfNames |
 	aBoard := Board withTiles: 5.
-	aNumberOfShips := 6.
 	aShipCollection:= Set new.
-	1 to: aNumberOfShips do: [ :iter | aShipCollection add: (Ship createWithName: 'Juan')].
-	aGame:= Game withBoard: aBoard  withShips: aShipCollection .
-	self assert: (aGame amountOfShips) equals: 6.
+	aCollectionOfNames:= OrderedCollection new 
+	add: 'Juan';
+	add: 'Jose';
+	add:'Fran';
+	add: 'Juan';yourself.
+	
+	"1 to: (aSetOfNames size) do: [ :iter | aShipCollection add: (Ship createWithName: (aSetOfNames at: iter))]."
+	aGame:= Game withBoard: aBoard  withPlayers: aCollectionOfNames.
+	self assert: (aGame amountOfShips) equals: 3.
 	
 	
 ]
@@ -34,7 +39,7 @@ GameTest >> testGameCannotBeInitializedWithoutABoard [
 	| aBoard aShip |
 	aShip:= Ship createWithName: 'Juan'.
 	self
-		should: [ Game withBoard: aBoard withShips: aShip. ]
+		should: [ Game withBoard: aBoard withPlayers: aShip. ]
 		raise: Error
 		withMessage: 'Game cannot be started without a board'
 ]
@@ -45,7 +50,7 @@ GameTest >> testGameCannotBeInitializedWithoutAtLeastOneShip [
 	| aBoard aShip |
 	aBoard := Board withTiles: 5.
 	self
-		should: [ Game withBoard: aBoard withShips: aShip. ]
+		should: [ Game withBoard: aBoard withPlayers: aShip. ]
 		raise: Error
 		withMessage: 'Game cannot be started without at least one ship.'
 ]
@@ -53,31 +58,24 @@ GameTest >> testGameCannotBeInitializedWithoutAtLeastOneShip [
 { #category : #tests }
 GameTest >> testGameKnownsOwnBoard [
 
-	| aGame aBoard aShip |
+	| aGame aBoard aPlayer |
 	aBoard := Board withTiles: 1.
-	aShip:= Ship createWithName: 'Juan'.
-	aGame := Game withBoard: aBoard withShips: aShip.
+	aPlayer := OrderedCollection new 
+	add: 'Juan';yourself .
+	aGame := Game withBoard: aBoard withPlayers: aPlayer.
+	
 	self assert: (aGame board) equals: aBoard
-]
-
-{ #category : #tests }
-GameTest >> testGameKnowsOwnShips [
-
-	| aGame aBoard aShip |
-	aBoard := Board withTiles: 1.
-	aShip:= Ship createWithName: 'Juan'.
-	aGame := Game withBoard: aBoard withShips: aShip.
-
-	self assert: (aGame ships) equals: aShip
 ]
 
 { #category : #tests }
 GameTest >> testIfGameIsFinishedRerurnTrue [
 
-	| aGame aBoard aShip |
+	| aGame aBoard aCollectionOfNames |
 	aBoard := Board withTiles: 1.
-	aShip:= Ship createWithName: 'Juan'.
-	aGame := Game withBoard: aBoard withShips: aShip.
+	aCollectionOfNames:= OrderedCollection new 
+	add: 'Juan';yourself.
+	
+	aGame := Game withBoard: aBoard withPlayers: aCollectionOfNames.
 	aGame endGame.
 
 	self deny: aGame isOngoing
@@ -86,10 +84,12 @@ GameTest >> testIfGameIsFinishedRerurnTrue [
 { #category : #tests }
 GameTest >> testIfGameIsNotFinishedRerurnFalse [
 
-	| aGame aBoard aShip |
+	| aGame aBoard aCollectionOfNames |
 	aBoard := Board withTiles: 1.
-	aShip:= Ship createWithName: 'Juan'.
-	aGame := Game withBoard: aBoard withShips: aShip.
+	aCollectionOfNames:= OrderedCollection new 
+	add: 'Juan';yourself.
+	
+	aGame := Game withBoard: aBoard withPlayers: aCollectionOfNames.
 
 	self assert: aGame isOngoing
 ]
