@@ -31,11 +31,6 @@ Tile >> applyEffectOn: aShip [
 	effect applyOn: aShip.
 ]
 
-{ #category : #accessing }
-Tile >> givePosition [
-	^position.
-]
-
 { #category : #testing }
 Tile >> hasEffect [
 	^effect 
