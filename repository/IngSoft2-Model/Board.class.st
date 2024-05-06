@@ -22,7 +22,7 @@ Board class >> withTiles: aNumberOfTiles withWormHolePositions: aWormHoleTilePai
 	
 	aWormHoleTilePair do: [ :i | ((i <= aNumberOfTiles) and: i strictlyPositive ) ifFalse: [Error signal: 'Wormhole tiles are out of bounds']].
 	
-	^ (self new) initializeWithAmoutTiles: aNumberOfTiles  withWormHolePositions: (aWormHoleTilePair asSortedCollection).
+	^ (self new) initializeWithAmoutTiles: aNumberOfTiles  withWormHolePositions: aWormHoleTilePair.
 ]
 
 { #category : #initialization }

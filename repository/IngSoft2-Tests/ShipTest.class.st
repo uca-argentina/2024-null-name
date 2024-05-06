@@ -5,7 +5,7 @@ Class {
 }
 
 { #category : #tests }
-ShipTest >> testIfShipMovesIntoPositionBelowZeroThenShipPositionIsZero [
+ShipTest >> testIfShipMovesIntoPositionBelowOneThenShipPositionIsOne [
 
 | aShip |
 aShip := Ship create.
