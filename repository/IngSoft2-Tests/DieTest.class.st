@@ -11,6 +11,20 @@ DieTest >> should: aErrorBlock raise: anErrorClass withMessage: anErrorMessage [
 
 ]
 
+{ #category : #tests }
+DieTest >> testDiceHasNDieInIT [
+|adice	|
+	adice:=Dice with: (Die of:3) with:(Die of:4) with:(Die of:5).
+	self assert: adice size equals:3.  
+]
+
+{ #category : #tests }
+DieTest >> testDiceRollBetweenThesizeOfDiceAndTheSumOfTheDieFaces [
+|adice	|
+	adice:=Dice with: (Die of:3) with:(Die of:4) with:(Die of:5).
+	self assert: ((adice throw)between: 3 and:12).  
+]
+
 { #category : #asserting }
 DieTest >> testDieCanBeCreatedWithAnAmountOfFaces [ 
 
