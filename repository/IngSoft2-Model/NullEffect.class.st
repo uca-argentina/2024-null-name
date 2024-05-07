@@ -1,5 +1,5 @@
 "
-NullEfect sub-clas
+null pattern implementation
 "
 Class {
 	#name : #NullEffect,

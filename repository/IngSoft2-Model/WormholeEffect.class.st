@@ -1,5 +1,6 @@
 "
-WormholeEffect sub-class
+Wormhole effect
+moves ship to another fixed position
 "
 Class {
 	#name : #WormholeEffect,
@@ -12,7 +13,8 @@ Class {
 
 { #category : #'instance creation' }
 WormholeEffect class >> fromTile: firstTilePosition toTile: endTilePosition [ 
-    ^ (self new) fromTile: firstTilePosition toTile: endTilePosition.
+
+  ^ (self new) fromTile: firstTilePosition toTile: endTilePosition.
 ]
 
 { #category : #applying }

@@ -1,5 +1,5 @@
 "
-Effect class
+Superclass for tile effects
 "
 Class {
 	#name : #Effect,
