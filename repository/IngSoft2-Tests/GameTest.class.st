@@ -72,6 +72,24 @@ GameTest >> testGameKnowsOwnShips [
 ]
 
 { #category : #tests }
+GameTest >> testGameKnowsPlayerPositions [
+
+
+	| aGame arrays|
+	arrays:=OrderedCollection with:(Ship create ) with: (Ship create ).
+	
+	
+	aGame :=Game withBoard: (Board withTiles: 27 ) withShips: arrays    withDice: (Dice with: (LoadedDie of: 9) with:(LoadedDie of:3)).
+	
+	aGame playTurn .
+	aGame playTurn .
+	aGame playTurn .
+	
+	
+	self assert: [( ((arrays at:1) ownPosition ) = 24) and: (((arrays at:2)ownPosition) = 12).]
+]
+
+{ #category : #tests }
 GameTest >> testGameOfOnlyOneShip [
 
 
@@ -118,4 +136,26 @@ GameTest >> testIfGameIsNotFinishedRerurnFalse [
 	aGame := Game withBoard: aBoard withShips: aShip.
 
 	self deny: aGame isFinished .
+]
+
+{ #category : #tests }
+GameTest >> testIfThreIsAwinnerThereisNoMoreMovements [
+
+
+	| aGame arrays|
+	arrays:=OrderedCollection with:(Ship create ) with: (Ship create ).
+	
+	
+	aGame :=Game withBoard: (Board withTiles: 17) withShips: arrays    withDice: (Dice with: (LoadedDie of: 9) with:(LoadedDie of:3)).
+	
+	aGame playTurn .
+	aGame playTurn .
+	aGame playTurn .
+
+	
+	
+	self
+		should:[aGame playTurn] 
+		raise:Error
+		withMessage:'Game is Over you cant Keep Playing'.
 ]

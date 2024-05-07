@@ -52,6 +52,11 @@ Game >> board [
 	^gameBoard .
 ]
 
+{ #category : #testing }
+Game >> currentTurn [
+	^gameShips at:self
+]
+
 { #category : #accessing }
 Game >> endGame [
 	isFinished := true
@@ -66,6 +71,12 @@ Game >> isFinished [
 Game >> isOver [
 	isFinished ifTrue: [ Error signal: 'Game is Over you cant Keep Playing' ] .
 	
+]
+
+{ #category : #'as yet unclassified' }
+Game >> nextTurn [
+	currentTurn :=currentTurn <(gameShips size) ifTrue:[currentTurn +1] ifFalse: [1].
+	^currentTurn .
 ]
 
 { #category : #'as yet unclassified' }
