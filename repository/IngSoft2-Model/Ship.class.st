@@ -51,6 +51,6 @@ Ship >> moveTiles: anAmountOfTiles [
 { #category : #modifying }
 Ship >> moveTiles: anAmountOfTiles in: aBoard [
 
-	currentPosition := currentPosition + anAmountOfTiles
-		                   min: aBoard numbOfTiles
+	currentPosition := (currentPosition + anAmountOfTiles
+		                   min: aBoard numbOfTiles) max: 1
 ]

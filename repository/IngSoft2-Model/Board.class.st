@@ -64,3 +64,8 @@ Board >> tileEffectOn: aShip [
 Board >> tileInPosition: aTilePosition [ 
 	^ tileArray at: aTilePosition
 ]
+
+{ #category : #'as yet unclassified' }
+Board >> validatePositionOf: aShip [ 
+	(aShip givePosition > tileArray size) ifTrue: [aShip moveTiles: (tileArray size - aShip givePosition )]
+]

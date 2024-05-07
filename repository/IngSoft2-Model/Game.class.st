@@ -18,23 +18,23 @@ Class {
 }
 
 { #category : #'class initialization' }
-Game class >> withBoard: aBoard withShips: aShipCollection [
+Game class >> withBoard: aBoard withPlayers: aShipCollection [
 	aBoard ifNil: [
 		Error signal: 'Game cannot be started without a board' ].
 	aShipCollection ifNil: [ 
 		Error signal: 'Game cannot be started without at least one ship.' ].
-	^ self new beginGameWith: aBoard withShips: aShipCollection
+	^ self new beginGameWith: aBoard withShips: (aShipCollection asSet)
 ]
 
 { #category : #'class initialization' }
-Game class >> withBoard: aBoard withShips: aShipCollection withDice: aDice [ 
+Game class >> withBoard: aBoard withPlayers: aNameCollection withDice: aDice [ 
 	aBoard ifNil: [
 		Error signal: 'Game cannot be started without a board' ].
-	aShipCollection ifNil: [ 
+	aNameCollection ifNil: [ 
 		Error signal: 'Game cannot be started without at least one ship.' ].
 	aDice ifNil: [ 
 		Error signal: 'Game cannot be started without at least one die' ].
-	 ^(self new)beginGameWith:aBoard  withShips:aShipCollection  withDice: aDice.
+	 ^ (self new) beginGameWith: aBoard withPlayers: (aNameCollection asSet)  withDice: aDice.
 ]
 
 { #category : #accessing }
@@ -43,18 +43,25 @@ Game >> amountOfShips [
 ]
 
 { #category : #initialization }
-Game >> beginGameWith: aBoard withShips: aShipCollection [
+Game >> beginGameWith: aBoard withPlayers: aNameCollection withDice: aDice [
+
+	| aCollectionShips |
 	gameBoard := aBoard.
-	gameShips := aShipCollection.
-	isFinished := false.
+	aCollectionShips := OrderedCollection new.
+	1 to: aNameCollection size do: [ :iter |
+		aCollectionShips add:
+			(Ship createWithName:
+				 (aNameCollection asOrderedCollection at: iter)) ].
+		gameShips := aCollectionShips.
+	dice := aDice.
+	currentTurn := 1.
+	isFinished := false
 ]
 
 { #category : #initialization }
-Game >> beginGameWith: aBoard withShips: aShipCollection withDice: aDice [
+Game >> beginGameWith: aBoard withShips: aShipCollection [
 	gameBoard := aBoard.
 	gameShips := aShipCollection.
-	dice:=aDice .
-	currentTurn :=1.
 	isFinished := false.
 ]
 
@@ -71,6 +78,11 @@ Game >> currentTurn [
 { #category : #accessing }
 Game >> endGame [
 	isFinished := true
+]
+
+{ #category : #accessing }
+Game >> giveAllShipPositions [
+	^ gameShips collect: [:i | i givePosition ].
 ]
 
 { #category : #testing }
@@ -96,17 +108,13 @@ Game >> playTurn [
 	self isOver. 
 	movement := dice throw.
 	player:=gameShips at: currentTurn.
-	player moveTiles: movement in: gameBoard  .
+	"player moveTiles: movement in: gameBoard."
+	player moveTiles: movement.
 	self veifyingItIsntTheWinningMove:player.
 	currentTurn :=self nextTurn.
 	
 	
 
-]
-
-{ #category : #accessing }
-Game >> ships [ 
-	^gameShips 
 ]
 
 { #category : #accessing }

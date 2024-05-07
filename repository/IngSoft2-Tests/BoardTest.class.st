@@ -59,6 +59,16 @@ self assert: aBoard numbOfTiles equals: 3
 ]
 
 { #category : #tests }
+BoardTest >> testIfShipMovesOverBoardBoundsThenSnapBackToLastTile [
+| aBoard aShip |
+aBoard:=Board withTiles: 6.
+aShip:= Ship createWithName: 'Juan'.
+aShip moveTiles: 7.
+aBoard validatePositionOf: aShip.
+self assert: (aShip givePosition) equals: 6.
+]
+
+{ #category : #tests }
 BoardTest >> testSpecialTilesCannotBeCreatedIfPositionsExceedBoardSize [
 
 | aWormholePositons  |

@@ -16,7 +16,8 @@ self assert: (aShip hasName: 'Juan')
 { #category : #tests }
 ShipTest >> testIfShipMovesIntoPositionBelowOneThenShipPositionIsOne [
 
-| aShip |
+| aShip aBoard |
+aBoard:= Board withTiles: 3.
 aShip := Ship createWithName: 'Juan'.
 aShip moveTiles: -1.
 
