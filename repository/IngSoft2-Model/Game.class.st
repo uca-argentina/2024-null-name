@@ -84,13 +84,13 @@ Game >> isOver [
 	
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #modifying }
 Game >> nextTurn [
 	currentTurn :=currentTurn <(gameShips size) ifTrue:[currentTurn +1] ifFalse: [1].
 	^currentTurn .
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #modifying }
 Game >> playTurn [
 |movement player |
 	self isOver. 
@@ -112,6 +112,6 @@ Game >> ships [
 { #category : #accessing }
 Game >> veifyingItIsntTheWinningMove: player [
 	
-	isFinished:=player ownPosition = gameBoard numbOfTiles .
+	isFinished:=player givePosition = gameBoard numbOfTiles .
 	^isFinished .
 ]

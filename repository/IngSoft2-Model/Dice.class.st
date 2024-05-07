@@ -1,3 +1,6 @@
+"
+a Dice collection made out of multiple Die
+"
 Class {
 	#name : #Dice,
 	#superclass : #OrderedCollection,

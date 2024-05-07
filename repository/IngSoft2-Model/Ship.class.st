@@ -6,7 +6,8 @@ Class {
 	#name : #Ship,
 	#superclass : #Object,
 	#instVars : [
-		'currentPosition'
+		'currentPosition',
+		'playerName'
 	],
 	#category : #'IngSoft2-Model'
 }
@@ -16,19 +17,40 @@ Ship class >> create [
 	^ (self new) inTile: 0.
 ]
 
+{ #category : #'class initialization' }
+Ship class >> createWithName: aName [ 
+	^ (self new) inTile: 1 withName:aName.
+]
+
+{ #category : #accessing }
+Ship >> givePosition [
+	^ currentPosition.
+]
+
+{ #category : #testing }
+Ship >> hasName: aName [
+	^ playerName == aName
+]
+
 { #category : #initialization }
 Ship >> inTile: aPosition [
 	currentPosition := aPosition.
 ]
 
-{ #category : #'as yet unclassified' }
-Ship >> moveTiles: anAmountOfTiles in: aBoard [
-
-	currentPosition := currentPosition + anAmountOfTiles min:
-		                   aBoard numbOfTiles
+{ #category : #initialization }
+Ship >> inTile: aPosition withName: aName [ 
+	currentPosition := aPosition.
+    playerName:=aName.
 ]
 
-{ #category : #accessing }
-Ship >> ownPosition [
-	^ currentPosition.
+{ #category : #modifying }
+Ship >> moveTiles: anAmountOfTiles [ 
+	currentPosition := currentPosition + anAmountOfTiles max: 1
+]
+
+{ #category : #modifying }
+Ship >> moveTiles: anAmountOfTiles in: aBoard [
+
+	currentPosition := currentPosition + anAmountOfTiles
+		                   min: aBoard numbOfTiles
 ]

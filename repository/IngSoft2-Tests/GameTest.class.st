@@ -86,7 +86,7 @@ GameTest >> testGameKnowsPlayerPositions [
 	aGame playTurn .
 	
 	
-	self assert: [( ((arrays at:1) ownPosition ) = 24) and: (((arrays at:2)ownPosition) = 12).]
+	self assert: [( ((arrays at:1) givePosition ) = 24) and: (((arrays at:2)givePosition) = 12).]
 ]
 
 { #category : #tests }
@@ -112,7 +112,7 @@ GameTest >> testGameWithMoreThanOneDie [
 	aGame :=Game withBoard: (Board withTiles: 16 ) withShips: arrays    withDice: (Dice with: (LoadedDie of: 9) with:(LoadedDie of:3)).
 	aGame playTurn .
 
-	self assert:  ((arrays at:1) ownPosition ) equals: 12.
+	self assert:  ((arrays at:1) givePosition ) equals: 12.
 ]
 
 { #category : #tests }
@@ -177,5 +177,5 @@ GameTest >> testWhenFinishedTheEndingPositionOfTheWinnerEqualsTheSizeOfTheBoard 
 	aGame playTurn .
 	
 	
-	self assert: ((arrays at:1) ownPosition ) equals: 27
+	self assert: ((arrays at:1) givePosition ) equals: 27
 ]

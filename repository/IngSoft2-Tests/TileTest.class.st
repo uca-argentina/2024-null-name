@@ -15,7 +15,7 @@ TileTest >> should: anErrorBlock raise: exceptionClass withMessage: anErrorMessa
 ]
 
 { #category : #tests }
-TileTest >> testPositionCannotBeLessThan0 [
+TileTest >> testPositionCannotBeLessThan1 [
 
 	self
 		should: [ Tile inPosition: -1 ]
@@ -25,7 +25,16 @@ TileTest >> testPositionCannotBeLessThan0 [
 
 { #category : #tests }
 TileTest >> testWhenAskedReturnPosition [
-	| aTile |
-	aTile:= Tile inPosition: 0.
-	self assert: (aTile givePosition) equals: 0.
+    | aTile |
+    aTile:= Tile inPosition: 1.
+    self assert: (aTile hasPosition: 1).
+]
+
+{ #category : #tests }
+TileTest >> testWhenTileAppliesNullEffectShipMoves0 [
+    | aTile aShip |
+    aTile:= Tile inPosition: 1.
+    aShip:= Ship createWithName: 'Juan'.
+    aTile applyEffectOn: aShip.
+    self assert: (aShip givePosition) equals: 1.
 ]
