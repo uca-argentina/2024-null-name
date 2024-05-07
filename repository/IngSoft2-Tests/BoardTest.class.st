@@ -64,7 +64,7 @@ BoardTest >> testIfShipMovesOverBoardBoundsThenSnapBackToLastTile [
 aBoard:=Board withTiles: 6.
 aShip:= Ship createWithName: 'Juan'.
 aShip moveTiles: 7.
-aBoard validatePositionOf: aShip.
+aBoard checkPositionOf: aShip.
 self assert: (aShip givePosition) equals: 6.
 ]
 

@@ -28,14 +28,13 @@ LoadedDie class >> of: anAmountOfFaces [
 ]
 
 { #category : #initialization }
-LoadedDie >> initializeOf: anAmountOfFaces [ 
-faces:= anAmountOfFaces
+LoadedDie >> initializeOf: anAmountOfFaces [
 
+	faces := anAmountOfFaces
 ]
 
 { #category : #initialization }
-LoadedDie >> throw [ 
+LoadedDie >> throw [
 
-^faces.
-
+	^ faces
 ]

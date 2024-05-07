@@ -10,7 +10,7 @@ ShipTest >> testIfShipIsInitializedWithaNameItWillHaveThatName [
 | aShip |
 aShip := Ship createWithName: 'Juan'.
 
-self assert: (aShip hasName: 'Juan')
+self assert: (aShip getName) equals: 'Juan'
 ]
 
 { #category : #tests }

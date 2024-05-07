@@ -54,29 +54,30 @@ GameTest >> testGameCanTellAllShipPositions [
 { #category : #tests }
 GameTest >> testGameCanTellHowManyShipsArePlaying [
 
-    | aGame aBoard aCollectionOfNames |
-    aBoard := Board withTiles: 5.
-    aCollectionOfNames:= OrderedCollection new 
-    add: 'Juan';
-    add: 'Jose';
-    add:'Fran';
-    add: 'Juan';yourself.
-    
-    "1 to: (aSetOfNames size) do: [ :iter | aShipCollection add: (Ship createWithName: (aSetOfNames at: iter))]."
-    aGame:= Game withBoard: aBoard  withPlayers: aCollectionOfNames.
-    self assert: (aGame amountOfShips) equals: 3.
-    
-	
-	
+	| aGame aBoard aCollectionOfNames |
+	aBoard := Board withTiles: 5.
+	aCollectionOfNames := OrderedCollection new
+		                      add: 'Juan';
+		                      add: 'Jose';
+		                      add: 'Fran';
+		                      add: 'Juan';
+		                      yourself.
+
+	aGame := Game
+		         withBoard: aBoard
+		         withPlayers: aCollectionOfNames
+		         withDice: (Dice with: (LoadedDie of: 9)).
+	self assert: aGame amountOfShips equals: 3
 ]
 
 { #category : #tests }
 GameTest >> testGameCannotBeInitializedWithoutABoard [
 
-	| aBoard aShip |
-	aShip:= Ship create.
+	| aBoard aCollectionOfNames |
+	aCollectionOfNames:= OrderedCollection new
+   add: 'Juan'; yourself.
 	self
-		should: [ Game withBoard: aBoard withPlayers: aShip. ]
+		should: [ Game withBoard: aBoard withPlayers: aCollectionOfNames withDice: (Dice with: (LoadedDie of: 9) )]
 		raise: Error
 		withMessage: 'Game cannot be started without a board'
 ]
@@ -84,12 +85,30 @@ GameTest >> testGameCannotBeInitializedWithoutABoard [
 { #category : #tests }
 GameTest >> testGameCannotBeInitializedWithoutAtLeastOneShip [
 
-	| aBoard aShip |
+	| aBoard aPlayerCollection |
 	aBoard := Board withTiles: 5.
 	self
-		should: [ Game withBoard: aBoard withPlayers: aShip. ]
+		should: [ Game withBoard: aBoard withPlayers: aPlayerCollection withDice: (Dice with: (LoadedDie of: 9) )]
 		raise: Error
 		withMessage: 'Game cannot be started without at least one ship.'
+]
+
+{ #category : #tests }
+GameTest >> testGameKnowTheWinnerShip [
+
+	| aGame aCollectionOfNames|
+	aCollectionOfNames:= OrderedCollection new 
+    add: 'Juan';
+    add: 'Jose';yourself.
+	
+	
+	aGame :=Game withBoard: (Board withTiles: 17) withPlayers: aCollectionOfNames    withDice: (Dice with: (LoadedDie of: 9) with:(LoadedDie of:3)).
+	
+	aGame playTurn .
+	aGame playTurn .
+	aGame playTurn .
+	
+	self assert:  (aGame getWinnerName) equals: 'Juan'.
 ]
 
 { #category : #tests }
@@ -99,19 +118,19 @@ GameTest >> testGameKnownsOwnBoard [
 	aBoard := Board withTiles: 1.
 	aCollectionOfNames:= OrderedCollection new 
     add: 'Juan';yourself.
-	aGame := Game withBoard: aBoard withPlayers: aCollectionOfNames.
-	self assert: (aGame board) equals: aBoard
+	aGame := Game withBoard: aBoard withPlayers: aCollectionOfNames withDice: (Dice with: (LoadedDie of: 9) ).
+	self assert: (aGame hasBoard: aBoard).
 ]
 
 { #category : #tests }
 GameTest >> testIfGameIsFinishedRerurnTrue [
 
 	| aGame aBoard aCollectionOfNames |
-	aBoard := Board withTiles: 1.
+	aBoard := Board withTiles: 8.
 	aCollectionOfNames:= OrderedCollection new 
     add: 'Juan'; yourself.
-	aGame := Game withBoard: aBoard withPlayers: aCollectionOfNames.
-	aGame endGame.
+	aGame := Game withBoard: aBoard withPlayers: aCollectionOfNames withDice: (Dice with: (LoadedDie of: 9) ).
+	aGame playTurn.
 
 	self assert: aGame isFinished .
 ]
@@ -123,8 +142,8 @@ GameTest >> testIfGameIsNotFinishedRerurnFalse [
 	aBoard := Board withTiles: 1.
 	aCollectionOfNames:= OrderedCollection new 
     add: 'Juan'; yourself.
-	aGame := Game withBoard: aBoard withPlayers: aCollectionOfNames.
-
+	aGame := Game withBoard: aBoard withPlayers: aCollectionOfNames withDice: (Dice with: (LoadedDie of: 9) ).
+	
 	self deny: aGame isFinished .
 ]
 

@@ -1,5 +1,8 @@
 "
 Board class
+
+NOTE TO FUTURE SELF:
+""Can implement more effects by making a collection of Effects that create diferent tiles""
 "
 Class {
 	#name : #Board,
@@ -30,24 +33,36 @@ Board class >> withTiles: aNumberOfTiles withWormHolePositions: aWormHoleTilePai
 		  withWormHolePositions: aWormHoleTilePair
 ]
 
+{ #category : #accessing }
+Board >> checkPositionOf: aShip [ 
+	(aShip givePosition > tileArray size) ifTrue: [aShip moveTiles: (tileArray size - aShip givePosition )].
+	self tileEffectOn: aShip.
+]
+
 { #category : #initialization }
-Board >> initializeWithAmoutTiles: anumberOfTiles [ 
+Board >> initializeWithAmoutTiles: anumberOfTiles [
+
 	| aTileCollection |
 	aTileCollection := OrderedCollection new.
-	1 to: anumberOfTiles do: [ :i | aTileCollection add: (Tile inPosition: i) ].
-	tileArray:=aTileCollection
+	1 to: anumberOfTiles do: [ :i |
+	aTileCollection add: (Tile inPosition: i) ].
+	tileArray := aTileCollection
 ]
 
 { #category : #initialization }
 Board >> initializeWithAmoutTiles: anumberOfTiles withWormHolePositions: aWormHoleTilePair [
-	| aTileArray |
 
+	| aTileArray |
 	aTileArray := OrderedCollection new.
-	1 to: anumberOfTiles do: [ :i | 
-		 (aWormHoleTilePair includes: i)
-		ifTrue: [ aTileArray add: (Tile inPosition: i withWormholeTo:(aWormHoleTilePair detect:[:index|index ~= i]))]
-		ifFalse: [aTileArray add: (Tile inPosition: i) ]].
-	tileArray := aTileArray.
+	1 to: anumberOfTiles do: [ :i |
+		(aWormHoleTilePair includes: i)
+			ifTrue: [
+				aTileArray add: (Tile
+						 inPosition: i
+						 withWormholeTo:
+						 (aWormHoleTilePair detect: [ :index | index ~= i ])) ]
+			ifFalse: [ aTileArray add: (Tile inPosition: i) ] ].
+	tileArray := aTileArray
 ]
 
 { #category : #accessing }
@@ -63,9 +78,4 @@ Board >> tileEffectOn: aShip [
 { #category : #accessing }
 Board >> tileInPosition: aTilePosition [ 
 	^ tileArray at: aTilePosition
-]
-
-{ #category : #accessing }
-Board >> validatePositionOf: aShip [ 
-	(aShip givePosition > tileArray size) ifTrue: [aShip moveTiles: (tileArray size - aShip givePosition )]
 ]
