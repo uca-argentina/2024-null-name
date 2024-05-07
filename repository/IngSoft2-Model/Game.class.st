@@ -106,6 +106,8 @@ Game >> playTurn [
 	"player moveTiles: movement in: gameBoard."
 	player moveTiles: movement.
 	gameBoard  validatePositionOf: player.
+	gameBoard tileEffectOn: player.
+	
 	self veifyingItIsntTheWinningMove:player.
 	currentTurn :=self nextTurn.
 	

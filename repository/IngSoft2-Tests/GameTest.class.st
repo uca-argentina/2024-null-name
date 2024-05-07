@@ -184,3 +184,19 @@ GameTest >> testWhenOneShipReachesTheEndGameIsFinished [
 	aGame playTurn .
 	self assert:  aGame isFinished.
 ]
+
+{ #category : #tests }
+GameTest >> testWhenShipInAGameLandsInWormholeEffectTileTheCorrespondingEffectIsApplied [
+
+
+	| aGame aCollectionOfNames aWormHoleTilePair|
+	aCollectionOfNames:= OrderedCollection new
+    add: 'Juan'; yourself.
+	aWormHoleTilePair:= #(10 15).
+	
+	aGame :=Game withBoard: (Board withTiles: 16 withWormHolePositions: aWormHoleTilePair) withPlayers: aCollectionOfNames  withDice: (Dice with: (LoadedDie of: 9) ).
+	
+	aGame playTurn .
+	
+	self assert:  (aGame giveAllShipPositions at:1) equals: 15.
+]

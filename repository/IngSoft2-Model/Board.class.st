@@ -65,7 +65,7 @@ Board >> tileInPosition: aTilePosition [
 	^ tileArray at: aTilePosition
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 Board >> validatePositionOf: aShip [ 
 	(aShip givePosition > tileArray size) ifTrue: [aShip moveTiles: (tileArray size - aShip givePosition )]
 ]
