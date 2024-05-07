@@ -9,5 +9,5 @@ Class {
 
 { #category : #applying }
 Effect >> applyOn: aShip [ 
-	^ self subclassResponsibility
+	^ self subclassResponsibility .
 ]

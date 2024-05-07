@@ -16,27 +16,32 @@ Board class >> withTiles: anumberOfTiles [
 	^ (self new) initializeWithAmoutTiles: anumberOfTiles.
 ]
 
-{ #category : #'class initialization' }
+{ #category : #initialization }
 Board class >> withTiles: aNumberOfTiles withWormHolePositions: aWormHoleTilePair [
-	aNumberOfTiles strictlyPositive ifFalse:[Error signal: 'Board tiles must be greater than 0'].
-	
-	aWormHoleTilePair do: [ :i | ((i <= aNumberOfTiles) and: i strictlyPositive ) ifFalse: [Error signal: 'Wormhole tiles are out of bounds']].
-	
-	^ (self new) initializeWithAmoutTiles: aNumberOfTiles  withWormHolePositions: aWormHoleTilePair.
+
+	aNumberOfTiles strictlyPositive ifFalse: [
+		Error signal: 'Board tiles must be greater than 0' ].
+	aWormHoleTilePair do: [ :i |
+		(i <= aNumberOfTiles and: i strictlyPositive) ifFalse: [
+			Error signal: 'Wormhole tiles are out of bounds' ] ].
+
+	^ self new
+		  initializeWithAmoutTiles: aNumberOfTiles
+		  withWormHolePositions: aWormHoleTilePair
 ]
 
 { #category : #initialization }
 Board >> initializeWithAmoutTiles: anumberOfTiles [ 
-	| aTileArray |
-	aTileArray := OrderedCollection new.
-	1 to: anumberOfTiles do: [ :i | aTileArray add: (Tile inPosition: i) ].
-	tileArray:=aTileArray
+	| aTileCollection |
+	aTileCollection := OrderedCollection new.
+	1 to: anumberOfTiles do: [ :i | aTileCollection add: (Tile inPosition: i) ].
+	tileArray:=aTileCollection
 ]
 
 { #category : #initialization }
 Board >> initializeWithAmoutTiles: anumberOfTiles withWormHolePositions: aWormHoleTilePair [
 	| aTileArray |
-	
+
 	aTileArray := OrderedCollection new.
 	1 to: anumberOfTiles do: [ :i | 
 		 (aWormHoleTilePair includes: i)
@@ -52,10 +57,15 @@ Board >> numbOfTiles [
 
 { #category : #modifying }
 Board >> tileEffectOn: aShip [ 
-	(self tileInPosition: (aShip givePosition)) applyEffectOn: aShip.
+    (self tileInPosition: (aShip givePosition)) applyEffectOn: aShip.
 ]
 
 { #category : #accessing }
 Board >> tileInPosition: aTilePosition [ 
 	^ tileArray at: aTilePosition
+]
+
+{ #category : #accessing }
+Board >> validatePositionOf: aShip [ 
+	(aShip givePosition > tileArray size) ifTrue: [aShip moveTiles: (tileArray size - aShip givePosition )]
 ]

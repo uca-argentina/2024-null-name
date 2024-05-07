@@ -14,41 +14,41 @@ Class {
 	#category : #'IngSoft2-Model'
 }
 
-{ #category : #'class initialization' }
+{ #category : #'as yet unclassified' }
 Tile class >> inPosition: aPosition [ 
-	(aPosition < 1) ifTrue: [Error signal: 'Tile cannot have a negative position'].
+	(aPosition < 0) ifTrue: [Error signal: 'Tile cannot have a negative position'].
 	^ (self new) inPosition: aPosition.
 ]
 
 { #category : #'class initialization' }
 Tile class >> inPosition: aPosition withWormholeTo: aTilePosition [ 
-	(aPosition < 1) ifTrue: [Error signal: 'Tile cannot have a negative position'].
-	^ (self new) inPosition: aPosition withWormholeTo: aTilePosition .
+    (aPosition < 1) ifTrue: [Error signal: 'Tile cannot have a negative position'].
+    ^ (self new) inPosition: aPosition withWormholeTo: aTilePosition .
 ]
 
 { #category : #modifying }
 Tile >> applyEffectOn: aShip [ 
-	effect applyOn: aShip.
+    effect applyOn: aShip.
+]
+
+{ #category : #accessing }
+Tile >> getEffect [
+	^ effect.
 ]
 
 { #category : #testing }
-Tile >> hasEffect [
-	^effect 
-]
-
-{ #category : #testing }
-Tile >> hasPosition: anPosition [
-	^ position == anPosition
+Tile >> hasPosition: aPosition [ 
+	^ position == aPosition
 ]
 
 { #category : #initialization }
 Tile >> inPosition: aPosition [ 
 	position := aPosition.
-	effect:= NullEffect new.
+	effect := NullEffect new
 ]
 
 { #category : #'class initialization' }
 Tile >> inPosition: aPosition withWormholeTo: aTilePosition [ 
-	position := aPosition.
-	effect:= WormholeEffect fromTile: position toTile: aTilePosition.
+    position := aPosition.
+    effect:= WormholeEffect fromTile: position toTile: aTilePosition.
 ]

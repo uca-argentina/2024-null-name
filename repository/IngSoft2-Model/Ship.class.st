@@ -13,7 +13,12 @@ Class {
 }
 
 { #category : #'class initialization' }
-Ship class >> createWithName: aName [
+Ship class >> create [
+	^ (self new) inTile: 0.
+]
+
+{ #category : #'class initialization' }
+Ship class >> createWithName: aName [ 
 	^ (self new) inTile: 1 withName:aName.
 ]
 
@@ -23,19 +28,22 @@ Ship >> givePosition [
 ]
 
 { #category : #testing }
-Ship >> hasName: aShip [ 
-	^ (playerName == aShip)
+Ship >> hasName: aName [
+	^ playerName == aName
+]
+
+{ #category : #initialization }
+Ship >> inTile: aPosition [
+	currentPosition := aPosition.
 ]
 
 { #category : #initialization }
 Ship >> inTile: aPosition withName: aName [ 
 	currentPosition := aPosition.
-	playerName:=aName.
-	
+    playerName:=aName.
 ]
 
 { #category : #modifying }
-Ship >> moveTiles: anAmountOfTiles [
-
+Ship >> moveTiles: anAmountOfTiles [ 
 	currentPosition := currentPosition + anAmountOfTiles max: 1
 ]

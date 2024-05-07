@@ -25,16 +25,16 @@ TileTest >> testPositionCannotBeLessThan1 [
 
 { #category : #tests }
 TileTest >> testWhenAskedReturnPosition [
-	| aTile |
-	aTile:= Tile inPosition: 1.
-	self assert: (aTile hasPosition: 1).
+    | aTile |
+    aTile:= Tile inPosition: 1.
+    self assert: (aTile hasPosition: 1).
 ]
 
 { #category : #tests }
 TileTest >> testWhenTileAppliesNullEffectShipMoves0 [
-	| aTile aShip |
-	aTile:= Tile inPosition: 1.
-	aShip:= Ship createWithName: 'Juan'.
-	aTile applyEffectOn: aShip.
-	self assert: (aShip givePosition) equals: 1.
+    | aTile aShip |
+    aTile:= Tile inPosition: 1.
+    aShip:= Ship createWithName: 'Juan'.
+    aTile applyEffectOn: aShip.
+    self assert: (aShip givePosition) equals: 1.
 ]

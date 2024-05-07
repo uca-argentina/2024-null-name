@@ -9,5 +9,5 @@ Class {
 
 { #category : #applying }
 NullEffect >> applyOn: aShip [ 
-	aShip moveTiles: 0.
+    aShip moveTiles: 0.
 ]

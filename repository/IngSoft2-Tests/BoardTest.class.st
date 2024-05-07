@@ -24,7 +24,6 @@ aShip moveTiles: 1.
 
 aBoard tileEffectOn: aShip.
 self assert: (aShip givePosition) equals: 5.
-
 ]
 
 { #category : #tests }
@@ -34,10 +33,8 @@ BoardTest >> testBoardCanAssignSpecialTilesInCreation [
 aWormholePositons := #(2 5).
 aBoard:=Board withTiles: 6 withWormHolePositions: aWormholePositons.
 
-self assert: (((aBoard tileInPosition: 2) hasEffect) isMemberOf: WormholeEffect).
-self assert: (((aBoard tileInPosition: 5) hasEffect) isMemberOf: WormholeEffect).
-
-
+self assert: (((aBoard tileInPosition: 2) getEffect) isMemberOf: WormholeEffect).
+self assert: (((aBoard tileInPosition: 5) getEffect) isMemberOf: WormholeEffect).
 ]
 
 { #category : #tests }
@@ -62,12 +59,22 @@ self assert: aBoard numbOfTiles equals: 3
 ]
 
 { #category : #tests }
+BoardTest >> testIfShipMovesOverBoardBoundsThenSnapBackToLastTile [
+| aBoard aShip |
+aBoard:=Board withTiles: 6.
+aShip:= Ship createWithName: 'Juan'.
+aShip moveTiles: 7.
+aBoard validatePositionOf: aShip.
+self assert: (aShip givePosition) equals: 6.
+]
+
+{ #category : #tests }
 BoardTest >> testSpecialTilesCannotBeCreatedIfPositionsExceedBoardSize [
 
 | aWormholePositons  |
 aWormholePositons := #(2 6).
 
 self should: [Board withTiles: 3 withWormHolePositions: aWormholePositons]
-		raise: Error
-		withMessage: 'Wormhole tiles are out of bounds'.
+        raise: Error
+        withMessage: 'Wormhole tiles are out of bounds'.
 ]
