@@ -26,6 +26,17 @@ Game class >> withBoard: aBoard withShips: aShipCollection [
 	^ self new beginGameWith: aBoard withShips: aShipCollection
 ]
 
+{ #category : #'class initialization' }
+Game class >> withBoard: aBoard withShips: aShipCollection withDice: aDice [ 
+	aBoard ifNil: [
+		Error signal: 'Game cannot be started without a board' ].
+	aShipCollection ifNil: [ 
+		Error signal: 'Game cannot be started without at least one ship.' ].
+	aDice ifNil: [ 
+		Error signal: 'Game cannot be started without at least one die' ].
+	 ^(self new)beginGameWith:aBoard  withShips:aShipCollection  withDice: aDice.
+]
+
 { #category : #accessing }
 Game >> amountOfShips [
 	^ gameShips size .

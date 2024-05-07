@@ -159,3 +159,23 @@ GameTest >> testIfThreIsAwinnerThereisNoMoreMovements [
 		raise:Error
 		withMessage:'Game is Over you cant Keep Playing'.
 ]
+
+{ #category : #tests }
+GameTest >> testWhenFinishedTheEndingPositionOfTheWinnerEqualsTheSizeOfTheBoard [
+
+
+	| aGame arrays|
+	arrays:=OrderedCollection with:(Ship create ) with: (Ship create ).
+	
+	
+	aGame :=Game withBoard: (Board withTiles: 27 ) withShips: arrays    withDice: (Dice with: (LoadedDie of: 9) with:(LoadedDie of:3)).
+	
+	aGame playTurn .
+	aGame playTurn .
+	aGame playTurn .
+	aGame playTurn .
+	aGame playTurn .
+	
+	
+	self assert: ((arrays at:1) ownPosition ) equals: 27
+]

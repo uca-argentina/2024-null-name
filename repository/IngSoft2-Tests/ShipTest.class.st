@@ -17,6 +17,6 @@ ShipTest >> testWhenShipMovesCurrentPositionChanges [
 	| aShip aBoard |
 	aBoard := Board withTiles: 5.
 	aShip := Ship create.
-	aShip moveTiles: 3.
+	aShip moveTiles: 3 in:aBoard.
 	self assert: (aShip ownPosition) equals: 3.
 ]
