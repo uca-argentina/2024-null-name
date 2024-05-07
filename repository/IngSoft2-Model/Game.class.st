@@ -7,7 +7,9 @@ Class {
 	#instVars : [
 		'isFinished',
 		'gameBoard',
-		'gameShips'
+		'gameShips',
+		'dice',
+		'currentTurn'
 	],
 	#classInstVars : [
 		'isFinished'
@@ -36,22 +38,21 @@ Game >> beginGameWith: aBoard withShips: aShipCollection [
 	isFinished := false.
 ]
 
-{ #category : #accessing }
-Game >> board [
-	^gameBoard
+{ #category : #initialization }
+Game >> beginGameWith: aBoard withShips: aShipCollection withDice: aDice [
+	gameBoard := aBoard.
+	gameShips := aShipCollection.
+	dice:=aDice .
+	currentTurn :=1.
+	isFinished := false.
+]
+
+{ #category : #initialization }
+Game >> board [ 
+	^gameBoard .
 ]
 
 { #category : #accessing }
 Game >> endGame [
 	isFinished := true
-]
-
-{ #category : #testing }
-Game >> isOngoing [
-	^ isFinished not.
-]
-
-{ #category : #accessing }
-Game >> ships [
-	^gameShips.
 ]
