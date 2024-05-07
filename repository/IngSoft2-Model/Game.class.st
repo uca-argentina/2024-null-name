@@ -70,11 +70,6 @@ Game >> board [
 	^gameBoard .
 ]
 
-{ #category : #testing }
-Game >> currentTurn [
-	^gameShips at:self
-]
-
 { #category : #accessing }
 Game >> endGame [
 	isFinished := true
@@ -110,6 +105,7 @@ Game >> playTurn [
 	player:=gameShips at: currentTurn.
 	"player moveTiles: movement in: gameBoard."
 	player moveTiles: movement.
+	gameBoard  validatePositionOf: player.
 	self veifyingItIsntTheWinningMove:player.
 	currentTurn :=self nextTurn.
 	
@@ -120,6 +116,6 @@ Game >> playTurn [
 { #category : #accessing }
 Game >> veifyingItIsntTheWinningMove: player [
 	
-	isFinished:=player givePosition = gameBoard numbOfTiles .
+	isFinished:=player givePosition == gameBoard numbOfTiles .
 	^isFinished .
 ]

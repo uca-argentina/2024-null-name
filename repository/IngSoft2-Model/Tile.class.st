@@ -36,11 +36,6 @@ Tile >> getEffect [
 	^ effect.
 ]
 
-{ #category : #accessing }
-Tile >> givePosition [
-	^position.
-]
-
 { #category : #testing }
 Tile >> hasPosition: aPosition [ 
 	^ position == aPosition

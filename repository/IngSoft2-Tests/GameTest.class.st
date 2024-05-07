@@ -15,6 +15,24 @@ GameTest >> should: anErrorBlock raise: exceptionClass withMessage: anErrorMessa
 ]
 
 { #category : #tests }
+GameTest >> testGameCanBePlayedWithMoreThanOneDie [
+
+	| aGame aCollectionOfNames |
+	aCollectionOfNames := OrderedCollection new
+		                      add: 'Juan';
+		                      yourself.
+
+	aGame := Game
+		         withBoard: (Board withTiles: 16)
+		         withPlayers: aCollectionOfNames
+		         withDice:
+		         (Dice with: (LoadedDie of: 9) with: (LoadedDie of: 3)).
+	aGame playTurn.
+
+	self assert: (aGame giveAllShipPositions at:1) equals: 13
+]
+
+{ #category : #tests }
 GameTest >> testGameCanTellAllShipPositions [
 	| aGame aCollectionOfNames aCollectionOfPositions |
 	
@@ -22,7 +40,7 @@ GameTest >> testGameCanTellAllShipPositions [
     add: 'Juan';
     add: 'Jose';yourself.
 	
-	aGame :=Game withBoard: (Board withTiles: 3) withPlayers: aCollectionOfNames withDice: (Dice with: (LoadedDie of: 9)).
+	aGame :=Game withBoard: (Board withTiles: 30) withPlayers: aCollectionOfNames withDice: (Dice with: (LoadedDie of: 9)).
 	aCollectionOfPositions:= OrderedCollection new
 	add: 19; add: 10; yourself.
 	
@@ -86,61 +104,13 @@ GameTest >> testGameKnownsOwnBoard [
 ]
 
 { #category : #tests }
-GameTest >> testGameKnowsPlayerPositions [
-
-
-	| aGame arrays aCollectionOfNames |
-	arrays:=OrderedCollection with:(Ship create ) with: (Ship create ).
-	
-	aCollectionOfNames:= OrderedCollection new 
-    add: 'Juan';
-    add: 'Jose';
-    add:'Fran';
-    add: 'Juan';yourself.
-	
-	aGame :=Game withBoard: (Board withTiles: 27 ) withPlayers: aCollectionOfNames withDice: (Dice with: (LoadedDie of: 9) with:(LoadedDie of:3)).
-	
-	aGame playTurn .
-	aGame playTurn .
-	aGame playTurn .
-	
-	
-	self assert: [( ((arrays at:1) givePosition ) = 24) and: (((arrays at:2)givePosition) = 12).]
-]
-
-{ #category : #tests }
-GameTest >> testGameOfOnlyOneShip [
-
-
-	| aGame arrays|
-	arrays:=OrderedCollection with:(Ship create ).
-	
-	aGame :=Game withBoard: (Board withTiles: 16 ) withPlayers: arrays    withDice: (Dice with: (LoadedDie of: 9) ).
-	aGame playTurn .
-	aGame playTurn .
-	self assert: aGame isFinished.
-]
-
-{ #category : #tests }
-GameTest >> testGameWithMoreThanOneDie [
-
-
-	| aGame arrays|
-	arrays:=OrderedCollection with:(Ship create ).
-	
-	aGame :=Game withBoard: (Board withTiles: 16 ) withPlayers: arrays    withDice: (Dice with: (LoadedDie of: 9) with:(LoadedDie of:3)).
-	aGame playTurn .
-
-	self assert:  ((arrays at:1) givePosition ) equals: 12.
-]
-
-{ #category : #tests }
 GameTest >> testIfGameIsFinishedRerurnTrue [
 
-	| aGame aBoard aShip |
+	| aGame aBoard aCollectionOfNames |
 	aBoard := Board withTiles: 1.
-	aShip:= Ship create.
-	aGame := Game withBoard: aBoard withPlayers: aShip.
+	aCollectionOfNames:= OrderedCollection new 
+    add: 'Juan'; yourself.
+	aGame := Game withBoard: aBoard withPlayers: aCollectionOfNames.
 	aGame endGame.
 
 	self assert: aGame isFinished .
@@ -149,10 +119,11 @@ GameTest >> testIfGameIsFinishedRerurnTrue [
 { #category : #tests }
 GameTest >> testIfGameIsNotFinishedRerurnFalse [
 
-	| aGame aBoard aShip |
+	| aGame aBoard aCollectionOfNames |
 	aBoard := Board withTiles: 1.
-	aShip:= Ship create.
-	aGame := Game withBoard: aBoard withPlayers: aShip.
+	aCollectionOfNames:= OrderedCollection new 
+    add: 'Juan'; yourself.
+	aGame := Game withBoard: aBoard withPlayers: aCollectionOfNames.
 
 	self deny: aGame isFinished .
 ]
@@ -161,17 +132,17 @@ GameTest >> testIfGameIsNotFinishedRerurnFalse [
 GameTest >> testIfThreIsAwinnerThereisNoMoreMovements [
 
 
-	| aGame arrays|
-	arrays:=OrderedCollection with:(Ship create ) with: (Ship create ).
+	| aGame aCollectionOfNames|
+	aCollectionOfNames:= OrderedCollection new 
+    add: 'Juan';
+    add: 'Jose';yourself.
 	
 	
-	aGame :=Game withBoard: (Board withTiles: 17) withPlayers: arrays    withDice: (Dice with: (LoadedDie of: 9) with:(LoadedDie of:3)).
+	aGame :=Game withBoard: (Board withTiles: 17) withPlayers: aCollectionOfNames    withDice: (Dice with: (LoadedDie of: 9) with:(LoadedDie of:3)).
 	
 	aGame playTurn .
 	aGame playTurn .
 	aGame playTurn .
-
-	
 	
 	self
 		should:[aGame playTurn] 
@@ -183,11 +154,12 @@ GameTest >> testIfThreIsAwinnerThereisNoMoreMovements [
 GameTest >> testWhenFinishedTheEndingPositionOfTheWinnerEqualsTheSizeOfTheBoard [
 
 
-	| aGame arrays|
-	arrays:=OrderedCollection with:(Ship create ) with: (Ship create ).
+	| aGame aCollectionOfNames|
+	aCollectionOfNames:= OrderedCollection new 
+    add: 'Juan';
+    add: 'Jose';yourself.
 	
-	
-	aGame :=Game withBoard: (Board withTiles: 27 ) withPlayers: arrays    withDice: (Dice with: (LoadedDie of: 9) with:(LoadedDie of:3)).
+	aGame :=Game withBoard: (Board withTiles: 27 ) withPlayers: aCollectionOfNames    withDice: (Dice with: (LoadedDie of: 9) with:(LoadedDie of:3)).
 	
 	aGame playTurn .
 	aGame playTurn .
@@ -196,5 +168,19 @@ GameTest >> testWhenFinishedTheEndingPositionOfTheWinnerEqualsTheSizeOfTheBoard 
 	aGame playTurn .
 	
 	
-	self assert: ((arrays at:1) givePosition ) equals: 27
+	self assert: (aGame giveAllShipPositions at:1) equals: 27
+]
+
+{ #category : #tests }
+GameTest >> testWhenOneShipReachesTheEndGameIsFinished [
+
+
+	| aGame aCollectionOfNames|
+	aCollectionOfNames:= OrderedCollection new 
+    add: 'Juan'; yourself.
+	
+	aGame :=Game withBoard: (Board withTiles: 16 ) withPlayers: aCollectionOfNames  withDice: (Dice with: (LoadedDie of: 9) ).
+	aGame playTurn .
+	aGame playTurn .
+	self assert:  aGame isFinished.
 ]

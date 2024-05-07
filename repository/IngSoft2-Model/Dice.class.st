@@ -7,7 +7,7 @@ Class {
 	#category : #'IngSoft2-Model'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #action }
 Dice >> throw [ 
 	^(self collect: [ :die|die throw ]) sum.
 ]
