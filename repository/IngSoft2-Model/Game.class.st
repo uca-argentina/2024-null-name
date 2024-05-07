@@ -105,6 +105,11 @@ Game >> playTurn [
 ]
 
 { #category : #accessing }
+Game >> ships [ 
+	^gameShips 
+]
+
+{ #category : #accessing }
 Game >> veifyingItIsntTheWinningMove: player [
 	
 	isFinished:=player ownPosition = gameBoard numbOfTiles .
