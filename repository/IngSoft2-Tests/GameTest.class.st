@@ -72,6 +72,32 @@ GameTest >> testGameKnowsOwnShips [
 ]
 
 { #category : #tests }
+GameTest >> testGameOfOnlyOneShip [
+
+
+	| aGame arrays|
+	arrays:=OrderedCollection with:(Ship create ).
+	
+	aGame :=Game withBoard: (Board withTiles: 16 ) withShips: arrays    withDice: (Dice with: (LoadedDie of: 9) ).
+	aGame playTurn .
+	aGame playTurn .
+	self assert: aGame isFinished.
+]
+
+{ #category : #tests }
+GameTest >> testGameWithMoreThanOneDie [
+
+
+	| aGame arrays|
+	arrays:=OrderedCollection with:(Ship create ).
+	
+	aGame :=Game withBoard: (Board withTiles: 16 ) withShips: arrays    withDice: (Dice with: (LoadedDie of: 9) with:(LoadedDie of:3)).
+	aGame playTurn .
+
+	self assert:  ((arrays at:1) ownPosition ) equals: 12.
+]
+
+{ #category : #tests }
 GameTest >> testIfGameIsFinishedRerurnTrue [
 
 	| aGame aBoard aShip |
@@ -80,7 +106,7 @@ GameTest >> testIfGameIsFinishedRerurnTrue [
 	aGame := Game withBoard: aBoard withShips: aShip.
 	aGame endGame.
 
-	self deny: aGame isOngoing
+	self assert: aGame isFinished .
 ]
 
 { #category : #tests }
@@ -91,5 +117,5 @@ GameTest >> testIfGameIsNotFinishedRerurnFalse [
 	aShip:= Ship create.
 	aGame := Game withBoard: aBoard withShips: aShip.
 
-	self assert: aGame isOngoing
+	self deny: aGame isFinished .
 ]

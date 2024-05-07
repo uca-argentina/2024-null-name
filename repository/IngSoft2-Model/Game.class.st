@@ -56,3 +56,35 @@ Game >> board [
 Game >> endGame [
 	isFinished := true
 ]
+
+{ #category : #testing }
+Game >> isFinished [ 
+	^ isFinished .
+]
+
+{ #category : #testing }
+Game >> isOver [
+	isFinished ifTrue: [ Error signal: 'Game is Over you cant Keep Playing' ] .
+	
+]
+
+{ #category : #'as yet unclassified' }
+Game >> playTurn [
+|movement player |
+	self isOver. 
+	movement := dice throw.
+	player:=gameShips at: currentTurn.
+	player moveTiles: movement in: gameBoard  .
+	self veifyingItIsntTheWinningMove:player.
+	currentTurn :=self nextTurn.
+	
+	
+
+]
+
+{ #category : #accessing }
+Game >> veifyingItIsntTheWinningMove: player [
+	
+	isFinished:=player ownPosition = gameBoard numbOfTiles .
+	^isFinished .
+]
