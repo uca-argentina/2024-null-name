@@ -55,6 +55,11 @@ Board >> checkPositionOf: aShip [
 	self tileEffectOn: aShip.
 ]
 
+{ #category : #accessing }
+Board >> effectInPosition: aTilePosition [ 
+	^ tileArray at: aTilePosition
+]
+
 { #category : #initialization }
 Board >> initializeWithAmoutTiles: anumberOfTiles withWormHolePositions: aWormHoleTilePair [
 
@@ -63,11 +68,11 @@ Board >> initializeWithAmoutTiles: anumberOfTiles withWormHolePositions: aWormHo
 	1 to: anumberOfTiles do: [ :i |
 		(aWormHoleTilePair includes: i)
 			ifTrue: [
-				aTileArray add: (Tile
-						 inPosition: i
-						 withWormholeTo:
+				aTileArray add: (WormholeEffect 
+						 fromTile: i
+						 toTile:
 						 (aWormHoleTilePair detect: [ :index | index ~= i ])) ]
-			ifFalse: [ aTileArray add: (Tile inPosition: i) ] ].
+			ifFalse: [ aTileArray add: (NullEffect new) ] ].
 	tileArray := aTileArray
 ]
 
@@ -78,10 +83,5 @@ Board >> numbOfTiles [
 
 { #category : #modifying }
 Board >> tileEffectOn: aShip [ 
-    (self tileInPosition: (aShip position)) applyEffectOn: aShip.
-]
-
-{ #category : #accessing }
-Board >> tileInPosition: aTilePosition [ 
-	^ tileArray at: aTilePosition
+    (self effectInPosition: (aShip position)) applyOn: aShip.
 ]

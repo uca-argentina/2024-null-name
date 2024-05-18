@@ -19,14 +19,14 @@ Class {
 }
 
 { #category : #'class initialization' }
-Game class >> withBoard: aBoard withPlayers: aNameCollection withDice: aDice [ 
+Game class >> withBoard: aBoard withShipNames: aNameCollection withDice: aDice [ 
 	aBoard ifNil: [
 		Error signal: 'Game cannot be started without a board' ].
 	aNameCollection ifNil: [ 
 		Error signal: 'Game cannot be started without at least one ship.' ].
 	aDice ifNil: [ 
 		Error signal: 'Game cannot be started without at least one die' ].
-	 ^ (self new) initializeGameWith: aBoard withPlayers: (aNameCollection asSet)  withDice: aDice.
+	 ^ (self new) initializeGameWith: aBoard withShipNames: (aNameCollection asSet)  withDice: aDice.
 ]
 
 { #category : #accessing }
@@ -47,7 +47,7 @@ Game >> hasBoard: aBoard [
 ]
 
 { #category : #initialization }
-Game >> initializeGameWith: aBoard withPlayers: aNameCollection withDice: aDice [
+Game >> initializeGameWith: aBoard withShipNames: aNameCollection withDice: aDice [
 
 	| aCollectionShips |
 	gameBoard := aBoard.

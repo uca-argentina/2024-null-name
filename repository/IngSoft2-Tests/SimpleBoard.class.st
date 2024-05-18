@@ -23,12 +23,17 @@ SimpleBoard >> checkPositionOf: aShip [
 ]
 
 { #category : #accessing }
+SimpleBoard >> effectInPosition: aTilePosition [ 
+	^ tileArray at: aTilePosition
+]
+
+{ #category : #accessing }
 SimpleBoard >> initializeWithAmoutTiles: anumberOfTiles [
 
 	| aTileCollection |
 	aTileCollection := OrderedCollection new.
 	1 to: anumberOfTiles do: [ :i |
-	aTileCollection add: (Tile inPosition: i) ].
+	aTileCollection add: (NullEffect new) ].
 	tileArray := aTileCollection
 ]
 
@@ -39,10 +44,5 @@ SimpleBoard >> numbOfTiles [
 
 { #category : #accessing }
 SimpleBoard >> tileEffectOn: aShip [ 
-    (self tileInPosition: (aShip position)) applyEffectOn: aShip.
-]
-
-{ #category : #accessing }
-SimpleBoard >> tileInPosition: aTilePosition [ 
-	^ tileArray at: aTilePosition
+    (self effectInPosition: (aShip position)) applyOn: aShip.
 ]
