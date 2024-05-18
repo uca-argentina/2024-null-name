@@ -37,6 +37,11 @@ SimpleBoard >> initializeWithAmoutTiles: anumberOfTiles [
 	tileArray := aTileCollection
 ]
 
+{ #category : #testing }
+SimpleBoard >> isInLastTile:aShip [
+	^ ((aShip position) == (tileArray size))
+]
+
 { #category : #accessing }
 SimpleBoard >> numbOfTiles [
 	^ tileArray size.

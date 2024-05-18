@@ -13,7 +13,7 @@ Class {
 	#category : #'IngSoft2-Model'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #'argument validation' }
 Board class >> numberOfTileIsValid: aNumberOfTiles [ 
 	aNumberOfTiles strictlyPositive ifFalse: [
 		Error signal: 'Board tiles must be greater than 0' ].
@@ -26,20 +26,12 @@ Board class >> withTiles: aNumberOfTiles withWormHolePositions: aWormHoleTilePai
 	self numberOfTileIsValid: aNumberOfTiles.
 	self wormHolePairIsValid: aWormHoleTilePair with: aNumberOfTiles.
 	
-
-	aWormHoleTilePair do: [ :i |
-		(i <= aNumberOfTiles and: i strictlyPositive) ifFalse: [
-			Error signal: 'Wormhole tiles are out of bounds' ].
-		].
-	((aWormHoleTilePair at:1) = (aWormHoleTilePair at:2)) ifTrue: [
-			Error signal: 'Worm Hole pair start and end position cannot be the same' ].
-		
 	^ self new
 		  initializeWithAmoutTiles: aNumberOfTiles
 		  withWormHolePositions: aWormHoleTilePair
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'argument validation' }
 Board class >> wormHolePairIsValid: aWormHoleTilePair with: aNumberOfTiles [ 
 	aWormHoleTilePair do: [ :i |
 		(i <= aNumberOfTiles and: i strictlyPositive) ifFalse: [
@@ -74,6 +66,11 @@ Board >> initializeWithAmoutTiles: anumberOfTiles withWormHolePositions: aWormHo
 						 (aWormHoleTilePair detect: [ :index | index ~= i ])) ]
 			ifFalse: [ aTileArray add: (NullEffect new) ] ].
 	tileArray := aTileArray
+]
+
+{ #category : #testing }
+Board >> isInLastTile:aShip [
+	^ (aShip position = (tileArray size))
 ]
 
 { #category : #accessing }

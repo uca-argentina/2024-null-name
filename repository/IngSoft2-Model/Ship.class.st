@@ -14,7 +14,15 @@ Class {
 
 { #category : #'class initialization' }
 Ship class >> createWithName: aName [ 
+
+	self isValid: aName.
+	
 	^ (self new) initializeInTile: 1 withName:aName.
+]
+
+{ #category : #testing }
+Ship class >> isValid:aName [
+	aName isEmpty ifTrue:[ Error signal: 'Ship cannot be created with no name' ]
 ]
 
 { #category : #initialization }

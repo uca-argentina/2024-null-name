@@ -64,7 +64,30 @@ GameTest >> testGameCanTellAllShipPositions [
 ]
 
 { #category : #tests }
-GameTest >> testGameCanTellHowManyShipsArePlaying [
+GameTest >> testGameCannotBeInitializedWithoutABoard [
+
+	| aBoard aCollectionOfNames |
+	aCollectionOfNames:= OrderedCollection new
+   add: 'Juan'; yourself.
+	self
+		should: [ Game withBoard: aBoard withShipNames: aCollectionOfNames withDice: (Dice with: (LoadedDie of: 9) )]
+		raise: Error
+		withMessage: 'Game cannot be started without a board'
+]
+
+{ #category : #tests }
+GameTest >> testGameCannotBeInitializedWithoutAnyShipNames [
+
+	| aCollectionOfNames |
+	aCollectionOfNames:= OrderedCollection new.
+	self
+		should: [ Game withBoard: (SimpleBoard withTiles: 20) withShipNames: aCollectionOfNames withDice: (Dice with: (LoadedDie of: 9) )]
+		raise: Error
+		withMessage: 'Game cannot be created without any Ship names'
+]
+
+{ #category : #tests }
+GameTest >> testGameDoesNotAllowRepeatedShipNames [
 
 	| aGame aBoard aCollectionOfNames |
 	aBoard := SimpleBoard withTiles: 5.
@@ -79,30 +102,7 @@ GameTest >> testGameCanTellHowManyShipsArePlaying [
 		         withBoard: aBoard
 		         withShipNames: aCollectionOfNames
 		         withDice: (Dice with: (LoadedDie of: 9)).
-	self assert: aGame amountOfShips equals: 3
-]
-
-{ #category : #tests }
-GameTest >> testGameCannotBeInitializedWithoutABoard [
-
-	| aBoard aCollectionOfNames |
-	aCollectionOfNames:= OrderedCollection new
-   add: 'Juan'; yourself.
-	self
-		should: [ Game withBoard: aBoard withShipNames: aCollectionOfNames withDice: (Dice with: (LoadedDie of: 9) )]
-		raise: Error
-		withMessage: 'Game cannot be started without a board'
-]
-
-{ #category : #tests }
-GameTest >> testGameCannotBeInitializedWithoutAtLeastOneShip [
-
-	| aBoard aPlayerCollection |
-	aBoard := SimpleBoard withTiles: 5.
-	self
-		should: [ Game withBoard: aBoard withShipNames: aPlayerCollection withDice: (Dice with: (LoadedDie of: 9) )]
-		raise: Error
-		withMessage: 'Game cannot be started without at least one ship.'
+	self assert: ((aGame allShipPositions) size) equals: 3
 ]
 
 { #category : #tests }
@@ -124,17 +124,6 @@ GameTest >> testGameKnowTheWinnerShip [
 ]
 
 { #category : #tests }
-GameTest >> testGameKnownsOwnBoard [
-
-	| aGame aBoard aCollectionOfNames |
-	aBoard := SimpleBoard withTiles: 1.
-	aCollectionOfNames:= OrderedCollection new 
-    add: 'Juan';yourself.
-	aGame := Game withBoard: aBoard withShipNames: aCollectionOfNames withDice: (Dice with: (LoadedDie of: 9) ).
-	self assert: (aGame hasBoard: aBoard).
-]
-
-{ #category : #tests }
 GameTest >> testIfGameIsFinishedThenIsFinishedIsTrue [
 
 	| aGame aBoard aCollectionOfNames |
@@ -151,12 +140,12 @@ GameTest >> testIfGameIsFinishedThenIsFinishedIsTrue [
 GameTest >> testIfGameIsNotFinishedThenIsFinishedIsFalse [
 
 	| aGame aBoard aCollectionOfNames |
-	aBoard := SimpleBoard withTiles: 1.
+	aBoard := SimpleBoard withTiles: 10.
 	aCollectionOfNames:= OrderedCollection new 
     add: 'Juan'; yourself.
 	aGame := Game withBoard: aBoard withShipNames: aCollectionOfNames withDice: (Dice with: (LoadedDie of: 9) ).
 	
-	self deny: aGame isFinished .
+	self deny: aGame isFinished.
 ]
 
 { #category : #tests }
