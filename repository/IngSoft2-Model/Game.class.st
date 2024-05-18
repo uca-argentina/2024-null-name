@@ -30,19 +30,14 @@ Game class >> withBoard: aBoard withPlayers: aNameCollection withDice: aDice [
 ]
 
 { #category : #accessing }
+Game >> allShipPositions [
+
+	^ gameShips collect: [ :aShip | OrderedCollection new add:aShip position;add: aShip shipName;yourself .]
+]
+
+{ #category : #accessing }
 Game >> amountOfShips [
 	^ gameShips size .
-]
-
-{ #category : #accessing }
-Game >> getWinnerName [
-	^gameWinner getName
-]
-
-{ #category : #accessing }
-Game >> giveAllShipPositions [
-
-	^ gameShips collect: [ :i | i givePosition ]
 ]
 
 { #category : #testing }
@@ -92,21 +87,26 @@ Game >> nextTurn [
 { #category : #modifying }
 Game >> playTurn [
 
-	| movement player |
+	| movement theShipInTurn |
 	self isOver.
 	movement := dice throw.
-	player := gameShips at: currentTurn.
-	player moveTiles: movement.
-	gameBoard checkPositionOf: player.
+	theShipInTurn := gameShips at: currentTurn.
+	theShipInTurn moveTiles: movement.
+	gameBoard checkPositionOf: theShipInTurn.
 
-	self veifyingItIsntTheWinningMove: player.
+	self veifyingItIsntTheWinningMove: theShipInTurn.
 	currentTurn := self nextTurn
 ]
 
 { #category : #accessing }
-Game >> veifyingItIsntTheWinningMove: player [
+Game >> veifyingItIsntTheWinningMove: aShip [
 
-	player givePosition == gameBoard numbOfTiles ifFalse: [ ^ self ].
-	gameWinner := player.
+	aShip position == gameBoard numbOfTiles ifFalse: [ ^ self ].
+	gameWinner := aShip.
 	isFinished := true
+]
+
+{ #category : #accessing }
+Game >> winnerName [
+	^gameWinner shipName
 ]

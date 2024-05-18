@@ -10,32 +10,30 @@ ShipTest >> testIfShipIsInitializedWithaNameItWillHaveThatName [
 | aShip |
 aShip := Ship createWithName: 'Juan'.
 
-self assert: (aShip getName) equals: 'Juan'
+self assert: (aShip shipName) equals: 'Juan'
 ]
 
 { #category : #tests }
 ShipTest >> testIfShipMovesIntoPositionBelowOneThenShipPositionIsOne [
 
-| aShip aBoard |
-aBoard:= Board withTiles: 3.
+| aShip |
 aShip := Ship createWithName: 'Juan'.
 aShip moveTiles: -1.
 
-self deny: aShip givePosition equals: -1
+self deny: aShip position equals: -1
 ]
 
 { #category : #tests }
 ShipTest >> testWhenCreatedShipIsInFirstPosition [
     | aShip |
     aShip := Ship createWithName: 'Juan'.
-    self assert: (aShip givePosition) equals: 1.
+    self assert: (aShip position) equals: 1.
 ]
 
 { #category : #tests }
 ShipTest >> testWhenShipMovesCurrentPositionChanges [
-    | aShip aBoard |
-    aBoard := Board withTiles: 5.
+    | aShip |
     aShip := Ship createWithName: 'Juan'.
     aShip moveTiles: 3.
-    self assert: (aShip givePosition) equals: 4.
+    self assert: (aShip position) equals: 4.
 ]

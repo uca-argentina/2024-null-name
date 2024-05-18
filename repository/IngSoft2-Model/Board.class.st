@@ -13,40 +13,46 @@ Class {
 	#category : #'IngSoft2-Model'
 }
 
-{ #category : #initialization }
-Board class >> withTiles: anumberOfTiles [ 
-	anumberOfTiles<=0 ifTrue:[Error signal: 'Board tiles must be greater than 0'].
-	^ (self new) initializeWithAmoutTiles: anumberOfTiles.
+{ #category : #'as yet unclassified' }
+Board class >> numberOfTileIsValid: aNumberOfTiles [ 
+	aNumberOfTiles strictlyPositive ifFalse: [
+		Error signal: 'Board tiles must be greater than 0' ].
+	
 ]
 
 { #category : #initialization }
 Board class >> withTiles: aNumberOfTiles withWormHolePositions: aWormHoleTilePair [
+	
+	self numberOfTileIsValid: aNumberOfTiles.
+	self wormHolePairIsValid: aWormHoleTilePair with: aNumberOfTiles.
+	
 
-	aNumberOfTiles strictlyPositive ifFalse: [
-		Error signal: 'Board tiles must be greater than 0' ].
 	aWormHoleTilePair do: [ :i |
 		(i <= aNumberOfTiles and: i strictlyPositive) ifFalse: [
-			Error signal: 'Wormhole tiles are out of bounds' ] ].
-
+			Error signal: 'Wormhole tiles are out of bounds' ].
+		].
+	((aWormHoleTilePair at:1) = (aWormHoleTilePair at:2)) ifTrue: [
+			Error signal: 'Worm Hole pair start and end position cannot be the same' ].
+		
 	^ self new
 		  initializeWithAmoutTiles: aNumberOfTiles
 		  withWormHolePositions: aWormHoleTilePair
 ]
 
-{ #category : #accessing }
-Board >> checkPositionOf: aShip [ 
-	(aShip givePosition > tileArray size) ifTrue: [aShip moveTiles: (tileArray size - aShip givePosition )].
-	self tileEffectOn: aShip.
+{ #category : #'as yet unclassified' }
+Board class >> wormHolePairIsValid: aWormHoleTilePair with: aNumberOfTiles [ 
+	aWormHoleTilePair do: [ :i |
+		(i <= aNumberOfTiles and: i strictlyPositive) ifFalse: [
+			Error signal: 'Wormhole tiles are out of bounds' ].
+		].
+	((aWormHoleTilePair at:1) = (aWormHoleTilePair at:2)) ifTrue: [
+			Error signal: 'Worm Hole pair start and end position cannot be the same' ].
 ]
 
-{ #category : #initialization }
-Board >> initializeWithAmoutTiles: anumberOfTiles [
-
-	| aTileCollection |
-	aTileCollection := OrderedCollection new.
-	1 to: anumberOfTiles do: [ :i |
-	aTileCollection add: (Tile inPosition: i) ].
-	tileArray := aTileCollection
+{ #category : #accessing }
+Board >> checkPositionOf: aShip [ 
+	(aShip position > tileArray size) ifTrue: [aShip moveTiles: (tileArray size - aShip position )].
+	self tileEffectOn: aShip.
 ]
 
 { #category : #initialization }
@@ -72,7 +78,7 @@ Board >> numbOfTiles [
 
 { #category : #modifying }
 Board >> tileEffectOn: aShip [ 
-    (self tileInPosition: (aShip givePosition)) applyEffectOn: aShip.
+    (self tileInPosition: (aShip position)) applyEffectOn: aShip.
 ]
 
 { #category : #accessing }

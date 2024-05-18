@@ -15,6 +15,14 @@ BoardTest >> should: anErrorBlock raise: exceptionClass withMessage: anErrorMess
 ]
 
 { #category : #tests }
+BoardTest >> testAWormHolePairLocationsCannotBeTheSame [
+
+	| aWormholePositons|
+	aWormholePositons := #( 2 2 ).
+	self should:  [Board withTiles: 6 withWormHolePositions: aWormholePositons] raise: Error withMessage: 'Worm Hole pair start and end position cannot be the same' 
+]
+
+{ #category : #tests }
 BoardTest >> testBoardAppliesEffectWhenShipFallsOnSpecialTile [
 | aBoard aWormholePositons aShip |
 aWormholePositons := #(2 5).
@@ -23,7 +31,7 @@ aShip:= Ship createWithName: 'Juan'.
 aShip moveTiles: 1.
 
 aBoard tileEffectOn: aShip.
-self assert: (aShip givePosition) equals: 5.
+self assert: (aShip position) equals: 5.
 ]
 
 { #category : #tests }
@@ -43,7 +51,7 @@ BoardTest >> testBoardCannotBeInitializedWithLessThanOneTile [
 	| numTiles |
 	numTiles := 0.
 	self
-		should: [ Board withTiles: numTiles ]
+		should: [ SimpleBoard withTiles: numTiles ]
 		raise: Error
 		withMessage: 'Board tiles must be greater than 0'
 ]
@@ -53,7 +61,7 @@ BoardTest >> testBoardHasANumberOfTiles [
 
 | numTiles aBoard |
 numTiles :=3.
-aBoard := Board withTiles:numTiles .
+aBoard := SimpleBoard withTiles:numTiles .
 
 self assert: aBoard numbOfTiles equals: 3
 ]
@@ -61,11 +69,11 @@ self assert: aBoard numbOfTiles equals: 3
 { #category : #tests }
 BoardTest >> testIfShipMovesOverBoardBoundsThenSnapBackToLastTile [
 | aBoard aShip |
-aBoard:=Board withTiles: 6.
+aBoard:=SimpleBoard withTiles: 6.
 aShip:= Ship createWithName: 'Juan'.
 aShip moveTiles: 7.
 aBoard checkPositionOf: aShip.
-self assert: (aShip givePosition) equals: 6.
+self assert: (aShip position) equals: 6.
 ]
 
 { #category : #tests }
