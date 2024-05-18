@@ -61,8 +61,8 @@ Board >> initializeWithAmoutTiles: anumberOfTiles withWormHolePositions: aWormHo
 		(aWormHoleTilePair includes: i)
 			ifTrue: [
 				aTileArray add: (WormholeEffect 
-						 fromTile: i
-						 toTile:
+						 fromPosition: i
+						 toPosition:
 						 (aWormHoleTilePair detect: [ :index | index ~= i ])) ]
 			ifFalse: [ aTileArray add: (NullEffect new) ] ].
 	tileArray := aTileArray

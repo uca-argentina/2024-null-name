@@ -12,9 +12,9 @@ Class {
 }
 
 { #category : #'instance creation' }
-WormholeEffect class >> fromTile: firstTilePosition toTile: endTilePosition [ 
+WormholeEffect class >> fromPosition: firstPosition toPosition: endPosition [
 
-  ^ (self new) fromTile: firstTilePosition toTile: endTilePosition.
+	^ (self new) initializeInPosition: firstPosition toPosition: endPosition 
 ]
 
 { #category : #applying }
@@ -23,6 +23,6 @@ WormholeEffect >> applyOn: aShip [
 ]
 
 { #category : #'instance creation' }
-WormholeEffect >> fromTile: firstTilePosition toTile: endTilePosition [ 
-    wormholeDistance:= endTilePosition - firstTilePosition .
+WormholeEffect >> initializeInPosition: firstPosition toPosition: endPosition [ 
+    wormholeDistance:= endPosition - firstPosition .
 ]
