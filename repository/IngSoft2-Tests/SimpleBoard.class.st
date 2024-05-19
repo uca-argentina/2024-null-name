@@ -5,45 +5,47 @@ Class {
 	#name : #SimpleBoard,
 	#superclass : #Object,
 	#instVars : [
-		'tileArray'
+		'tileEffectArray'
 	],
 	#category : #'IngSoft2-Tests'
 }
 
 { #category : #initialization }
-SimpleBoard class >> withTiles: anumberOfTiles [ 
-	anumberOfTiles<=0 ifTrue:[Error signal: 'Board tiles must be greater than 0'].
-	^ (self new) initializeWithAmoutTiles: anumberOfTiles.
+SimpleBoard class >> withTiles: anumberOfTiles [
+
+	anumberOfTiles <= 0 ifTrue: [
+		Error signal: 'Board tiles must be greater than 0' ].
+	^ self new initializeWithAmoutTiles: anumberOfTiles
 ]
 
 { #category : #accessing }
-SimpleBoard >> applyTileEffectOn: aShip [ 
-    (self effectInPosition: (aShip position)) applyOn: aShip.
-]
+SimpleBoard >> applyTileEffectOn: aShip [
 
-{ #category : #accessing }
-SimpleBoard >> effectInPosition: aTilePosition [ 
-	^ tileArray at: aTilePosition
+	(tileEffectArray at: aShip position) applyOn: aShip
 ]
 
 { #category : #accessing }
 SimpleBoard >> initializeWithAmoutTiles: anumberOfTiles [
 
-	tileArray := OrderedCollection new.
-	1 to: anumberOfTiles do: [ :i | tileArray add: NullEffect new ]
+	tileEffectArray := OrderedCollection new.
+	1 to: anumberOfTiles do: [ :i | tileEffectArray add: NullEffect new ]
 ]
 
 { #category : #testing }
-SimpleBoard >> isInLastTile:aShip [
-	^ ((aShip position) == (tileArray size))
+SimpleBoard >> isInLastTile: aShip [
+
+	^ aShip position == tileEffectArray size
 ]
 
 { #category : #accessing }
 SimpleBoard >> numbOfTiles [
-	^ tileArray size.
+
+	^ tileEffectArray size
 ]
 
 { #category : #accessing }
-SimpleBoard >> snapToLastTile: aShip [ 
-	(aShip position > tileArray size) ifTrue: [aShip moveTiles: (tileArray size - aShip position )].
+SimpleBoard >> snapToLastTile: aShip [
+
+	aShip position > tileEffectArray size ifTrue: [
+		aShip moveTiles: tileEffectArray size - aShip position ]
 ]

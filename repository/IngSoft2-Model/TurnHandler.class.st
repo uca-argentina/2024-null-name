@@ -13,7 +13,8 @@ Class {
 
 { #category : #'class initialization' }
 TurnHandler class >> withAnAmountOfTurns: anAmountOfTurns [
-	^(self new) initializeWithAmountOfTurns: anAmountOfTurns .
+
+	^ self new initializeWithAmountOfTurns: anAmountOfTurns
 ]
 
 { #category : #testing }
@@ -31,8 +32,9 @@ TurnHandler >> currentTurn [
 
 { #category : #testing }
 TurnHandler >> initializeWithAmountOfTurns: anAmountOfTurns [
+
 	currentTurn := 1.
-	turnsPerRound:= anAmountOfTurns.
+	turnsPerRound := anAmountOfTurns
 ]
 
 { #category : #modifying }

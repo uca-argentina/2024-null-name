@@ -35,9 +35,13 @@ ShipTest >> testIfShipMovesIntoPositionBelowOneThenShipPositionIsOne [
 
 { #category : #tests }
 ShipTest >> testShipCannotBeCreatedWithNoName [
-	|aName|
+
+	| aName |
 	aName := ''.
-	self should:[Ship createWithName: aName ]raise: Error withMessage: 'Ship cannot be created with no name'.
+	self
+		should: [ Ship createWithName: aName ]
+		raise: Error
+		withMessage: 'Ship cannot be created with no name'
 ]
 
 { #category : #tests }

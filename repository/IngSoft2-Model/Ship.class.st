@@ -13,16 +13,17 @@ Class {
 }
 
 { #category : #'class initialization' }
-Ship class >> createWithName: aName [ 
+Ship class >> createWithName: aName [
 
 	self isValid: aName.
-	
-	^ (self new) initializeInTile: 1 withName:aName.
+	^ self new initializeInTile: 1 withName: aName
 ]
 
 { #category : #testing }
-Ship class >> isValid:aName [
-	aName isEmpty ifTrue:[ Error signal: 'Ship cannot be created with no name' ]
+Ship class >> isValid: aName [
+
+	aName isEmpty ifTrue: [
+		Error signal: 'Ship cannot be created with no name' ]
 ]
 
 { #category : #initialization }
@@ -46,5 +47,6 @@ Ship >> position [
 
 { #category : #accessing }
 Ship >> shipName [
-	^playerName
+
+	^ playerName
 ]

@@ -5,29 +5,37 @@ Class {
 }
 
 { #category : #asserting }
-LoadedDieTest >> should: aErrorBlock raise: anErrorClass withMessage: anErrorMessage [ 
-	self should: aErrorBlock raise: anErrorClass withExceptionDo: [:error|self assert: error messageText equals:anErrorMessage]
+LoadedDieTest >> should: aErrorBlock raise: anErrorClass withMessage: anErrorMessage [
+
+	self
+		should: aErrorBlock
+		raise: anErrorClass
+		withExceptionDo: [ :error |
+		self assert: error messageText equals: anErrorMessage ]
 ]
 
 { #category : #asserting }
-LoadedDieTest >> testDieCanBeCreatedWithAnAmountOfFaces [ 
+LoadedDieTest >> testDieCanBeCreatedWithAnAmountOfFaces [
 
-| aDie |
-aDie:= LoadedDie of:5.
-self assert: aDie throw equals:5.
+	| aDie |
+	aDie := LoadedDie of: 5.
+	self assert: aDie throw equals: 5
 ]
 
 { #category : #asserting }
-LoadedDieTest >> testDieCannotBeCreatedWithLessThanThreeFaces [ 
+LoadedDieTest >> testDieCannotBeCreatedWithLessThanThreeFaces [
 
-self should:[LoadedDie of:2] raise: Error withMessage: 'Faces should be more than 2'
+	self
+		should: [ LoadedDie of: 2 ]
+		raise: Error
+		withMessage: 'Faces should be more than 2'
 ]
 
 { #category : #tests }
-LoadedDieTest >> testWhenDieIsThrownThenValueIsBetweenOneAndNumberedFaces [ 
+LoadedDieTest >> testWhenDieIsThrownThenValueIsBetweenOneAndNumberedFaces [
 
-| aDie |
-aDie:=LoadedDie  of:4.
+	| aDie |
+	aDie := LoadedDie of: 4.
 
-self assert:(aDie throw) equals:4.
+	self assert: aDie throw equals: 4
 ]

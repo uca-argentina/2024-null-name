@@ -40,7 +40,11 @@ Game class >> withBoard: aBoard withShipNames: aNameCollection withDice: aDice [
 { #category : #accessing }
 Game >> allShipPositions [
 
-	^ gameShips collect: [ :aShip | OrderedCollection new add:aShip position;add: aShip shipName;yourself .]
+	^ gameShips collect: [ :aShip |
+		  OrderedCollection new
+			  add: aShip position;
+			  add: aShip shipName;
+			  yourself ]
 ]
 
 { #category : #initialization }
@@ -55,21 +59,22 @@ Game >> initializeGameWith: aBoard withShipNames: aNameCollection withDice: aDic
 				 (aNameCollection asOrderedCollection at: iter)) ].
 	gameShips := aCollectionShips.
 	dice := aDice.
-	gameTurnHandler:= TurnHandler withAnAmountOfTurns: (gameShips size).
+	gameTurnHandler := TurnHandler withAnAmountOfTurns: gameShips size
 ]
 
 { #category : #testing }
 Game >> isFinished [
-	^ gameShips anySatisfy:  [:aShip | (gameBoard isInLastTile: aShip ) ].
+
+	^ gameShips anySatisfy: [ :aShip | gameBoard isInLastTile: aShip ]
 ]
 
 { #category : #modifying }
 Game >> playTurn [
 
 	| movement theShipInCurrentTurn |
-	gameTurnHandler canPlayNextTurnOf: (self isFinished).
+	gameTurnHandler canPlayNextTurnOf: self isFinished.
 	movement := dice throw.
-	theShipInCurrentTurn := gameShips at: gameTurnHandler currentTurn .
+	theShipInCurrentTurn := gameShips at: gameTurnHandler currentTurn.
 	theShipInCurrentTurn moveTiles: movement.
 	gameBoard snapToLastTile: theShipInCurrentTurn.
 	gameBoard applyTileEffectOn: theShipInCurrentTurn.
@@ -80,5 +85,6 @@ Game >> playTurn [
 Game >> winnerName [
 
 	self isFinished ifFalse: [ ^ 'There is no winner yet' ].
-	^ (gameShips detect: [ :aShip | gameBoard isInLastTile: aShip ]) shipName 
+	^ (gameShips detect: [ :aShip | gameBoard isInLastTile: aShip ])
+		  shipName
 ]

@@ -8,7 +8,7 @@ Class {
 	#name : #Board,
 	#superclass : #Object,
 	#instVars : [
-		'tileArray'
+		'tileEffectArray'
 	],
 	#category : #'IngSoft2-Model'
 }
@@ -40,43 +40,42 @@ Board class >> wormHolePairIsValid: aWormHoleTilePair with: aNumberOfTiles [
 ]
 
 { #category : #modifying }
-Board >> applyTileEffectOn: aShip [ 
-    (self effectInPosition: (aShip position)) applyOn: aShip.
-]
+Board >> applyTileEffectOn: aShip [
 
-{ #category : #accessing }
-Board >> effectInPosition: aTilePosition [ 
-	^ tileArray at: aTilePosition
+	(tileEffectArray at: aShip position) applyOn: aShip
 ]
 
 { #category : #initialization }
 Board >> initializeWithAmoutTiles: anumberOfTiles withWormHolePositions: aWormHoleTilePair [
 
-	tileArray := OrderedCollection new.
-	
-	1 to: anumberOfTiles do: [ :i | tileArray add: NullEffect new ].
-	
-	tileArray at: aWormHoleTilePair first put:(WormholeEffect 
-						 fromPosition: aWormHoleTilePair first
-						 toPosition:aWormHoleTilePair last).
-	
-	tileArray at: aWormHoleTilePair last put:(WormholeEffect 
-						 fromPosition: aWormHoleTilePair last
-						 toPosition:aWormHoleTilePair first).
+	tileEffectArray := OrderedCollection new.
 
+	1 to: anumberOfTiles do: [ :i | tileEffectArray add: NullEffect new ].
+
+	tileEffectArray at: aWormHoleTilePair first put: (WormholeEffect
+			 fromPosition: aWormHoleTilePair first
+			 toPosition: aWormHoleTilePair last).
+
+	tileEffectArray at: aWormHoleTilePair last put: (WormholeEffect
+			 fromPosition: aWormHoleTilePair last
+			 toPosition: aWormHoleTilePair first)
 ]
 
 { #category : #testing }
-Board >> isInLastTile:aShip [
-	^ (aShip position = (tileArray size))
+Board >> isInLastTile: aShip [
+
+	^ aShip position = tileEffectArray size
 ]
 
 { #category : #accessing }
 Board >> numbOfTiles [
-	^ tileArray size.
+
+	^ tileEffectArray size
 ]
 
 { #category : #accessing }
-Board >> snapToLastTile: aShip [ 
-	(aShip position > tileArray size) ifTrue: [aShip moveTiles: (tileArray size - aShip position )].
+Board >> snapToLastTile: aShip [
+
+	aShip position > tileEffectArray size ifTrue: [
+		aShip moveTiles: tileEffectArray size - aShip position ]
 ]

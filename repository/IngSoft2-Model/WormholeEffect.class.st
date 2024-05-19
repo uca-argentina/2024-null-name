@@ -14,15 +14,19 @@ Class {
 { #category : #'instance creation' }
 WormholeEffect class >> fromPosition: firstPosition toPosition: endPosition [
 
-	^ (self new) initializeInPosition: firstPosition toPosition: endPosition 
+	^ self new
+		  initializeInPosition: firstPosition
+		  toPosition: endPosition
 ]
 
 { #category : #applying }
-WormholeEffect >> applyOn: aShip [ 
-    aShip moveTiles: wormholeDistance.
+WormholeEffect >> applyOn: aShip [
+
+	aShip moveTiles: wormholeDistance
 ]
 
 { #category : #'instance creation' }
-WormholeEffect >> initializeInPosition: firstPosition toPosition: endPosition [ 
-    wormholeDistance:= endPosition - firstPosition .
+WormholeEffect >> initializeInPosition: firstPosition toPosition: endPosition [
+
+	wormholeDistance := endPosition - firstPosition
 ]

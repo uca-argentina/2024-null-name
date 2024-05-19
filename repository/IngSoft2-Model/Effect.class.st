@@ -8,6 +8,7 @@ Class {
 }
 
 { #category : #applying }
-Effect >> applyOn: aShip [ 
-	^ self subclassResponsibility .
+Effect >> applyOn: aShip [
+
+	^ self subclassResponsibility
 ]

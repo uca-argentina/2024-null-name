@@ -8,6 +8,7 @@ Class {
 }
 
 { #category : #action }
-Dice >> throw [ 
-	^(self collect: [ :die|die throw ]) sum.
+Dice >> throw [
+
+	^ (self collect: [ :die | die throw ]) sum
 ]
