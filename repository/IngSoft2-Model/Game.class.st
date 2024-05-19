@@ -8,7 +8,6 @@ Class {
 		'gameBoard',
 		'gameShips',
 		'dice',
-		'gameWinner',
 		'gameTurnHandler'
 	],
 	#classInstVars : [
@@ -56,7 +55,6 @@ Game >> initializeGameWith: aBoard withShipNames: aNameCollection withDice: aDic
 				 (aNameCollection asOrderedCollection at: iter)) ].
 	gameShips := aCollectionShips.
 	dice := aDice.
-	gameWinner:= 'There is no winner yet'.
 	gameTurnHandler:= TurnHandler withAnAmountOfTurns: (gameShips size).
 ]
 
@@ -75,17 +73,12 @@ Game >> playTurn [
 	theShipInCurrentTurn moveTiles: movement.
 	gameBoard checkPositionOf: theShipInCurrentTurn.
 
-	self veifyingItIsntTheWinningMove: theShipInCurrentTurn.
 	gameTurnHandler nextTurn
 ]
 
 { #category : #accessing }
-Game >> veifyingItIsntTheWinningMove: aShip [
-	self isFinished ifFalse: [ ^ self ].
-	gameWinner := aShip shipName.
-]
-
-{ #category : #accessing }
 Game >> winnerName [
-	^gameWinner
+
+	self isFinished ifFalse: [ ^ 'There is no winner yet' ].
+	^ (gameShips detect: [ :aShip | gameBoard isInLastTile: aShip ]) shipName 
 ]
