@@ -41,10 +41,15 @@ Board class >> wormHolePairIsValid: aWormHoleTilePair with: aNumberOfTiles [
 			Error signal: 'Worm Hole pair start and end position cannot be the same' ].
 ]
 
+{ #category : #modifying }
+Board >> applyTileEffectOn: aShip [ 
+    (self effectInPosition: (aShip position)) applyOn: aShip.
+]
+
 { #category : #accessing }
 Board >> checkPositionOf: aShip [ 
 	(aShip position > tileArray size) ifTrue: [aShip moveTiles: (tileArray size - aShip position )].
-	self tileEffectOn: aShip.
+	self applyTileEffectOn: aShip.
 ]
 
 { #category : #accessing }
@@ -76,9 +81,4 @@ Board >> isInLastTile:aShip [
 { #category : #accessing }
 Board >> numbOfTiles [
 	^ tileArray size.
-]
-
-{ #category : #modifying }
-Board >> tileEffectOn: aShip [ 
-    (self effectInPosition: (aShip position)) applyOn: aShip.
 ]

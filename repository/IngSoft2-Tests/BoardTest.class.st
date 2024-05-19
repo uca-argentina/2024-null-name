@@ -30,7 +30,7 @@ aBoard:=Board withTiles: 6 withWormHolePositions: aWormholePositons.
 aShip:= Ship createWithName: 'Juan'.
 aShip moveTiles: 1.
 
-aBoard tileEffectOn: aShip.
+aBoard applyTileEffectOn: aShip.
 self assert: (aShip position) equals: 5.
 ]
 

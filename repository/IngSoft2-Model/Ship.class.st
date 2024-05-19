@@ -44,7 +44,7 @@ Ship >> position [
 	^ currentPosition
 ]
 
-{ #category : #private }
+{ #category : #accessing }
 Ship >> shipName [
 	^playerName
 ]

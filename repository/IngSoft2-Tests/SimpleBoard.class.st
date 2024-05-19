@@ -17,9 +17,14 @@ SimpleBoard class >> withTiles: anumberOfTiles [
 ]
 
 { #category : #accessing }
+SimpleBoard >> applyTileEffectOn: aShip [ 
+    (self effectInPosition: (aShip position)) applyOn: aShip.
+]
+
+{ #category : #accessing }
 SimpleBoard >> checkPositionOf: aShip [ 
 	(aShip position > tileArray size) ifTrue: [aShip moveTiles: (tileArray size - aShip position )].
-	self tileEffectOn: aShip.
+	self applyTileEffectOn: aShip.
 ]
 
 { #category : #accessing }
@@ -45,9 +50,4 @@ SimpleBoard >> isInLastTile:aShip [
 { #category : #accessing }
 SimpleBoard >> numbOfTiles [
 	^ tileArray size.
-]
-
-{ #category : #accessing }
-SimpleBoard >> tileEffectOn: aShip [ 
-    (self effectInPosition: (aShip position)) applyOn: aShip.
 ]
