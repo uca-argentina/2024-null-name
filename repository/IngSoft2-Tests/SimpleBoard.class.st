@@ -22,12 +22,6 @@ SimpleBoard >> applyTileEffectOn: aShip [
 ]
 
 { #category : #accessing }
-SimpleBoard >> checkPositionOf: aShip [ 
-	(aShip position > tileArray size) ifTrue: [aShip moveTiles: (tileArray size - aShip position )].
-	self applyTileEffectOn: aShip.
-]
-
-{ #category : #accessing }
 SimpleBoard >> effectInPosition: aTilePosition [ 
 	^ tileArray at: aTilePosition
 ]
@@ -47,4 +41,9 @@ SimpleBoard >> isInLastTile:aShip [
 { #category : #accessing }
 SimpleBoard >> numbOfTiles [
 	^ tileArray size.
+]
+
+{ #category : #accessing }
+SimpleBoard >> snapToLastTile: aShip [ 
+	(aShip position > tileArray size) ifTrue: [aShip moveTiles: (tileArray size - aShip position )].
 ]

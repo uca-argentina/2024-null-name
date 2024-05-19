@@ -71,8 +71,8 @@ Game >> playTurn [
 	movement := dice throw.
 	theShipInCurrentTurn := gameShips at: gameTurnHandler currentTurn .
 	theShipInCurrentTurn moveTiles: movement.
-	gameBoard checkPositionOf: theShipInCurrentTurn.
-
+	gameBoard snapToLastTile: theShipInCurrentTurn.
+	gameBoard applyTileEffectOn: theShipInCurrentTurn.
 	gameTurnHandler nextTurn
 ]
 

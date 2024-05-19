@@ -45,12 +45,6 @@ Board >> applyTileEffectOn: aShip [
 ]
 
 { #category : #accessing }
-Board >> checkPositionOf: aShip [ 
-	(aShip position > tileArray size) ifTrue: [aShip moveTiles: (tileArray size - aShip position )].
-	self applyTileEffectOn: aShip.
-]
-
-{ #category : #accessing }
 Board >> effectInPosition: aTilePosition [ 
 	^ tileArray at: aTilePosition
 ]
@@ -80,4 +74,9 @@ Board >> isInLastTile:aShip [
 { #category : #accessing }
 Board >> numbOfTiles [
 	^ tileArray size.
+]
+
+{ #category : #accessing }
+Board >> snapToLastTile: aShip [ 
+	(aShip position > tileArray size) ifTrue: [aShip moveTiles: (tileArray size - aShip position )].
 ]

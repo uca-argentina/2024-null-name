@@ -64,7 +64,7 @@ BoardTest >> testIfShipMovesOverBoardBoundsThenSnapBackToLastTile [
 aBoard:=SimpleBoard withTiles: 6.
 aShip:= Ship createWithName: 'Juan'.
 aShip moveTiles: 7.
-aBoard checkPositionOf: aShip.
+aBoard snapToLastTile: aShip.
 self assert: (aShip position) equals: 6.
 ]
 
@@ -88,7 +88,7 @@ BoardTest >> testWhenApplyingWormholeEffectOnShipMoveAccordingly [
 	aBoard := Board withTiles: 10 withWormHolePositions: #(2 5).
 	aShip := Ship createWithName: 'Juan'.
 	aShip moveTiles: 1.
-	aBoard checkPositionOf: aShip.
+	aBoard applyTileEffectOn: aShip.
 	
 	
 	self assert: aShip position equals: 5
