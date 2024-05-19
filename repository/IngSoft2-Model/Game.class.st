@@ -56,6 +56,7 @@ Game >> initializeGameWith: aBoard withShipNames: aNameCollection withDice: aDic
 				 (aNameCollection asOrderedCollection at: iter)) ].
 	gameShips := aCollectionShips.
 	dice := aDice.
+	gameWinner:= 'There is no winner yet'.
 	gameTurnHandler:= TurnHandler withAnAmountOfTurns: (gameShips size).
 ]
 
@@ -81,10 +82,10 @@ Game >> playTurn [
 { #category : #accessing }
 Game >> veifyingItIsntTheWinningMove: aShip [
 	self isFinished ifFalse: [ ^ self ].
-	gameWinner := aShip.
+	gameWinner := aShip shipName.
 ]
 
 { #category : #accessing }
 Game >> winnerName [
-	^gameWinner shipName
+	^gameWinner
 ]

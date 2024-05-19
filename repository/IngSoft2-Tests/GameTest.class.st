@@ -149,7 +149,24 @@ GameTest >> testIfGameIsNotFinishedThenIsFinishedIsFalse [
 ]
 
 { #category : #tests }
-GameTest >> testIfThreIsAwinnerThereisNoMoreMovements [
+GameTest >> testIfGameIsOngoingThereIsNoWinner [
+
+	| aGame aCollectionOfNames |
+	aCollectionOfNames:= OrderedCollection new 
+    add: 'Juan';
+    add: 'Jose';yourself.
+	
+	
+	aGame :=Game withBoard: (SimpleBoard withTiles: 17) withShipNames: aCollectionOfNames    withDice: (Dice with: (LoadedDie of: 9) with:(LoadedDie of:3)).
+	
+	aGame playTurn .
+	aGame playTurn .
+	
+	self assert: aGame winnerName equals: 'There is no winner yet'.
+]
+
+{ #category : #tests }
+GameTest >> testIfThereIsAWinnerThereAreNoMoreMovements [
 
 
 	| aGame aCollectionOfNames|
