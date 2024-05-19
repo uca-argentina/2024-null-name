@@ -14,31 +14,29 @@ Class {
 }
 
 { #category : #'argument validation' }
-Board class >> numberOfTileIsValid: aNumberOfTiles [ 
+Board class >> numberOfTileIsValid: aNumberOfTiles [
+
 	aNumberOfTiles strictlyPositive ifFalse: [
-		Error signal: 'Board tiles must be greater than 0' ].
-	
+		Error signal: 'Board tiles must be greater than 0' ]
 ]
 
 { #category : #initialization }
 Board class >> withTiles: aNumberOfTiles withWormHolePositions: aWormHoleTilePair [
-	
+
 	self numberOfTileIsValid: aNumberOfTiles.
 	self wormHolePairIsValid: aWormHoleTilePair with: aNumberOfTiles.
-	
+
 	^ self new
 		  initializeWithAmoutTiles: aNumberOfTiles
 		  withWormHolePositions: aWormHoleTilePair
 ]
 
 { #category : #'argument validation' }
-Board class >> wormHolePairIsValid: aWormHoleTilePair with: aNumberOfTiles [ 
+Board class >> wormHolePairIsValid: aWormHoleTilePair with: aNumberOfTiles [
+
 	aWormHoleTilePair do: [ :i |
 		(i <= aNumberOfTiles and: i strictlyPositive) ifFalse: [
-			Error signal: 'Wormhole tiles are out of bounds' ].
-		].
-	((aWormHoleTilePair at:1) = (aWormHoleTilePair at:2)) ifTrue: [
-			Error signal: 'Worm Hole pair start and end position cannot be the same' ].
+			Error signal: 'Wormhole tiles are out of bounds' ] ]
 ]
 
 { #category : #modifying }
@@ -60,17 +58,18 @@ Board >> effectInPosition: aTilePosition [
 { #category : #initialization }
 Board >> initializeWithAmoutTiles: anumberOfTiles withWormHolePositions: aWormHoleTilePair [
 
-	| aTileArray |
-	aTileArray := OrderedCollection new.
-	1 to: anumberOfTiles do: [ :i |
-		(aWormHoleTilePair includes: i)
-			ifTrue: [
-				aTileArray add: (WormholeEffect 
-						 fromPosition: i
-						 toPosition:
-						 (aWormHoleTilePair detect: [ :index | index ~= i ])) ]
-			ifFalse: [ aTileArray add: (NullEffect new) ] ].
-	tileArray := aTileArray
+	tileArray := OrderedCollection new.
+	
+	1 to: anumberOfTiles do: [ :i | tileArray add: NullEffect new ].
+	
+	tileArray at: aWormHoleTilePair first put:(WormholeEffect 
+						 fromPosition: aWormHoleTilePair first
+						 toPosition:aWormHoleTilePair last).
+	
+	tileArray at: aWormHoleTilePair last put:(WormholeEffect 
+						 fromPosition: aWormHoleTilePair last
+						 toPosition:aWormHoleTilePair first).
+
 ]
 
 { #category : #testing }

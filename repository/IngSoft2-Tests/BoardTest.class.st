@@ -15,14 +15,6 @@ BoardTest >> should: anErrorBlock raise: exceptionClass withMessage: anErrorMess
 ]
 
 { #category : #tests }
-BoardTest >> testAWormHolePairLocationsCannotBeTheSame [
-
-	| aWormholePositons|
-	aWormholePositons := #( 2 2 ).
-	self should:  [Board withTiles: 6 withWormHolePositions: aWormholePositons] raise: Error withMessage: 'Worm Hole pair start and end position cannot be the same' 
-]
-
-{ #category : #tests }
 BoardTest >> testBoardAppliesEffectWhenShipFallsOnSpecialTile [
 | aBoard aWormholePositons aShip |
 aWormholePositons := #(2 5).

@@ -1,5 +1,5 @@
 "
-A
+Simple board class that does not have worm holes
 "
 Class {
 	#name : #SimpleBoard,
@@ -35,11 +35,8 @@ SimpleBoard >> effectInPosition: aTilePosition [
 { #category : #accessing }
 SimpleBoard >> initializeWithAmoutTiles: anumberOfTiles [
 
-	| aTileCollection |
-	aTileCollection := OrderedCollection new.
-	1 to: anumberOfTiles do: [ :i |
-	aTileCollection add: (NullEffect new) ].
-	tileArray := aTileCollection
+	tileArray := OrderedCollection new.
+	1 to: anumberOfTiles do: [ :i | tileArray add: NullEffect new ]
 ]
 
 { #category : #testing }
