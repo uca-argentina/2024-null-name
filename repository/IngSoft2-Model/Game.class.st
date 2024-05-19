@@ -8,8 +8,8 @@ Class {
 		'gameBoard',
 		'gameShips',
 		'dice',
-		'currentTurn',
-		'gameWinner'
+		'gameWinner',
+		'gameTurnHandler'
 	],
 	#classInstVars : [
 		'isFinished'
@@ -44,13 +44,6 @@ Game >> allShipPositions [
 	^ gameShips collect: [ :aShip | OrderedCollection new add:aShip position;add: aShip shipName;yourself .]
 ]
 
-{ #category : #testing }
-Game >> canPlayNextTurn [
-
-	self isFinished ifTrue: [
-		Error signal: 'Game is Over you cant Keep Playing' ]
-]
-
 { #category : #initialization }
 Game >> initializeGameWith: aBoard withShipNames: aNameCollection withDice: aDice [
 
@@ -63,7 +56,7 @@ Game >> initializeGameWith: aBoard withShipNames: aNameCollection withDice: aDic
 				 (aNameCollection asOrderedCollection at: iter)) ].
 	gameShips := aCollectionShips.
 	dice := aDice.
-	currentTurn := 1.
+	gameTurnHandler:= TurnHandler withAnAmountOfTurns: (gameShips size).
 ]
 
 { #category : #testing }
@@ -72,26 +65,17 @@ Game >> isFinished [
 ]
 
 { #category : #modifying }
-Game >> nextTurn [
-
-	currentTurn := currentTurn < gameShips size
-		               ifTrue: [ currentTurn + 1 ]
-		               ifFalse: [ 1 ].
-	^ currentTurn
-]
-
-{ #category : #modifying }
 Game >> playTurn [
 
 	| movement theShipInCurrentTurn |
-	self canPlayNextTurn.
+	gameTurnHandler canPlayNextTurnOf: (self isFinished).
 	movement := dice throw.
-	theShipInCurrentTurn := gameShips at: currentTurn.
+	theShipInCurrentTurn := gameShips at: gameTurnHandler currentTurn .
 	theShipInCurrentTurn moveTiles: movement.
 	gameBoard checkPositionOf: theShipInCurrentTurn.
 
 	self veifyingItIsntTheWinningMove: theShipInCurrentTurn.
-	currentTurn := self nextTurn
+	gameTurnHandler nextTurn
 ]
 
 { #category : #accessing }
