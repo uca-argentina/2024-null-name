@@ -18,9 +18,7 @@ GameTest >> should: anErrorBlock raise: exceptionClass withMessage: anErrorMessa
 GameTest >> testGameCanBePlayedWithMoreThanOneDie [
 
 	| aGame aCollectionOfNames |
-	aCollectionOfNames := OrderedCollection new
-		                      add: 'Juan';
-		                      yourself.
+	aCollectionOfNames := OrderedCollection with: 'Juan'.
 
 	aGame := Game
 		         withBoard: (SimpleBoard withTiles: 16)
@@ -36,10 +34,7 @@ GameTest >> testGameCanBePlayedWithMoreThanOneDie [
 GameTest >> testGameCanTellAllShipPositions [
 
 	| aGame aCollectionOfNames aCollectionOfNamesAndPositions |
-	aCollectionOfNames := OrderedCollection new
-		                      add: 'Juan';
-		                      add: 'Jose';
-		                      yourself.
+	aCollectionOfNames := OrderedCollection with: 'Juan' with: 'Jose'.
 	aGame := Game
 		         withBoard: (SimpleBoard withTiles: 30)
 		         withShipNames: aCollectionOfNames
@@ -67,9 +62,7 @@ GameTest >> testGameCanTellAllShipPositions [
 GameTest >> testGameCannotBeInitializedWithoutABoard [
 
 	| aBoard aCollectionOfNames |
-	aCollectionOfNames := OrderedCollection new
-		                      add: 'Juan';
-		                      yourself.
+	aCollectionOfNames := OrderedCollection with: 'Juan'.
 	self
 		should: [
 			Game
@@ -100,12 +93,11 @@ GameTest >> testGameDoesNotAllowRepeatedShipNames [
 
 	| aGame aBoard aCollectionOfNames |
 	aBoard := SimpleBoard withTiles: 5.
-	aCollectionOfNames := OrderedCollection new
-		                      add: 'Juan';
-		                      add: 'Jose';
-		                      add: 'Fran';
-		                      add: 'Juan';
-		                      yourself.
+	aCollectionOfNames := OrderedCollection
+		                      with: 'Juan'
+		                      with: 'Jose'
+		                      with: 'Fran'
+		                      with: 'Juan'.
 
 	aGame := Game
 		         withBoard: aBoard
@@ -118,10 +110,7 @@ GameTest >> testGameDoesNotAllowRepeatedShipNames [
 GameTest >> testGameKnowTheWinnerShip [
 
 	| aGame aCollectionOfNames |
-	aCollectionOfNames := OrderedCollection new
-		                      add: 'Juan';
-		                      add: 'Jose';
-		                      yourself.
+	aCollectionOfNames := OrderedCollection with: 'Juan' with: 'Jose'.
 
 
 	aGame := Game
@@ -142,9 +131,8 @@ GameTest >> testIfGameIsFinishedThenIsFinishedIsTrue [
 
 	| aGame aBoard aCollectionOfNames |
 	aBoard := SimpleBoard withTiles: 8.
-	aCollectionOfNames := OrderedCollection new
-		                      add: 'Juan';
-		                      yourself.
+	aCollectionOfNames := OrderedCollection with: 'Juan'.
+
 	aGame := Game
 		         withBoard: aBoard
 		         withShipNames: aCollectionOfNames
@@ -159,9 +147,8 @@ GameTest >> testIfGameIsNotFinishedThenIsFinishedIsFalse [
 
 	| aGame aBoard aCollectionOfNames |
 	aBoard := SimpleBoard withTiles: 10.
-	aCollectionOfNames := OrderedCollection new
-		                      add: 'Juan';
-		                      yourself.
+	aCollectionOfNames := OrderedCollection with: 'Juan'.
+
 	aGame := Game
 		         withBoard: aBoard
 		         withShipNames: aCollectionOfNames
@@ -174,10 +161,7 @@ GameTest >> testIfGameIsNotFinishedThenIsFinishedIsFalse [
 GameTest >> testIfGameIsOngoingThereIsNoWinner [
 
 	| aGame aCollectionOfNames |
-	aCollectionOfNames := OrderedCollection new
-		                      add: 'Juan';
-		                      add: 'Jose';
-		                      yourself.
+	aCollectionOfNames := OrderedCollection with: 'Juan' with: 'Jose'.
 
 
 	aGame := Game
@@ -196,10 +180,7 @@ GameTest >> testIfGameIsOngoingThereIsNoWinner [
 GameTest >> testIfThereIsAWinnerThereAreNoMoreMovements [
 
 	| aGame aCollectionOfNames |
-	aCollectionOfNames := OrderedCollection new
-		                      add: 'Juan';
-		                      add: 'Jose';
-		                      yourself.
+	aCollectionOfNames := OrderedCollection with: 'Juan' with: 'Jose'.
 
 
 	aGame := Game
@@ -222,10 +203,7 @@ GameTest >> testIfThereIsAWinnerThereAreNoMoreMovements [
 GameTest >> testWhenFinishedTheEndingPositionOfTheWinnerEqualsTheSizeOfTheBoard [
 
 	| aGame aCollectionOfNames |
-	aCollectionOfNames := OrderedCollection new
-		                      add: 'Juan';
-		                      add: 'Jose';
-		                      yourself.
+	aCollectionOfNames := OrderedCollection with: 'Juan' with: 'Jose'.
 
 	aGame := Game
 		         withBoard: (SimpleBoard withTiles: 27)
@@ -247,9 +225,7 @@ GameTest >> testWhenFinishedTheEndingPositionOfTheWinnerEqualsTheSizeOfTheBoard 
 GameTest >> testWhenOneShipReachesTheEndGameIsFinished [
 
 	| aGame aCollectionOfNames |
-	aCollectionOfNames := OrderedCollection new
-		                      add: 'Juan';
-		                      yourself.
+	aCollectionOfNames := OrderedCollection with: 'Juan'.
 
 	aGame := Game
 		         withBoard: (SimpleBoard withTiles: 16)
@@ -264,9 +240,7 @@ GameTest >> testWhenOneShipReachesTheEndGameIsFinished [
 GameTest >> testWhenShipInAGameLandsInWormholeEffectTileTheCorrespondingEffectIsApplied [
 
 	| aGame aCollectionOfNames aWormHoleTilePair |
-	aCollectionOfNames := OrderedCollection new
-		                      add: 'Juan';
-		                      yourself.
+	aCollectionOfNames := OrderedCollection with: 'Juan'.
 	aWormHoleTilePair := #( 10 15 ).
 
 	aGame := Game
