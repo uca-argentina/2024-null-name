@@ -31,7 +31,7 @@ SequenceDie >> initializeWithSequende: aSequenceOfRolls [
 	currentRollPosition := 0
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 SequenceDie >> nextRollPosition [
 
 	currentRollPosition := currentRollPosition < rollSequence size

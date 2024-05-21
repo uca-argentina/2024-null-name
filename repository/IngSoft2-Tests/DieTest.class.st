@@ -26,6 +26,15 @@ DieTest >> testDiceHasNDieInIT [
 ]
 
 { #category : #tests }
+DieTest >> testDiceRequiresAtLeastOneDie [
+
+	self
+		should: [ Dice with: OrderedCollection new ]
+		raise: Error
+		withMessage: 'There should be at least 1 Die'
+]
+
+{ #category : #tests }
 DieTest >> testDiceRollBetweenThesizeOfDiceAndTheSumOfTheDieFaces [
 
 	| aDice |

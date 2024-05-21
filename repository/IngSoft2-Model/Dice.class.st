@@ -10,12 +10,20 @@ Class {
 	#category : #'IngSoft2-Model'
 }
 
+{ #category : #testing }
+Dice class >> isValid: aDieCollection [
+
+	aDieCollection isEmpty ifTrue: [
+		Error signal: 'There should be at least 1 Die' ]
+]
+
 { #category : #'instance creation' }
 Dice class >> with: aDieCollection [
+	self isValid: aDieCollection.
 	^(self new) inializeWith: aDieCollection
 ]
 
-{ #category : #action }
+{ #category : #initialization }
 Dice >> inializeWith: aDieCollection [
 	dice := aDieCollection
 ]
