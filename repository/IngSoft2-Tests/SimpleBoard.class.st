@@ -19,6 +19,15 @@ SimpleBoard class >> withTiles: anumberOfTiles [
 ]
 
 { #category : #accessing }
+SimpleBoard >> adjustPositionAfterLap: aShip [
+
+	(aShip position > tileEffectArray size and: aShip inLastLap not)
+		ifFalse: [ ^ self ].
+	aShip moveTiles: tileEffectArray size negated.
+	aShip addLap
+]
+
+{ #category : #accessing }
 SimpleBoard >> applyTileEffectOn: aShip [
 
 	(tileEffectArray at: aShip position) applyOn: aShip
@@ -45,7 +54,7 @@ SimpleBoard >> numbOfTiles [
 
 { #category : #accessing }
 SimpleBoard >> snapToLastTile: aShip [
-
-	aShip position > tileEffectArray size ifTrue: [
+	
+	((aShip position > tileEffectArray size) and: aShip inLastLap)ifTrue: [
 		aShip moveTiles: tileEffectArray size - aShip position ]
 ]

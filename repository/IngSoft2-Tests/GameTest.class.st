@@ -46,10 +46,12 @@ GameTest >> testGameCanTellAllShipPositions [
 	aCollectionOfNamesAndPositions := OrderedCollection new
 		                                  add: (OrderedCollection new
 				                                   add: 19;
+				                                   add: 1;
 				                                   add: 'Juan';
 				                                   yourself);
 		                                  add: (OrderedCollection new
 				                                   add: 10;
+				                                   add: 1;
 				                                   add: 'Jose';
 				                                   yourself);
 		                                  yourself.
@@ -215,6 +217,33 @@ GameTest >> testIfThereIsAWinnerThereAreNoMoreMovements [
 		should: [ aGame playTurn ]
 		raise: Error
 		withMessage: 'Game is Over you cant Keep Playing'
+]
+
+{ #category : #tests }
+GameTest >> testWhenAShipFinishesLapThenPositionIsAdjustedAccordingly [
+
+	| aGame aCollectionOfNames aCollectionOfDie aCollectionOfNamesAndPositions |
+	aCollectionOfNames := OrderedCollection with: 'Juan'.
+	aCollectionOfDie := OrderedCollection with: (LoadedDie of: 10).
+	aCollectionOfNamesAndPositions := OrderedCollection new
+		                                  add: (OrderedCollection new
+				                                   add: 1;
+				                                   add: 2;
+				                                   add: 'Juan';
+				                                   yourself);
+		                                  yourself.
+
+	aGame := Game
+		         withBoard: (SimpleBoard withTiles: 10)
+		         withShipNames: aCollectionOfNames
+		         withDice: (Dice with: aCollectionOfDie)
+		         withAmountOfLaps: 3.
+
+	aGame playTurn.
+
+	self
+		assert: aGame allShipPositions
+		equals: aCollectionOfNamesAndPositions
 ]
 
 { #category : #tests }

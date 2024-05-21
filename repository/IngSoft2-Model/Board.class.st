@@ -39,6 +39,15 @@ Board class >> wormHolePairIsValid: aWormHoleTilePair with: aNumberOfTiles [
 			Error signal: 'Wormhole tiles are out of bounds' ] ]
 ]
 
+{ #category : #accessing }
+Board >> adjustPositionAfterLap: aShip [
+
+	(aShip position > tileEffectArray size and: aShip inLastLap not)
+		ifFalse: [ ^ self ].
+	aShip moveTiles: tileEffectArray size negated.
+	aShip addLap
+]
+
 { #category : #modifying }
 Board >> applyTileEffectOn: aShip [
 
@@ -75,7 +84,7 @@ Board >> numbOfTiles [
 
 { #category : #accessing }
 Board >> snapToLastTile: aShip [
-
-	aShip position > tileEffectArray size ifTrue: [
+	
+	((aShip position > tileEffectArray size) and: aShip inLastLap)ifTrue: [
 		aShip moveTiles: tileEffectArray size - aShip position ]
 ]

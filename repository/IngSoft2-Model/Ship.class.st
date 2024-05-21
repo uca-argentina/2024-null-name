@@ -7,7 +7,9 @@ Class {
 	#superclass : #Object,
 	#instVars : [
 		'currentPosition',
-		'playerName'
+		'playerName',
+		'currentLap',
+		'maxLap'
 	],
 	#category : #'IngSoft2-Model'
 }
@@ -16,7 +18,17 @@ Class {
 Ship class >> createWithName: aName [
 
 	self isValid: aName.
-	^ self new initializeInTile: 1 withName: aName
+	^ self new initializeInTile: 1 withName: aName withAmountOfLaps: 1
+]
+
+{ #category : #'class initialization' }
+Ship class >> createWithName: aName withAmountOfLaps: anAmountOfLaps [
+
+	self isValid: aName.
+	^ self new
+		  initializeInTile: 1
+		  withName: aName
+		  withAmountOfLaps: anAmountOfLaps
 ]
 
 { #category : #testing }
@@ -26,11 +38,27 @@ Ship class >> isValid: aName [
 		Error signal: 'Ship cannot be created with no name' ]
 ]
 
-{ #category : #initialization }
-Ship >> initializeInTile: aPosition withName: aName [
+{ #category : #modifying }
+Ship >> addLap [
+	currentLap := currentLap +1 .
+]
 
+{ #category : #accessing }
+Ship >> currentLap [
+	^ currentLap
+]
+
+{ #category : #accessing }
+Ship >> inLastLap [
+	^currentLap == maxLap .
+]
+
+{ #category : #initialization }
+Ship >> initializeInTile: aPosition withName: aName withAmountOfLaps: anAmountOfLaps [ 
 	currentPosition := aPosition.
-	playerName := aName
+	playerName := aName.
+	maxLap := anAmountOfLaps.
+	currentLap := 1.
 ]
 
 { #category : #modifying }

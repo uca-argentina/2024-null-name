@@ -35,6 +35,18 @@ Game class >> withBoard: aBoard withShipNames: aNameCollection withDice: aDice [
 		  initializeGameWith: aBoard
 		  withShipNames: aNameCollection asSet
 		  withDice: aDice
+		  withAmountOfLaps: 1
+]
+
+{ #category : #'class initialization' }
+Game class >> withBoard: aBoard withShipNames: aNameCollection withDice: aDice withAmountOfLaps: anAmountOfLaps [
+
+	self isValid: aBoard with: aNameCollection and: aDice.
+	^ self new
+		  initializeGameWith: aBoard
+		  withShipNames: aNameCollection asSet
+		  withDice: aDice
+		  withAmountOfLaps: anAmountOfLaps
 ]
 
 { #category : #accessing }
@@ -43,6 +55,7 @@ Game >> allShipPositions [
 	^ gameShips collect: [ :aShip |
 		  OrderedCollection new
 			  add: aShip position;
+			  add: aShip currentLap;
 			  add: aShip shipName;
 			  yourself ]
 ]
@@ -62,6 +75,20 @@ Game >> initializeGameWith: aBoard withShipNames: aNameCollection withDice: aDic
 	gameTurnHandler := TurnHandler withAnAmountOfTurns: gameShips size
 ]
 
+{ #category : #initialization }
+Game >> initializeGameWith: aBoard withShipNames: aNameCollection withDice: aDice withAmountOfLaps: anAmountOfLaps [ 
+	| aCollectionShips |
+	gameBoard := aBoard.
+	aCollectionShips := OrderedCollection new.
+	1 to: aNameCollection size do: [ :iter |
+		aCollectionShips add:
+			(Ship createWithName:
+				 (aNameCollection asOrderedCollection at: iter) withAmountOfLaps: anAmountOfLaps) ].
+	gameShips := aCollectionShips.
+	dice := aDice.
+	gameTurnHandler := TurnHandler withAnAmountOfTurns: gameShips size
+]
+
 { #category : #testing }
 Game >> isFinished [
 
@@ -76,6 +103,7 @@ Game >> playTurn [
 	movement := dice throw.
 	theShipInCurrentTurn := gameShips at: gameTurnHandler currentTurn.
 	theShipInCurrentTurn moveTiles: movement.
+	gameBoard adjustPositionAfterLap: theShipInCurrentTurn.
 	gameBoard snapToLastTile: theShipInCurrentTurn.
 	gameBoard applyTileEffectOn: theShipInCurrentTurn.
 	gameTurnHandler nextTurn
