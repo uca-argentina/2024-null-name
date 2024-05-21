@@ -8,9 +8,8 @@ Class {
 	#instVars : [
 		'currentPosition',
 		'playerName',
-		'currentLap',
-		'maxLap',
-		'numberOfShields'
+		'numberOfShields',
+		'lapsLeft'
 	],
 	#category : #'IngSoft2-Model'
 }
@@ -40,13 +39,8 @@ Ship class >> isValid: aName [
 ]
 
 { #category : #modifying }
-Ship >> addLap [
-	currentLap := currentLap +1 .
-]
-
-{ #category : #accessing }
-Ship >> currentLap [
-	^ currentLap
+Ship >> completeLap [
+	lapsLeft  := lapsLeft - 1 .
 ]
 
 { #category : #testing }
@@ -57,17 +51,22 @@ Ship >> hasAmountOfShields: anAmountOfShields [
 { #category : #accessing }
 Ship >> inLastLap [
 
-	^ currentLap == maxLap
+	^ lapsLeft = 1
 ]
 
 { #category : #initialization }
-Ship >> initializeInTile: aPosition withName: aName withAmountOfLaps: anAmountOfLaps [ 
+Ship >> initializeInTile: aPosition withName: aName withAmountOfLaps: anAmountOfLaps [
+
 	currentPosition := aPosition.
 	playerName := aName.
-	maxLap := anAmountOfLaps.
-	currentLap := 1.
 	numberOfShields := 3.
+	lapsLeft := anAmountOfLaps
 	
+]
+
+{ #category : #accessing }
+Ship >> lapsLeft [
+	^ lapsLeft 
 ]
 
 { #category : #modifying }

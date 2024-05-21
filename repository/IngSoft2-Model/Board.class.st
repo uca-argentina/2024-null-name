@@ -45,7 +45,7 @@ Board >> adjustPositionAfterLap: aShip [
 	(aShip position > tileEffectArray size and: aShip inLastLap not)
 		ifFalse: [ ^ self ].
 	aShip moveTiles: tileEffectArray size negated.
-	aShip addLap
+	aShip completeLap 
 ]
 
 { #category : #modifying }

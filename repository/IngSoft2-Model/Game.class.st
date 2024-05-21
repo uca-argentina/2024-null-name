@@ -55,7 +55,7 @@ Game >> allShipPositions [
 	^ gameShips collect: [ :aShip |
 		  OrderedCollection new
 			  add: aShip position;
-			  add: aShip currentLap;
+			  add: aShip lapsLeft;
 			  add: aShip shipName;
 			  yourself ]
 ]
