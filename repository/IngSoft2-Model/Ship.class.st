@@ -9,7 +9,8 @@ Class {
 		'currentPosition',
 		'playerName',
 		'currentLap',
-		'maxLap'
+		'maxLap',
+		'numberOfShields'
 	],
 	#category : #'IngSoft2-Model'
 }
@@ -48,9 +49,15 @@ Ship >> currentLap [
 	^ currentLap
 ]
 
+{ #category : #testing }
+Ship >> hasAmountOfShields: anAmountOfShields [
+	^(numberOfShields = anAmountOfShields).
+]
+
 { #category : #accessing }
 Ship >> inLastLap [
-	^currentLap == maxLap .
+
+	^ currentLap == maxLap
 ]
 
 { #category : #initialization }
@@ -59,6 +66,16 @@ Ship >> initializeInTile: aPosition withName: aName withAmountOfLaps: anAmountOf
 	playerName := aName.
 	maxLap := anAmountOfLaps.
 	currentLap := 1.
+	numberOfShields := 3.
+	
+]
+
+{ #category : #modifying }
+Ship >> loseOneShield [
+
+    (numberOfShields-1) < 0 ifTrue: [
+        Error signal: 'Amount of shields cannot be less than zero' ].
+    numberOfShields := numberOfShields - 1.
 ]
 
 { #category : #modifying }

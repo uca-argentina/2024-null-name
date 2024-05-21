@@ -43,7 +43,7 @@ SimpleBoard >> initializeWithAmoutTiles: anumberOfTiles [
 { #category : #testing }
 SimpleBoard >> isInLastTile: aShip [
 
-	^ aShip position == tileEffectArray size
+	^ aShip position = tileEffectArray size and: aShip inLastLap
 ]
 
 { #category : #accessing }

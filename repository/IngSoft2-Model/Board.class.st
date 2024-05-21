@@ -73,7 +73,7 @@ Board >> initializeWithAmoutTiles: anumberOfTiles withWormHolePositions: aWormHo
 { #category : #testing }
 Board >> isInLastTile: aShip [
 
-	^ aShip position = tileEffectArray size
+	^ aShip position = tileEffectArray size and: aShip inLastLap
 ]
 
 { #category : #accessing }
