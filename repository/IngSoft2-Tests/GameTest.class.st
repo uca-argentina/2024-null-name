@@ -73,7 +73,7 @@ GameTest >> testGameCannotBeInitializedWithoutABoard [
 			Game
 				withBoard: aBoard
 				withShipNames: aCollectionOfNames
-				withDice: (Dice with: OrderedCollection) ]
+				withDice: (Dice with: aCollectionOfDie) ]
 		raise: Error
 		withMessage: 'Game cannot be started without a board'
 ]
