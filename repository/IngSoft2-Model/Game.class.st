@@ -5,11 +5,10 @@ Class {
 	#name : #Game,
 	#superclass : #Object,
 	#instVars : [
-		'isFinished',
 		'gameBoard',
 		'gameShips',
 		'dice',
-		'currentTurn'
+		'gameTurnHandler'
 	],
 	#classInstVars : [
 		'isFinished'
@@ -17,101 +16,75 @@ Class {
 	#category : #'IngSoft2-Model'
 }
 
-{ #category : #'class initialization' }
-Game class >> withBoard: aBoard withShips: aShipCollection [
+{ #category : #testing }
+Game class >> isValid: aBoard with: aNameCollection and: aDice [
+
+	aNameCollection isEmpty ifTrue: [
+		Error signal: 'Game cannot be created without any Ship names' ].
 	aBoard ifNil: [
 		Error signal: 'Game cannot be started without a board' ].
-	aShipCollection ifNil: [ 
-		Error signal: 'Game cannot be started without at least one ship.' ].
-	^ self new beginGameWith: aBoard withShips: aShipCollection
+	aDice ifNil: [
+		Error signal: 'Game cannot be started without at least one die' ]
 ]
 
 { #category : #'class initialization' }
-Game class >> withBoard: aBoard withShips: aShipCollection withDice: aDice [ 
-	aBoard ifNil: [
-		Error signal: 'Game cannot be started without a board' ].
-	aShipCollection ifNil: [ 
-		Error signal: 'Game cannot be started without at least one ship.' ].
-	aDice ifNil: [ 
-		Error signal: 'Game cannot be started without at least one die' ].
-	 ^(self new)beginGameWith:aBoard  withShips:aShipCollection  withDice: aDice.
+Game class >> withBoard: aBoard withShipNames: aNameCollection withDice: aDice [
+
+	self isValid: aBoard with: aNameCollection and: aDice.
+	^ self new
+		  initializeGameWith: aBoard
+		  withShipNames: aNameCollection asSet
+		  withDice: aDice
 ]
 
 { #category : #accessing }
-Game >> amountOfShips [
-	^ gameShips size .
+Game >> allShipPositions [
+
+	^ gameShips collect: [ :aShip |
+		  OrderedCollection new
+			  add: aShip position;
+			  add: aShip shipName;
+			  yourself ]
 ]
 
 { #category : #initialization }
-Game >> beginGameWith: aBoard withShips: aShipCollection [
+Game >> initializeGameWith: aBoard withShipNames: aNameCollection withDice: aDice [
+
+	| aCollectionShips |
 	gameBoard := aBoard.
-	gameShips := aShipCollection.
-	isFinished := false.
-]
-
-{ #category : #initialization }
-Game >> beginGameWith: aBoard withShips: aShipCollection withDice: aDice [
-	gameBoard := aBoard.
-	gameShips := aShipCollection.
-	dice:=aDice .
-	currentTurn :=1.
-	isFinished := false.
-]
-
-{ #category : #initialization }
-Game >> board [ 
-	^gameBoard .
+	aCollectionShips := OrderedCollection new.
+	1 to: aNameCollection size do: [ :iter |
+		aCollectionShips add:
+			(Ship createWithName:
+				 (aNameCollection asOrderedCollection at: iter)) ].
+	gameShips := aCollectionShips.
+	dice := aDice.
+	gameTurnHandler := TurnHandler withAnAmountOfTurns: gameShips size
 ]
 
 { #category : #testing }
-Game >> currentTurn [
-	^gameShips at:self
+Game >> isFinished [
+
+	^ gameShips anySatisfy: [ :aShip | gameBoard isInLastTile: aShip ]
 ]
 
-{ #category : #accessing }
-Game >> endGame [
-	isFinished := true
-]
-
-{ #category : #testing }
-Game >> isFinished [ 
-	^ isFinished .
-]
-
-{ #category : #testing }
-Game >> isOver [
-	isFinished ifTrue: [ Error signal: 'Game is Over you cant Keep Playing' ] .
-	
-]
-
-{ #category : #'as yet unclassified' }
-Game >> nextTurn [
-	currentTurn :=currentTurn <(gameShips size) ifTrue:[currentTurn +1] ifFalse: [1].
-	^currentTurn .
-]
-
-{ #category : #'as yet unclassified' }
+{ #category : #modifying }
 Game >> playTurn [
-|movement player |
-	self isOver. 
+
+	| movement theShipInCurrentTurn |
+	gameTurnHandler canPlayNextTurnOf: self isFinished.
 	movement := dice throw.
-	player:=gameShips at: currentTurn.
-	player moveTiles: movement in: gameBoard  .
-	self veifyingItIsntTheWinningMove:player.
-	currentTurn :=self nextTurn.
-	
-	
-
+	theShipInCurrentTurn := gameShips at: gameTurnHandler currentTurn.
+	theShipInCurrentTurn moveTiles: movement.
+	gameBoard snapToLastTile: theShipInCurrentTurn.
+	gameBoard applyTileEffectOn: theShipInCurrentTurn.
+	gameTurnHandler nextTurn
 ]
 
 { #category : #accessing }
-Game >> ships [ 
-	^gameShips 
-]
+Game >> winnerName [
 
-{ #category : #accessing }
-Game >> veifyingItIsntTheWinningMove: player [
-	
-	isFinished:=player ownPosition = gameBoard numbOfTiles .
-	^isFinished .
+	self isFinished ifFalse: [ ^ 'There is no winner yet' ].
+	^ (gameShips detect: [ :aShip | gameBoard isInLastTile: aShip ])
+		  shipName
 ]

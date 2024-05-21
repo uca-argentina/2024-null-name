@@ -6,29 +6,47 @@ Class {
 	#name : #Ship,
 	#superclass : #Object,
 	#instVars : [
-		'currentPosition'
+		'currentPosition',
+		'playerName'
 	],
 	#category : #'IngSoft2-Model'
 }
 
 { #category : #'class initialization' }
-Ship class >> create [
-	^ (self new) inTile: 0.
+Ship class >> createWithName: aName [
+
+	self isValid: aName.
+	^ self new initializeInTile: 1 withName: aName
+]
+
+{ #category : #testing }
+Ship class >> isValid: aName [
+
+	aName isEmpty ifTrue: [
+		Error signal: 'Ship cannot be created with no name' ]
 ]
 
 { #category : #initialization }
-Ship >> inTile: aPosition [
+Ship >> initializeInTile: aPosition withName: aName [
+
 	currentPosition := aPosition.
+	playerName := aName
 ]
 
-{ #category : #'as yet unclassified' }
-Ship >> moveTiles: anAmountOfTiles in: aBoard [
+{ #category : #modifying }
+Ship >> moveTiles: anAmountOfTiles [
 
-	currentPosition := currentPosition + anAmountOfTiles min:
-		                   aBoard numbOfTiles
+	currentPosition := currentPosition + anAmountOfTiles max: 1
 ]
 
 { #category : #accessing }
-Ship >> ownPosition [
-	^ currentPosition.
+Ship >> position [
+
+	^ currentPosition
+]
+
+{ #category : #accessing }
+Ship >> shipName [
+
+	^ playerName
 ]
