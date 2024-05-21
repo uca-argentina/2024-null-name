@@ -15,6 +15,18 @@ LoadedDieTest >> should: aErrorBlock raise: anErrorClass withMessage: anErrorMes
 ]
 
 { #category : #asserting }
+LoadedDieTest >> testALoadedDieCanThrowASequenceOfDifferentRolls [
+
+	| aDie |
+	aDie := SequenceDie withSequence: #( 4 9 5 ).
+
+	self assert: aDie throw equals: 4.
+	self assert: aDie throw equals: 9.
+	self assert: aDie throw equals: 5.
+	self assert: aDie throw equals: 4.
+]
+
+{ #category : #asserting }
 LoadedDieTest >> testDieCanBeCreatedWithAnAmountOfFaces [
 
 	| aDie |
