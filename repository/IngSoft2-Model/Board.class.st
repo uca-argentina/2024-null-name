@@ -8,74 +8,74 @@ Class {
 	#name : #Board,
 	#superclass : #Object,
 	#instVars : [
-		'tileArray'
+		'tileEffectArray'
 	],
 	#category : #'IngSoft2-Model'
 }
 
-{ #category : #initialization }
-Board class >> withTiles: anumberOfTiles [ 
-	anumberOfTiles<=0 ifTrue:[Error signal: 'Board tiles must be greater than 0'].
-	^ (self new) initializeWithAmoutTiles: anumberOfTiles.
+{ #category : #'argument validation' }
+Board class >> numberOfTileIsValid: aNumberOfTiles [
+
+	aNumberOfTiles strictlyPositive ifFalse: [
+		Error signal: 'Board tiles must be greater than 0' ]
 ]
 
 { #category : #initialization }
 Board class >> withTiles: aNumberOfTiles withWormHolePositions: aWormHoleTilePair [
 
-	aNumberOfTiles strictlyPositive ifFalse: [
-		Error signal: 'Board tiles must be greater than 0' ].
-	aWormHoleTilePair do: [ :i |
-		(i <= aNumberOfTiles and: i strictlyPositive) ifFalse: [
-			Error signal: 'Wormhole tiles are out of bounds' ] ].
+	self numberOfTileIsValid: aNumberOfTiles.
+	self wormHolePairIsValid: aWormHoleTilePair with: aNumberOfTiles.
 
 	^ self new
 		  initializeWithAmoutTiles: aNumberOfTiles
 		  withWormHolePositions: aWormHoleTilePair
 ]
 
-{ #category : #accessing }
-Board >> checkPositionOf: aShip [ 
-	(aShip givePosition > tileArray size) ifTrue: [aShip moveTiles: (tileArray size - aShip givePosition )].
-	self tileEffectOn: aShip.
+{ #category : #'argument validation' }
+Board class >> wormHolePairIsValid: aWormHoleTilePair with: aNumberOfTiles [
+
+	aWormHoleTilePair do: [ :i |
+		(i <= aNumberOfTiles and: i strictlyPositive) ifFalse: [
+			Error signal: 'Wormhole tiles are out of bounds' ] ]
 ]
 
-{ #category : #initialization }
-Board >> initializeWithAmoutTiles: anumberOfTiles [
+{ #category : #modifying }
+Board >> applyTileEffectOn: aShip [
 
-	| aTileCollection |
-	aTileCollection := OrderedCollection new.
-	1 to: anumberOfTiles do: [ :i |
-	aTileCollection add: (Tile inPosition: i) ].
-	tileArray := aTileCollection
+	(tileEffectArray at: aShip position) applyOn: aShip
 ]
 
 { #category : #initialization }
 Board >> initializeWithAmoutTiles: anumberOfTiles withWormHolePositions: aWormHoleTilePair [
 
-	| aTileArray |
-	aTileArray := OrderedCollection new.
-	1 to: anumberOfTiles do: [ :i |
-		(aWormHoleTilePair includes: i)
-			ifTrue: [
-				aTileArray add: (Tile
-						 inPosition: i
-						 withWormholeTo:
-						 (aWormHoleTilePair detect: [ :index | index ~= i ])) ]
-			ifFalse: [ aTileArray add: (Tile inPosition: i) ] ].
-	tileArray := aTileArray
+	tileEffectArray := OrderedCollection new.
+
+	1 to: anumberOfTiles do: [ :i | tileEffectArray add: NullEffect new ].
+
+	tileEffectArray at: aWormHoleTilePair first put: (WormholeEffect
+			 fromPosition: aWormHoleTilePair first
+			 toPosition: aWormHoleTilePair last).
+
+	tileEffectArray at: aWormHoleTilePair last put: (WormholeEffect
+			 fromPosition: aWormHoleTilePair last
+			 toPosition: aWormHoleTilePair first)
+]
+
+{ #category : #testing }
+Board >> isInLastTile: aShip [
+
+	^ aShip position = tileEffectArray size
 ]
 
 { #category : #accessing }
 Board >> numbOfTiles [
-	^ tileArray size.
-]
 
-{ #category : #modifying }
-Board >> tileEffectOn: aShip [ 
-    (self tileInPosition: (aShip givePosition)) applyEffectOn: aShip.
+	^ tileEffectArray size
 ]
 
 { #category : #accessing }
-Board >> tileInPosition: aTilePosition [ 
-	^ tileArray at: aTilePosition
+Board >> snapToLastTile: aShip [
+
+	aShip position > tileEffectArray size ifTrue: [
+		aShip moveTiles: tileEffectArray size - aShip position ]
 ]

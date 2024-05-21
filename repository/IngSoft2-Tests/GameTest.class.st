@@ -17,205 +17,269 @@ GameTest >> should: anErrorBlock raise: exceptionClass withMessage: anErrorMessa
 { #category : #tests }
 GameTest >> testGameCanBePlayedWithMoreThanOneDie [
 
-	| aGame aCollectionOfNames |
-	aCollectionOfNames := OrderedCollection new
-		                      add: 'Juan';
-		                      yourself.
-
+	| aGame aCollectionOfNames aCollectionOfDie |
+	aCollectionOfNames := OrderedCollection with: 'Juan'.
+	aCollectionOfDie := OrderedCollection
+		                    with: (LoadedDie of: 9)
+		                    with: (LoadedDie of: 3).
 	aGame := Game
-		         withBoard: (Board withTiles: 16)
-		         withPlayers: aCollectionOfNames
-		         withDice:
-		         (Dice with: (LoadedDie of: 9) with: (LoadedDie of: 3)).
+		         withBoard: (SimpleBoard withTiles: 16)
+		         withShipNames: aCollectionOfNames
+		         withDice: (Dice with: aCollectionOfDie).
 	aGame playTurn.
 
-	self assert: (aGame giveAllShipPositions at:1) equals: 13
+	self assert: ((aGame allShipPositions at: 1) at: 1) equals: 13
 ]
 
 { #category : #tests }
 GameTest >> testGameCanTellAllShipPositions [
-	| aGame aCollectionOfNames aCollectionOfPositions |
-	
-	aCollectionOfNames:= OrderedCollection new 
-    add: 'Juan';
-    add: 'Jose';yourself.
-	
-	aGame :=Game withBoard: (Board withTiles: 30) withPlayers: aCollectionOfNames withDice: (Dice with: (LoadedDie of: 9)).
-	aCollectionOfPositions:= OrderedCollection new
-	add: 19; add: 10; yourself.
-	
-	aGame playTurn .
-	aGame playTurn .
-	aGame playTurn .
-	
-	self assert: aGame giveAllShipPositions equals: aCollectionOfPositions.
-]
 
-{ #category : #tests }
-GameTest >> testGameCanTellHowManyShipsArePlaying [
+	| aGame aCollectionOfNames aCollectionOfNamesAndPositions aCollectionOfDie |
+	aCollectionOfNames := OrderedCollection with: 'Juan' with: 'Jose'.
+	aCollectionOfDie := OrderedCollection with: (LoadedDie of: 9).
 
-	| aGame aBoard aCollectionOfNames |
-	aBoard := Board withTiles: 5.
-	aCollectionOfNames := OrderedCollection new
-		                      add: 'Juan';
-		                      add: 'Jose';
-		                      add: 'Fran';
-		                      add: 'Juan';
-		                      yourself.
 
 	aGame := Game
-		         withBoard: aBoard
-		         withPlayers: aCollectionOfNames
-		         withDice: (Dice with: (LoadedDie of: 9)).
-	self assert: aGame amountOfShips equals: 3
+		         withBoard: (SimpleBoard withTiles: 30)
+		         withShipNames: aCollectionOfNames
+		         withDice: (Dice with: aCollectionOfDie).
+	aCollectionOfNamesAndPositions := OrderedCollection new
+		                                  add: (OrderedCollection new
+				                                   add: 19;
+				                                   add: 'Juan';
+				                                   yourself);
+		                                  add: (OrderedCollection new
+				                                   add: 10;
+				                                   add: 'Jose';
+				                                   yourself);
+		                                  yourself.
+	aGame playTurn.
+	aGame playTurn.
+	aGame playTurn.
+
+	self
+		assert: aGame allShipPositions
+		equals: aCollectionOfNamesAndPositions
 ]
 
 { #category : #tests }
 GameTest >> testGameCannotBeInitializedWithoutABoard [
 
-	| aBoard aCollectionOfNames |
-	aCollectionOfNames:= OrderedCollection new
-   add: 'Juan'; yourself.
+	| aBoard aCollectionOfNames aCollectionOfDie |
+	aCollectionOfNames := OrderedCollection with: 'Juan'.
+	aCollectionOfDie := OrderedCollection with: (LoadedDie of: 9).
 	self
-		should: [ Game withBoard: aBoard withPlayers: aCollectionOfNames withDice: (Dice with: (LoadedDie of: 9) )]
+		should: [
+			Game
+				withBoard: aBoard
+				withShipNames: aCollectionOfNames
+				withDice: (Dice with: aCollectionOfDie) ]
 		raise: Error
 		withMessage: 'Game cannot be started without a board'
 ]
 
 { #category : #tests }
-GameTest >> testGameCannotBeInitializedWithoutAtLeastOneShip [
+GameTest >> testGameCannotBeInitializedWithoutAnyShipNames [
 
-	| aBoard aPlayerCollection |
-	aBoard := Board withTiles: 5.
+	| aCollectionOfNames aCollectionOfDie |
+	aCollectionOfNames := OrderedCollection new.
+	aCollectionOfDie := OrderedCollection with: (LoadedDie of: 9).
 	self
-		should: [ Game withBoard: aBoard withPlayers: aPlayerCollection withDice: (Dice with: (LoadedDie of: 9) )]
+		should: [
+			Game
+				withBoard: (SimpleBoard withTiles: 20)
+				withShipNames: aCollectionOfNames
+				withDice: (Dice with: aCollectionOfDie) ]
 		raise: Error
-		withMessage: 'Game cannot be started without at least one ship.'
+		withMessage: 'Game cannot be created without any Ship names'
+]
+
+{ #category : #tests }
+GameTest >> testGameDoesNotAllowRepeatedShipNames [
+
+	| aGame aBoard aCollectionOfNames aCollectionOfDie |
+	aBoard := SimpleBoard withTiles: 5.
+	aCollectionOfNames := OrderedCollection
+		                      with: 'Juan'
+		                      with: 'Jose'
+		                      with: 'Fran'
+		                      with: 'Juan'.
+	aCollectionOfDie := OrderedCollection with: (LoadedDie of: 9).
+
+	aGame := Game
+		         withBoard: aBoard
+		         withShipNames: aCollectionOfNames
+		         withDice: (Dice with: aCollectionOfDie).
+	self assert: aGame allShipPositions size equals: 3
 ]
 
 { #category : #tests }
 GameTest >> testGameKnowTheWinnerShip [
 
-	| aGame aCollectionOfNames|
-	aCollectionOfNames:= OrderedCollection new 
-    add: 'Juan';
-    add: 'Jose';yourself.
-	
-	
-	aGame :=Game withBoard: (Board withTiles: 17) withPlayers: aCollectionOfNames    withDice: (Dice with: (LoadedDie of: 9) with:(LoadedDie of:3)).
-	
-	aGame playTurn .
-	aGame playTurn .
-	aGame playTurn .
-	
-	self assert:  (aGame getWinnerName) equals: 'Juan'.
-]
+	| aGame aCollectionOfNames aCollectionOfDie |
+	aCollectionOfNames := OrderedCollection with: 'Juan' with: 'Jose'.
 
-{ #category : #tests }
-GameTest >> testGameKnownsOwnBoard [
+	aCollectionOfDie := OrderedCollection
+		                    with: (LoadedDie of: 9)
+		                    with: (LoadedDie of: 3).
 
-	| aGame aBoard aCollectionOfNames |
-	aBoard := Board withTiles: 1.
-	aCollectionOfNames:= OrderedCollection new 
-    add: 'Juan';yourself.
-	aGame := Game withBoard: aBoard withPlayers: aCollectionOfNames withDice: (Dice with: (LoadedDie of: 9) ).
-	self assert: (aGame hasBoard: aBoard).
-]
+	aGame := Game
+		         withBoard: (SimpleBoard withTiles: 17)
+		         withShipNames: aCollectionOfNames
+		         withDice: (Dice with: aCollectionOfDie).
 
-{ #category : #tests }
-GameTest >> testIfGameIsFinishedRerurnTrue [
-
-	| aGame aBoard aCollectionOfNames |
-	aBoard := Board withTiles: 8.
-	aCollectionOfNames:= OrderedCollection new 
-    add: 'Juan'; yourself.
-	aGame := Game withBoard: aBoard withPlayers: aCollectionOfNames withDice: (Dice with: (LoadedDie of: 9) ).
+	aGame playTurn.
+	aGame playTurn.
 	aGame playTurn.
 
-	self assert: aGame isFinished .
+	self assert: aGame winnerName equals: 'Juan'
 ]
 
 { #category : #tests }
-GameTest >> testIfGameIsNotFinishedRerurnFalse [
+GameTest >> testIfGameIsFinishedThenIsFinishedIsTrue [
 
-	| aGame aBoard aCollectionOfNames |
-	aBoard := Board withTiles: 1.
-	aCollectionOfNames:= OrderedCollection new 
-    add: 'Juan'; yourself.
-	aGame := Game withBoard: aBoard withPlayers: aCollectionOfNames withDice: (Dice with: (LoadedDie of: 9) ).
-	
-	self deny: aGame isFinished .
+	| aGame aBoard aCollectionOfNames aCollectionOfDie |
+	aBoard := SimpleBoard withTiles: 8.
+	aCollectionOfNames := OrderedCollection with: 'Juan'.
+
+	aCollectionOfDie := OrderedCollection with: (LoadedDie of: 9).
+
+	aGame := Game
+		         withBoard: aBoard
+		         withShipNames: aCollectionOfNames
+		         withDice: (Dice with: aCollectionOfDie).
+	aGame playTurn.
+
+	self assert: aGame isFinished
 ]
 
 { #category : #tests }
-GameTest >> testIfThreIsAwinnerThereisNoMoreMovements [
+GameTest >> testIfGameIsNotFinishedThenIsFinishedIsFalse [
+
+	| aGame aBoard aCollectionOfNames aCollectionOfDie|
+	aBoard := SimpleBoard withTiles: 10.
+	aCollectionOfNames := OrderedCollection with: 'Juan'.
+	aCollectionOfDie := OrderedCollection with: (LoadedDie of: 9).
 
 
-	| aGame aCollectionOfNames|
-	aCollectionOfNames:= OrderedCollection new 
-    add: 'Juan';
-    add: 'Jose';yourself.
-	
-	
-	aGame :=Game withBoard: (Board withTiles: 17) withPlayers: aCollectionOfNames    withDice: (Dice with: (LoadedDie of: 9) with:(LoadedDie of:3)).
-	
-	aGame playTurn .
-	aGame playTurn .
-	aGame playTurn .
-	
+	aGame := Game
+		         withBoard: aBoard
+		         withShipNames: aCollectionOfNames
+		         withDice: (Dice with: aCollectionOfDie).
+
+	self deny: aGame isFinished
+]
+
+{ #category : #tests }
+GameTest >> testIfGameIsOngoingThereIsNoWinner [
+
+	| aGame aCollectionOfNames aCollectionOfDie|
+	aCollectionOfNames := OrderedCollection with: 'Juan' with: 'Jose'.
+
+	aCollectionOfDie := OrderedCollection
+		                    with: (LoadedDie of: 9)
+		                    with: (LoadedDie of: 3).
+
+	aGame := Game
+		         withBoard: (SimpleBoard withTiles: 17)
+		         withShipNames: aCollectionOfNames
+		         withDice:
+		         (Dice with: aCollectionOfDie).
+
+	aGame playTurn.
+	aGame playTurn.
+
+	self assert: aGame winnerName equals: 'There is no winner yet'
+]
+
+{ #category : #tests }
+GameTest >> testIfThereIsAWinnerThereAreNoMoreMovements [
+
+	| aGame aCollectionOfNames aCollectionOfDie |
+	aCollectionOfNames := OrderedCollection with: 'Juan' with: 'Jose'.
+
+	aCollectionOfDie := OrderedCollection
+		                    with: (LoadedDie of: 9)
+		                    with: (LoadedDie of: 3).
+
+	aGame := Game
+		         withBoard: (SimpleBoard withTiles: 17)
+		         withShipNames: aCollectionOfNames
+		         withDice: (Dice with: aCollectionOfDie).
+
+	aGame playTurn.
+	aGame playTurn.
+	aGame playTurn.
+
 	self
-		should:[aGame playTurn] 
-		raise:Error
-		withMessage:'Game is Over you cant Keep Playing'.
+		should: [ aGame playTurn ]
+		raise: Error
+		withMessage: 'Game is Over you cant Keep Playing'
 ]
 
 { #category : #tests }
 GameTest >> testWhenFinishedTheEndingPositionOfTheWinnerEqualsTheSizeOfTheBoard [
 
+	| aGame aCollectionOfNames aCollectionOfDie|
+	aCollectionOfNames := OrderedCollection with: 'Juan' with: 'Jose'.
+	
+	aCollectionOfDie := OrderedCollection
+		                    with: (LoadedDie of: 9)
+		                    with: (LoadedDie of: 3).
+	
+	aGame := Game
+		         withBoard: (SimpleBoard withTiles: 27)
+		         withShipNames: aCollectionOfNames
+		         withDice:
+		         (Dice  with: aCollectionOfDie).
 
-	| aGame aCollectionOfNames|
-	aCollectionOfNames:= OrderedCollection new 
-    add: 'Juan';
-    add: 'Jose';yourself.
-	
-	aGame :=Game withBoard: (Board withTiles: 27 ) withPlayers: aCollectionOfNames    withDice: (Dice with: (LoadedDie of: 9) with:(LoadedDie of:3)).
-	
-	aGame playTurn .
-	aGame playTurn .
-	aGame playTurn .
-	aGame playTurn .
-	aGame playTurn .
-	
-	
-	self assert: (aGame giveAllShipPositions at:1) equals: 27
+	aGame playTurn.
+	aGame playTurn.
+	aGame playTurn.
+	aGame playTurn.
+	aGame playTurn.
+
+
+	self assert: ((aGame allShipPositions at: 1) at: 1) equals: 27
 ]
 
 { #category : #tests }
 GameTest >> testWhenOneShipReachesTheEndGameIsFinished [
 
-
-	| aGame aCollectionOfNames|
-	aCollectionOfNames:= OrderedCollection new 
-    add: 'Juan'; yourself.
+	| aGame aCollectionOfNames aCollectionOfDie |
+	aCollectionOfNames := OrderedCollection with: 'Juan'.
 	
-	aGame :=Game withBoard: (Board withTiles: 16 ) withPlayers: aCollectionOfNames  withDice: (Dice with: (LoadedDie of: 9) ).
-	aGame playTurn .
-	aGame playTurn .
-	self assert:  aGame isFinished.
+	aCollectionOfDie := OrderedCollection
+		                    with: (LoadedDie of: 9).
+	
+	aGame := Game
+		         withBoard: (SimpleBoard withTiles: 16)
+		         withShipNames: aCollectionOfNames
+		         withDice: (Dice with: aCollectionOfDie).
+	aGame playTurn.
+	aGame playTurn.
+	self assert: aGame isFinished
 ]
 
 { #category : #tests }
 GameTest >> testWhenShipInAGameLandsInWormholeEffectTileTheCorrespondingEffectIsApplied [
 
+	| aGame aCollectionOfNames aWormHoleTilePair aCollectionOfDie|
+	aCollectionOfNames := OrderedCollection with: 'Juan'.
+	aWormHoleTilePair := #( 10 15 ).
+	aCollectionOfDie := OrderedCollection
+		                    with: (LoadedDie of: 9).
+	
+	
+	aGame := Game
+		         withBoard:
+		         (Board
+			          withTiles: 16
+			          withWormHolePositions: aWormHoleTilePair)
+		         withShipNames: aCollectionOfNames
+		         withDice: (Dice with: aCollectionOfDie).
 
-	| aGame aCollectionOfNames aWormHoleTilePair|
-	aCollectionOfNames:= OrderedCollection new
-    add: 'Juan'; yourself.
-	aWormHoleTilePair:= #(10 15).
-	
-	aGame :=Game withBoard: (Board withTiles: 16 withWormHolePositions: aWormHoleTilePair) withPlayers: aCollectionOfNames  withDice: (Dice with: (LoadedDie of: 9) ).
-	
-	aGame playTurn .
-	
-	self assert:  (aGame giveAllShipPositions at:1) equals: 15.
+	aGame playTurn.
+
+	self assert: ((aGame allShipPositions at: 1) at: 1) equals: 15
 ]
