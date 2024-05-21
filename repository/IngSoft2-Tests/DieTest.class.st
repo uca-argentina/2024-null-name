@@ -17,17 +17,21 @@ DieTest >> should: aErrorBlock raise: anErrorClass withMessage: anErrorMessage [
 { #category : #tests }
 DieTest >> testDiceHasNDieInIT [
 
-	| adice |
-	adice := Dice with: (Die of: 3) with: (Die of: 4) with: (Die of: 5).
-	self assert: adice size equals: 3
+	| aDice |
+	aDice := Dice with: (OrderedCollection
+			          with: (Die of: 3)
+			          with: (Die of: 4)
+			          with: (Die of: 5)).
+	self assert: aDice numberOfDie equals: 3
 ]
 
 { #category : #tests }
 DieTest >> testDiceRollBetweenThesizeOfDiceAndTheSumOfTheDieFaces [
 
-	| adice |
-	adice := Dice with: (Die of: 3) with: (Die of: 4) with: (Die of: 5).
-	self assert: (adice throw between: 3 and: 12)
+	| aDice |
+	
+	aDice := Dice with: (OrderedCollection with:(Die of: 3) with: (Die of: 4) with: (Die of: 5) ).
+	self assert: (aDice throw between: 3 and: 12)
 ]
 
 { #category : #asserting }

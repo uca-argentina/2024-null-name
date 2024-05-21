@@ -1,14 +1,32 @@
 "
-a Dice collection made out of multiple Die
+Dice is a class that is composed of multiple Die
 "
 Class {
 	#name : #Dice,
-	#superclass : #OrderedCollection,
+	#superclass : #Object,
+	#instVars : [
+		'dice'
+	],
 	#category : #'IngSoft2-Model'
 }
+
+{ #category : #'instance creation' }
+Dice class >> with: aDieCollection [
+	^(self new) inializeWith: aDieCollection
+]
+
+{ #category : #action }
+Dice >> inializeWith: aDieCollection [
+	dice := aDieCollection
+]
+
+{ #category : #action }
+Dice >> numberOfDie [ 
+	^dice size
+]
 
 { #category : #action }
 Dice >> throw [
 
-	^ (self collect: [ :die | die throw ]) sum
+	^ (dice collect: [ :die | die throw ]) sum
 ]
