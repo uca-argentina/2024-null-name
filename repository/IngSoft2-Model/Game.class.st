@@ -61,21 +61,6 @@ Game >> allShipPositions [
 ]
 
 { #category : #initialization }
-Game >> initializeGameWith: aBoard withShipNames: aNameCollection withDice: aDice [
-
-	| aCollectionShips |
-	gameBoard := aBoard.
-	aCollectionShips := OrderedCollection new.
-	1 to: aNameCollection size do: [ :iter |
-		aCollectionShips add:
-			(Ship createWithName:
-				 (aNameCollection asOrderedCollection at: iter)) ].
-	gameShips := aCollectionShips.
-	dice := aDice.
-	gameTurnHandler := TurnHandler withAnAmountOfTurns: gameShips size
-]
-
-{ #category : #initialization }
 Game >> initializeGameWith: aBoard withShipNames: aNameCollection withDice: aDice withAmountOfLaps: anAmountOfLaps [ 
 	| aCollectionShips |
 	gameBoard := aBoard.
