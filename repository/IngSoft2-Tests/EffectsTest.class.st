@@ -22,6 +22,40 @@ EffectsTest >> testWhenApplyingBlackHoleEffectShipMoves4SpacesBack [
 ]
 
 { #category : #tests }
+EffectsTest >> testWhenApplyingHyperSpaceJumpEffectShipLosesAShield [
+
+	| aBoard aShip aDictionaryOfEffects |
+	
+	aDictionaryOfEffects:= Dictionary new
+	at: 4 put: HyperSpaceJumpEffect; yourself .
+	
+	aBoard := SetBoard withTiles: 10 withWormHolePositions: #( 2 5 ) withEffectsInPosition: aDictionaryOfEffects.
+	aShip := Ship createWithName: 'Juan'.
+	aShip moveTiles: 3.
+	aBoard applyTileEffectOn: aShip.
+
+
+	self assert: (aShip hasAmountOfShields: 2)
+]
+
+{ #category : #tests }
+EffectsTest >> testWhenApplyingHyperSpaceJumpEffectShipMoves4SpacesForward [ 
+
+	| aBoard aShip aDictionaryOfEffects |
+	
+	aDictionaryOfEffects:= Dictionary new
+	at: 4 put: HyperSpaceJumpEffect; yourself .
+	
+	aBoard := SetBoard withTiles: 10 withWormHolePositions: #( 2 5 ) withEffectsInPosition: aDictionaryOfEffects.
+	aShip := Ship createWithName: 'Juan'.
+	aShip moveTiles: 3.
+	aBoard applyTileEffectOn: aShip.
+
+
+	self assert: aShip position equals: 8
+]
+
+{ #category : #tests }
 EffectsTest >> testWhenApplyingWormholeEffectOnShipMoveAccordingly [
 
 	| aBoard aShip |

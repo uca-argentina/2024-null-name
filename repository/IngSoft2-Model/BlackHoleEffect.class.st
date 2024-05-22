@@ -6,3 +6,9 @@ Class {
 	#superclass : #Effect,
 	#category : #'IngSoft2-Model'
 }
+
+{ #category : #applying }
+BlackHoleEffect >> applyOn: aShip [
+
+	aShip moveTiles: -4
+]

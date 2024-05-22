@@ -10,5 +10,5 @@ Class {
 { #category : #applying }
 Effect >> applyOn: aShip [
 
-	aShip moveTiles: -4.
+	self subclassResponsibility.
 ]
