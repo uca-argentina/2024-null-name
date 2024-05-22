@@ -3,7 +3,7 @@ Wormhole effect
 moves ship to another fixed position
 "
 Class {
-	#name : #WormholeEffect,
+	#name : #WormHoleEffect,
 	#superclass : #Effect,
 	#instVars : [
 		'wormholeDistance'
