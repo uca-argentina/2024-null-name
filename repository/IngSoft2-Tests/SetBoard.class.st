@@ -30,7 +30,7 @@ SetBoard class >> withTiles: aNumberOfTiles withWormHolePositions: aWormHoleTile
 
 	^ self new
 		  initializeWithAmoutTiles: aNumberOfTiles
-		  withWormHolePositions: aWormHoleTilePair
+		  withWormHolePositions: aWormHoleTilePair withEffectsInPosition: Dictionary new.
 ]
 
 { #category : #'class initialization' }
@@ -65,22 +65,6 @@ SetBoard >> adjustPositionAfterLap: aShip [
 SetBoard >> applyTileEffectOn: aShip [
 
 	(tileEffectArray at: aShip position) applyOn: aShip
-]
-
-{ #category : #initialization }
-SetBoard >> initializeWithAmoutTiles: anumberOfTiles withWormHolePositions: aWormHoleTilePair [
-
-	tileEffectArray := OrderedCollection new.
-
-	1 to: anumberOfTiles do: [ :i | tileEffectArray add: NullEffect new ].
-
-	tileEffectArray at: aWormHoleTilePair first put: (WormholeEffect
-			 fromPosition: aWormHoleTilePair first
-			 toPosition: aWormHoleTilePair last).
-
-	tileEffectArray at: aWormHoleTilePair last put: (WormholeEffect
-			 fromPosition: aWormHoleTilePair last
-			 toPosition: aWormHoleTilePair first)
 ]
 
 { #category : #initialization }
