@@ -49,8 +49,8 @@ Ship >> completeLap [
 ]
 
 { #category : #testing }
-Ship >> hasAmountOfShields: anAmountOfShields [
-	^(numberOfShields = anAmountOfShields).
+Ship >> hasNoShields [
+	^(numberOfShields = 0)
 ]
 
 { #category : #accessing }
@@ -69,23 +69,37 @@ Ship >> initializeInTile: aPosition withName: aName withAmountOfLaps: anAmountOf
 	
 ]
 
+{ #category : #testing }
+Ship >> isInTheSamePositionAs: aShip [ 
+	^ currentPosition = aShip position
+]
+
 { #category : #accessing }
 Ship >> lapsLeft [
 	^ lapsLeft 
 ]
 
 { #category : #modifying }
+Ship >> loseBattle [
+	self loseOneShield.
+	self moveToFirstTile.
+]
+
+{ #category : #modifying }
 Ship >> loseOneShield [
 
-    (numberOfShields-1) < 0 ifTrue: [
-        Error signal: 'Amount of shields cannot be less than zero' ].
-    numberOfShields := numberOfShields - 1.
+    numberOfShields:= numberOfShields -1 max: 0
 ]
 
 { #category : #modifying }
 Ship >> moveTiles: anAmountOfTiles [
 
 	currentPosition := currentPosition + anAmountOfTiles max: 1
+]
+
+{ #category : #modifying }
+Ship >> moveToFirstTile [
+	currentPosition:= 1.
 ]
 
 { #category : #accessing }

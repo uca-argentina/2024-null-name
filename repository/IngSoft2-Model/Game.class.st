@@ -65,19 +65,18 @@ Game >> allShipPositions [
 			  yourself ]
 ]
 
-{ #category : #'as yet unclassified' }
-Game >> checkShipBattle: currentTurnShip [ 
-	| aux |
-	aux := gameShips select:[ :aShip | (aShip position = currentTurnShip position) and: (aShip shipName ~= currentTurnShip shipName)].
-	aux isEmpty ifFalse: [ 1 to: (aux size) do: [ :i | self doBattleBetween: currentTurnShip and: (aux at:i) ] ]
-]
+{ #category : #events }
+Game >> checkShipBattle: currentTurnShip [
 
-{ #category : #'as yet unclassified' }
-Game >> doBattleBetween: aShip and: anotherShip [ 
-	| aShipDiceRoll anotherShipDiceRoll |
-	aShipDiceRoll:= dice throw.
-	anotherShipDiceRoll:= dice throw.
-	(aShipDiceRoll > anotherShipDiceRoll) ifTrue: [ anotherShip loseOneShield ] ifFalse: [ aShip loseOneShield ]
+	| shipsInSamePosition |
+	shipsInSamePosition := gameShips select: [ :aShip |
+		                       (currentTurnShip isInTheSamePositionAs: aShip)
+			                       and: currentTurnShip ~= aShip ].
+	shipsInSamePosition isEmpty ifFalse: [
+		ShipBattle
+			doBattleBetween: currentTurnShip
+			and: shipsInSamePosition
+			withDice: dice ]
 ]
 
 { #category : #initialization }
