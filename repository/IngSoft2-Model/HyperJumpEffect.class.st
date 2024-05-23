@@ -17,6 +17,13 @@ HyperJumpEffect class >> createWith: aCollectionOfParameters [
 	^ (self new) initializeWithParsecs: aCollectionOfParameters.
 ]
 
+{ #category : #applying }
+HyperJumpEffect >> applyOn: aShip [
+
+	aShip moveTiles:
+		(parsecCollection at: self currentParsec) * boardParsecToTileRatio
+]
+
 { #category : #'as yet unclassified' }
 HyperJumpEffect >> currentParsec [
 
