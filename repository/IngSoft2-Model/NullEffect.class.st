@@ -7,6 +7,11 @@ Class {
 	#category : #'IngSoft2-Model'
 }
 
+{ #category : #'class initialization' }
+NullEffect class >> createWith: aCollectionOfParameters [
+	^(self new)
+]
+
 { #category : #applying }
 NullEffect >> applyOn: aShip [
 

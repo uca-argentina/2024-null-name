@@ -17,11 +17,6 @@ SetBoard class >> numberOfTileIsValid: aNumberOfTiles [
 		Error signal: 'Board tiles must be greater than 0' ]
 ]
 
-{ #category : #'class initialization' }
-SetBoard class >> withTiles: anInteger withEffectsInPosition: aClass [ 
-	self shouldBeImplemented.
-]
-
 { #category : #initialization }
 SetBoard class >> withTiles: aNumberOfTiles withWormHolePositions: aWormHoleTilePair [
 
@@ -70,13 +65,25 @@ SetBoard >> applyTileEffectOn: aShip [
 { #category : #initialization }
 SetBoard >> initializeWithAmoutTiles: aNumberOfTiles withWormHolePositions: aWormHoleTilePair withEffectsInPosition: aDictionaryOfEffects [
 
-tileEffectArray := OrderedCollection new.
+	tileEffectArray := OrderedCollection new.
 
-	1 to: aNumberOfTiles do: [ :i | tileEffectArray add: (aDictionaryOfEffects at: i ifAbsent: NullEffect ) new ].
+	1 to: aNumberOfTiles do: [ :i | tileEffectArray add: (NullEffect createWith: #()) ].
 
-	tileEffectArray at: aWormHoleTilePair first put: (WormholeEffect
-			 fromPosition: aWormHoleTilePair first
-			 toPosition: aWormHoleTilePair last).
+	1 to: aNumberOfTiles do: [ :i |
+		(aDictionaryOfEffects includesKey: i) ifTrue: [
+			tileEffectArray
+				at: i
+				put: ((aDictionaryOfEffects at: i) first createWith:
+						 (aDictionaryOfEffects at: i) last) ] ].
+
+	tileEffectArray
+		at: aWormHoleTilePair first
+		put: (WormholeEffect createWith:
+				 (aWormHoleTilePair at: 2) - (aWormHoleTilePair at: 1)).
+	tileEffectArray
+		at: aWormHoleTilePair last
+		put: (WormholeEffect createWith:
+				 (aWormHoleTilePair at: 1) - (aWormHoleTilePair at: 2))
 ]
 
 { #category : #testing }

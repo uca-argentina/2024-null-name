@@ -8,11 +8,14 @@ Class {
 EffectsTest >> testWhenApplyingBlackHoleEffectShipMoves4SpacesBack [
 
 	| aBoard aShip aDictionaryOfEffects |
-	
-	aDictionaryOfEffects:= Dictionary new
-	at: 8 put: BlackHoleEffect; yourself .
-	
-	aBoard := SetBoard withTiles: 10 withWormHolePositions: #( 2 5 ) withEffectsInPosition: aDictionaryOfEffects.
+	aDictionaryOfEffects := Dictionary new
+		                        at: 8 put: (OrderedCollection with: BlackHoleEffect with: #());
+		                        yourself.
+
+	aBoard := SetBoard
+		          withTiles: 10
+		          withWormHolePositions: #( 2 5 )
+		          withEffectsInPosition: aDictionaryOfEffects.
 	aShip := Ship createWithName: 'Juan'.
 	aShip moveTiles: 7.
 	aBoard applyTileEffectOn: aShip.
@@ -25,11 +28,14 @@ EffectsTest >> testWhenApplyingBlackHoleEffectShipMoves4SpacesBack [
 EffectsTest >> testWhenApplyingHyperSpaceJumpEffectShipLosesAShield [
 
 	| aBoard aShip aDictionaryOfEffects |
-	
-	aDictionaryOfEffects:= Dictionary new
-	at: 4 put: HyperSpaceJumpEffect; yourself .
-	
-	aBoard := SetBoard withTiles: 10 withWormHolePositions: #( 2 5 ) withEffectsInPosition: aDictionaryOfEffects.
+	aDictionaryOfEffects := Dictionary new
+		                        at: 4 put: (OrderedCollection with: HyperSpaceJumpEffect with: #());
+		                        yourself.
+
+	aBoard := SetBoard
+		          withTiles: 10
+		          withWormHolePositions: #( 2 5 )
+		          withEffectsInPosition: aDictionaryOfEffects.
 	aShip := Ship createWithName: 'Juan'.
 	aShip moveTiles: 3.
 	aBoard applyTileEffectOn: aShip.
@@ -39,14 +45,17 @@ EffectsTest >> testWhenApplyingHyperSpaceJumpEffectShipLosesAShield [
 ]
 
 { #category : #tests }
-EffectsTest >> testWhenApplyingHyperSpaceJumpEffectShipMoves4SpacesForward [ 
+EffectsTest >> testWhenApplyingHyperSpaceJumpEffectShipMoves4SpacesForward [
 
 	| aBoard aShip aDictionaryOfEffects |
-	
-	aDictionaryOfEffects:= Dictionary new
-	at: 4 put: HyperSpaceJumpEffect; yourself .
-	
-	aBoard := SetBoard withTiles: 10 withWormHolePositions: #( 2 5 ) withEffectsInPosition: aDictionaryOfEffects.
+	aDictionaryOfEffects := Dictionary new
+		                        at: 4 put: (OrderedCollection with: HyperSpaceJumpEffect with: #());
+		                        yourself.
+
+	aBoard := SetBoard
+		          withTiles: 10
+		          withWormHolePositions: #( 2 5 )
+		          withEffectsInPosition: aDictionaryOfEffects.
 	aShip := Ship createWithName: 'Juan'.
 	aShip moveTiles: 3.
 	aBoard applyTileEffectOn: aShip.

@@ -11,6 +11,12 @@ Class {
 	#category : #'IngSoft2-Model'
 }
 
+{ #category : #'class initialization' }
+WormholeEffect class >> createWith: aCollectionOfParameters [
+	^ (self new) initializeWithDistance: aCollectionOfParameters
+
+]
+
 { #category : #'instance creation' }
 WormholeEffect class >> fromPosition: firstPosition toPosition: endPosition [
 
@@ -29,4 +35,9 @@ WormholeEffect >> applyOn: aShip [
 WormholeEffect >> initializeInPosition: firstPosition toPosition: endPosition [
 
 	wormholeDistance := endPosition - firstPosition
+]
+
+{ #category : #'instance creation' }
+WormholeEffect >> initializeWithDistance: aDistance [
+	wormholeDistance := aDistance
 ]

@@ -7,6 +7,11 @@ Class {
 	#category : #'IngSoft2-Model'
 }
 
+{ #category : #'class initialization' }
+BlackHoleEffect class >> createWith: aCollectionOfParameters [
+	^ (self new)
+]
+
 { #category : #applying }
 BlackHoleEffect >> applyOn: aShip [
 
