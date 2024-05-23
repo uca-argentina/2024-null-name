@@ -25,6 +25,26 @@ EffectsTest >> testWhenApplyingBlackHoleEffectShipMoves4SpacesBack [
 ]
 
 { #category : #tests }
+EffectsTest >> testWhenApplyingHyperJumpEffectShipMovesAVariableParsecDistance [
+
+	| aBoard aShip aDictionaryOfEffects |
+	aDictionaryOfEffects := Dictionary new
+		                        at: 3 put: (OrderedCollection with: HyperJumpEffect with: (OrderedCollection with:#(2 5 3 1) with: #(10 20)));
+		                        yourself.
+		
+	aBoard := SetBoard
+		          withTiles: 20
+		          withWormHolePositions: #( 2 5 )
+		          withEffectsInPosition: aDictionaryOfEffects.
+	aShip := Ship createWithName: 'Juan'.
+	aShip moveTiles: 2.
+	aBoard applyTileEffectOn: aShip.
+
+
+	self assert: aShip position equals: 13
+]
+
+{ #category : #tests }
 EffectsTest >> testWhenApplyingHyperSpaceJumpEffectShipLosesAShield [
 
 	| aBoard aShip aDictionaryOfEffects |

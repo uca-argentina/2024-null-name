@@ -12,8 +12,8 @@ Class {
 }
 
 { #category : #'class initialization' }
-WormholeEffect class >> createWith: aCollectionOfParameters [
-	^ (self new) initializeWithDistance: aCollectionOfParameters
+WormholeEffect class >> createWith: aDistance [
+	^ (self new) initializeWithDistance: aDistance
 
 ]
 
