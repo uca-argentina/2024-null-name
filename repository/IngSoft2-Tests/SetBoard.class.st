@@ -29,14 +29,14 @@ SetBoard class >> withTiles: aNumberOfTiles withWormHolePositions: aWormHoleTile
 ]
 
 { #category : #'class initialization' }
-SetBoard class >> withTiles: aNumberOfTiles withWormHolePositions: aWormHoleTilePair withEffectsInPosition: aDictionaryOfEffects [ 
+SetBoard class >> withTiles: aNumberOfTiles withWormHolePositions: aWormHoleTilePair withEffectsInPosition: aDictionaryOfEffectsAndParameters [ 
 	self numberOfTileIsValid: aNumberOfTiles.
 	self wormHolePairIsValid: aWormHoleTilePair with: aNumberOfTiles.
 
 	^ self new
 		  initializeWithAmoutTiles: aNumberOfTiles
 		  withWormHolePositions: aWormHoleTilePair
-		withEffectsInPosition:aDictionaryOfEffects
+		withEffectsInPosition:aDictionaryOfEffectsAndParameters
 ]
 
 { #category : #'argument validation' }
@@ -63,18 +63,18 @@ SetBoard >> applyTileEffectOn: aShip [
 ]
 
 { #category : #initialization }
-SetBoard >> initializeWithAmoutTiles: aNumberOfTiles withWormHolePositions: aWormHoleTilePair withEffectsInPosition: aDictionaryOfEffects [
+SetBoard >> initializeWithAmoutTiles: aNumberOfTiles withWormHolePositions: aWormHoleTilePair withEffectsInPosition: aDictionaryOfEffectsAndParameters [
 
 	tileEffectArray := OrderedCollection new.
 
 	1 to: aNumberOfTiles do: [ :i | tileEffectArray add: (NullEffect createWith: #()) ].
 
 	1 to: aNumberOfTiles do: [ :i |
-		(aDictionaryOfEffects includesKey: i) ifTrue: [
+		(aDictionaryOfEffectsAndParameters includesKey: i) ifTrue: [
 			tileEffectArray
 				at: i
-				put: ((aDictionaryOfEffects at: i) first createWith:
-						 (aDictionaryOfEffects at: i) last) ] ].
+				put: ((aDictionaryOfEffectsAndParameters at: i) first createWith:
+						 (aDictionaryOfEffectsAndParameters at: i) last) ] ].
 
 	tileEffectArray
 		at: aWormHoleTilePair first
