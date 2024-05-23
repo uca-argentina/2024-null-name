@@ -36,7 +36,7 @@ GameTest >> testGameCanTellAllShipPositions [
 
 	| aGame aCollectionOfNames aCollectionOfNamesAndPositions aCollectionOfDie |
 	aCollectionOfNames := OrderedCollection with: 'Juan' with: 'Jose'.
-	aCollectionOfDie := OrderedCollection with: (LoadedDie of: 9).
+	aCollectionOfDie := OrderedCollection with: (SequenceDie withSequence: #(9 10 9)).
 
 
 	aGame := Game
@@ -50,7 +50,7 @@ GameTest >> testGameCanTellAllShipPositions [
 				                                   add: 'Juan';
 				                                   yourself);
 		                                  add: (OrderedCollection new
-				                                   add: 10;
+				                                   add: 11;
 				                                   add: 1;
 				                                   add: 'Jose';
 				                                   yourself);
