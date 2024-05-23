@@ -38,6 +38,11 @@ Ship class >> isValid: aName [
 		Error signal: 'Ship cannot be created with no name' ]
 ]
 
+{ #category : #accessing }
+Ship >> amountOfShieldsActive [
+	^numberOfShields.
+]
+
 { #category : #modifying }
 Ship >> completeLap [
 	lapsLeft  := lapsLeft - 1 .

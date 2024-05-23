@@ -50,6 +50,11 @@ Game class >> withBoard: aBoard withShipNames: aNameCollection withDice: aDice w
 ]
 
 { #category : #accessing }
+Game >> allShipAmountOfShields [
+	^ gameShips collect: [ :aShip | aShip amountOfShieldsActive]
+]
+
+{ #category : #accessing }
 Game >> allShipPositions [
 
 	^ gameShips collect: [ :aShip |
@@ -58,6 +63,21 @@ Game >> allShipPositions [
 			  add: aShip lapsLeft;
 			  add: aShip shipName;
 			  yourself ]
+]
+
+{ #category : #'as yet unclassified' }
+Game >> checkShipBattle: currentTurnShip [ 
+	| aux |
+	aux := gameShips select:[ :aShip | (aShip position = currentTurnShip position) and: (aShip shipName ~= currentTurnShip shipName)].
+	aux isEmpty ifFalse: [ 1 to: (aux size) do: [ :i | self doBattleBetween: currentTurnShip and: (aux at:i) ] ]
+]
+
+{ #category : #'as yet unclassified' }
+Game >> doBattleBetween: aShip and: anotherShip [ 
+	| aShipDiceRoll anotherShipDiceRoll |
+	aShipDiceRoll:= dice throw.
+	anotherShipDiceRoll:= dice throw.
+	(aShipDiceRoll > anotherShipDiceRoll) ifTrue: [ anotherShip loseOneShield ] ifFalse: [ aShip loseOneShield ]
 ]
 
 { #category : #initialization }
@@ -91,6 +111,7 @@ Game >> playTurn [
 	gameBoard adjustPositionAfterLap: theShipInCurrentTurn.
 	gameBoard snapToLastTile: theShipInCurrentTurn.
 	gameBoard applyTileEffectOn: theShipInCurrentTurn.
+	self checkShipBattle: theShipInCurrentTurn.
 	gameTurnHandler nextTurn
 ]
 
