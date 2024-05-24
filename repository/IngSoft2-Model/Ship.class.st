@@ -39,7 +39,8 @@ Ship class >> isValid: aName [
 ]
 
 { #category : #testing }
-Ship >> amountOfShields [
+Ship >> amountOfShieldsActive [
+
 	^ numberOfShields
 ]
 
