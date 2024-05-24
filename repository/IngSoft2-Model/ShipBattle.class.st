@@ -1,26 +1,38 @@
 "
-Ship battle object
+handles battles between ships and determines who participates
 "
 Class {
 	#name : #ShipBattle,
 	#superclass : #Object,
 	#instVars : [
-		'dice'
+		'dice',
+		'ships'
 	],
 	#category : #'IngSoft2-Model'
 }
 
 { #category : #events }
-ShipBattle class >> doBattleBetween: aShip and: aCollectionOfShips withDice: aCollectionOfDice [
-	^(self new) initializeBattleBetween: aShip and: aCollectionOfShips withDice: aCollectionOfDice 
+ShipBattle class >> withDice: aCollectionOfDice withShips: aCollectionOfShips [
+
+	^ self new
+		  initializeWithShips: aCollectionOfShips
+		  withDice: aCollectionOfDice
 ]
 
 { #category : #initialization }
-ShipBattle >> initializeBattleBetween: aShip and: aCollectionOfShips withDice: aCollectionOfDice [
+ShipBattle >> checkShipBattle: currentTurnShip [
+	| shipsInSamePosition |
+	shipsInSamePosition := ships select: [ :aShip |
+		                       (currentTurnShip isInTheSamePositionAs: aShip)
+			                       and: currentTurnShip ~= aShip ].
+	shipsInSamePosition isEmpty ifFalse: [self resolveBattleBetween: currentTurnShip and: shipsInSamePosition]
+]
 
+{ #category : #initialization }
+ShipBattle >> initializeWithShips: aCollectionOfShips
+		  withDice: aCollectionOfDice [
 	dice := aCollectionOfDice.
-	1 to: aCollectionOfShips size do: [ :i |
-		self resolveBattleBetween: aShip and: (aCollectionOfShips at: i) ]
+	ships := aCollectionOfShips.
 ]
 
 { #category : #event }

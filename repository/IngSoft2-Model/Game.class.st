@@ -8,7 +8,8 @@ Class {
 		'gameBoard',
 		'gameShips',
 		'dice',
-		'gameTurnHandler'
+		'gameTurnHandler',
+		'shipBattleHandler'
 	],
 	#classInstVars : [
 		'isFinished'
@@ -65,20 +66,6 @@ Game >> allShipPositions [
 			  yourself ]
 ]
 
-{ #category : #events }
-Game >> checkShipBattle: currentTurnShip [
-
-	| shipsInSamePosition |
-	shipsInSamePosition := gameShips select: [ :aShip |
-		                       (currentTurnShip isInTheSamePositionAs: aShip)
-			                       and: currentTurnShip ~= aShip ].
-	shipsInSamePosition isEmpty ifFalse: [
-		ShipBattle
-			doBattleBetween: currentTurnShip
-			and: shipsInSamePosition
-			withDice: dice ]
-]
-
 { #category : #initialization }
 Game >> initializeGameWith: aBoard withShipNames: aNameCollection withDice: aDice withAmountOfLaps: anAmountOfLaps [ 
 	| aCollectionShips |
@@ -90,7 +77,8 @@ Game >> initializeGameWith: aBoard withShipNames: aNameCollection withDice: aDic
 				 (aNameCollection asOrderedCollection at: iter) withAmountOfLaps: anAmountOfLaps) ].
 	gameShips := aCollectionShips.
 	dice := aDice.
-	gameTurnHandler := TurnHandler withAnAmountOfTurns: gameShips size
+	gameTurnHandler := TurnHandler withAnAmountOfTurns: gameShips size.
+	shipBattleHandler := ShipBattle withDice: dice withShips: gameShips 
 ]
 
 { #category : #testing }
@@ -110,7 +98,7 @@ Game >> playTurn [
 	gameBoard adjustPositionAfterLap: theShipInCurrentTurn.
 	gameBoard snapToLastTile: theShipInCurrentTurn.
 	gameBoard applyTileEffectOn: theShipInCurrentTurn.
-	self checkShipBattle: theShipInCurrentTurn.
+	shipBattleHandler checkShipBattle: theShipInCurrentTurn.
 	gameTurnHandler nextTurn
 ]
 
