@@ -40,6 +40,7 @@ Ship class >> isValid: aName [
 ]
 
 { #category : #accessing }
+
 Ship >> amountOfShieldsActive [
 
 	^ numberOfShields

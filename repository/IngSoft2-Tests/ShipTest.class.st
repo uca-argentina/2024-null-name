@@ -65,13 +65,8 @@ ShipTest >> testShipsAmountOfShieldCanChangeDuringTime [
     
     aShip2 loseOneShield.
     
-
     self assert: (aShip1 amountOfShieldsActive) equals: 3.
     self assert: (aShip2 amountOfShieldsActive) equals: 2.
-
-
-    self assert: (aShip1 amountOfShields) equals: 3.
-    self assert: (aShip2 amountOfShields) equals: 2.
 
 ]
 
