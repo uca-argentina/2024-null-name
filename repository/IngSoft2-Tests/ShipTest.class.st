@@ -51,7 +51,6 @@ ShipTest >> testShipsAlwaysHaveTheSameAmountOfShieldsSetAtTheStart [
     aShip1:= Ship createWithName:'Jorge' .
     aShip2:= Ship createWithName:'Jose'.
     
-    
     self assert: (aShip1 amountOfShieldsActive) equals: 3.
     self assert: (aShip2 amountOfShieldsActive) equals: 3.
 
@@ -66,8 +65,13 @@ ShipTest >> testShipsAmountOfShieldCanChangeDuringTime [
     
     aShip2 loseOneShield.
     
+
     self assert: (aShip1 amountOfShieldsActive) equals: 3.
     self assert: (aShip2 amountOfShieldsActive) equals: 2.
+
+
+    self assert: (aShip1 amountOfShields) equals: 3.
+    self assert: (aShip2 amountOfShields) equals: 2.
 
 ]
 
