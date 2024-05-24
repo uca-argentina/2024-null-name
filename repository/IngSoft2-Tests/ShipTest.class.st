@@ -54,6 +54,7 @@ ShipTest >> testShipsAlwaysHaveTheSameAmountOfShieldsSetAtTheStart [
     
     self assert: (aShip1 amountOfShieldsActive) equals: 3.
     self assert: (aShip2 amountOfShieldsActive) equals: 3.
+
 ]
 
 { #category : #tests }
@@ -67,6 +68,7 @@ ShipTest >> testShipsAmountOfShieldCanChangeDuringTime [
     
     self assert: (aShip1 amountOfShieldsActive) equals: 3.
     self assert: (aShip2 amountOfShieldsActive) equals: 2.
+
 ]
 
 { #category : #tests }

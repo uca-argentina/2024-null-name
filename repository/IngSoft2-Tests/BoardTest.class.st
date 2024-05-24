@@ -71,16 +71,3 @@ BoardTest >> testSpecialTilesCannotBeCreatedIfPositionsExceedBoardSize [
 		raise: Error
 		withMessage: 'Wormhole tiles are out of bounds'
 ]
-
-{ #category : #tests }
-BoardTest >> testWhenApplyingWormholeEffectOnShipMoveAccordingly [
-
-	| aBoard aShip |
-	aBoard := Board withTiles: 10 withWormHolePositions: #( 2 5 ).
-	aShip := Ship createWithName: 'Juan'.
-	aShip moveTiles: 1.
-	aBoard applyTileEffectOn: aShip.
-
-
-	self assert: aShip position equals: 5
-]

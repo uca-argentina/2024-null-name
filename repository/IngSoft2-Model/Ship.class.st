@@ -64,6 +64,7 @@ Ship >> healFullShields [
 ]
 
 { #category : #comparing }
+
 Ship >> inLastLap [
 
 	^ lapsLeft = 1

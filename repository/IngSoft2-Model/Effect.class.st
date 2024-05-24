@@ -7,8 +7,13 @@ Class {
 	#category : #'IngSoft2-Model'
 }
 
+{ #category : #'class initialization' }
+Effect class >> createWith: aCollectionOfParameters [
+	self subclassResponsibility.
+]
+
 { #category : #applying }
 Effect >> applyOn: aShip [
 
-	^ self subclassResponsibility
+	self subclassResponsibility.
 ]
