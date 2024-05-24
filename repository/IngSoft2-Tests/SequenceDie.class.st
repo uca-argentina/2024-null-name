@@ -14,8 +14,8 @@ Class {
 { #category : #'instance creation' }
 SequenceDie class >> isValid: aSequenceOfRolls [
 	aSequenceOfRolls
-		detect: [ :rollNumber | rollNumber < 3 ]
-		ifFound: [ Error signal: 'Faces should be more than 2' ]
+		detect: [ :rollNumber | rollNumber < 0 ]
+		ifFound: [ Error signal: 'Die cannot have faces lesser than 1' ]
 ]
 
 { #category : #'as yet unclassified' }

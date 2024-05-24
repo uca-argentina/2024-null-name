@@ -313,6 +313,36 @@ GameTest >> testWhenOneShipReachesTheEndGameIsFinished [
 ]
 
 { #category : #tests }
+GameTest >> testWhenShipHasNoShieldsLeftThenCannotPlayTurn [
+
+	| aGame aCollectionOfNames aWormHoleTilePair aCollectionOfDie |
+	aCollectionOfNames := OrderedCollection with: 'Juan' with: 'Pedro'.
+	aWormHoleTilePair := #( 10 15 ).
+	aCollectionOfDie := OrderedCollection
+		                    with: (SequenceDie withSequence: #(1 1 1 1 1 2 1 1 1 3)).
+	
+	
+	aGame := Game
+		         withBoard:
+		         (Board
+			          withTiles: 16
+			          withWormHolePositions: aWormHoleTilePair)
+		         withShipNames: aCollectionOfNames
+		         withDice: (Dice with: aCollectionOfDie)
+		withAmountOfLaps: 3.
+	
+	aGame playTurn.
+	aGame playTurn.
+	aGame playTurn.
+	aGame playTurn.
+	aGame playTurn.
+	aGame playTurn.
+	aGame playTurn.
+	
+	self assert: aGame playTurn equals: 'Pedro lost their turn'
+]
+
+{ #category : #tests }
 GameTest >> testWhenShipInAGameLandsInWormholeEffectTileTheCorrespondingEffectIsApplied [
 
 	| aGame aCollectionOfNames aWormHoleTilePair aCollectionOfDie|
@@ -333,6 +363,45 @@ GameTest >> testWhenShipInAGameLandsInWormholeEffectTileTheCorrespondingEffectIs
 	aGame playTurn.
 
 	self assert: ((aGame allShipPositions at: 1) at: 1) equals: 15
+]
+
+{ #category : #tests }
+GameTest >> testWhenShipWithNoShieldLosesTwoTurnsThenCanPlayAgain [
+
+	| aGame aCollectionOfNames aWormHoleTilePair aCollectionOfDie |
+	aCollectionOfNames := OrderedCollection with: 'Juan' with: 'Pedro'.
+	aWormHoleTilePair := #( 10 15 ).
+	aCollectionOfDie := OrderedCollection
+		                    with: (SequenceDie withSequence: #(1 1 1 1 1 2 1 1 1 3)).
+	
+	
+	aGame := Game
+		         withBoard:
+		         (Board
+			          withTiles: 16
+			          withWormHolePositions: aWormHoleTilePair)
+		         withShipNames: aCollectionOfNames
+		         withDice: (Dice with: aCollectionOfDie)
+		withAmountOfLaps: 3.
+	
+	aGame playTurn.
+	aGame playTurn.
+	
+	aGame playTurn.
+	aGame playTurn.
+	
+	aGame playTurn.
+	aGame playTurn.
+	
+	aGame playTurn.
+	aGame playTurn.
+	
+	aGame playTurn.
+	aGame playTurn.
+	
+	aGame playTurn.
+	
+	self deny: aGame playTurn equals:  'Pedro lost their turn'.
 ]
 
 { #category : #tests }

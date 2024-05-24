@@ -9,7 +9,8 @@ Class {
 		'currentPosition',
 		'playerName',
 		'numberOfShields',
-		'lapsLeft'
+		'lapsLeft',
+		'lostTurnCounter'
 	],
 	#category : #'IngSoft2-Model'
 }
@@ -43,14 +44,14 @@ Ship >> amountOfShieldsActive [
 	^numberOfShields.
 ]
 
+{ #category : #testing }
+Ship >> canPlayTurn [
+	^ lostTurnCounter = 0.
+]
+
 { #category : #modifying }
 Ship >> completeLap [
 	lapsLeft  := lapsLeft - 1 .
-]
-
-{ #category : #testing }
-Ship >> hasNoShields [
-	^(numberOfShields = 0)
 ]
 
 { #category : #modifying }
@@ -70,6 +71,7 @@ Ship >> initializeInTile: aPosition withName: aName withAmountOfLaps: anAmountOf
 	currentPosition := aPosition.
 	playerName := aName.
 	numberOfShields := 3.
+	lostTurnCounter := 0.
 	lapsLeft := anAmountOfLaps
 	
 ]
@@ -93,7 +95,14 @@ Ship >> loseBattle [
 { #category : #modifying }
 Ship >> loseOneShield [
 
-    numberOfShields:= numberOfShields -1 max: 0
+    numberOfShields:= numberOfShields -1 max: 0.
+	(numberOfShields = 0) ifTrue: [ lostTurnCounter := 2 ]
+]
+
+{ #category : #modifying }
+Ship >> lostTurnCounterDown [
+	lostTurnCounter := lostTurnCounter - 1 max:0.
+	self canPlayTurn ifTrue: [ self healFullShields ]
 ]
 
 { #category : #modifying }

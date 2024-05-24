@@ -79,7 +79,7 @@ ShipTest >> testShipsAmountOfShieldCannotBeNegative [
 	aShip1 loseOneShield.
 	aShip1 loseOneShield.
 
-	self assert: aShip1 hasNoShields
+	self assert: aShip1 amountOfShieldsActive equals: 0
 ]
 
 { #category : #tests }

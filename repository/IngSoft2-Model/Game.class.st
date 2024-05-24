@@ -88,12 +88,22 @@ Game >> isFinished [
 ]
 
 { #category : #modifying }
+Game >> loseTurn: aShip [ 
+	gameTurnHandler nextTurn.
+	aShip lostTurnCounterDown.
+	^ aShip shipName, ' lost their turn'.
+]
+
+{ #category : #modifying }
 Game >> playTurn [
 
 	| movement theShipInCurrentTurn |
 	gameTurnHandler canPlayNextTurnOf: self isFinished.
-	movement := dice throw.
 	theShipInCurrentTurn := gameShips at: gameTurnHandler currentTurn.
+	
+	(theShipInCurrentTurn canPlayTurn) ifFalse: [ ^ self loseTurn: theShipInCurrentTurn ].
+	
+	movement := dice throw.
 	theShipInCurrentTurn moveTiles: movement.
 	gameBoard adjustPositionAfterLap: theShipInCurrentTurn.
 	gameBoard snapToLastTile: theShipInCurrentTurn.
