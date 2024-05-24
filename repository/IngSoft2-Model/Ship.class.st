@@ -53,6 +53,11 @@ Ship >> hasNoShields [
 	^(numberOfShields = 0)
 ]
 
+{ #category : #modifying }
+Ship >> healFullShields [
+	numberOfShields := 3.
+]
+
 { #category : #accessing }
 Ship >> inLastLap [
 

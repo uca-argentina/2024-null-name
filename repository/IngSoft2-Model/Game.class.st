@@ -107,6 +107,7 @@ Game >> skipTurn [
 	| theShipInCurrentTurn |
 	gameTurnHandler canPlayNextTurnOf: self isFinished.
 	theShipInCurrentTurn := gameShips at: gameTurnHandler currentTurn.
+	theShipInCurrentTurn healFullShields.
 	gameTurnHandler nextTurn.
 	^ theShipInCurrentTurn shipName, ' skipped their turn'.
 ]

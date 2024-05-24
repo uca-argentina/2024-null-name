@@ -269,40 +269,6 @@ GameTest >> testWhenAShipFinishesLapThenPositionIsAdjustedAccordingly [
 ]
 
 { #category : #tests }
-GameTest >> testWhenATurnIsSkippedThenNextShipCanPlayNormally [
-
-	| aGame aCollectionOfNames aWormHoleTilePair aCollectionOfDie aCollectionOfNamesAndPositions |
-	aCollectionOfNames := OrderedCollection with: 'Juan' with: 'Pedro'.
-	aWormHoleTilePair := #( 10 15 ).
-	aCollectionOfDie := OrderedCollection with: (LoadedDie of: 5).
-	
-	aCollectionOfNamesAndPositions := OrderedCollection new
-		                                  add: (OrderedCollection new
-				                                   add: 1;
-				                                   add: 1;
-				                                   add: 'Juan';
-				                                   yourself);
-		                                  add: (OrderedCollection new
-				                                   add: 6;
-				                                   add: 1;
-				                                   add: 'Pedro';
-				                                   yourself);
-		                                  yourself.
-
-	aGame := Game
-		         withBoard:
-		         (Board
-			          withTiles: 16
-			          withWormHolePositions: aWormHoleTilePair)
-		         withShipNames: aCollectionOfNames
-		         withDice: (Dice with: aCollectionOfDie)
-		         withAmountOfLaps: 1.
-	aGame skipTurn.
-	aGame playTurn.
-	self assert: aGame allShipPositions equals: aCollectionOfNamesAndPositions
-]
-
-{ #category : #tests }
 GameTest >> testWhenFinishedTheEndingPositionOfTheWinnerEqualsTheSizeOfTheBoard [
 
 	| aGame aCollectionOfNames aCollectionOfDie|
@@ -367,4 +333,29 @@ GameTest >> testWhenShipInAGameLandsInWormholeEffectTileTheCorrespondingEffectIs
 	aGame playTurn.
 
 	self assert: ((aGame allShipPositions at: 1) at: 1) equals: 15
+]
+
+{ #category : #tests }
+GameTest >> testWhenTurnIsSkippedThenShipRestoresAllShields [
+
+	| aGame aCollectionOfNames aWormHoleTilePair aCollectionOfDie |
+	aCollectionOfNames := OrderedCollection with: 'Juan' with: 'Pedro'.
+	aWormHoleTilePair := #( 10 15 ).
+	aCollectionOfDie := OrderedCollection with: (LoadedDie of: 5).
+
+
+	aGame := Game
+		         withBoard:
+		         (Board
+			          withTiles: 16
+			          withWormHolePositions: aWormHoleTilePair)
+		         withShipNames: aCollectionOfNames
+		         withDice: (Dice with: aCollectionOfDie)
+		         withAmountOfLaps: 1.
+	aGame playTurn.
+	aGame playTurn.
+	aGame playTurn.
+	self assert: aGame allShipAmountOfShields last equals: 2.
+	aGame skipTurn.
+	self assert: aGame allShipAmountOfShields last equals: 3
 ]
