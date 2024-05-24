@@ -51,9 +51,9 @@ ShipTest >> testShipsAlwaysHaveTheSameAmountOfShieldsSetAtTheStart [
     aShip1:= Ship createWithName:'Jorge' .
     aShip2:= Ship createWithName:'Jose'.
     
-    
     self assert: (aShip1 amountOfShieldsActive) equals: 3.
     self assert: (aShip2 amountOfShieldsActive) equals: 3.
+
 ]
 
 { #category : #tests }
@@ -67,6 +67,7 @@ ShipTest >> testShipsAmountOfShieldCanChangeDuringTime [
     
     self assert: (aShip1 amountOfShieldsActive) equals: 3.
     self assert: (aShip2 amountOfShieldsActive) equals: 2.
+
 ]
 
 { #category : #tests }
@@ -79,10 +80,7 @@ ShipTest >> testShipsAmountOfShieldCannotBeNegative [
 	aShip1 loseOneShield.
 	aShip1 loseOneShield.
 
-	self
-		should: [ aShip1 loseOneShield ]
-		raise: Error
-		withMessage: 'Amount of shields cannot be less than zero'
+	self assert: aShip1 amountOfShieldsActive equals: 0
 ]
 
 { #category : #tests }

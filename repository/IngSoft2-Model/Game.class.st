@@ -8,7 +8,8 @@ Class {
 		'gameBoard',
 		'gameShips',
 		'dice',
-		'gameTurnHandler'
+		'gameTurnHandler',
+		'shipBattleHandler'
 	],
 	#classInstVars : [
 		'isFinished'
@@ -50,6 +51,12 @@ Game class >> withBoard: aBoard withShipNames: aNameCollection withDice: aDice w
 ]
 
 { #category : #accessing }
+Game >> allShipAmountOfShields [
+
+	^ gameShips collect: [ :aShip | aShip amountOfShieldsActive ]
+]
+
+{ #category : #accessing }
 Game >> allShipPositions [
 
 	^ gameShips collect: [ :aShip |
@@ -61,17 +68,19 @@ Game >> allShipPositions [
 ]
 
 { #category : #initialization }
-Game >> initializeGameWith: aBoard withShipNames: aNameCollection withDice: aDice withAmountOfLaps: anAmountOfLaps [ 
+Game >> initializeGameWith: aBoard withShipNames: aNameCollection withDice: aDice withAmountOfLaps: anAmountOfLaps [
+
 	| aCollectionShips |
 	gameBoard := aBoard.
 	aCollectionShips := OrderedCollection new.
 	1 to: aNameCollection size do: [ :iter |
-		aCollectionShips add:
-			(Ship createWithName:
-				 (aNameCollection asOrderedCollection at: iter) withAmountOfLaps: anAmountOfLaps) ].
+		aCollectionShips add: (Ship
+				 createWithName: (aNameCollection asOrderedCollection at: iter)
+				 withAmountOfLaps: anAmountOfLaps) ].
 	gameShips := aCollectionShips.
 	dice := aDice.
-	gameTurnHandler := TurnHandler withAnAmountOfTurns: gameShips size
+	gameTurnHandler := TurnHandler withAnAmountOfTurns: gameShips size.
+	shipBattleHandler := ShipBattle withDice: dice withShips: gameShips
 ]
 
 { #category : #testing }
@@ -81,17 +90,45 @@ Game >> isFinished [
 ]
 
 { #category : #modifying }
+Game >> loseTurn: aShip [
+
+	gameTurnHandler nextTurn.
+	aShip lostTurnCounterDown.
+	^ aShip shipName , ' lost their turn'
+]
+
+{ #category : #modifying }
 Game >> playTurn [
 
 	| movement theShipInCurrentTurn |
 	gameTurnHandler canPlayNextTurnOf: self isFinished.
-	movement := dice throw.
 	theShipInCurrentTurn := gameShips at: gameTurnHandler currentTurn.
+
+	theShipInCurrentTurn canPlayTurn ifFalse: [
+		^ self loseTurn: theShipInCurrentTurn ].
+
+	movement := dice throw.
 	theShipInCurrentTurn moveTiles: movement.
 	gameBoard adjustPositionAfterLap: theShipInCurrentTurn.
 	gameBoard snapToLastTile: theShipInCurrentTurn.
 	gameBoard applyTileEffectOn: theShipInCurrentTurn.
+	shipBattleHandler checkShipBattle: theShipInCurrentTurn.
 	gameTurnHandler nextTurn
+]
+
+{ #category : #modifying }
+Game >> skipTurn [
+
+	| theShipInCurrentTurn |
+	gameTurnHandler canPlayNextTurnOf: self isFinished.
+	theShipInCurrentTurn := gameShips at: gameTurnHandler currentTurn.
+	
+	theShipInCurrentTurn canPlayTurn ifFalse: [
+		^ self loseTurn: theShipInCurrentTurn ].
+	
+	theShipInCurrentTurn healFullShields.
+	gameTurnHandler nextTurn.
+	^ theShipInCurrentTurn shipName , ' skipped their turn'
 ]
 
 { #category : #accessing }

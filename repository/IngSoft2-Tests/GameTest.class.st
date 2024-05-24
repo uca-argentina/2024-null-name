@@ -15,6 +15,28 @@ GameTest >> should: anErrorBlock raise: exceptionClass withMessage: anErrorMessa
 ]
 
 { #category : #tests }
+GameTest >> testAGameTurnCanBeSkipped [
+
+	| aGame aCollectionOfNames aWormHoleTilePair aCollectionOfDie |
+	aCollectionOfNames := OrderedCollection with: 'Juan' with: 'Pedro'.
+	aWormHoleTilePair := #( 10 15 ).
+	aCollectionOfDie := OrderedCollection
+		                    with: (LoadedDie of: 5).
+	
+	
+	aGame := Game
+		         withBoard:
+		         (Board
+			          withTiles: 16
+			          withWormHolePositions: aWormHoleTilePair)
+		         withShipNames: aCollectionOfNames
+		         withDice: (Dice with: aCollectionOfDie)
+		withAmountOfLaps: 3.
+	
+	self assert: aGame skipTurn equals: 'Juan skipped their turn'
+]
+
+{ #category : #tests }
 GameTest >> testGameCanBePlayedWithMoreThanOneDie [
 
 	| aGame aCollectionOfNames aCollectionOfDie |
@@ -36,7 +58,7 @@ GameTest >> testGameCanTellAllShipPositions [
 
 	| aGame aCollectionOfNames aCollectionOfNamesAndPositions aCollectionOfDie |
 	aCollectionOfNames := OrderedCollection with: 'Juan' with: 'Jose'.
-	aCollectionOfDie := OrderedCollection with: (LoadedDie of: 9).
+	aCollectionOfDie := OrderedCollection with: (SequenceDie withSequence: #(9 10 9)).
 
 
 	aGame := Game
@@ -50,7 +72,7 @@ GameTest >> testGameCanTellAllShipPositions [
 				                                   add: 'Juan';
 				                                   yourself);
 		                                  add: (OrderedCollection new
-				                                   add: 10;
+				                                   add: 11;
 				                                   add: 1;
 				                                   add: 'Jose';
 				                                   yourself);
@@ -291,6 +313,36 @@ GameTest >> testWhenOneShipReachesTheEndGameIsFinished [
 ]
 
 { #category : #tests }
+GameTest >> testWhenShipHasNoShieldsLeftThenCannotPlayTurn [
+
+	| aGame aCollectionOfNames aWormHoleTilePair aCollectionOfDie |
+	aCollectionOfNames := OrderedCollection with: 'Juan' with: 'Pedro'.
+	aWormHoleTilePair := #( 10 15 ).
+	aCollectionOfDie := OrderedCollection
+		                    with: (SequenceDie withSequence: #(1 1 1 1 1 2 1 1 1 3)).
+	
+	
+	aGame := Game
+		         withBoard:
+		         (Board
+			          withTiles: 16
+			          withWormHolePositions: aWormHoleTilePair)
+		         withShipNames: aCollectionOfNames
+		         withDice: (Dice with: aCollectionOfDie)
+		withAmountOfLaps: 3.
+	
+	aGame playTurn.
+	aGame playTurn.
+	aGame playTurn.
+	aGame playTurn.
+	aGame playTurn.
+	aGame playTurn.
+	aGame playTurn.
+	
+	self assert: aGame playTurn equals: 'Pedro lost their turn'
+]
+
+{ #category : #tests }
 GameTest >> testWhenShipInAGameLandsInWormholeEffectTileTheCorrespondingEffectIsApplied [
 
 	| aGame aCollectionOfNames aWormHoleTilePair aCollectionOfDie|
@@ -311,4 +363,98 @@ GameTest >> testWhenShipInAGameLandsInWormholeEffectTileTheCorrespondingEffectIs
 	aGame playTurn.
 
 	self assert: ((aGame allShipPositions at: 1) at: 1) equals: 15
+]
+
+{ #category : #tests }
+GameTest >> testWhenShipWithNoShieldLosesTwoTurnsThenCanPlayAgain [
+
+	| aGame aCollectionOfNames aWormHoleTilePair aCollectionOfDie |
+	aCollectionOfNames := OrderedCollection with: 'Juan' with: 'Pedro'.
+	aWormHoleTilePair := #( 10 15 ).
+	aCollectionOfDie := OrderedCollection
+		                    with: (SequenceDie withSequence: #(1 1 1 1 1 2 1 1 1 3)).
+	
+	
+	aGame := Game
+		         withBoard:
+		         (Board
+			          withTiles: 16
+			          withWormHolePositions: aWormHoleTilePair)
+		         withShipNames: aCollectionOfNames
+		         withDice: (Dice with: aCollectionOfDie)
+		withAmountOfLaps: 3.
+	
+	aGame playTurn.
+	aGame playTurn.
+	
+	aGame playTurn.
+	aGame playTurn.
+	
+	aGame playTurn.
+	aGame playTurn.
+	
+	aGame playTurn.
+	aGame playTurn.
+	
+	aGame playTurn.
+	aGame playTurn.
+	
+	aGame playTurn.
+	
+	self deny: aGame playTurn equals:  'Pedro lost their turn'.
+]
+
+{ #category : #tests }
+GameTest >> testWhenShipWithNoShieldsCannotSkipTurn [
+
+	| aGame aCollectionOfNames aWormHoleTilePair aCollectionOfDie |
+	aCollectionOfNames := OrderedCollection with: 'Juan' with: 'Pedro'.
+	aWormHoleTilePair := #( 10 15 ).
+	aCollectionOfDie := OrderedCollection
+		                    with: (SequenceDie withSequence: #(1 1 1 1 1 2 1 1 1 3)).
+	
+	
+	aGame := Game
+		         withBoard:
+		         (Board
+			          withTiles: 16
+			          withWormHolePositions: aWormHoleTilePair)
+		         withShipNames: aCollectionOfNames
+		         withDice: (Dice with: aCollectionOfDie)
+		withAmountOfLaps: 3.
+	
+	aGame playTurn.
+	aGame playTurn.
+	aGame playTurn.
+	aGame playTurn.
+	aGame playTurn.
+	aGame playTurn.
+	aGame playTurn.
+	
+	self assert: aGame skipTurn equals: 'Pedro lost their turn'
+]
+
+{ #category : #tests }
+GameTest >> testWhenTurnIsSkippedThenShipRestoresAllShields [
+
+	| aGame aCollectionOfNames aWormHoleTilePair aCollectionOfDie |
+	aCollectionOfNames := OrderedCollection with: 'Juan' with: 'Pedro'.
+	aWormHoleTilePair := #( 10 15 ).
+	aCollectionOfDie := OrderedCollection with: (LoadedDie of: 5).
+
+
+	aGame := Game
+		         withBoard:
+		         (Board
+			          withTiles: 16
+			          withWormHolePositions: aWormHoleTilePair)
+		         withShipNames: aCollectionOfNames
+		         withDice: (Dice with: aCollectionOfDie)
+		         withAmountOfLaps: 1.
+	aGame playTurn.
+	aGame playTurn.
+	aGame playTurn.
+	self assert: aGame allShipAmountOfShields last equals: 2.
+	aGame skipTurn.
+	self assert: aGame allShipAmountOfShields last equals: 3
 ]

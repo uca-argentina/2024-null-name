@@ -9,7 +9,8 @@ Class {
 		'currentPosition',
 		'playerName',
 		'numberOfShields',
-		'lapsLeft'
+		'lapsLeft',
+		'lostTurnCounter'
 	],
 	#category : #'IngSoft2-Model'
 }
@@ -38,18 +39,33 @@ Ship class >> isValid: aName [
 		Error signal: 'Ship cannot be created with no name' ]
 ]
 
-{ #category : #testing }
+{ #category : #accessing }
+
 Ship >> amountOfShieldsActive [
 
 	^ numberOfShields
 ]
 
-{ #category : #modifying }
-Ship >> completeLap [
-	lapsLeft  := lapsLeft - 1 .
+{ #category : #comparing }
+Ship >> canPlayTurn [
+
+	^ lostTurnCounter = 0
 ]
 
-{ #category : #accessing }
+{ #category : #modifying }
+Ship >> completeLap [
+
+	lapsLeft := lapsLeft - 1
+]
+
+{ #category : #modifying }
+Ship >> healFullShields [
+
+	numberOfShields := 3
+]
+
+{ #category : #comparing }
+
 Ship >> inLastLap [
 
 	^ lapsLeft = 1
@@ -61,27 +77,54 @@ Ship >> initializeInTile: aPosition withName: aName withAmountOfLaps: anAmountOf
 	currentPosition := aPosition.
 	playerName := aName.
 	numberOfShields := 3.
+	lostTurnCounter := 0.
 	lapsLeft := anAmountOfLaps
 	
 ]
 
+{ #category : #comparing }
+Ship >> isInTheSamePositionAs: aShip [
+
+	^ currentPosition = aShip position
+]
+
 { #category : #accessing }
 Ship >> lapsLeft [
-	^ lapsLeft 
+
+	^ lapsLeft
+]
+
+{ #category : #modifying }
+Ship >> loseBattle [
+
+	self loseOneShield.
+	self moveToFirstTile
 ]
 
 { #category : #modifying }
 Ship >> loseOneShield [
 
-    (numberOfShields-1) < 0 ifTrue: [
-        Error signal: 'Amount of shields cannot be less than zero' ].
-    numberOfShields := numberOfShields - 1.
+    numberOfShields:= numberOfShields -1 max: 0.
+	(numberOfShields = 0) ifTrue: [ lostTurnCounter := 2 ]
+]
+
+{ #category : #modifying }
+Ship >> lostTurnCounterDown [
+
+	lostTurnCounter := lostTurnCounter - 1 max: 0.
+	self canPlayTurn ifTrue: [ self healFullShields ]
 ]
 
 { #category : #modifying }
 Ship >> moveTiles: anAmountOfTiles [
 
 	currentPosition := currentPosition + anAmountOfTiles max: 1
+]
+
+{ #category : #modifying }
+Ship >> moveToFirstTile [
+
+	currentPosition := 1
 ]
 
 { #category : #accessing }
