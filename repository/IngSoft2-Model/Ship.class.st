@@ -41,25 +41,29 @@ Ship class >> isValid: aName [
 
 { #category : #accessing }
 Ship >> amountOfShieldsActive [
-	^numberOfShields.
+
+	^ numberOfShields
 ]
 
-{ #category : #testing }
+{ #category : #comparing }
 Ship >> canPlayTurn [
-	^ lostTurnCounter = 0.
+
+	^ lostTurnCounter = 0
 ]
 
 { #category : #modifying }
 Ship >> completeLap [
-	lapsLeft  := lapsLeft - 1 .
+
+	lapsLeft := lapsLeft - 1
 ]
 
 { #category : #modifying }
 Ship >> healFullShields [
-	numberOfShields := 3.
+
+	numberOfShields := 3
 ]
 
-{ #category : #accessing }
+{ #category : #comparing }
 Ship >> inLastLap [
 
 	^ lapsLeft = 1
@@ -76,20 +80,23 @@ Ship >> initializeInTile: aPosition withName: aName withAmountOfLaps: anAmountOf
 	
 ]
 
-{ #category : #testing }
-Ship >> isInTheSamePositionAs: aShip [ 
+{ #category : #comparing }
+Ship >> isInTheSamePositionAs: aShip [
+
 	^ currentPosition = aShip position
 ]
 
 { #category : #accessing }
 Ship >> lapsLeft [
-	^ lapsLeft 
+
+	^ lapsLeft
 ]
 
 { #category : #modifying }
 Ship >> loseBattle [
+
 	self loseOneShield.
-	self moveToFirstTile.
+	self moveToFirstTile
 ]
 
 { #category : #modifying }
@@ -101,7 +108,8 @@ Ship >> loseOneShield [
 
 { #category : #modifying }
 Ship >> lostTurnCounterDown [
-	lostTurnCounter := lostTurnCounter - 1 max:0.
+
+	lostTurnCounter := lostTurnCounter - 1 max: 0.
 	self canPlayTurn ifTrue: [ self healFullShields ]
 ]
 
@@ -113,7 +121,8 @@ Ship >> moveTiles: anAmountOfTiles [
 
 { #category : #modifying }
 Ship >> moveToFirstTile [
-	currentPosition:= 1.
+
+	currentPosition := 1
 ]
 
 { #category : #accessing }

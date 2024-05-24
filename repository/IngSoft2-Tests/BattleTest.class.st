@@ -29,6 +29,31 @@ BattleTest >> testShipDoesNotBattleAgainstItself [
 ]
 
 { #category : #tests }
+BattleTest >> testShipsCannotBattleInTheFirstTileOfABoard [
+
+	| aGame aCollectionOfNames aWormHoleTilePair aCollectionOfDie |
+	aCollectionOfNames := OrderedCollection with: 'Juan' with: 'Pedro'.
+	aWormHoleTilePair := #( 10 15 ).
+	aCollectionOfDie := OrderedCollection with:
+		                    (SequenceDie withSequence: #( 16 16 4 5 )).
+
+
+	aGame := Game
+		         withBoard:
+		         (Board
+			          withTiles: 16
+			          withWormHolePositions: aWormHoleTilePair)
+		         withShipNames: aCollectionOfNames
+		         withDice: (Dice with: aCollectionOfDie)
+		         withAmountOfLaps: 3.
+
+	aGame playTurn.
+	aGame playTurn.
+
+	self assert: (aGame allShipAmountOfShields) equals: #( 3 3 ) asOrderedCollection .
+]
+
+{ #category : #tests }
 BattleTest >> testWhenShipInAGameLandsInATileWithAnotherShipThenTheyBattle [
 
 	| aGame aCollectionOfNames aWormHoleTilePair aCollectionOfDie|

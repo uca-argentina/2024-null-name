@@ -405,6 +405,36 @@ GameTest >> testWhenShipWithNoShieldLosesTwoTurnsThenCanPlayAgain [
 ]
 
 { #category : #tests }
+GameTest >> testWhenShipWithNoShieldsCannotSkipTurn [
+
+	| aGame aCollectionOfNames aWormHoleTilePair aCollectionOfDie |
+	aCollectionOfNames := OrderedCollection with: 'Juan' with: 'Pedro'.
+	aWormHoleTilePair := #( 10 15 ).
+	aCollectionOfDie := OrderedCollection
+		                    with: (SequenceDie withSequence: #(1 1 1 1 1 2 1 1 1 3)).
+	
+	
+	aGame := Game
+		         withBoard:
+		         (Board
+			          withTiles: 16
+			          withWormHolePositions: aWormHoleTilePair)
+		         withShipNames: aCollectionOfNames
+		         withDice: (Dice with: aCollectionOfDie)
+		withAmountOfLaps: 3.
+	
+	aGame playTurn.
+	aGame playTurn.
+	aGame playTurn.
+	aGame playTurn.
+	aGame playTurn.
+	aGame playTurn.
+	aGame playTurn.
+	
+	self assert: aGame skipTurn equals: 'Pedro lost their turn'
+]
+
+{ #category : #tests }
 GameTest >> testWhenTurnIsSkippedThenShipRestoresAllShields [
 
 	| aGame aCollectionOfNames aWormHoleTilePair aCollectionOfDie |
