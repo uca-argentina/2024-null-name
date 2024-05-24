@@ -102,6 +102,15 @@ Game >> playTurn [
 	gameTurnHandler nextTurn
 ]
 
+{ #category : #modifying }
+Game >> skipTurn [
+	| theShipInCurrentTurn |
+	gameTurnHandler canPlayNextTurnOf: self isFinished.
+	theShipInCurrentTurn := gameShips at: gameTurnHandler currentTurn.
+	gameTurnHandler nextTurn.
+	^ theShipInCurrentTurn shipName, ' skipped their turn'.
+]
+
 { #category : #accessing }
 Game >> winnerName [
 

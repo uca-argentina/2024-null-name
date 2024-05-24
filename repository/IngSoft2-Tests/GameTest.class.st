@@ -15,6 +15,28 @@ GameTest >> should: anErrorBlock raise: exceptionClass withMessage: anErrorMessa
 ]
 
 { #category : #tests }
+GameTest >> testAGameTurnCanBeSkipped [
+
+	| aGame aCollectionOfNames aWormHoleTilePair aCollectionOfDie |
+	aCollectionOfNames := OrderedCollection with: 'Juan' with: 'Pedro'.
+	aWormHoleTilePair := #( 10 15 ).
+	aCollectionOfDie := OrderedCollection
+		                    with: (LoadedDie of: 5).
+	
+	
+	aGame := Game
+		         withBoard:
+		         (Board
+			          withTiles: 16
+			          withWormHolePositions: aWormHoleTilePair)
+		         withShipNames: aCollectionOfNames
+		         withDice: (Dice with: aCollectionOfDie)
+		withAmountOfLaps: 3.
+	
+	self assert: aGame skipTurn equals: 'Juan skipped their turn'
+]
+
+{ #category : #tests }
 GameTest >> testGameCanBePlayedWithMoreThanOneDie [
 
 	| aGame aCollectionOfNames aCollectionOfDie |
@@ -244,6 +266,40 @@ GameTest >> testWhenAShipFinishesLapThenPositionIsAdjustedAccordingly [
 	self
 		assert: aGame allShipPositions
 		equals: aCollectionOfNamesAndPositions
+]
+
+{ #category : #tests }
+GameTest >> testWhenATurnIsSkippedThenNextShipCanPlayNormally [
+
+	| aGame aCollectionOfNames aWormHoleTilePair aCollectionOfDie aCollectionOfNamesAndPositions |
+	aCollectionOfNames := OrderedCollection with: 'Juan' with: 'Pedro'.
+	aWormHoleTilePair := #( 10 15 ).
+	aCollectionOfDie := OrderedCollection with: (LoadedDie of: 5).
+	
+	aCollectionOfNamesAndPositions := OrderedCollection new
+		                                  add: (OrderedCollection new
+				                                   add: 1;
+				                                   add: 1;
+				                                   add: 'Juan';
+				                                   yourself);
+		                                  add: (OrderedCollection new
+				                                   add: 6;
+				                                   add: 1;
+				                                   add: 'Pedro';
+				                                   yourself);
+		                                  yourself.
+
+	aGame := Game
+		         withBoard:
+		         (Board
+			          withTiles: 16
+			          withWormHolePositions: aWormHoleTilePair)
+		         withShipNames: aCollectionOfNames
+		         withDice: (Dice with: aCollectionOfDie)
+		         withAmountOfLaps: 1.
+	aGame skipTurn.
+	aGame playTurn.
+	self assert: aGame allShipPositions equals: aCollectionOfNamesAndPositions
 ]
 
 { #category : #tests }
