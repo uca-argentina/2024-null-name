@@ -61,7 +61,7 @@ EffectsTest >> testWhenApplyingHyperSpaceJumpEffectShipLosesAShield [
 	aBoard applyTileEffectOn: aShip.
 
 
-	self assert: (aShip hasAmountOfShields: 2)
+	self assert: (aShip amountOfShields equals: 2)
 ]
 
 { #category : #tests }

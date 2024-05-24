@@ -38,14 +38,14 @@ Ship class >> isValid: aName [
 		Error signal: 'Ship cannot be created with no name' ]
 ]
 
+{ #category : #testing }
+Ship >> amountOfShields [
+	^ numberOfShields
+]
+
 { #category : #modifying }
 Ship >> completeLap [
 	lapsLeft  := lapsLeft - 1 .
-]
-
-{ #category : #testing }
-Ship >> hasAmountOfShields: anAmountOfShields [
-	^(numberOfShields = anAmountOfShields).
 ]
 
 { #category : #accessing }
