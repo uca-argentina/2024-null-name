@@ -9,7 +9,8 @@ Class {
 
 { #category : #'class initialization' }
 Effect class >> createWith: aCollectionOfParameters [
-	self subclassResponsibility.
+
+	^ self subclassResponsibility
 ]
 
 { #category : #applying }

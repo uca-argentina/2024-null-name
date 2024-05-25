@@ -1,3 +1,6 @@
+"
+atomic bomb effect
+"
 Class {
 	#name : #AtomicBombEffect,
 	#superclass : #EffectOnAllShips,

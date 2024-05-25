@@ -54,24 +54,39 @@ Game class >> withBoard: aBoard withShipNames: aNameCollection withDice: aDice w
 { #category : #accessing }
 Game >> allShipAmountOfShields [
 
-	^ gameShips collect: [ :aShip | aShip amountOfShieldsActive ]
+	| shipShields |
+	shipShields := Dictionary new.
+	gameShips do: [ :aShip |
+		shipShields
+			at: aShip shipName put: aShip amountOfShieldsActive;
+			yourself ].
+	^ shipShields
 ]
 
 { #category : #accessing }
 Game >> allShipPositions [
 
-	^ gameShips collect: [ :aShip |
-		  OrderedCollection new
-			  add: aShip position;
-			  add: aShip lapsLeft;
-			  add: aShip shipName;
-			  yourself ]
+	| shipPositions |
+	shipPositions := Dictionary new.
+	gameShips do: [ :aShip |
+		shipPositions
+			at: aShip shipName put: (OrderedCollection
+					 with: aShip position
+					 with: aShip lapsLeft);
+			yourself ].
+	^ shipPositions
 ]
 
 { #category : #event }
 Game >> applyEffectOnAllShips: anEffect [
 
 	anEffect affectAShipCollection: gameShips
+]
+
+{ #category : #event }
+Game >> applyEffectOnAllShipsButOne: anEffect [
+
+	anEffect affectAllShips: gameShips but: theShipInCurrentTurn
 ]
 
 { #category : #event }

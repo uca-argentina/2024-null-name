@@ -50,40 +50,34 @@ GameTest >> testGameCanBePlayedWithMoreThanOneDie [
 		         withDice: (Dice with: aCollectionOfDie).
 	aGame playTurn.
 
-	self assert: ((aGame allShipPositions at: 1) at: 1) equals: 13
+	self
+		assert: (aGame allShipPositions at: 'Juan')
+		equals: #( 13 1 ) asOrderedCollection
 ]
 
 { #category : #tests }
 GameTest >> testGameCanTellAllShipPositions [
 
-	| aGame aCollectionOfNames aCollectionOfNamesAndPositions aCollectionOfDie |
+	| aGame aCollectionOfNames aCollectionOfDie |
 	aCollectionOfNames := OrderedCollection with: 'Juan' with: 'Jose'.
-	aCollectionOfDie := OrderedCollection with: (SequenceDie withSequence: #(9 10 9)).
-
+	aCollectionOfDie := OrderedCollection with:
+		                    (SequenceDie withSequence: #( 9 10 9 )).
 
 	aGame := Game
 		         withBoard: (SimpleBoard withTiles: 30)
 		         withShipNames: aCollectionOfNames
 		         withDice: (Dice with: aCollectionOfDie).
-	aCollectionOfNamesAndPositions := OrderedCollection new
-		                                  add: (OrderedCollection new
-				                                   add: 19;
-				                                   add: 1;
-				                                   add: 'Juan';
-				                                   yourself);
-		                                  add: (OrderedCollection new
-				                                   add: 11;
-				                                   add: 1;
-				                                   add: 'Jose';
-				                                   yourself);
-		                                  yourself.
+
 	aGame playTurn.
 	aGame playTurn.
 	aGame playTurn.
 
 	self
-		assert: aGame allShipPositions
-		equals: aCollectionOfNamesAndPositions
+		assert: (aGame allShipPositions at: 'Juan')
+		equals: #( 19 1 ) asOrderedCollection.
+	self
+		assert: (aGame allShipPositions at: 'Jose')
+		equals: #( 11 1 ) asOrderedCollection
 ]
 
 { #category : #tests }
@@ -244,16 +238,9 @@ GameTest >> testIfThereIsAWinnerThereAreNoMoreMovements [
 { #category : #tests }
 GameTest >> testWhenAShipFinishesLapThenPositionIsAdjustedAccordingly [
 
-	| aGame aCollectionOfNames aCollectionOfDie aCollectionOfNamesAndPositions |
+	| aGame aCollectionOfNames aCollectionOfDie |
 	aCollectionOfNames := OrderedCollection with: 'Juan'.
 	aCollectionOfDie := OrderedCollection with: (LoadedDie of: 10).
-	aCollectionOfNamesAndPositions := OrderedCollection new
-		                                  add: (OrderedCollection new
-				                                   add: 1;
-				                                   add: 2;
-				                                   add: 'Juan';
-				                                   yourself);
-		                                  yourself.
 
 	aGame := Game
 		         withBoard: (SimpleBoard withTiles: 10)
@@ -264,8 +251,8 @@ GameTest >> testWhenAShipFinishesLapThenPositionIsAdjustedAccordingly [
 	aGame playTurn.
 
 	self
-		assert: aGame allShipPositions
-		equals: aCollectionOfNamesAndPositions
+		assert: (aGame allShipPositions at: 'Juan')
+		equals: #( 1 2 ) asOrderedCollection
 ]
 
 { #category : #tests }
@@ -291,7 +278,9 @@ GameTest >> testWhenFinishedTheEndingPositionOfTheWinnerEqualsTheSizeOfTheBoard 
 	aGame playTurn.
 
 
-	self assert: ((aGame allShipPositions at: 1) at: 1) equals: 27
+	self
+		assert: (aGame allShipPositions at: 'Juan')
+		equals: #( 27 1 ) asOrderedCollection.
 ]
 
 { #category : #tests }
@@ -340,29 +329,6 @@ GameTest >> testWhenShipHasNoShieldsLeftThenCannotPlayTurn [
 	aGame playTurn.
 	
 	self assert: aGame playTurn equals: 'Pedro lost their turn'
-]
-
-{ #category : #tests }
-GameTest >> testWhenShipInAGameLandsInWormholeEffectTileTheCorrespondingEffectIsApplied [
-
-	| aGame aCollectionOfNames aWormHoleTilePair aCollectionOfDie|
-	aCollectionOfNames := OrderedCollection with: 'Juan'.
-	aWormHoleTilePair := #( 10 15 ).
-	aCollectionOfDie := OrderedCollection
-		                    with: (LoadedDie of: 9).
-	
-	
-	aGame := Game
-		         withBoard:
-		         (Board
-			          withTiles: 16
-			          withWormHolePositions: aWormHoleTilePair)
-		         withShipNames: aCollectionOfNames
-		         withDice: (Dice with: aCollectionOfDie).
-
-	aGame playTurn.
-
-	self assert: ((aGame allShipPositions at: 1) at: 1) equals: 15
 ]
 
 { #category : #tests }
@@ -454,7 +420,7 @@ GameTest >> testWhenTurnIsSkippedThenShipRestoresAllShields [
 	aGame playTurn.
 	aGame playTurn.
 	aGame playTurn.
-	self assert: aGame allShipAmountOfShields last equals: 2.
+	self assert: (aGame allShipAmountOfShields at: 'Pedro') equals: 2.
 	aGame skipTurn.
-	self assert: aGame allShipAmountOfShields last equals: 3
+	self assert: (aGame allShipAmountOfShields at: 'Pedro') equals: 3.
 ]

@@ -7,13 +7,11 @@ Class {
 { #category : #tests }
 EffectsTest >> testWhenApplyingAtomicBombEffectAllShipsMoveBackToFirstTile [
 
-	| aBoard aShipName aDictionaryOfEffects aGame aCollectionOfNamesAndPositions |
+	| aBoard aShipName aDictionaryOfEffects aGame |
 	aDictionaryOfEffects := Dictionary new
 		                        at: 7
 		                        put:
-			                        (OrderedCollection
-				                         with: AtomicBombEffect
-				                         with: #(  ));
+			                        (OrderedCollection with: AtomicBombEffect);
 		                        yourself.
 
 	aBoard := SetBoard
@@ -30,31 +28,20 @@ EffectsTest >> testWhenApplyingAtomicBombEffectAllShipsMoveBackToFirstTile [
 		         withDice: (Dice with:
 				          (OrderedCollection with:
 					           (SequenceDie withSequence: #( 3 2 4 )))).
-	aCollectionOfNamesAndPositions := OrderedCollection new
-		                                  add: (OrderedCollection new
-				                                   add: 1;
-				                                   add: 1;
-				                                   add: 'Juan';
-				                                   yourself);
-		                                  add: (OrderedCollection new
-				                                   add: 1;
-				                                   add: 1;
-				                                   add: 'Pedro';
-				                                   yourself);
-		                                  add: (OrderedCollection new
-				                                   add: 1;
-				                                   add: 1;
-				                                   add: 'Jose';
-				                                   yourself);
-		                                  yourself.
 	aGame playTurn.
 	aGame playTurn.
 	aGame playTurn.
 	aGame playTurn.
 
 	self
-		assert: aGame allShipPositions
-		equals: aCollectionOfNamesAndPositions
+		assert: (aGame allShipPositions at: 'Juan')
+		equals: #( 1 1 ) asOrderedCollection.
+	self
+		assert: (aGame allShipPositions at: 'Pedro')
+		equals: #( 1 1 ) asOrderedCollection.
+	self
+		assert: (aGame allShipPositions at: 'Jose')
+		equals: #( 1 1 ) asOrderedCollection
 ]
 
 { #category : #tests }
@@ -65,8 +52,7 @@ EffectsTest >> testWhenApplyingBlackHoleEffectShipMoves4SpacesBack [
 		                        at: 8
 		                        put:
 			                        (OrderedCollection
-				                         with: BlackHoleEffect
-				                         with: #(  ));
+				                         with: BlackHoleEffect);
 		                        yourself.
 
 	aBoard := SetBoard
@@ -83,8 +69,9 @@ EffectsTest >> testWhenApplyingBlackHoleEffectShipMoves4SpacesBack [
 
 	aGame playTurn.
 
-
-	self assert: (((aGame allShipPositions)first)first) equals: 4
+	self
+		assert: (aGame allShipPositions at: 'Juan')
+		equals: #( 4 1 ) asOrderedCollection.
 ]
 
 { #category : #tests }
@@ -114,8 +101,9 @@ EffectsTest >> testWhenApplyingHyperJumpEffectShipMovesAVariableParsecDistance [
 
 	aGame playTurn.
 
-
-	self assert: (((aGame allShipPositions)first)first) equals: 13
+	self
+		assert: (aGame allShipPositions at: 'Juan')
+		equals: #( 13 1 ) asOrderedCollection.
 ]
 
 { #category : #tests }
@@ -126,8 +114,7 @@ EffectsTest >> testWhenApplyingHyperSpaceJumpEffectShipLosesAShield [
 		                        at: 4
 		                        put:
 			                        (OrderedCollection
-				                         with: HyperSpaceJumpEffect
-				                         with: #(  ));
+				                         with: HyperSpaceJumpEffect);
 		                        yourself.
 
 	aBoard := SetBoard
@@ -144,9 +131,7 @@ EffectsTest >> testWhenApplyingHyperSpaceJumpEffectShipLosesAShield [
 
 	aGame playTurn.
 
-
-
-	self assert: ((aGame allShipAmountOfShields)first) equals: 2
+	self assert: (aGame allShipAmountOfShields at: 'Juan') equals: 2.
 ]
 
 { #category : #tests }
@@ -157,8 +142,7 @@ EffectsTest >> testWhenApplyingHyperSpaceJumpEffectShipMoves4SpacesForward [
 		                        at: 4
 		                        put:
 			                        (OrderedCollection
-				                         with: HyperSpaceJumpEffect
-				                         with: #(  ));
+				                         with: HyperSpaceJumpEffect);
 		                        yourself.
 
 	aBoard := SetBoard
@@ -175,8 +159,45 @@ EffectsTest >> testWhenApplyingHyperSpaceJumpEffectShipMoves4SpacesForward [
 
 	aGame playTurn.
 
+	self
+		assert: (aGame allShipPositions at: 'Juan')
+		equals: #( 8 1 ) asOrderedCollection.
+]
 
-	self assert: (((aGame allShipPositions)first)first) equals: 8
+{ #category : #tests }
+EffectsTest >> testWhenApplyingMoonWalkEffectAllShipsButTriggeringShipMoveAVariableDistance [
+
+	| aBoard aShipName aDictionaryOfEffects aGame |
+	aDictionaryOfEffects := Dictionary new
+		                        at: 13
+		                        put:
+			                        (OrderedCollection
+				                         with: MoonWalkEffect
+				                         with: 3);
+		                        yourself.
+	aBoard := SetBoard
+		          withTiles: 20
+		          withWormHolePositions: #( 2 5 )
+		          withEffectsInPosition: aDictionaryOfEffects.
+	aShipName := OrderedCollection with: 'Juan' with: 'Pedro'.
+	aGame := Game
+		         withBoard: aBoard
+		         withShipNames: aShipName
+		         withDice: (Dice with:
+				          (OrderedCollection with:
+					           (SequenceDie withSequence: #( 6 7 )))).
+
+	aGame playTurn.
+	aGame playTurn.
+	aGame playTurn.
+
+
+	self
+		assert: (aGame allShipPositions at: 'Juan')
+		equals: #( 13 1 ) asOrderedCollection.
+	self
+		assert: (aGame allShipPositions at: 'Pedro')
+		equals: #( 5 1 ) asOrderedCollection
 ]
 
 { #category : #tests }
@@ -184,13 +205,20 @@ EffectsTest >> testWhenApplyingWormholeEffectOnShipMoveAccordingly [
 
 	| aGame aBoard aWormholePositons aShipName |
 	aWormholePositons := #( 2 5 ).
-	aBoard := SetBoard withTiles: 6 withWormHolePositions: aWormholePositons.
+	aBoard := SetBoard
+		          withTiles: 6
+		          withWormHolePositions: aWormholePositons.
 	aShipName := OrderedCollection with: 'Juan'.
 	aGame := Game
-		         withBoard: aBoard 
+		         withBoard: aBoard
 		         withShipNames: aShipName
-		         withDice: (Dice with: (OrderedCollection with: (SequenceDie withSequence: #(1)))).
+		         withDice: (Dice with:
+				          (OrderedCollection with:
+					           (SequenceDie withSequence: #( 1 )))).
 
 	aGame playTurn.
-	self assert: (((aGame allShipPositions)first)first) equals: 5
+	
+	self
+		assert: (aGame allShipPositions at: 'Juan')
+		equals: #( 5 1 ) asOrderedCollection
 ]

@@ -15,22 +15,6 @@ BoardTest >> should: anErrorBlock raise: exceptionClass withMessage: anErrorMess
 ]
 
 { #category : #tests }
-BoardTest >> testBoardAppliesEffectWhenShipFallsOnSpecialTile [
-
-	| aGame aBoard aWormholePositons aShipName |
-	aWormholePositons := #( 2 5 ).
-	aBoard := Board withTiles: 6 withWormHolePositions: aWormholePositons.
-	aShipName := OrderedCollection with: 'Juan'.
-	aGame := Game
-		         withBoard: aBoard 
-		         withShipNames: aShipName
-		         withDice: (Dice with: (OrderedCollection with: (SequenceDie withSequence: #(1)))).
-
-	aGame playTurn.
-	self assert: (((aGame allShipPositions)first)first) equals: 5
-]
-
-{ #category : #tests }
 BoardTest >> testBoardCannotBeInitializedWithLessThanOneTile [
 
 	| numTiles |
