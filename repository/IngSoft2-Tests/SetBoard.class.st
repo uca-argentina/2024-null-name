@@ -57,12 +57,6 @@ SetBoard >> adjustPositionAfterLap: aShip [
 ]
 
 { #category : #modifying }
-SetBoard >> applyTileEffectOn: aShip [
-
-	(tileEffectArray at: aShip position) applyOn: aShip
-]
-
-{ #category : #modifying }
 SetBoard >> applyTileEffectOn: aGame triggeredBy: aShip [
 
 	(tileEffectArray at: aShip position) applyOn: aGame
@@ -85,11 +79,11 @@ SetBoard >> initializeWithAmoutTiles: aNumberOfTiles withWormHolePositions: aWor
 	tileEffectArray
 		at: aWormHoleTilePair first
 		put: (WormholeEffect createWith:
-				 (aWormHoleTilePair at: 2) - (aWormHoleTilePair at: 1)).
+				 aWormHoleTilePair).
 	tileEffectArray
 		at: aWormHoleTilePair last
 		put: (WormholeEffect createWith:
-				 (aWormHoleTilePair at: 1) - (aWormHoleTilePair at: 2))
+				 (aWormHoleTilePair reversed ))
 ]
 
 { #category : #testing }

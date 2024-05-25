@@ -12,17 +12,11 @@ Class {
 }
 
 { #category : #'class initialization' }
-WormholeEffect class >> createWith: aDistance [
-	^ (self new) initializeWithDistance: aDistance
-
-]
-
-{ #category : #'instance creation' }
-WormholeEffect class >> fromPosition: firstPosition toPosition: endPosition [
-
+WormholeEffect class >> createWith: aPairOfPositions [
 	^ self new
-		  initializeInPosition: firstPosition
-		  toPosition: endPosition
+		  initializeInPosition: aPairOfPositions first
+		  toPosition: aPairOfPositions last
+
 ]
 
 { #category : #applying }
@@ -31,13 +25,7 @@ WormholeEffect >> affectAShip: aShip [
 	aShip moveTiles: wormholeDistance
 ]
 
-{ #category : #'instance creation' }
-WormholeEffect >> initializeInPosition: firstPosition toPosition: endPosition [
-
-	wormholeDistance := endPosition - firstPosition
-]
-
-{ #category : #'instance creation' }
-WormholeEffect >> initializeWithDistance: aDistance [
-	wormholeDistance := aDistance
+{ #category : #initialization }
+WormholeEffect >> initializeInPosition: firstPosition toPosition: lastPosition [ 
+	wormholeDistance := lastPosition - firstPosition
 ]

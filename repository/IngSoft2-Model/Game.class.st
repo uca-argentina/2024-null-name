@@ -69,6 +69,11 @@ Game >> allShipPositions [
 ]
 
 { #category : #'as yet unclassified' }
+Game >> applyEffectOnAllShips: anEffect [ 
+	anEffect affectAShipCollection: gameShips.
+]
+
+{ #category : #'as yet unclassified' }
 Game >> applyEffectOnOneShip: anEffect [
 	anEffect affectAShip: theShipInCurrentTurn 
 ]

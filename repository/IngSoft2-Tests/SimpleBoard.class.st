@@ -28,12 +28,6 @@ SimpleBoard >> adjustPositionAfterLap: aShip [
 ]
 
 { #category : #accessing }
-SimpleBoard >> applyTileEffectOn: aShip [
-
-	(tileEffectArray at: aShip position) applyOn: aShip
-]
-
-{ #category : #accessing }
 SimpleBoard >> applyTileEffectOn: aGame triggeredBy: aShip [
 
 	(tileEffectArray at: aShip position) applyOn: aGame

@@ -5,6 +5,59 @@ Class {
 }
 
 { #category : #tests }
+EffectsTest >> testWhenApplyingAtomicBombEffectAllShipsMoveBackToFirstTile [
+
+	| aBoard aShipName aDictionaryOfEffects aGame aCollectionOfNamesAndPositions |
+	aDictionaryOfEffects := Dictionary new
+		                        at: 7
+		                        put:
+			                        (OrderedCollection
+				                         with: AtomicBombEffect
+				                         with: #(  ));
+		                        yourself.
+
+	aBoard := SetBoard
+		          withTiles: 10
+		          withWormHolePositions: #( 2 5 )
+		          withEffectsInPosition: aDictionaryOfEffects.
+	aShipName := OrderedCollection
+		             with: 'Juan'
+		             with: 'Pedro'
+		             with: 'Jose'.
+	aGame := Game
+		         withBoard: aBoard
+		         withShipNames: aShipName
+		         withDice: (Dice with:
+				          (OrderedCollection with:
+					           (SequenceDie withSequence: #( 3 2 4 )))).
+	aCollectionOfNamesAndPositions := OrderedCollection new
+		                                  add: (OrderedCollection new
+				                                   add: 1;
+				                                   add: 1;
+				                                   add: 'Juan';
+				                                   yourself);
+		                                  add: (OrderedCollection new
+				                                   add: 1;
+				                                   add: 1;
+				                                   add: 'Pedro';
+				                                   yourself);
+		                                  add: (OrderedCollection new
+				                                   add: 1;
+				                                   add: 1;
+				                                   add: 'Jose';
+				                                   yourself);
+		                                  yourself.
+	aGame playTurn.
+	aGame playTurn.
+	aGame playTurn.
+	aGame playTurn.
+
+	self
+		assert: aGame allShipPositions
+		equals: aCollectionOfNamesAndPositions
+]
+
+{ #category : #tests }
 EffectsTest >> testWhenApplyingBlackHoleEffectShipMoves4SpacesBack [
 
 	| aBoard aShipName aDictionaryOfEffects aGame |

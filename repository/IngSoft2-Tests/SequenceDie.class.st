@@ -21,11 +21,11 @@ SequenceDie class >> isValid: aSequenceOfRolls [
 { #category : #'as yet unclassified' }
 SequenceDie class >> withSequence: aSequenceOfRolls [
 	self isValid: aSequenceOfRolls.
-	^(self new) initializeWithSequende: aSequenceOfRolls.
+	^(self new) initializeWithSequence: aSequenceOfRolls.
 ]
 
 { #category : #initialization }
-SequenceDie >> initializeWithSequende: aSequenceOfRolls [
+SequenceDie >> initializeWithSequence: aSequenceOfRolls [
 
 	rollSequence := aSequenceOfRolls.
 	currentRollPosition := 0

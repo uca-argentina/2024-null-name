@@ -24,7 +24,7 @@ HyperJumpEffect >> affectAShip: aShip [
 		(parsecCollection at: self currentParsec) * boardParsecToTileRatio
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #modifying }
 HyperJumpEffect >> currentParsec [
 
 	parsecNumber := parsecNumber < parsecCollection size
