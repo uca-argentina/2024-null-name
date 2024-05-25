@@ -68,27 +68,26 @@ Game >> allShipPositions [
 			  yourself ]
 ]
 
-{ #category : #'as yet unclassified' }
-Game >> applyEffectOnAllShips: anEffect [ 
-	anEffect affectAShipCollection: gameShips.
+{ #category : #event }
+Game >> applyEffectOnAllShips: anEffect [
+
+	anEffect affectAShipCollection: gameShips
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #event }
 Game >> applyEffectOnOneShip: anEffect [
-	anEffect affectAShip: theShipInCurrentTurn 
+
+	anEffect affectAShip: theShipInCurrentTurn
 ]
 
 { #category : #initialization }
 Game >> initializeGameWith: aBoard withShipNames: aNameCollection withDice: aDice withAmountOfLaps: anAmountOfLaps [
 
-	| aCollectionShips |
 	gameBoard := aBoard.
-	aCollectionShips := OrderedCollection new.
-	1 to: aNameCollection size do: [ :iter |
-		aCollectionShips add: (Ship
-				 createWithName: (aNameCollection asOrderedCollection at: iter)
-				 withAmountOfLaps: anAmountOfLaps) ].
-	gameShips := aCollectionShips.
+	gameShips := aNameCollection asOrderedCollection collect: [ :aName |
+		             Ship
+			             createWithName: aName
+			             withAmountOfLaps: anAmountOfLaps ].
 	dice := aDice.
 	gameTurnHandler := TurnHandler withAnAmountOfTurns: gameShips size.
 	shipBattleHandler := ShipBattle withDice: dice withShips: gameShips

@@ -93,13 +93,6 @@ Ship >> lapsLeft [
 ]
 
 { #category : #modifying }
-Ship >> loseBattle [
-
-	self loseOneShield.
-	self moveToFirstTile
-]
-
-{ #category : #modifying }
 Ship >> loseOneShield [
 
     numberOfShields:= numberOfShields -1 max: 0.

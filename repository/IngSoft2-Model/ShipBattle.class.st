@@ -37,11 +37,14 @@ ShipBattle >> initializeWithShips: aCollectionOfShips
 ]
 
 { #category : #event }
-ShipBattle >> resolveBattleBetween: aShip and: aShip2 [ 
-	| aShipDiceRoll anotherShipDiceRoll |
+ShipBattle >> resolveBattleBetween: aShip and: aShip2 [
+
+	| aShipDiceRoll anotherShipDiceRoll loserShip |
 	aShipDiceRoll := dice throw.
 	anotherShipDiceRoll := dice throw.
-	aShipDiceRoll > anotherShipDiceRoll
-		ifTrue: [ aShip2 loseBattle ]
-		ifFalse: [ aShip loseBattle ]
+	loserShip := aShipDiceRoll > anotherShipDiceRoll
+		             ifTrue: [ aShip2 ]
+		             ifFalse: [ aShip ].
+	loserShip loseOneShield.
+	loserShip moveToFirstTile
 ]

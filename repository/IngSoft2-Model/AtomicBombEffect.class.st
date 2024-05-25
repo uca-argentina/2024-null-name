@@ -13,5 +13,7 @@ AtomicBombEffect class >> createWith: aCollectionOfParameters [
 { #category : #applying }
 AtomicBombEffect >> affectAShipCollection: aShipCollection [
 
-	(aShipCollection) do: [ :aShip | aShip loseBattle ]
+	aShipCollection do: [ :aShip |
+		aShip loseOneShield.
+		aShip moveToFirstTile ]
 ]

@@ -1,3 +1,6 @@
+"
+proof of concept
+"
 Class {
 	#name : #EffectOnAllShips,
 	#superclass : #Effect,
