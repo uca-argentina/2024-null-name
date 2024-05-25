@@ -3,7 +3,7 @@ aS
 "
 Class {
 	#name : #HyperJumpEffect,
-	#superclass : #Effect,
+	#superclass : #EffectOnOneShip,
 	#instVars : [
 		'parsecCollection',
 		'parsecNumber',
@@ -18,7 +18,7 @@ HyperJumpEffect class >> createWith: aCollectionOfParameters [
 ]
 
 { #category : #applying }
-HyperJumpEffect >> applyOn: aShip [
+HyperJumpEffect >> affectAShip: aShip [
 
 	aShip moveTiles:
 		(parsecCollection at: self currentParsec) * boardParsecToTileRatio

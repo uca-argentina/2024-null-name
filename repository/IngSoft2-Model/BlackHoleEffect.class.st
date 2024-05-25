@@ -3,7 +3,7 @@ Black Hole Effect sends Ship 4 spaces back
 "
 Class {
 	#name : #BlackHoleEffect,
-	#superclass : #Effect,
+	#superclass : #EffectOnOneShip,
 	#category : #'IngSoft2-Model'
 }
 
@@ -13,7 +13,6 @@ BlackHoleEffect class >> createWith: aCollectionOfParameters [
 ]
 
 { #category : #applying }
-BlackHoleEffect >> applyOn: aShip [
-
+BlackHoleEffect >> affectAShip: aShip [
 	aShip moveTiles: -4
 ]

@@ -9,7 +9,8 @@ Class {
 		'gameShips',
 		'dice',
 		'gameTurnHandler',
-		'shipBattleHandler'
+		'shipBattleHandler',
+		'theShipInCurrentTurn'
 	],
 	#classInstVars : [
 		'isFinished'
@@ -67,6 +68,11 @@ Game >> allShipPositions [
 			  yourself ]
 ]
 
+{ #category : #'as yet unclassified' }
+Game >> applyEffectOnOneShip: anEffect [
+	anEffect affectAShip: theShipInCurrentTurn 
+]
+
 { #category : #initialization }
 Game >> initializeGameWith: aBoard withShipNames: aNameCollection withDice: aDice withAmountOfLaps: anAmountOfLaps [
 
@@ -100,7 +106,7 @@ Game >> loseTurn: aShip [
 { #category : #modifying }
 Game >> playTurn [
 
-	| movement theShipInCurrentTurn |
+	| movement |
 	gameTurnHandler canPlayNextTurnOf: self isFinished.
 	theShipInCurrentTurn := gameShips at: gameTurnHandler currentTurn.
 
@@ -111,7 +117,7 @@ Game >> playTurn [
 	theShipInCurrentTurn moveTiles: movement.
 	gameBoard adjustPositionAfterLap: theShipInCurrentTurn.
 	gameBoard snapToLastTile: theShipInCurrentTurn.
-	gameBoard applyTileEffectOn: theShipInCurrentTurn.
+	gameBoard applyTileEffectOn: self triggeredBy: theShipInCurrentTurn.
 	shipBattleHandler checkShipBattle: theShipInCurrentTurn.
 	gameTurnHandler nextTurn
 ]
@@ -119,7 +125,6 @@ Game >> playTurn [
 { #category : #modifying }
 Game >> skipTurn [
 
-	| theShipInCurrentTurn |
 	gameTurnHandler canPlayNextTurnOf: self isFinished.
 	theShipInCurrentTurn := gameShips at: gameTurnHandler currentTurn.
 	

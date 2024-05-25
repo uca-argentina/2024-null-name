@@ -40,7 +40,6 @@ Ship class >> isValid: aName [
 ]
 
 { #category : #accessing }
-
 Ship >> amountOfShieldsActive [
 
 	^ numberOfShields
@@ -65,7 +64,6 @@ Ship >> healFullShields [
 ]
 
 { #category : #comparing }
-
 Ship >> inLastLap [
 
 	^ lapsLeft = 1

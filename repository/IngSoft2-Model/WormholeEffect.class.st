@@ -4,7 +4,7 @@ moves ship to another fixed position
 "
 Class {
 	#name : #WormholeEffect,
-	#superclass : #Effect,
+	#superclass : #EffectOnOneShip,
 	#instVars : [
 		'wormholeDistance'
 	],
@@ -26,7 +26,7 @@ WormholeEffect class >> fromPosition: firstPosition toPosition: endPosition [
 ]
 
 { #category : #applying }
-WormholeEffect >> applyOn: aShip [
+WormholeEffect >> affectAShip: aShip [
 
 	aShip moveTiles: wormholeDistance
 ]

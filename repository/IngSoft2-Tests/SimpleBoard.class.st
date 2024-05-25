@@ -34,6 +34,12 @@ SimpleBoard >> applyTileEffectOn: aShip [
 ]
 
 { #category : #accessing }
+SimpleBoard >> applyTileEffectOn: aGame triggeredBy: aShip [
+
+	(tileEffectArray at: aShip position) applyOn: aGame
+]
+
+{ #category : #accessing }
 SimpleBoard >> initializeWithAmoutTiles: anumberOfTiles [
 
 	tileEffectArray := OrderedCollection new.

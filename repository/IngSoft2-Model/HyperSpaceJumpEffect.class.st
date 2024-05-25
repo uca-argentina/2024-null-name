@@ -3,7 +3,7 @@ HyperSpaceJump class
 "
 Class {
 	#name : #HyperSpaceJumpEffect,
-	#superclass : #Effect,
+	#superclass : #EffectOnOneShip,
 	#category : #'IngSoft2-Model'
 }
 
@@ -13,8 +13,8 @@ HyperSpaceJumpEffect class >> createWith: aCollectionOfParameters [
 ]
 
 { #category : #applying }
-HyperSpaceJumpEffect >> applyOn: aShip [
-
+HyperSpaceJumpEffect >> affectAShip: aShip [
+	
 	aShip moveTiles: 4.
 	aShip loseOneShield.
 ]

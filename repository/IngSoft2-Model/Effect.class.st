@@ -13,7 +13,7 @@ Effect class >> createWith: aCollectionOfParameters [
 ]
 
 { #category : #applying }
-Effect >> applyOn: aShip [
+Effect >> applyOn: aGame [
 
 	self subclassResponsibility.
 ]

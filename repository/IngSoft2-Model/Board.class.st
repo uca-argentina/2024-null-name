@@ -54,6 +54,12 @@ Board >> applyTileEffectOn: aShip [
 	(tileEffectArray at: aShip position) applyOn: aShip
 ]
 
+{ #category : #modifying }
+Board >> applyTileEffectOn: aGame triggeredBy: aShip [
+
+	(tileEffectArray at: aShip position) applyOn: aGame
+]
+
 { #category : #initialization }
 Board >> initializeWithAmoutTiles: anumberOfTiles withWormHolePositions: aWormHoleTilePair [
 
