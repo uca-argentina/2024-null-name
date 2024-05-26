@@ -24,7 +24,7 @@ ShipBattle >> checkShipBattle: currentTurnShip [
 	| shipsInSamePosition |
 	currentTurnShip position = 1 ifTrue: [ ^self ].
 	shipsInSamePosition := ships select: [ :aShip |
-		                       (currentTurnShip isInTheSamePositionAs: aShip)
+		                       (currentTurnShip position = aShip position)
 			                       and: currentTurnShip ~= aShip ].
 	shipsInSamePosition isEmpty ifFalse: [self resolveBattleBetween: currentTurnShip and: shipsInSamePosition]
 ]

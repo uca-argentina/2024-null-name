@@ -9,8 +9,8 @@ Class {
 		'currentPosition',
 		'playerName',
 		'numberOfShields',
-		'lapsLeft',
-		'lostTurnCounter'
+		'lostTurnCounter',
+		'currentLap'
 	],
 	#category : #'IngSoft2-Model'
 }
@@ -19,17 +19,7 @@ Class {
 Ship class >> createWithName: aName [
 
 	self isValid: aName.
-	^ self new initializeInTile: 1 withName: aName withAmountOfLaps: 1
-]
-
-{ #category : #'class initialization' }
-Ship class >> createWithName: aName withAmountOfLaps: anAmountOfLaps [
-
-	self isValid: aName.
-	^ self new
-		  initializeInTile: 1
-		  withName: aName
-		  withAmountOfLaps: anAmountOfLaps
+	^ self new initializeInTile: 1 withName: aName
 ]
 
 { #category : #testing }
@@ -52,44 +42,26 @@ Ship >> canPlayTurn [
 ]
 
 { #category : #modifying }
-Ship >> completeLap [
-
-	lapsLeft := lapsLeft - 1
-]
-
-{ #category : #modifying }
 Ship >> healFullShields [
 
 	numberOfShields := 3
 ]
 
-{ #category : #comparing }
-Ship >> inLastLap [
-
-	^ lapsLeft = 1
-]
-
 { #category : #initialization }
-Ship >> initializeInTile: aPosition withName: aName withAmountOfLaps: anAmountOfLaps [
+Ship >> initializeInTile: aPosition withName: aName [
 
 	currentPosition := aPosition.
 	playerName := aName.
 	numberOfShields := 3.
 	lostTurnCounter := 0.
-	lapsLeft := anAmountOfLaps
+	currentLap := 1
 	
-]
-
-{ #category : #comparing }
-Ship >> isInTheSamePositionAs: aShip [
-
-	^ currentPosition = aShip position
 ]
 
 { #category : #accessing }
 Ship >> lapsLeft [
 
-	^ lapsLeft
+	^ currentLap
 ]
 
 { #category : #modifying }
@@ -107,9 +79,18 @@ Ship >> lostTurnCounterDown [
 ]
 
 { #category : #modifying }
+Ship >> modifyLap: aLapAmount [
+
+	currentLap := currentLap + aLapAmount max: 1
+]
+
+{ #category : #modifying }
 Ship >> moveTiles: anAmountOfTiles [
 
-	currentPosition := currentPosition + anAmountOfTiles max: 1
+	currentPosition := (currentPosition + anAmountOfTiles < 1 and:
+		                    currentLap = 1)
+		                   ifFalse: [ currentPosition + anAmountOfTiles ]
+		                   ifTrue: [ 1 ]
 ]
 
 { #category : #modifying }

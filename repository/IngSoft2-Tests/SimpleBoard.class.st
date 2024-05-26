@@ -5,7 +5,8 @@ Class {
 	#name : #SimpleBoard,
 	#superclass : #Object,
 	#instVars : [
-		'tileEffectArray'
+		'tileEffectArray',
+		'maxLap'
 	],
 	#category : #'IngSoft2-Tests'
 }
@@ -15,16 +16,32 @@ SimpleBoard class >> withTiles: anumberOfTiles [
 
 	anumberOfTiles <= 0 ifTrue: [
 		Error signal: 'Board tiles must be greater than 0' ].
-	^ self new initializeWithAmoutTiles: anumberOfTiles
+	^ self new initializeWithAmoutTiles: anumberOfTiles withAmountOfLaps: 1.
+]
+
+{ #category : #initialization }
+SimpleBoard class >> withTiles: anumberOfTiles withAmountOfLaps: anAmountOfLaps [
+
+	anumberOfTiles <= 0 ifTrue: [
+		Error signal: 'Board tiles must be greater than 0' ].
+	^ self new initializeWithAmoutTiles: anumberOfTiles withAmountOfLaps: anAmountOfLaps
 ]
 
 { #category : #accessing }
-SimpleBoard >> adjustPositionAfterLap: aShip [
+SimpleBoard >> adjustShipPositionBelowOne: aShip [
 
-	(aShip position > tileEffectArray size and: aShip inLastLap not)
+	(aShip position < 1 and: aShip lapsLeft > 1) ifFalse: [ ^ self ].
+	aShip moveTiles: tileEffectArray size.
+	aShip modifyLap: -1
+]
+
+{ #category : #accessing }
+SimpleBoard >> adjustShipPositionOverboard: aShip [
+
+	(aShip position > tileEffectArray size and: aShip lapsLeft < maxLap)
 		ifFalse: [ ^ self ].
 	aShip moveTiles: tileEffectArray size negated.
-	aShip completeLap 
+	aShip modifyLap: 1
 ]
 
 { #category : #accessing }
@@ -34,8 +51,9 @@ SimpleBoard >> applyTileEffectOn: aGame triggeredBy: aShip [
 ]
 
 { #category : #accessing }
-SimpleBoard >> initializeWithAmoutTiles: anumberOfTiles [
+SimpleBoard >> initializeWithAmoutTiles: anumberOfTiles withAmountOfLaps: anAmountOfLaps [
 
+	maxLap := anAmountOfLaps.
 	tileEffectArray := OrderedCollection new.
 	1 to: anumberOfTiles do: [ :i | tileEffectArray add: NullEffect new ]
 ]
@@ -43,7 +61,7 @@ SimpleBoard >> initializeWithAmoutTiles: anumberOfTiles [
 { #category : #testing }
 SimpleBoard >> isInLastTile: aShip [
 
-	^ aShip position = tileEffectArray size and: aShip inLastLap
+	^ aShip position = tileEffectArray size and: aShip lapsLeft = maxLap
 ]
 
 { #category : #accessing }
@@ -54,7 +72,7 @@ SimpleBoard >> numbOfTiles [
 
 { #category : #accessing }
 SimpleBoard >> snapToLastTile: aShip [
-	
-	((aShip position > tileEffectArray size) and: aShip inLastLap)ifTrue: [
-		aShip moveTiles: tileEffectArray size - aShip position ]
+
+	(aShip position > tileEffectArray size and: aShip lapsLeft = maxLap)
+		ifTrue: [ aShip moveTiles: tileEffectArray size - aShip position ]
 ]

@@ -14,13 +14,12 @@ BattleTest >> testShipsCannotBattleInTheFirstTileOfABoard [
 		                    (SequenceDie withSequence: #( 16 16 4 5 )).
 
 	aGame := Game
-		         withBoard:
-		         (Board
-			          withTiles: 16
-			          withWormHolePositions: aWormHoleTilePair)
+		         withBoard: (Board
+				          withTiles: 16
+				          withWormHolePositions: aWormHoleTilePair
+				          withAmountOfLaps: 3)
 		         withShipNames: aCollectionOfNames
-		         withDice: (Dice with: aCollectionOfDie)
-		         withAmountOfLaps: 3.
+		         withDice: (Dice with: aCollectionOfDie).
 
 	aGame playTurn.
 	aGame playTurn.

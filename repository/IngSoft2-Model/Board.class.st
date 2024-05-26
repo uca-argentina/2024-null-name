@@ -8,7 +8,8 @@ Class {
 	#name : #Board,
 	#superclass : #Object,
 	#instVars : [
-		'tileEffectArray'
+		'tileEffectArray',
+		'maxLap'
 	],
 	#category : #'IngSoft2-Model'
 }
@@ -20,7 +21,7 @@ Board class >> numberOfTileIsValid: aNumberOfTiles [
 		Error signal: 'Board tiles must be greater than 0' ]
 ]
 
-{ #category : #initialization }
+{ #category : #'class initialization' }
 Board class >> withTiles: aNumberOfTiles withWormHolePositions: aWormHoleTilePair [
 
 	self numberOfTileIsValid: aNumberOfTiles.
@@ -29,6 +30,19 @@ Board class >> withTiles: aNumberOfTiles withWormHolePositions: aWormHoleTilePai
 	^ self new
 		  initializeWithAmoutTiles: aNumberOfTiles
 		  withWormHolePositions: aWormHoleTilePair
+		  withAmountOfLaps: 1
+]
+
+{ #category : #'class initialization' }
+Board class >> withTiles: aNumberOfTiles withWormHolePositions: aWormHoleTilePair withAmountOfLaps: anAmountOfLaps [
+
+	self numberOfTileIsValid: aNumberOfTiles.
+	self wormHolePairIsValid: aWormHoleTilePair with: aNumberOfTiles.
+
+	^ self new
+		  initializeWithAmoutTiles: aNumberOfTiles
+		  withWormHolePositions: aWormHoleTilePair
+		  withAmountOfLaps: anAmountOfLaps
 ]
 
 { #category : #'argument validation' }
@@ -40,12 +54,20 @@ Board class >> wormHolePairIsValid: aWormHoleTilePair with: aNumberOfTiles [
 ]
 
 { #category : #accessing }
-Board >> adjustPositionAfterLap: aShip [
+Board >> adjustShipPositionBelowOne: aShip [
 
-	(aShip position > tileEffectArray size and: aShip inLastLap not)
+	(aShip position < 1 and: aShip lapsLeft > 1) ifFalse: [ ^ self ].
+	aShip moveTiles: tileEffectArray size.
+	aShip modifyLap: -1
+]
+
+{ #category : #accessing }
+Board >> adjustShipPositionOverboard: aShip [
+
+	(aShip position > tileEffectArray size and: aShip lapsLeft < maxLap)
 		ifFalse: [ ^ self ].
 	aShip moveTiles: tileEffectArray size negated.
-	aShip completeLap 
+	aShip modifyLap: 1
 ]
 
 { #category : #modifying }
@@ -55,11 +77,12 @@ Board >> applyTileEffectOn: aGame triggeredBy: aShip [
 ]
 
 { #category : #initialization }
-Board >> initializeWithAmoutTiles: anumberOfTiles withWormHolePositions: aWormHoleTilePair [
+Board >> initializeWithAmoutTiles: aNumberOfTiles withWormHolePositions: aWormHoleTilePair withAmountOfLaps: anAmountOfLaps [
 
+	maxLap := anAmountOfLaps.
 	tileEffectArray := OrderedCollection new.
 
-	1 to: anumberOfTiles do: [ :i | tileEffectArray add: NullEffect new ].
+	1 to: aNumberOfTiles do: [ :i | tileEffectArray add: NullEffect new ].
 
 	tileEffectArray
 		at: aWormHoleTilePair first
@@ -73,7 +96,7 @@ Board >> initializeWithAmoutTiles: anumberOfTiles withWormHolePositions: aWormHo
 { #category : #testing }
 Board >> isInLastTile: aShip [
 
-	^ aShip position = tileEffectArray size and: aShip inLastLap
+	^ aShip position = tileEffectArray size and: aShip lapsLeft = maxLap
 ]
 
 { #category : #accessing }
@@ -84,7 +107,7 @@ Board >> numbOfTiles [
 
 { #category : #accessing }
 Board >> snapToLastTile: aShip [
-	
-	((aShip position > tileEffectArray size) and: aShip inLastLap)ifTrue: [
-		aShip moveTiles: tileEffectArray size - aShip position ]
+
+	(aShip position > tileEffectArray size and: aShip lapsLeft = maxLap)
+		ifTrue: [ aShip moveTiles: tileEffectArray size - aShip position ]
 ]

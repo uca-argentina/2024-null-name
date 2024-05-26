@@ -5,7 +5,8 @@ Class {
 	#name : #SetBoard,
 	#superclass : #Object,
 	#instVars : [
-		'tileEffectArray'
+		'tileEffectArray',
+		'maxLap'
 	],
 	#category : #'IngSoft2-Tests'
 }
@@ -25,11 +26,26 @@ SetBoard class >> withTiles: aNumberOfTiles withWormHolePositions: aWormHoleTile
 
 	^ self new
 		  initializeWithAmoutTiles: aNumberOfTiles
-		  withWormHolePositions: aWormHoleTilePair withEffectsInPosition: Dictionary new.
+		  withWormHolePositions: aWormHoleTilePair
+		  withEffectsInPosition: Dictionary new
+		  withAmountOfLaps: 1
 ]
 
 { #category : #'class initialization' }
-SetBoard class >> withTiles: aNumberOfTiles withWormHolePositions: aWormHoleTilePair withEffectsInPosition: aDictionaryOfEffectsAndParameters [ 
+SetBoard class >> withTiles: aNumberOfTiles withWormHolePositions: aWormHoleTilePair withEffectsInPosition: aDictionaryOfEffectsAndParameters [
+
+	self numberOfTileIsValid: aNumberOfTiles.
+	self wormHolePairIsValid: aWormHoleTilePair with: aNumberOfTiles.
+
+	^ self new
+		  initializeWithAmoutTiles: aNumberOfTiles
+		  withWormHolePositions: aWormHoleTilePair
+		  withEffectsInPosition: aDictionaryOfEffectsAndParameters
+		  withAmountOfLaps: 1
+]
+
+{ #category : #'class initialization' }
+SetBoard class >> withTiles: aNumberOfTiles withWormHolePositions: aWormHoleTilePair withEffectsInPosition: aDictionaryOfEffectsAndParameters withAmountOfLaps: anAmountOfLaps [
 	self numberOfTileIsValid: aNumberOfTiles.
 	self wormHolePairIsValid: aWormHoleTilePair with: aNumberOfTiles.
 
@@ -37,6 +53,7 @@ SetBoard class >> withTiles: aNumberOfTiles withWormHolePositions: aWormHoleTile
 		  initializeWithAmoutTiles: aNumberOfTiles
 		  withWormHolePositions: aWormHoleTilePair
 		withEffectsInPosition:aDictionaryOfEffectsAndParameters
+		withAmountOfLaps: anAmountOfLaps
 ]
 
 { #category : #'argument validation' }
@@ -48,12 +65,20 @@ SetBoard class >> wormHolePairIsValid: aWormHoleTilePair with: aNumberOfTiles [
 ]
 
 { #category : #accessing }
-SetBoard >> adjustPositionAfterLap: aShip [
+SetBoard >> adjustShipPositionBelowOne: aShip [
 
-	(aShip position > tileEffectArray size and: aShip inLastLap not)
+	(aShip position < 1 and: aShip lapsLeft > 1) ifFalse: [ ^ self ].
+	aShip moveTiles: tileEffectArray size.
+	aShip modifyLap: -1
+]
+
+{ #category : #accessing }
+SetBoard >> adjustShipPositionOverboard: aShip [
+
+	(aShip position > tileEffectArray size and: aShip lapsLeft < maxLap)
 		ifFalse: [ ^ self ].
 	aShip moveTiles: tileEffectArray size negated.
-	aShip completeLap 
+	aShip modifyLap: 1
 ]
 
 { #category : #modifying }
@@ -63,11 +88,13 @@ SetBoard >> applyTileEffectOn: aGame triggeredBy: aShip [
 ]
 
 { #category : #initialization }
-SetBoard >> initializeWithAmoutTiles: aNumberOfTiles withWormHolePositions: aWormHoleTilePair withEffectsInPosition: aDictionaryOfEffectsAndParameters [
+SetBoard >> initializeWithAmoutTiles: aNumberOfTiles withWormHolePositions: aWormHoleTilePair withEffectsInPosition: aDictionaryOfEffectsAndParameters withAmountOfLaps: anAmountOfLaps [
 
+	maxLap := anAmountOfLaps.
 	tileEffectArray := OrderedCollection new.
 
-	1 to: aNumberOfTiles do: [ :i | tileEffectArray add: (NullEffect createWith: #()) ].
+	1 to: aNumberOfTiles do: [ :i |
+	tileEffectArray add: (NullEffect createWith: #(  )) ].
 
 	1 to: aNumberOfTiles do: [ :i |
 		(aDictionaryOfEffectsAndParameters includesKey: i) ifTrue: [
@@ -78,18 +105,16 @@ SetBoard >> initializeWithAmoutTiles: aNumberOfTiles withWormHolePositions: aWor
 
 	tileEffectArray
 		at: aWormHoleTilePair first
-		put: (WormholeEffect createWith:
-				 aWormHoleTilePair).
+		put: (WormholeEffect createWith: aWormHoleTilePair).
 	tileEffectArray
 		at: aWormHoleTilePair last
-		put: (WormholeEffect createWith:
-				 (aWormHoleTilePair reversed ))
+		put: (WormholeEffect createWith: aWormHoleTilePair reversed)
 ]
 
 { #category : #testing }
 SetBoard >> isInLastTile: aShip [
 
-	^ aShip position = tileEffectArray size and: aShip inLastLap
+	^ aShip position = tileEffectArray size and: aShip lapsLeft = maxLap
 ]
 
 { #category : #accessing }
@@ -100,7 +125,7 @@ SetBoard >> numbOfTiles [
 
 { #category : #accessing }
 SetBoard >> snapToLastTile: aShip [
-	
-	((aShip position > tileEffectArray size) and: aShip inLastLap)ifTrue: [
-		aShip moveTiles: tileEffectArray size - aShip position ]
+
+	(aShip position > tileEffectArray size and: aShip lapsLeft = maxLap)
+		ifTrue: [ aShip moveTiles: tileEffectArray size - aShip position ]
 ]

@@ -20,19 +20,17 @@ GameTest >> testAGameTurnCanBeSkipped [
 	| aGame aCollectionOfNames aWormHoleTilePair aCollectionOfDie |
 	aCollectionOfNames := OrderedCollection with: 'Juan' with: 'Pedro'.
 	aWormHoleTilePair := #( 10 15 ).
-	aCollectionOfDie := OrderedCollection
-		                    with: (LoadedDie of: 5).
-	
-	
+	aCollectionOfDie := OrderedCollection with: (LoadedDie of: 5).
+
+
 	aGame := Game
-		         withBoard:
-		         (Board
-			          withTiles: 16
-			          withWormHolePositions: aWormHoleTilePair)
+		         withBoard: (Board
+				          withTiles: 16
+				          withWormHolePositions: aWormHoleTilePair
+				          withAmountOfLaps: 3)
 		         withShipNames: aCollectionOfNames
-		         withDice: (Dice with: aCollectionOfDie)
-		withAmountOfLaps: 3.
-	
+		         withDice: (Dice with: aCollectionOfDie).
+
 	self assert: aGame skipTurn equals: 'Juan skipped their turn'
 ]
 
@@ -243,10 +241,9 @@ GameTest >> testWhenAShipFinishesLapThenPositionIsAdjustedAccordingly [
 	aCollectionOfDie := OrderedCollection with: (LoadedDie of: 10).
 
 	aGame := Game
-		         withBoard: (SimpleBoard withTiles: 10)
+		         withBoard: (SimpleBoard withTiles: 10 withAmountOfLaps: 3)
 		         withShipNames: aCollectionOfNames
-		         withDice: (Dice with: aCollectionOfDie)
-		         withAmountOfLaps: 3.
+		         withDice: (Dice with: aCollectionOfDie).
 
 	aGame playTurn.
 
@@ -307,19 +304,19 @@ GameTest >> testWhenShipHasNoShieldsLeftThenCannotPlayTurn [
 	| aGame aCollectionOfNames aWormHoleTilePair aCollectionOfDie |
 	aCollectionOfNames := OrderedCollection with: 'Juan' with: 'Pedro'.
 	aWormHoleTilePair := #( 10 15 ).
-	aCollectionOfDie := OrderedCollection
-		                    with: (SequenceDie withSequence: #(1 1 1 1 1 2 1 1 1 3)).
-	
-	
+	aCollectionOfDie := OrderedCollection with:
+		                    (SequenceDie withSequence:
+			                     #( 1 1 1 1 1 2 1 1 1 3 )).
+
+
 	aGame := Game
-		         withBoard:
-		         (Board
-			          withTiles: 16
-			          withWormHolePositions: aWormHoleTilePair)
+		         withBoard: (Board
+				          withTiles: 16
+				          withWormHolePositions: aWormHoleTilePair
+				          withAmountOfLaps: 3)
 		         withShipNames: aCollectionOfNames
-		         withDice: (Dice with: aCollectionOfDie)
-		withAmountOfLaps: 3.
-	
+		         withDice: (Dice with: aCollectionOfDie).
+
 	aGame playTurn.
 	aGame playTurn.
 	aGame playTurn.
@@ -327,7 +324,7 @@ GameTest >> testWhenShipHasNoShieldsLeftThenCannotPlayTurn [
 	aGame playTurn.
 	aGame playTurn.
 	aGame playTurn.
-	
+
 	self assert: aGame playTurn equals: 'Pedro lost their turn'
 ]
 
@@ -337,37 +334,37 @@ GameTest >> testWhenShipWithNoShieldLosesTwoTurnsThenCanPlayAgain [
 	| aGame aCollectionOfNames aWormHoleTilePair aCollectionOfDie |
 	aCollectionOfNames := OrderedCollection with: 'Juan' with: 'Pedro'.
 	aWormHoleTilePair := #( 10 15 ).
-	aCollectionOfDie := OrderedCollection
-		                    with: (SequenceDie withSequence: #(1 1 1 1 1 2 1 1 1 3)).
-	
-	
+	aCollectionOfDie := OrderedCollection with:
+		                    (SequenceDie withSequence:
+			                     #( 1 1 1 1 1 2 1 1 1 3 )).
+
+
 	aGame := Game
-		         withBoard:
-		         (Board
-			          withTiles: 16
-			          withWormHolePositions: aWormHoleTilePair)
+		         withBoard: (Board
+				          withTiles: 16
+				          withWormHolePositions: aWormHoleTilePair
+				          withAmountOfLaps: 3)
 		         withShipNames: aCollectionOfNames
-		         withDice: (Dice with: aCollectionOfDie)
-		withAmountOfLaps: 3.
-	
+		         withDice: (Dice with: aCollectionOfDie).
+
 	aGame playTurn.
 	aGame playTurn.
-	
+
 	aGame playTurn.
 	aGame playTurn.
-	
+
 	aGame playTurn.
 	aGame playTurn.
-	
+
 	aGame playTurn.
 	aGame playTurn.
-	
+
 	aGame playTurn.
 	aGame playTurn.
-	
+
 	aGame playTurn.
-	
-	self deny: aGame playTurn equals:  'Pedro lost their turn'.
+
+	self deny: aGame playTurn equals: 'Pedro lost their turn'
 ]
 
 { #category : #tests }
@@ -376,19 +373,19 @@ GameTest >> testWhenShipWithNoShieldsCannotSkipTurn [
 	| aGame aCollectionOfNames aWormHoleTilePair aCollectionOfDie |
 	aCollectionOfNames := OrderedCollection with: 'Juan' with: 'Pedro'.
 	aWormHoleTilePair := #( 10 15 ).
-	aCollectionOfDie := OrderedCollection
-		                    with: (SequenceDie withSequence: #(1 1 1 1 1 2 1 1 1 3)).
-	
-	
+	aCollectionOfDie := OrderedCollection with:
+		                    (SequenceDie withSequence:
+			                     #( 1 1 1 1 1 2 1 1 1 3 )).
+
+
 	aGame := Game
-		         withBoard:
-		         (Board
-			          withTiles: 16
-			          withWormHolePositions: aWormHoleTilePair)
+		         withBoard: (Board
+				          withTiles: 16
+				          withWormHolePositions: aWormHoleTilePair
+				          withAmountOfLaps: 3)
 		         withShipNames: aCollectionOfNames
-		         withDice: (Dice with: aCollectionOfDie)
-		withAmountOfLaps: 3.
-	
+		         withDice: (Dice with: aCollectionOfDie).
+
 	aGame playTurn.
 	aGame playTurn.
 	aGame playTurn.
@@ -396,7 +393,7 @@ GameTest >> testWhenShipWithNoShieldsCannotSkipTurn [
 	aGame playTurn.
 	aGame playTurn.
 	aGame playTurn.
-	
+
 	self assert: aGame skipTurn equals: 'Pedro lost their turn'
 ]
 
@@ -408,19 +405,18 @@ GameTest >> testWhenTurnIsSkippedThenShipRestoresAllShields [
 	aWormHoleTilePair := #( 10 15 ).
 	aCollectionOfDie := OrderedCollection with: (LoadedDie of: 5).
 
-
 	aGame := Game
 		         withBoard:
 		         (Board
 			          withTiles: 16
 			          withWormHolePositions: aWormHoleTilePair)
 		         withShipNames: aCollectionOfNames
-		         withDice: (Dice with: aCollectionOfDie)
-		         withAmountOfLaps: 1.
+		         withDice: (Dice with: aCollectionOfDie).
+
 	aGame playTurn.
 	aGame playTurn.
 	aGame playTurn.
 	self assert: (aGame allShipAmountOfShields at: 'Pedro') equals: 2.
 	aGame skipTurn.
-	self assert: (aGame allShipAmountOfShields at: 'Pedro') equals: 3.
+	self assert: (aGame allShipAmountOfShields at: 'Pedro') equals: 3
 ]

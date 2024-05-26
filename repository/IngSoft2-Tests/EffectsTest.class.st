@@ -45,6 +45,38 @@ EffectsTest >> testWhenApplyingAtomicBombEffectAllShipsMoveBackToFirstTile [
 ]
 
 { #category : #tests }
+EffectsTest >> testWhenApplyingBlackHoleBanana [
+
+	| aBoard aShipName aDictionaryOfEffects aGame |
+	aDictionaryOfEffects := Dictionary new
+		                        at: 3
+		                        put:
+			                        (OrderedCollection with: BlackHoleEffect);
+		                        yourself.
+	aBoard := SetBoard
+		          withTiles: 10
+		          withWormHolePositions: #( 2 5 )
+		          withEffectsInPosition: aDictionaryOfEffects
+		          withAmountOfLaps: 3.
+
+	aShipName := OrderedCollection with: 'Juan'.
+
+	aGame := Game
+		         withBoard: aBoard
+		         withShipNames: aShipName
+		         withDice: (Dice with:
+				          (OrderedCollection with:
+					           (SequenceDie withSequence: #( 10 2 )))).
+
+	aGame playTurn.
+	aGame playTurn.
+
+	self
+		assert: (aGame allShipPositions at: 'Juan')
+		equals: #( 9 1 ) asOrderedCollection
+]
+
+{ #category : #tests }
 EffectsTest >> testWhenApplyingBlackHoleEffectShipMoves4SpacesBack [
 
 	| aBoard aShipName aDictionaryOfEffects aGame |

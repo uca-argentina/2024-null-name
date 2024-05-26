@@ -40,17 +40,6 @@ Game class >> withBoard: aBoard withShipNames: aNameCollection withDice: aDice [
 		  withAmountOfLaps: 1
 ]
 
-{ #category : #'class initialization' }
-Game class >> withBoard: aBoard withShipNames: aNameCollection withDice: aDice withAmountOfLaps: anAmountOfLaps [
-
-	self isValid: aBoard with: aNameCollection and: aDice.
-	^ self new
-		  initializeGameWith: aBoard
-		  withShipNames: aNameCollection asSet
-		  withDice: aDice
-		  withAmountOfLaps: anAmountOfLaps
-]
-
 { #category : #accessing }
 Game >> allShipAmountOfShields [
 
@@ -70,9 +59,8 @@ Game >> allShipPositions [
 	shipPositions := Dictionary new.
 	gameShips do: [ :aShip |
 		shipPositions
-			at: aShip shipName put: (OrderedCollection
-					 with: aShip position
-					 with: aShip lapsLeft);
+			at: aShip shipName
+			put: (OrderedCollection with: aShip position with: aShip lapsLeft);
 			yourself ].
 	^ shipPositions
 ]
@@ -80,19 +68,28 @@ Game >> allShipPositions [
 { #category : #event }
 Game >> applyEffectOnAllShips: anEffect [
 
-	anEffect affectAShipCollection: gameShips
+	anEffect affectAShipCollection: gameShips.
+	gameShips do: [ :aShip |
+		gameBoard adjustShipPositionOverboard: aShip.
+		gameBoard adjustShipPositionBelowOne: aShip ]
 ]
 
 { #category : #event }
 Game >> applyEffectOnAllShipsButOne: anEffect [
 
-	anEffect affectAllShips: gameShips but: theShipInCurrentTurn
+	anEffect affectAllShips: gameShips but: theShipInCurrentTurn.
+	gameShips do: [ :aShip |
+		gameBoard adjustShipPositionOverboard: aShip.
+		gameBoard adjustShipPositionBelowOne: aShip ]
 ]
 
 { #category : #event }
 Game >> applyEffectOnOneShip: anEffect [
 
-	anEffect affectAShip: theShipInCurrentTurn
+	anEffect affectAShip: theShipInCurrentTurn.
+	gameShips do: [ :aShip |
+		gameBoard adjustShipPositionOverboard: aShip.
+		gameBoard adjustShipPositionBelowOne: aShip ]
 ]
 
 { #category : #initialization }
@@ -100,9 +97,7 @@ Game >> initializeGameWith: aBoard withShipNames: aNameCollection withDice: aDic
 
 	gameBoard := aBoard.
 	gameShips := aNameCollection asOrderedCollection collect: [ :aName |
-		             Ship
-			             createWithName: aName
-			             withAmountOfLaps: anAmountOfLaps ].
+		             Ship createWithName: aName ].
 	dice := aDice.
 	gameTurnHandler := TurnHandler withAnAmountOfTurns: gameShips size.
 	shipBattleHandler := ShipBattle withDice: dice withShips: gameShips
@@ -134,7 +129,7 @@ Game >> playTurn [
 
 	movement := dice throw.
 	theShipInCurrentTurn moveTiles: movement.
-	gameBoard adjustPositionAfterLap: theShipInCurrentTurn.
+	gameBoard adjustShipPositionOverboard: theShipInCurrentTurn.
 	gameBoard snapToLastTile: theShipInCurrentTurn.
 	gameBoard applyTileEffectOn: self triggeredBy: theShipInCurrentTurn.
 	shipBattleHandler checkShipBattle: theShipInCurrentTurn.
