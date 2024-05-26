@@ -15,6 +15,47 @@ GameTest >> should: anErrorBlock raise: exceptionClass withMessage: anErrorMessa
 ]
 
 { #category : #tests }
+GameTest >> testAGameCanShowTheCurrentRanking [
+
+	| aGame aCollectionOfNames aCollectionOfDie aShipNameAndPosition |
+	aCollectionOfNames := OrderedCollection
+		                      with: 'Juan'
+		                      with: 'Pedro'
+		                      with: 'Fran'.
+
+	aCollectionOfDie := OrderedCollection with:
+		                    (SequenceDie withSequence: #( 3 1 8 )).
+
+	aGame := Game
+		         withBoard: (SimpleBoard withTiles: 15 withAmountOfLaps:3)
+		         withShipNames: aCollectionOfNames
+		         withDice: (Dice with: aCollectionOfDie).
+
+	aGame playTurn.
+	aGame playTurn.
+	aGame playTurn.
+	aGame playTurn.
+	aGame playTurn.
+	aGame playTurn.
+	aGame playTurn.
+
+	aShipNameAndPosition := Dictionary new.
+	aShipNameAndPosition at: 'Juan' put: #( 10 1 ) asOrderedCollection.
+	aShipNameAndPosition at: 'Pedro' put: #( 2 2 ) asOrderedCollection.
+	aShipNameAndPosition at: 'Fran' put: #( 3 1 ) asOrderedCollection.
+
+	self
+		assert: (aGame shipRankings at: 1)
+		equals: (aShipNameAndPosition associationAt: 'Pedro').
+	self
+		assert: (aGame shipRankings at: 2)
+		equals: (aShipNameAndPosition associationAt: 'Juan').
+	self
+		assert: (aGame shipRankings at: 3)
+		equals: (aShipNameAndPosition associationAt: 'Fran')
+]
+
+{ #category : #tests }
 GameTest >> testAGameTurnCanBeSkipped [
 
 	| aGame aCollectionOfNames aWormHoleTilePair aCollectionOfDie |
@@ -49,7 +90,7 @@ GameTest >> testGameCanBePlayedWithMoreThanOneDie [
 	aGame playTurn.
 
 	self
-		assert: (aGame allShipPositions at: 'Juan')
+		assert: (aGame allShipsPosition at: 'Juan')
 		equals: #( 13 1 ) asOrderedCollection
 ]
 
@@ -71,10 +112,10 @@ GameTest >> testGameCanTellAllShipPositions [
 	aGame playTurn.
 
 	self
-		assert: (aGame allShipPositions at: 'Juan')
+		assert: (aGame allShipsPosition at: 'Juan')
 		equals: #( 19 1 ) asOrderedCollection.
 	self
-		assert: (aGame allShipPositions at: 'Jose')
+		assert: (aGame allShipsPosition at: 'Jose')
 		equals: #( 11 1 ) asOrderedCollection
 ]
 
@@ -126,7 +167,7 @@ GameTest >> testGameDoesNotAllowRepeatedShipNames [
 		         withBoard: aBoard
 		         withShipNames: aCollectionOfNames
 		         withDice: (Dice with: aCollectionOfDie).
-	self assert: aGame allShipPositions size equals: 3
+	self assert: aGame allShipsPosition size equals: 3
 ]
 
 { #category : #tests }
@@ -248,7 +289,7 @@ GameTest >> testWhenAShipFinishesLapThenPositionIsAdjustedAccordingly [
 	aGame playTurn.
 
 	self
-		assert: (aGame allShipPositions at: 'Juan')
+		assert: (aGame allShipsPosition at: 'Juan')
 		equals: #( 1 2 ) asOrderedCollection
 ]
 
@@ -276,7 +317,7 @@ GameTest >> testWhenFinishedTheEndingPositionOfTheWinnerEqualsTheSizeOfTheBoard 
 
 
 	self
-		assert: (aGame allShipPositions at: 'Juan')
+		assert: (aGame allShipsPosition at: 'Juan')
 		equals: #( 27 1 ) asOrderedCollection.
 ]
 

@@ -34,13 +34,13 @@ EffectsTest >> testWhenApplyingAtomicBombEffectAllShipsMoveBackToFirstTile [
 	aGame playTurn.
 
 	self
-		assert: (aGame allShipPositions at: 'Juan')
+		assert: (aGame allShipsPosition at: 'Juan')
 		equals: #( 1 1 ) asOrderedCollection.
 	self
-		assert: (aGame allShipPositions at: 'Pedro')
+		assert: (aGame allShipsPosition at: 'Pedro')
 		equals: #( 1 1 ) asOrderedCollection.
 	self
-		assert: (aGame allShipPositions at: 'Jose')
+		assert: (aGame allShipsPosition at: 'Jose')
 		equals: #( 1 1 ) asOrderedCollection
 ]
 
@@ -70,7 +70,7 @@ EffectsTest >> testWhenApplyingBlackHoleEffectShipMoves4SpacesBack [
 	aGame playTurn.
 
 	self
-		assert: (aGame allShipPositions at: 'Juan')
+		assert: (aGame allShipsPosition at: 'Juan')
 		equals: #( 4 1 ) asOrderedCollection.
 ]
 
@@ -102,7 +102,7 @@ EffectsTest >> testWhenApplyingBlackHoleShipNotOnLap1CanMoveBelowFirstTilePositi
 	aGame playTurn.
 
 	self
-		assert: (aGame allShipPositions at: 'Juan')
+		assert: (aGame allShipsPosition at: 'Juan')
 		equals: #( 9 1 ) asOrderedCollection
 ]
 
@@ -134,7 +134,7 @@ EffectsTest >> testWhenApplyingHyperJumpEffectShipMovesAVariableParsecDistance [
 	aGame playTurn.
 
 	self
-		assert: (aGame allShipPositions at: 'Juan')
+		assert: (aGame allShipsPosition at: 'Juan')
 		equals: #( 13 1 ) asOrderedCollection.
 ]
 
@@ -192,7 +192,7 @@ EffectsTest >> testWhenApplyingHyperSpaceJumpEffectShipMoves4SpacesForward [
 	aGame playTurn.
 
 	self
-		assert: (aGame allShipPositions at: 'Juan')
+		assert: (aGame allShipsPosition at: 'Juan')
 		equals: #( 8 1 ) asOrderedCollection.
 ]
 
@@ -225,10 +225,10 @@ EffectsTest >> testWhenApplyingMoonWalkEffectAllShipsButTriggeringShipMoveAVaria
 
 
 	self
-		assert: (aGame allShipPositions at: 'Juan')
+		assert: (aGame allShipsPosition at: 'Juan')
 		equals: #( 13 1 ) asOrderedCollection.
 	self
-		assert: (aGame allShipPositions at: 'Pedro')
+		assert: (aGame allShipsPosition at: 'Pedro')
 		equals: #( 5 1 ) asOrderedCollection
 ]
 
@@ -264,13 +264,13 @@ EffectsTest >> testWhenApplyingMoonWalkEffectShipLapsBehaveCorrectly [
 
 
 	self
-		assert: (aGame allShipPositions at: 'Juan')
+		assert: (aGame allShipsPosition at: 'Juan')
 		equals: #( 10 1 ) asOrderedCollection.
 	self
-		assert: (aGame allShipPositions at: 'Pedro')
+		assert: (aGame allShipsPosition at: 'Pedro')
 		equals: #( 5 2 ) asOrderedCollection.
 	self
-		assert: (aGame allShipPositions at: 'Jose')
+		assert: (aGame allShipsPosition at: 'Jose')
 		equals: #( 1 1 ) asOrderedCollection
 ]
 
@@ -293,6 +293,6 @@ EffectsTest >> testWhenApplyingWormholeEffectOnShipMoveAccordingly [
 	aGame playTurn.
 	
 	self
-		assert: (aGame allShipPositions at: 'Juan')
+		assert: (aGame allShipsPosition at: 'Juan')
 		equals: #( 5 1 ) asOrderedCollection
 ]

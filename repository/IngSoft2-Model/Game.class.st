@@ -53,7 +53,7 @@ Game >> allShipAmountOfShields [
 ]
 
 { #category : #accessing }
-Game >> allShipPositions [
+Game >> allShipsPosition [
 
 	| shipPositions |
 	shipPositions := Dictionary new.
@@ -134,6 +134,21 @@ Game >> playTurn [
 	gameBoard applyTileEffectOn: self triggeredBy: theShipInCurrentTurn.
 	shipBattleHandler checkShipBattle: theShipInCurrentTurn.
 	gameTurnHandler nextTurn
+]
+
+{ #category : #accessing }
+Game >> shipRankings [
+
+	| sortedShips rankDictionary |
+	sortedShips := self allShipsPosition associations
+		               asSortedCollection: [ :a :b |
+			               a value first > b value first and:
+				               a value last >= b value last ].
+
+	rankDictionary := Dictionary new.
+	sortedShips withIndexDo: [ :assoc :index |
+		rankDictionary at: index put: assoc ].
+	^ rankDictionary
 ]
 
 { #category : #modifying }

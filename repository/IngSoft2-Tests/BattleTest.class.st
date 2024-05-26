@@ -73,6 +73,6 @@ BattleTest >> testWhenShipLosesABattleThenGoBackToFirstTile [
 	aGame playTurn.
 	
 	self
-		assert: (aGame allShipPositions at: 'Pedro')
+		assert: (aGame allShipsPosition at: 'Pedro')
 		equals: #( 1 1 ) asOrderedCollection
 ]
