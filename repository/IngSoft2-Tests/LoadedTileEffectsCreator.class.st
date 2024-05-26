@@ -30,16 +30,16 @@ LoadedTileEffectsCreator >> createWithWormHolePositions: aWormHoleTilePair withB
 			                       -> (AtomicBombEffect createWith: '')) }.
 
 	tileEffectArray := OrderedCollection new.
-	
+
 	tileNumber := 0.
-	
+
 	1 to: aPairOfLengths first do: [ :i |
 		tileEffectArray add:
 			(probabilityEffects at:
 				 (self determineRange: probabilityEffects keys)) ].
 
 	tileEffectArray at: 1 put: (NullEffect createWith: '').
-	
+
 	tileEffectArray
 		at: aPairOfLengths first
 		put: (NullEffect createWith: '').
@@ -61,8 +61,10 @@ LoadedTileEffectsCreator >> createWithWormHolePositions: aWormHoleTilePair withB
 { #category : #comparing }
 LoadedTileEffectsCreator >> determineRange: aRangeOfKeys [
 
-	tileNumber := (tileNumber + 1 )> 100 ifTrue: [ 1 ] ifFalse:[tileNumber+1] .
-	
+	tileNumber := tileNumber + 1 > 100
+		              ifTrue: [ 1 ]
+		              ifFalse: [ tileNumber + 1 ].
+
 	^ aRangeOfKeys detect: [ :aRange |
 		  tileNumber between: aRange first and: aRange last ]
 ]
@@ -70,24 +72,18 @@ LoadedTileEffectsCreator >> determineRange: aRangeOfKeys [
 { #category : #generators }
 LoadedTileEffectsCreator >> generateHyperJumpParameters: aPairOfLenghts [
 
-	| aRandomNumberGenerator aParsecCollection |
-	aRandomNumberGenerator := Random new.
+	| aParsecCollection |
+	aParsecCollection := OrderedCollection new.
 
-	"aParsecCollection := OrderedCollection new."
-	
-	aParsecCollection :=  #(2 3 1 4 1) asOrderedCollection.
-	
-	"1 to: (aRandomNumberGenerator nextBetween: 1 and: 5) do: [
+	1 to: (5 atRandom) do: [:i|
 		aParsecCollection add:
-			((aRandomNumberGenerator nextBetween: 1 and: aPairOfLenghts last) asInteger)  ]."
-	
+			((1 to: aPairOfLenghts last) atRandom asInteger) ].
+
 	^ OrderedCollection with: aParsecCollection with: aPairOfLenghts
 ]
 
 { #category : #generators }
 LoadedTileEffectsCreator >> generateMoonWalkParameters: aBoardLength [
-	| aRandomNumberGenerator |
-	aRandomNumberGenerator := Random new.
 
-	^ aRandomNumberGenerator nextBetween: 0 and: aBoardLength.
+	^ 1 to: aBoardLength atRandom
 ]

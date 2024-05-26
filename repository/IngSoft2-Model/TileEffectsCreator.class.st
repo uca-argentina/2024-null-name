@@ -56,9 +56,9 @@ TileEffectsCreator >> createWithWormHolePositions: aWormHoleTilePair withBoardLe
 { #category : #comparing }
 TileEffectsCreator >> determineRange: aRangeOfKeys [
 
-	| aRandomNumberGenerator aRandomNumber |
-	aRandomNumberGenerator := Random new.
-	aRandomNumber := (aRandomNumberGenerator nextBetween: 0 and: 100) asInteger .
+	| aRandomNumber |
+	
+	aRandomNumber := ((0 to: 100) atRandom) asInteger .
 
 	^ aRangeOfKeys detect: [ :aRange |
 		  aRandomNumber between: aRange first and: aRange last ]
@@ -67,24 +67,18 @@ TileEffectsCreator >> determineRange: aRangeOfKeys [
 { #category : #generators }
 TileEffectsCreator >> generateHyperJumpParameters: aPairOfLenghts [
 
-	| aRandomNumberGenerator aParsecCollection |
-	aRandomNumberGenerator := Random new.
+	| aParsecCollection |
+	aParsecCollection := OrderedCollection new.
 
-	"aParsecCollection := OrderedCollection new."
-	
-	aParsecCollection :=  #(2 3 1 4 1) asOrderedCollection.
-	
-	"1 to: (aRandomNumberGenerator nextBetween: 1 and: 5) do: [
+	1 to: (5 atRandom) do: [:i|
 		aParsecCollection add:
-			((aRandomNumberGenerator nextBetween: 1 and: aPairOfLenghts last) asInteger)  ]."
-	
+			((1 to: aPairOfLenghts last) atRandom asInteger) ].
+
 	^ OrderedCollection with: aParsecCollection with: aPairOfLenghts
 ]
 
 { #category : #generators }
 TileEffectsCreator >> generateMoonWalkParameters: aBoardLength [
-	| aRandomNumberGenerator |
-	aRandomNumberGenerator := Random new.
 
-	^ aRandomNumberGenerator nextBetween: 0 and: aBoardLength.
+	^ (0 to: aBoardLength) atRandom
 ]
