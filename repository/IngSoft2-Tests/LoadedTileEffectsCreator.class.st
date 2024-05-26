@@ -15,19 +15,21 @@ LoadedTileEffectsCreator >> createWithWormHolePositions: aWormHoleTilePair withB
 
 	| tileEffectArray probabilityEffects |
 	probabilityEffects := Dictionary newFrom: {
-			                      (#( 0 40 ) -> (NullEffect createWith: '')).
+			                      (#( 0 40 ) -> [ NullEffect createWith: '' ]).
 			                      (#( 41 60 )
-			                       -> (BlackHoleEffect createWith: '')).
+			                       -> [ BlackHoleEffect createWith: '' ]).
 			                      (#( 61 80 )
-			                       -> (HyperSpaceJumpEffect createWith: '')).
-			                      (#( 81 90 ) -> (MoonWalkEffect createWith:
-				                        (self generateMoonWalkParameters:
-					                         aPairOfLengths first))).
-			                      (#( 91 98 ) -> (HyperJumpEffect createWith:
-				                        (self generateHyperJumpParameters:
-					                         aPairOfLengths))).
+			                       -> [ HyperSpaceJumpEffect createWith: '' ]).
+			                      (#( 81 90 ) -> [
+			                       MoonWalkEffect createWith:
+				                       (self generateMoonWalkParameters:
+					                        aPairOfLengths first) ]).
+			                      (#( 91 98 ) -> [
+			                       HyperJumpEffect createWith:
+				                       (self generateHyperJumpParameters:
+					                        aPairOfLengths) ]).
 			                      (#( 99 100 )
-			                       -> (AtomicBombEffect createWith: '')) }.
+			                       -> [ AtomicBombEffect createWith: '' ]) }.
 
 	tileEffectArray := OrderedCollection new.
 
@@ -36,7 +38,7 @@ LoadedTileEffectsCreator >> createWithWormHolePositions: aWormHoleTilePair withB
 	1 to: aPairOfLengths first do: [ :i |
 		tileEffectArray add:
 			(probabilityEffects at:
-				 (self determineRange: probabilityEffects keys)) ].
+				 (self determineRange: probabilityEffects keys)) value ].
 
 	tileEffectArray at: 1 put: (NullEffect createWith: '').
 
@@ -85,5 +87,5 @@ LoadedTileEffectsCreator >> generateHyperJumpParameters: aPairOfLenghts [
 { #category : #generators }
 LoadedTileEffectsCreator >> generateMoonWalkParameters: aBoardLength [
 
-	^ 1 to: aBoardLength atRandom
+	^ aBoardLength atRandom
 ]

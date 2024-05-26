@@ -31,14 +31,13 @@ TileEffectsCreator >> createWithWormHolePositions: aWormHoleTilePair withBoardLe
 	1 to: aPairOfLengths first do: [ :i |
 		tileEffectArray add:
 			(probabilityEffects at:
-				 (self determineRange: probabilityEffects keys)) ].
+				 (self determineRange: probabilityEffects keys)) value ].
 
 	tileEffectArray at: 1 put: (NullEffect createWith: '').
-	
+
 	tileEffectArray
 		at: aPairOfLengths first
 		put: (NullEffect createWith: '').
-
 
 	tileEffectArray
 		at: aWormHoleTilePair first
@@ -47,8 +46,6 @@ TileEffectsCreator >> createWithWormHolePositions: aWormHoleTilePair withBoardLe
 	tileEffectArray
 		at: aWormHoleTilePair last
 		put: (WormholeEffect createWith: aWormHoleTilePair reversed).
-
-
 
 	^ tileEffectArray
 ]
@@ -80,5 +77,5 @@ TileEffectsCreator >> generateHyperJumpParameters: aPairOfLenghts [
 { #category : #generators }
 TileEffectsCreator >> generateMoonWalkParameters: aBoardLength [
 
-	^ (0 to: aBoardLength) atRandom
+	^ aBoardLength atRandom
 ]
