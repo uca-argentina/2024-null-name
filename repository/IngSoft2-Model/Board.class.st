@@ -9,7 +9,8 @@ Class {
 	#superclass : #Object,
 	#instVars : [
 		'tileEffectArray',
-		'maxLap'
+		'maxLap',
+		'parsecs'
 	],
 	#category : #'IngSoft2-Model'
 }
@@ -30,6 +31,7 @@ Board class >> withTiles: aNumberOfTiles withWormHolePositions: aWormHoleTilePai
 	^ self new
 		  initializeWithAmoutTiles: aNumberOfTiles
 		  withWormHolePositions: aWormHoleTilePair
+		  withAmountOfParsecs: aNumberOfTiles
 		  withAmountOfLaps: 1
 ]
 
@@ -42,6 +44,33 @@ Board class >> withTiles: aNumberOfTiles withWormHolePositions: aWormHoleTilePai
 	^ self new
 		  initializeWithAmoutTiles: aNumberOfTiles
 		  withWormHolePositions: aWormHoleTilePair
+		  withAmountOfParsecs: aNumberOfTiles
+		  withAmountOfLaps: anAmountOfLaps
+]
+
+{ #category : #'class initialization' }
+Board class >> withTiles: aNumberOfTiles withWormHolePositions: aWormHoleTilePair withParsecs: aNumberOfParsecs [
+
+	self numberOfTileIsValid: aNumberOfTiles.
+	self wormHolePairIsValid: aWormHoleTilePair with: aNumberOfTiles.
+
+	^ self new
+		  initializeWithAmoutTiles: aNumberOfTiles
+		  withWormHolePositions: aWormHoleTilePair
+		  withAmountOfParsecs: aNumberOfParsecs
+		  withAmountOfLaps: 1
+]
+
+{ #category : #'class initialization' }
+Board class >> withTiles: aNumberOfTiles withWormHolePositions: aWormHoleTilePair withParsecs: aNumberOfParsecs withAmountOfLaps: anAmountOfLaps [ 
+
+	self numberOfTileIsValid: aNumberOfTiles.
+	self wormHolePairIsValid: aWormHoleTilePair with: aNumberOfTiles.
+
+	^ self new
+		  initializeWithAmoutTiles: aNumberOfTiles
+		  withWormHolePositions: aWormHoleTilePair
+		  withAmountOfParsecs: aNumberOfParsecs
 		  withAmountOfLaps: anAmountOfLaps
 ]
 
@@ -93,6 +122,24 @@ Board >> initializeWithAmoutTiles: aNumberOfTiles withWormHolePositions: aWormHo
 		put: (WormholeEffect createWith: aWormHoleTilePair reversed)
 ]
 
+{ #category : #initialization }
+Board >> initializeWithAmoutTiles: aNumberOfTiles withWormHolePositions: aWormHoleTilePair withAmountOfParsecs: aNumberOfParsecs withAmountOfLaps: anAmountOfLaps [ 
+
+	maxLap := anAmountOfLaps.
+	tileEffectArray := OrderedCollection new.
+	parsecs:= aNumberOfParsecs.
+
+	1 to: aNumberOfTiles do: [ :i | tileEffectArray add: NullEffect new ].
+
+	tileEffectArray
+		at: aWormHoleTilePair first
+		put: (WormholeEffect createWith: aWormHoleTilePair).
+
+	tileEffectArray
+		at: aWormHoleTilePair last
+		put: (WormholeEffect createWith: aWormHoleTilePair reversed)
+]
+
 { #category : #testing }
 Board >> isInLastTile: aShip [
 
@@ -100,9 +147,25 @@ Board >> isInLastTile: aShip [
 ]
 
 { #category : #accessing }
+Board >> numOfParsecs [
+	^ parsecs 
+]
+
+{ #category : #accessing }
 Board >> numbOfTiles [
 
 	^ tileEffectArray size
+]
+
+{ #category : #'accessing - arguments' }
+Board >> numberBoxEffect [
+	|aDictonary |
+	aDictonary := Dictionary new.
+	aDictonary at: HyperJumpEffect put: 20.
+	aDictonary at: BlackHoleEffect put: 20.
+	aDictonary at: MoonWalkEffect put: 10.
+	
+	^ aDictonary.
 ]
 
 { #category : #accessing }

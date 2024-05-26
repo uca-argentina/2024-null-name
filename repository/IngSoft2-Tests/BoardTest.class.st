@@ -26,6 +26,18 @@ BoardTest >> testBoardCannotBeInitializedWithLessThanOneTile [
 ]
 
 { #category : #tests }
+BoardTest >> testBoardHasANumberOfParsecs [
+
+	| numTiles aBoard numParsecs|
+	numTiles := 4.
+	numParsecs := 2.
+	
+	aBoard := Board  withTiles: numTiles withWormHolePositions: #(2 3) withParsecs: numParsecs.
+
+	self assert: aBoard numOfParsecs equals: 2
+]
+
+{ #category : #tests }
 BoardTest >> testBoardHasANumberOfTiles [
 
 	| numTiles aBoard |
