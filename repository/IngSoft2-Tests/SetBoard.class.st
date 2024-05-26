@@ -31,6 +31,19 @@ SetBoard class >> withTiles: aNumberOfTiles withWormHolePositions: aWormHoleTile
 		  withAmountOfLaps: 1
 ]
 
+{ #category : #initialization }
+SetBoard class >> withTiles: aNumberOfTiles withWormHolePositions: aWormHoleTilePair withAmountOfLaps: anAmountOfLaps [
+
+	self numberOfTileIsValid: aNumberOfTiles.
+	self wormHolePairIsValid: aWormHoleTilePair with: aNumberOfTiles.
+
+	^ self new
+		  initializeWithAmoutTiles: aNumberOfTiles
+		  withWormHolePositions: aWormHoleTilePair
+		  withEffectsInPosition: Dictionary new
+		  withAmountOfLaps: anAmountOfLaps
+]
+
 { #category : #'class initialization' }
 SetBoard class >> withTiles: aNumberOfTiles withWormHolePositions: aWormHoleTilePair withEffectsInPosition: aDictionaryOfEffectsAndParameters [
 

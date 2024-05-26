@@ -1,29 +1,26 @@
 "
-Board class
-
-NOTE TO FUTURE SELF:
-""Can implement more effects by making a collection of Effects that create diferent tiles""
+A loaded board with effects for testing
 "
 Class {
-	#name : #Board,
+	#name : #LoadedBoard,
 	#superclass : #Object,
 	#instVars : [
 		'tileEffectArray',
 		'maxLap',
 		'parsecs'
 	],
-	#category : #'IngSoft2-Model'
+	#category : #'IngSoft2-Tests'
 }
 
 { #category : #'argument validation' }
-Board class >> numberOfTileIsValid: aNumberOfTiles [
+LoadedBoard class >> numberOfTileIsValid: aNumberOfTiles [
 
 	aNumberOfTiles strictlyPositive ifFalse: [
 		Error signal: 'Board tiles must be greater than 0' ]
 ]
 
 { #category : #'class initialization' }
-Board class >> withTiles: aNumberOfTiles withWormHolePositions: aWormHoleTilePair [
+LoadedBoard class >> withTiles: aNumberOfTiles withWormHolePositions: aWormHoleTilePair [
 
 	self numberOfTileIsValid: aNumberOfTiles.
 	self wormHolePairIsValid: aWormHoleTilePair with: aNumberOfTiles.
@@ -36,7 +33,7 @@ Board class >> withTiles: aNumberOfTiles withWormHolePositions: aWormHoleTilePai
 ]
 
 { #category : #'class initialization' }
-Board class >> withTiles: aNumberOfTiles withWormHolePositions: aWormHoleTilePair withAmountOfLaps: anAmountOfLaps [
+LoadedBoard class >> withTiles: aNumberOfTiles withWormHolePositions: aWormHoleTilePair withAmountOfLaps: anAmountOfLaps [
 
 	self numberOfTileIsValid: aNumberOfTiles.
 	self wormHolePairIsValid: aWormHoleTilePair with: aNumberOfTiles.
@@ -49,7 +46,7 @@ Board class >> withTiles: aNumberOfTiles withWormHolePositions: aWormHoleTilePai
 ]
 
 { #category : #'class initialization' }
-Board class >> withTiles: aNumberOfTiles withWormHolePositions: aWormHoleTilePair withParsecs: aNumberOfParsecs [
+LoadedBoard class >> withTiles: aNumberOfTiles withWormHolePositions: aWormHoleTilePair withParsecs: aNumberOfParsecs [
 
 	self numberOfTileIsValid: aNumberOfTiles.
 	self wormHolePairIsValid: aWormHoleTilePair with: aNumberOfTiles.
@@ -62,7 +59,7 @@ Board class >> withTiles: aNumberOfTiles withWormHolePositions: aWormHoleTilePai
 ]
 
 { #category : #'class initialization' }
-Board class >> withTiles: aNumberOfTiles withWormHolePositions: aWormHoleTilePair withParsecs: aNumberOfParsecs withAmountOfLaps: anAmountOfLaps [ 
+LoadedBoard class >> withTiles: aNumberOfTiles withWormHolePositions: aWormHoleTilePair withParsecs: aNumberOfParsecs withAmountOfLaps: anAmountOfLaps [ 
 
 	self numberOfTileIsValid: aNumberOfTiles.
 	self wormHolePairIsValid: aWormHoleTilePair with: aNumberOfTiles.
@@ -75,7 +72,7 @@ Board class >> withTiles: aNumberOfTiles withWormHolePositions: aWormHoleTilePai
 ]
 
 { #category : #'argument validation' }
-Board class >> wormHolePairIsValid: aWormHoleTilePair with: aNumberOfTiles [
+LoadedBoard class >> wormHolePairIsValid: aWormHoleTilePair with: aNumberOfTiles [
 
 	aWormHoleTilePair do: [ :i |
 		(i <= aNumberOfTiles and: i strictlyPositive) ifFalse: [
@@ -83,7 +80,7 @@ Board class >> wormHolePairIsValid: aWormHoleTilePair with: aNumberOfTiles [
 ]
 
 { #category : #accessing }
-Board >> adjustShipPositionBelowOne: aShip [
+LoadedBoard >> adjustShipPositionBelowOne: aShip [
 
 	(aShip position < 1 and: aShip lapsLeft > 1) ifFalse: [ ^ self ].
 	aShip moveTiles: tileEffectArray size.
@@ -91,7 +88,7 @@ Board >> adjustShipPositionBelowOne: aShip [
 ]
 
 { #category : #accessing }
-Board >> adjustShipPositionOverboard: aShip [
+LoadedBoard >> adjustShipPositionOverboard: aShip [
 
 	(aShip position > tileEffectArray size and: aShip lapsLeft < maxLap)
 		ifFalse: [ ^ self ].
@@ -100,13 +97,13 @@ Board >> adjustShipPositionOverboard: aShip [
 ]
 
 { #category : #modifying }
-Board >> applyTileEffectOn: aGame triggeredBy: aShip [
+LoadedBoard >> applyTileEffectOn: aGame triggeredBy: aShip [
 
 	(tileEffectArray at: aShip position) applyOn: aGame
 ]
 
 { #category : #initialization }
-Board >> initializeWithAmoutTiles: aNumberOfTiles withWormHolePositions: aWormHoleTilePair withAmountOfParsecs: aNumberOfParsecs withAmountOfLaps: anAmountOfLaps [
+LoadedBoard >> initializeWithAmoutTiles: aNumberOfTiles withWormHolePositions: aWormHoleTilePair withAmountOfParsecs: aNumberOfParsecs withAmountOfLaps: anAmountOfLaps [
 
 	| aPairOfLengths aTileEffectsCreator |
 	maxLap := anAmountOfLaps.
@@ -117,7 +114,7 @@ Board >> initializeWithAmoutTiles: aNumberOfTiles withWormHolePositions: aWormHo
 		                  with: aNumberOfTiles
 		                  with: aNumberOfParsecs.
 	
-	aTileEffectsCreator := TileEffectsCreator new.
+	aTileEffectsCreator := LoadedTileEffectsCreator new.
 
 	tileEffectArray := aTileEffectsCreator
 		                   createWithWormHolePositions: aWormHoleTilePair
@@ -126,24 +123,24 @@ Board >> initializeWithAmoutTiles: aNumberOfTiles withWormHolePositions: aWormHo
 ]
 
 { #category : #testing }
-Board >> isInLastTile: aShip [
+LoadedBoard >> isInLastTile: aShip [
 
 	^ aShip position = tileEffectArray size and: aShip lapsLeft = maxLap
 ]
 
 { #category : #accessing }
-Board >> numOfParsecs [
+LoadedBoard >> numOfParsecs [
 	^ parsecs 
 ]
 
 { #category : #accessing }
-Board >> numbOfTiles [
+LoadedBoard >> numbOfTiles [
 
 	^ tileEffectArray size
 ]
 
 { #category : #'accessing - arguments' }
-Board >> numberBoxEffect [
+LoadedBoard >> numberBoxEffect [
 	|countDictionary |
 
     countDictionary := Dictionary new.
@@ -168,7 +165,7 @@ Board >> numberBoxEffect [
 ]
 
 { #category : #accessing }
-Board >> snapToLastTile: aShip [
+LoadedBoard >> snapToLastTile: aShip [
 
 	(aShip position > tileEffectArray size and: aShip lapsLeft = maxLap)
 		ifTrue: [ aShip moveTiles: tileEffectArray size - aShip position ]

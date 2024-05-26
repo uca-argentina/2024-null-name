@@ -351,7 +351,7 @@ GameTest >> testWhenShipHasNoShieldsLeftThenCannotPlayTurn [
 
 
 	aGame := Game
-		         withBoard: (Board
+		         withBoard: (SetBoard
 				          withTiles: 16
 				          withWormHolePositions: aWormHoleTilePair
 				          withAmountOfLaps: 3)
@@ -381,7 +381,7 @@ GameTest >> testWhenShipWithNoShieldLosesTwoTurnsThenCanPlayAgain [
 
 
 	aGame := Game
-		         withBoard: (Board
+		         withBoard: (SetBoard
 				          withTiles: 16
 				          withWormHolePositions: aWormHoleTilePair
 				          withAmountOfLaps: 3)
@@ -420,7 +420,7 @@ GameTest >> testWhenShipWithNoShieldsCannotSkipTurn [
 
 
 	aGame := Game
-		         withBoard: (Board
+		         withBoard: (SetBoard 
 				          withTiles: 16
 				          withWormHolePositions: aWormHoleTilePair
 				          withAmountOfLaps: 3)
@@ -448,7 +448,7 @@ GameTest >> testWhenTurnIsSkippedThenShipRestoresAllShields [
 
 	aGame := Game
 		         withBoard:
-		         (Board
+		         (SetBoard
 			          withTiles: 16
 			          withWormHolePositions: aWormHoleTilePair)
 		         withShipNames: aCollectionOfNames

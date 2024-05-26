@@ -14,7 +14,7 @@ BattleTest >> testShipsCannotBattleInTheFirstTileOfABoard [
 		                    (SequenceDie withSequence: #( 16 16 4 5 )).
 
 	aGame := Game
-		         withBoard: (Board
+		         withBoard: (SetBoard
 				          withTiles: 16
 				          withWormHolePositions: aWormHoleTilePair
 				          withAmountOfLaps: 3)
@@ -39,7 +39,7 @@ BattleTest >> testWhenShipInAGameLandsInATileWithAnotherShipThenTheyBattle [
 
 	aGame := Game
 		         withBoard:
-		         (Board
+		         (SetBoard
 			          withTiles: 16
 			          withWormHolePositions: aWormHoleTilePair)
 		         withShipNames: aCollectionOfNames
@@ -63,7 +63,7 @@ BattleTest >> testWhenShipLosesABattleThenGoBackToFirstTile [
 	
 	aGame := Game
 		         withBoard:
-		         (Board
+		         (SetBoard
 			          withTiles: 16
 			          withWormHolePositions: aWormHoleTilePair)
 		         withShipNames: aCollectionOfNames
