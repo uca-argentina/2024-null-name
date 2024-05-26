@@ -87,10 +87,10 @@ Ship >> modifyLap: aLapAmount [
 { #category : #modifying }
 Ship >> moveTiles: anAmountOfTiles [
 
-	currentPosition := (currentPosition + anAmountOfTiles < 1 and:
-		                    currentLap = 1)
-		                   ifFalse: [ currentPosition + anAmountOfTiles ]
-		                   ifTrue: [ 1 ]
+	currentPosition := currentLap = 1
+        ifTrue: [(currentPosition + anAmountOfTiles) max: 1]
+        ifFalse: [currentPosition + anAmountOfTiles].
+
 ]
 
 { #category : #modifying }
