@@ -12,14 +12,6 @@ Class {
 }
 
 { #category : #'class initialization' }
-WormholeEffect class >> createWith: aWormHolePair [
-	^ self new
-		  initializeInPosition: aWormHolePair first
-		  toPosition: aWormHolePair last
-
-]
-
-{ #category : #'class initialization' }
 WormholeEffect class >> fromPosition: firstPosition toPosition: lastPosition [
 
 	^ self new
