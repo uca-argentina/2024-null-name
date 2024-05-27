@@ -11,12 +11,6 @@ Class {
 }
 
 { #category : #'class initialization' }
-MoonWalkEffect class >> createWith: aDistance [
-
-	^ self new initializeWithMoonwalkDistance: aDistance 
-]
-
-{ #category : #'class initialization' }
 MoonWalkEffect class >> withMoonwalkDistance: aDistance [
 
 	^ self new initializeWithMoonwalkDistance: aDistance 

@@ -13,11 +13,6 @@ Class {
 }
 
 { #category : #'class initialization' }
-HyperJumpEffect class >> createWith: aCollectionOfParameters [
-	^ (self new) initializeWithParsecs: aCollectionOfParameters.
-]
-
-{ #category : #'class initialization' }
 HyperJumpEffect class >> withParsecArray: aParsecArray andBoardLengths: aPairOfLengths [
 
 	^ self new
