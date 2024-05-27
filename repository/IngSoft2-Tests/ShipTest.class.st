@@ -46,28 +46,26 @@ ShipTest >> testShipCannotBeCreatedWithNoName [
 
 { #category : #tests }
 ShipTest >> testShipsAlwaysHaveTheSameAmountOfShieldsSetAtTheStart [
-    |aShip1 aShip2|
-    
-    aShip1:= Ship createWithName:'Jorge' .
-    aShip2:= Ship createWithName:'Jose'.
-    
-    self assert: (aShip1 amountOfShieldsActive) equals: 3.
-    self assert: (aShip2 amountOfShieldsActive) equals: 3.
 
+	| aShip1 aShip2 |
+	aShip1 := Ship createWithName: 'Jorge'.
+	aShip2 := Ship createWithName: 'Jose'.
+
+	self assert: aShip1 amountOfShieldsActive equals: 3.
+	self assert: aShip2 amountOfShieldsActive equals: 3
 ]
 
 { #category : #tests }
 ShipTest >> testShipsAmountOfShieldCanChangeDuringTime [
-    |aShip1 aShip2|
-    
-    aShip1:= Ship createWithName:'Jorge' .
-    aShip2:= Ship createWithName:'Jose'.
-    
-    aShip2 loseOneShield.
-    
-    self assert: (aShip1 amountOfShieldsActive) equals: 3.
-    self assert: (aShip2 amountOfShieldsActive) equals: 2.
 
+	| aShip1 aShip2 |
+	aShip1 := Ship createWithName: 'Jorge'.
+	aShip2 := Ship createWithName: 'Jose'.
+
+	aShip2 loseOneShield.
+
+	self assert: aShip1 amountOfShieldsActive equals: 3.
+	self assert: aShip2 amountOfShieldsActive equals: 2
 ]
 
 { #category : #tests }

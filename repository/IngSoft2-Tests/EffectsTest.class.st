@@ -295,11 +295,11 @@ EffectsTest >> testWhenApplyingMoonWalkEffectShipLapsBehaveCorrectly [
 { #category : #tests }
 EffectsTest >> testWhenApplyingWormholeEffectOnShipMoveAccordingly [
 
-	| aGame aBoard aWormHoleTilePair aShipName |
-	aWormHoleTilePair := #( 2 5 ).
+	| aGame aBoard aWormHolePair aShipName |
+	aWormHolePair := #( 2 5 ).
 	aBoard := SetBoard
 		          withLengthInTileAndParsec: #( 6 6 )
-		          withWormHolePositions: aWormHoleTilePair
+		          withWormHolePositions: aWormHolePair
 		          withAmountOfLaps: 3.
 	aShipName := OrderedCollection with: 'Juan'.
 	aGame := Game

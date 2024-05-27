@@ -7,16 +7,16 @@ Class {
 { #category : #tests }
 TurnPlayabilityTest >> testAGameTurnCanBeSkipped [
 
-	| aGame aCollectionOfNames aWormHoleTilePair aCollectionOfDie |
+	| aGame aCollectionOfNames aWormHolePair aCollectionOfDie |
 	aCollectionOfNames := OrderedCollection with: 'Juan' with: 'Pedro'.
-	aWormHoleTilePair := #( 10 15 ).
+	aWormHolePair := #( 10 15 ).
 	aCollectionOfDie := OrderedCollection with: (LoadedDie of: 5).
 
 
 	aGame := Game
 		         withBoard: (Board
 				          withLengthInTileAndParsec: #( 16 16 )
-				          withWormHolePositions: aWormHoleTilePair
+				          withWormHolePositions: aWormHolePair
 				          withAmountOfLaps: 3
 				          withParsecArray: #( 1 3 1 5 ))
 		         withShipNames: aCollectionOfNames
@@ -80,9 +80,9 @@ TurnPlayabilityTest >> testWhenFinishedTheEndingPositionOfTheWinnerEqualsTheFirs
 { #category : #tests }
 TurnPlayabilityTest >> testWhenShipHasNoShieldsLeftThenCannotPlayTurn [
 
-	| aGame aCollectionOfNames aWormHoleTilePair aCollectionOfDie |
+	| aGame aCollectionOfNames aWormHolePair aCollectionOfDie |
 	aCollectionOfNames := OrderedCollection with: 'Juan' with: 'Pedro'.
-	aWormHoleTilePair := #( 10 15 ).
+	aWormHolePair := #( 10 15 ).
 	aCollectionOfDie := OrderedCollection with:
 		                    (SequenceDie withSequence:
 			                     #( 1 1 1 1 1 2 1 1 1 3 )).
@@ -91,7 +91,7 @@ TurnPlayabilityTest >> testWhenShipHasNoShieldsLeftThenCannotPlayTurn [
 	aGame := Game
 		         withBoard: (SetBoard
 				          withLengthInTileAndParsec: #( 16 16 )
-				          withWormHolePositions: aWormHoleTilePair
+				          withWormHolePositions: aWormHolePair
 				          withAmountOfLaps: 3)
 		         withShipNames: aCollectionOfNames
 		         withDice: (Dice with: aCollectionOfDie).
@@ -110,9 +110,9 @@ TurnPlayabilityTest >> testWhenShipHasNoShieldsLeftThenCannotPlayTurn [
 { #category : #tests }
 TurnPlayabilityTest >> testWhenShipWithNoShieldLosesTwoTurnsThenCanPlayAgain [
 
-	| aGame aCollectionOfNames aWormHoleTilePair aCollectionOfDie |
+	| aGame aCollectionOfNames aWormHolePair aCollectionOfDie |
 	aCollectionOfNames := OrderedCollection with: 'Juan' with: 'Pedro'.
-	aWormHoleTilePair := #( 10 15 ).
+	aWormHolePair := #( 10 15 ).
 	aCollectionOfDie := OrderedCollection with:
 		                    (SequenceDie withSequence:
 			                     #( 1 1 1 1 1 2 1 1 1 3 )).
@@ -121,7 +121,7 @@ TurnPlayabilityTest >> testWhenShipWithNoShieldLosesTwoTurnsThenCanPlayAgain [
 	aGame := Game
 		         withBoard: (SetBoard
 				          withLengthInTileAndParsec: #( 16 16 )
-				          withWormHolePositions: aWormHoleTilePair
+				          withWormHolePositions: aWormHolePair
 				          withAmountOfLaps: 3)
 		         withShipNames: aCollectionOfNames
 		         withDice: (Dice with: aCollectionOfDie).
@@ -149,9 +149,9 @@ TurnPlayabilityTest >> testWhenShipWithNoShieldLosesTwoTurnsThenCanPlayAgain [
 { #category : #tests }
 TurnPlayabilityTest >> testWhenShipWithNoShieldsCannotSkipTurn [
 
-	| aGame aCollectionOfNames aWormHoleTilePair aCollectionOfDie |
+	| aGame aCollectionOfNames aWormHolePair aCollectionOfDie |
 	aCollectionOfNames := OrderedCollection with: 'Juan' with: 'Pedro'.
-	aWormHoleTilePair := #( 10 15 ).
+	aWormHolePair := #( 10 15 ).
 	aCollectionOfDie := OrderedCollection with:
 		                    (SequenceDie withSequence:
 			                     #( 1 1 1 1 1 2 1 1 1 3 )).
@@ -160,7 +160,7 @@ TurnPlayabilityTest >> testWhenShipWithNoShieldsCannotSkipTurn [
 	aGame := Game
 		         withBoard: (SetBoard
 				          withLengthInTileAndParsec: #( 16 16 )
-				          withWormHolePositions: aWormHoleTilePair
+				          withWormHolePositions: aWormHolePair
 				          withAmountOfLaps: 3)
 		         withShipNames: aCollectionOfNames
 		         withDice: (Dice with: aCollectionOfDie).
@@ -179,15 +179,15 @@ TurnPlayabilityTest >> testWhenShipWithNoShieldsCannotSkipTurn [
 { #category : #tests }
 TurnPlayabilityTest >> testWhenTurnIsSkippedThenShipRestoresAllShields [
 
-	| aGame aCollectionOfNames aWormHoleTilePair aCollectionOfDie |
+	| aGame aCollectionOfNames aWormHolePair aCollectionOfDie |
 	aCollectionOfNames := OrderedCollection with: 'Juan' with: 'Pedro'.
-	aWormHoleTilePair := #( 10 15 ).
+	aWormHolePair := #( 10 15 ).
 	aCollectionOfDie := OrderedCollection with: (LoadedDie of: 5).
 
 	aGame := Game
 		         withBoard: (SetBoard
 				          withLengthInTileAndParsec: #( 16 16 )
-				          withWormHolePositions: aWormHoleTilePair
+				          withWormHolePositions: aWormHolePair
 				          withAmountOfLaps: 1)
 		         withShipNames: aCollectionOfNames
 		         withDice: (Dice with: aCollectionOfDie).

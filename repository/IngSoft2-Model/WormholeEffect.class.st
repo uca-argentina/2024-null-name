@@ -12,10 +12,10 @@ Class {
 }
 
 { #category : #'class initialization' }
-WormholeEffect class >> createWith: aPairOfPositions [
+WormholeEffect class >> createWith: aWormHolePair [
 	^ self new
-		  initializeInPosition: aPairOfPositions first
-		  toPosition: aPairOfPositions last
+		  initializeInPosition: aWormHolePair first
+		  toPosition: aWormHolePair last
 
 ]
 

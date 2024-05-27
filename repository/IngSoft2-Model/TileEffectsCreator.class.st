@@ -8,7 +8,7 @@ Class {
 }
 
 { #category : #'creating collection' }
-TileEffectsCreator >> createWithWormHolePositions: aWormHoleTilePair withBoardLenghts: aPairOfLengths withParsecArrry: aParsecArray [
+TileEffectsCreator >> createWithWormHolePositions: aWormHolePair withBoardLenghts: aPairOfLengths withParsecArrry: aParsecArray [
 
 	| tileEffectArray probabilityEffects |
 	probabilityEffects := Dictionary newFrom: {
@@ -22,8 +22,10 @@ TileEffectsCreator >> createWithWormHolePositions: aWormHoleTilePair withBoardLe
 				                       (self generateMoonWalkParameters:
 					                        aPairOfLengths first) ]).
 			                      (#( 91 98 ) -> (HyperJumpEffect createWith:
-				                        (self generateHyperJumpParameters:
-					                         aPairOfLengths and: aParsecArray))).
+				                        (self
+					                         generateHyperJumpParameters:
+					                         aPairOfLengths
+					                         and: aParsecArray))).
 			                      (#( 99 100 )
 			                       -> (AtomicBombEffect createWith: '')) }.
 
@@ -37,12 +39,12 @@ TileEffectsCreator >> createWithWormHolePositions: aWormHoleTilePair withBoardLe
 	tileEffectArray at: 1 put: (NullEffect createWith: '').
 
 	tileEffectArray
-		at: aWormHoleTilePair first
-		put: (WormholeEffect createWith: aWormHoleTilePair).
+		at: aWormHolePair first
+		put: (WormholeEffect createWith: aWormHolePair).
 
 	tileEffectArray
-		at: aWormHoleTilePair last
-		put: (WormholeEffect createWith: aWormHoleTilePair reversed).
+		at: aWormHolePair last
+		put: (WormholeEffect createWith: aWormHolePair reversed).
 
 	^ tileEffectArray
 ]

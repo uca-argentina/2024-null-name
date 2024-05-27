@@ -10,7 +10,7 @@ GameInitalizationTest >> testGameCannotBeInitializedWithoutABoard [
 	| aBoard aCollectionOfNames aCollectionOfDie |
 	aCollectionOfNames := OrderedCollection with: 'Juan'.
 	aCollectionOfDie := OrderedCollection with: (LoadedDie of: 9).
-	
+
 	self
 		should: [
 			Game

@@ -32,9 +32,12 @@ BoardTest >> testBoardCannotBeInitializedWithLessThanOneTile [
 { #category : #tests }
 BoardTest >> testBoardHasANumberOfParsecs [
 
-	|aBoard|
-	
-	aBoard := Board  withLengthInTileAndParsec: #(4 2)  withWormHolePositions: #(2 3) withAmountOfLaps: 1 withParsecArray: #(2 1 3 4) .
+	| aBoard |
+	aBoard := Board
+		          withLengthInTileAndParsec: #( 4 2 )
+		          withWormHolePositions: #( 2 3 )
+		          withAmountOfLaps: 1
+		          withParsecArray: #( 2 1 3 4 ).
 
 	self assert: aBoard numOfParsecs equals: 2
 ]
@@ -54,16 +57,16 @@ BoardTest >> testBoardHasANumberOfTiles [
 { #category : #tests }
 BoardTest >> testSpecialTilesCannotBeCreatedIfPositionsExceedBoardSize [
 
-	| aWormholePositons |
-	aWormholePositons := #( 2 6 ).
+	| aWormHolePair |
+	aWormHolePair := #( 2 6 ).
 
 	self
 		should: [
 			Board
-				withLengthInTileAndParsec: #(3 3)
-				withWormHolePositions: aWormholePositons
+				withLengthInTileAndParsec: #( 3 3 )
+				withWormHolePositions: aWormHolePair
 				withAmountOfLaps: 3
-				withParsecArray: #(2 1 3 1) ]
+				withParsecArray: #( 2 1 3 1 ) ]
 		raise: Error
 		withMessage: 'Wormhole tiles are out of bounds'
 ]
@@ -71,14 +74,14 @@ BoardTest >> testSpecialTilesCannotBeCreatedIfPositionsExceedBoardSize [
 { #category : #tests }
 BoardTest >> testWhenBoardIsCreatedTheAmountOfEffectsFollowTheCorrectDistribution [
 
-	| aBoard aPairOfLengths aWormHoleTilePair aNumberOfLaps |
-	aWormHoleTilePair := #( 2 4 ).
+	| aBoard aPairOfLengths aWormHolePair aNumberOfLaps |
+	aWormHolePair := #( 2 4 ).
 	aNumberOfLaps := 1.
 	aPairOfLengths := #( 102 10 ).
 
 	aBoard := LoadedBoard
 		          withLengthInTileAndParsec: aPairOfLengths
-		          withWormHolePositions: aWormHoleTilePair
+		          withWormHolePositions: aWormHolePair
 		          withAmountOfLaps: aNumberOfLaps
 		          withParsecArray: #( 1 3 5 1 ).
 
@@ -97,16 +100,16 @@ BoardTest >> testWhenBoardIsCreatedTheAmountOfEffectsFollowTheCorrectDistributio
 { #category : #tests }
 BoardTest >> testWormHoleEffectCannotBeCreatedInFirstTileOfBoard [
 
-	| aWormholePositons |
-	aWormholePositons := #( 1 3 ).
+	| aWormHolePair |
+	aWormHolePair := #( 1 3 ).
 
 	self
 		should: [
 			Board
-				withLengthInTileAndParsec: #(3 3)
-				withWormHolePositions: aWormholePositons
+				withLengthInTileAndParsec: #( 3 3 )
+				withWormHolePositions: aWormHolePair
 				withAmountOfLaps: 3
-				withParsecArray: #(2 1 3 1) ]
+				withParsecArray: #( 2 1 3 1 ) ]
 		raise: Error
 		withMessage: 'Wormhole cannot be created in first tile of board'
 ]
@@ -114,16 +117,16 @@ BoardTest >> testWormHoleEffectCannotBeCreatedInFirstTileOfBoard [
 { #category : #tests }
 BoardTest >> testWormHoleTilePairsCannotOverlap [
 
-	| aWormholePositons |
-	aWormholePositons := #( 3 3 ).
+	| aWormHolePair |
+	aWormHolePair := #( 3 3 ).
 
 	self
 		should: [
 			Board
-				withLengthInTileAndParsec: #(3 3)
-				withWormHolePositions: aWormholePositons
+				withLengthInTileAndParsec: #( 3 3 )
+				withWormHolePositions: aWormHolePair
 				withAmountOfLaps: 3
-				withParsecArray: #(2 1 3 1) ]
+				withParsecArray: #( 2 1 3 1 ) ]
 		raise: Error
 		withMessage: 'Wormhole tiles cannot be in the same position'
 ]

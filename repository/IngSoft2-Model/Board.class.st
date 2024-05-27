@@ -23,27 +23,27 @@ Board class >> numberOfTileIsValid: aNumberOfTiles [
 ]
 
 { #category : #'class initialization' }
-Board class >> withLengthInTileAndParsec: aPairOfLengths  withWormHolePositions: aWormHoleTilePair withAmountOfLaps: anAmountOfLaps withParsecArray: aParsecArray [
+Board class >> withLengthInTileAndParsec: aPairOfLengths  withWormHolePositions: aWormHolePair withAmountOfLaps: anAmountOfLaps withParsecArray: aParsecArray [
 
 	self numberOfTileIsValid: aPairOfLengths first.
-	self wormHolePairIsValid: aWormHoleTilePair with: aPairOfLengths first.
+	self wormHolePairIsValid: aWormHolePair with: aPairOfLengths first.
 
 	^ self new
 		  initializeWithLengths: aPairOfLengths
-		  withWormHolePositions: aWormHoleTilePair
+		  withWormHolePositions: aWormHolePair
 		  withAmountOfLaps: anAmountOfLaps
 		  withParsecArray: aParsecArray asOrderedCollection
 ]
 
 { #category : #'argument validation' }
-Board class >> wormHolePairIsValid: aWormHoleTilePair with: aNumberOfTiles [
+Board class >> wormHolePairIsValid: aWormHolePair with: aNumberOfTiles [
 
-	(aWormHoleTilePair allSatisfy: [ :i |
+	(aWormHolePair allSatisfy: [ :i |
 		 i <= aNumberOfTiles and: i strictlyPositive ]) ifFalse: [
 		Error signal: 'Wormhole tiles are out of bounds' ].
-	(aWormHoleTilePair anySatisfy: [ :i | i = 1 ]) ifTrue: [
+	(aWormHolePair anySatisfy: [ :i | i = 1 ]) ifTrue: [
 		Error signal: 'Wormhole cannot be created in first tile of board' ].
-	aWormHoleTilePair first = aWormHoleTilePair last ifTrue: [
+	aWormHolePair first = aWormHolePair last ifTrue: [
 		Error signal: 'Wormhole tiles cannot be in the same position' ]
 ]
 
@@ -71,7 +71,7 @@ Board >> applyTileEffectOn: aGame triggeredBy: aShip [
 ]
 
 { #category : #initialization }
-Board >> initializeWithLengths: aPairOfLengths withWormHolePositions: aWormHoleTilePair withAmountOfLaps: anAmountOfLaps withParsecArray: aParsecArray [
+Board >> initializeWithLengths: aPairOfLengths withWormHolePositions: aWormHolePair withAmountOfLaps: anAmountOfLaps withParsecArray: aParsecArray [
 
 	| aTileEffectsCreator |
 	maxLap := anAmountOfLaps.
@@ -80,7 +80,7 @@ Board >> initializeWithLengths: aPairOfLengths withWormHolePositions: aWormHoleT
 	
 	aTileEffectsCreator := TileEffectsCreator new.
 	tileEffectArray := aTileEffectsCreator
-		                   createWithWormHolePositions: aWormHoleTilePair
+		                   createWithWormHolePositions: aWormHolePair
 		                   withBoardLenghts: aPairOfLengths
 		                   withParsecArrry: aParsecArray
 ]
@@ -104,19 +104,17 @@ Board >> numbOfTiles [
 
 { #category : #'accessing - arguments' }
 Board >> numberBoxEffect [
-	|countDictionary |
 
-    countDictionary := Dictionary new.
-    
-    tileEffectArray do: [:effect | 
-        | className |
-        className := effect class .
-        countDictionary at: className ifPresent: [:count |
-            countDictionary at: className put: count + 1
-        ] ifAbsent: [
-            countDictionary at: className put: 1
-        ].
-    ].
+	| countDictionary |
+	countDictionary := Dictionary new.
+
+	tileEffectArray do: [ :effect |
+		| className |
+		className := effect class.
+		countDictionary
+			at: className
+			ifPresent: [ :count | countDictionary at: className put: count + 1 ]
+			ifAbsent: [ countDictionary at: className put: 1 ] ].
 
 	"
 	countDictionary := Dictionary new.
@@ -124,7 +122,7 @@ Board >> numberBoxEffect [
 	countDictionary at: BlackHoleEffect put: 20.
 	countDictionary at: MoonWalkEffect put: 10.
 	"
-	^ countDictionary.
+	^ countDictionary
 ]
 
 { #category : #accessing }

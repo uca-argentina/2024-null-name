@@ -19,44 +19,44 @@ SetBoard class >> numberOfTileIsValid: aNumberOfTiles [
 ]
 
 { #category : #'class initialization' }
-SetBoard class >> withLengthInTileAndParsec: aPairOfLengths withWormHolePositions: aWormHoleTilePair withAmountOfLaps: anAmountOfLaps [
+SetBoard class >> withLengthInTileAndParsec: aPairOfLengths withWormHolePositions: aWormHolePair withAmountOfLaps: anAmountOfLaps [
 
 	self numberOfTileIsValid: aPairOfLengths first.
 	self
-		wormHolePairIsValid: aWormHoleTilePair
+		wormHolePairIsValid: aWormHolePair
 		with: aPairOfLengths first.
 
 	^ self new
 		  initializeWithLengths: aPairOfLengths
-		  withWormHolePositions: aWormHoleTilePair
+		  withWormHolePositions: aWormHolePair
 		  withEffectsInPosition: Dictionary new
 		  withAmountOfLaps: anAmountOfLaps
 ]
 
 { #category : #'class initialization' }
-SetBoard class >> withLengthInTileAndParsec: aPairOfLengths withWormHolePositions: aWormHoleTilePair withAmountOfLaps: anAmountOfLaps withEffectsInPosition: aDictionaryOfEffectsAndParameters [
+SetBoard class >> withLengthInTileAndParsec: aPairOfLengths withWormHolePositions: aWormHolePair withAmountOfLaps: anAmountOfLaps withEffectsInPosition: aDictionaryOfEffectsAndParameters [
 
 	self numberOfTileIsValid: aPairOfLengths first.
 	self
-		wormHolePairIsValid: aWormHoleTilePair
+		wormHolePairIsValid: aWormHolePair
 		with: aPairOfLengths first.
 
 	^ self new
 		  initializeWithLengths: aPairOfLengths
-		  withWormHolePositions: aWormHoleTilePair
+		  withWormHolePositions: aWormHolePair
 		  withEffectsInPosition: aDictionaryOfEffectsAndParameters
 		  withAmountOfLaps: anAmountOfLaps
 ]
 
 { #category : #'argument validation' }
-SetBoard class >> wormHolePairIsValid: aWormHoleTilePair with: aNumberOfTiles [
+SetBoard class >> wormHolePairIsValid: aWormHolePair with: aNumberOfTiles [
 
-	(aWormHoleTilePair allSatisfy: [ :i |
+	(aWormHolePair allSatisfy: [ :i |
 		 i <= aNumberOfTiles and: i strictlyPositive ]) ifFalse: [
 		Error signal: 'Wormhole tiles are out of bounds' ].
-	(aWormHoleTilePair anySatisfy: [ :i | i = 1 ]) ifTrue: [
+	(aWormHolePair anySatisfy: [ :i | i = 1 ]) ifTrue: [
 		Error signal: 'Wormhole cannot be created in first tile of board' ].
-	aWormHoleTilePair first = aWormHoleTilePair last ifTrue: [
+	aWormHolePair first = aWormHolePair last ifTrue: [
 		Error signal: 'Wormhole tiles cannot be in the same position' ]
 ]
 
@@ -84,7 +84,7 @@ SetBoard >> applyTileEffectOn: aGame triggeredBy: aShip [
 ]
 
 { #category : #initialization }
-SetBoard >> initializeWithLengths: aPairOfLengths withWormHolePositions: aWormHoleTilePair withEffectsInPosition: aDictionaryOfEffectsAndParameters withAmountOfLaps: anAmountOfLaps [
+SetBoard >> initializeWithLengths: aPairOfLengths withWormHolePositions: aWormHolePair withEffectsInPosition: aDictionaryOfEffectsAndParameters withAmountOfLaps: anAmountOfLaps [
 
 	maxLap := anAmountOfLaps.
 	tileEffectArray := OrderedCollection new.
@@ -100,11 +100,11 @@ SetBoard >> initializeWithLengths: aPairOfLengths withWormHolePositions: aWormHo
 						 (aDictionaryOfEffectsAndParameters at: i) last) ] ].
 
 	tileEffectArray
-		at: aWormHoleTilePair first
-		put: (WormholeEffect createWith: aWormHoleTilePair).
+		at: aWormHolePair first
+		put: (WormholeEffect createWith: aWormHolePair).
 	tileEffectArray
-		at: aWormHoleTilePair last
-		put: (WormholeEffect createWith: aWormHoleTilePair reversed)
+		at: aWormHolePair last
+		put: (WormholeEffect createWith: aWormHolePair reversed)
 ]
 
 { #category : #testing }

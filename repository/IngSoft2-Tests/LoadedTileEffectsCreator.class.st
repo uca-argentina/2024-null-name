@@ -11,7 +11,7 @@ Class {
 }
 
 { #category : #'creating collection' }
-LoadedTileEffectsCreator >> createWithWormHolePositions: aWormHoleTilePair withBoardLenghts: aPairOfLengths withParsecArrry: aParsecArray [
+LoadedTileEffectsCreator >> createWithWormHolePositions: aWormHolePair withBoardLenghts: aPairOfLengths withParsecArrry: aParsecArray [
 
 	| tileEffectArray probabilityEffects |
 	probabilityEffects := Dictionary newFrom: {
@@ -47,12 +47,12 @@ LoadedTileEffectsCreator >> createWithWormHolePositions: aWormHoleTilePair withB
 
 
 	tileEffectArray
-		at: aWormHoleTilePair first
-		put: (WormholeEffect createWith: aWormHoleTilePair).
+		at: aWormHolePair first
+		put: (WormholeEffect createWith: aWormHolePair).
 
 	tileEffectArray
-		at: aWormHoleTilePair last
-		put: (WormholeEffect createWith: aWormHoleTilePair reversed).
+		at: aWormHolePair last
+		put: (WormholeEffect createWith: aWormHolePair reversed).
 
 
 	^ tileEffectArray
