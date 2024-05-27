@@ -7,12 +7,6 @@ Class {
 	#category : #'IngSoft2-Model'
 }
 
-{ #category : #'class initialization' }
-AtomicBombEffect class >> createWith: aCollectionOfParameters [
-
-	^ self new
-]
-
 { #category : #applying }
 AtomicBombEffect >> affectAShipCollection: aShipCollection [
 

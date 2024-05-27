@@ -17,6 +17,14 @@ HyperJumpEffect class >> createWith: aCollectionOfParameters [
 	^ (self new) initializeWithParsecs: aCollectionOfParameters.
 ]
 
+{ #category : #'class initialization' }
+HyperJumpEffect class >> withParsecArray: aParsecArray andBoardLengths: aPairOfLengths [
+
+	^ self new
+		  initializeWithParsecs: aParsecArray
+		  andBoardLengths: aPairOfLengths
+]
+
 { #category : #applying }
 HyperJumpEffect >> affectAShip: aShip [
 
@@ -34,12 +42,11 @@ HyperJumpEffect >> currentParsec [
 ]
 
 { #category : #initialization }
-HyperJumpEffect >> initializeWithParsecs: aCollectionOfParameters [
+HyperJumpEffect >> initializeWithParsecs: aParsecArray andBoardLengths: aPairOfLengths [
 
-	parsecCollection := (aCollectionOfParameters at: 'parsecArray')
-		                    asSortedCollection: [ :a :b | a > b ].
+	parsecCollection := aParsecArray asSortedCollection: [ :a :b | a > b ].
 
-	boardParsecToTileRatio := (aCollectionOfParameters at: 'Tiles')
-	                          // (aCollectionOfParameters at: 'Parsecs').
+	boardParsecToTileRatio := (aPairOfLengths at: 'Tiles')
+	                          // (aPairOfLengths at: 'Parsecs').
 	parsecNumber := 0
 ]

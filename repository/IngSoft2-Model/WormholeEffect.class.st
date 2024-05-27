@@ -19,6 +19,14 @@ WormholeEffect class >> createWith: aWormHolePair [
 
 ]
 
+{ #category : #'class initialization' }
+WormholeEffect class >> fromPosition: firstPosition toPosition: lastPosition [
+
+	^ self new
+		  initializeInPosition: firstPosition
+		  toPosition: lastPosition
+]
+
 { #category : #applying }
 WormholeEffect >> affectAShip: aShip [
 

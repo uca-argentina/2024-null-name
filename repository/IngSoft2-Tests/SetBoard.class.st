@@ -95,21 +95,21 @@ SetBoard >> initializeWithLengths: aPairOfLengths withWormHolePositions: aWormHo
 	tileEffectArray := OrderedCollection new.
 
 	1 to: aPairOfLengths first do: [ :i |
-	tileEffectArray add: (NullEffect createWith: #(  )) ].
+	tileEffectArray add: (NullEffect new) ].
 
 	1 to: aPairOfLengths first do: [ :i |
 		(aDictionaryOfEffectsAndParameters includesKey: i) ifTrue: [
 			tileEffectArray
 				at: i
-				put: ((aDictionaryOfEffectsAndParameters at: i) first createWith:
-						 (aDictionaryOfEffectsAndParameters at: i) last) ] ].
+				put: (aDictionaryOfEffectsAndParameters at: i) ] ].
 
-	tileEffectArray
-		at: aWormHolePair first
-		put: (WormholeEffect createWith: aWormHolePair).
-	tileEffectArray
-		at: aWormHolePair last
-		put: (WormholeEffect createWith: aWormHolePair reversed)
+	tileEffectArray at: aWormHolePair first put: (WormholeEffect
+			 fromPosition: aWormHolePair first
+			 toPosition: aWormHolePair last).
+
+	tileEffectArray at: aWormHolePair last put: (WormholeEffect
+			 fromPosition: aWormHolePair last
+			 toPosition: aWormHolePair first).
 ]
 
 { #category : #testing }

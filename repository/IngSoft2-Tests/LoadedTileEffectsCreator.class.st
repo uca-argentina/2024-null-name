@@ -15,47 +15,38 @@ LoadedTileEffectsCreator >> createWithWormHolePositions: aWormHolePair withBoard
 
 	| tileEffectArray probabilityEffects |
 	probabilityEffects := Dictionary newFrom: {
-			                      (#( 0 40 ) -> (NullEffect createWith: '')).
-			                      (#( 41 60 )
-			                       -> (BlackHoleEffect createWith: '')).
-			                      (#( 61 80 )
-			                       -> (HyperSpaceJumpEffect createWith: '')).
+			                      (#( 0 40 ) -> NullEffect new).
+			                      (#( 41 60 ) -> BlackHoleEffect new).
+			                      (#( 61 80 ) -> HyperSpaceJumpEffect new).
 			                      (#( 81 90 ) -> [
-			                       MoonWalkEffect createWith:
+			                       MoonWalkEffect withMoonwalkDistance:
 				                       (self generateMoonWalkParameters:
 					                        aPairOfLengths first) ]).
-			                      (#( 91 98 ) -> (HyperJumpEffect createWith:
+			                      (#( 91 98 ) -> (HyperJumpEffect
+				                        withParsecArray: aParsecArray
+				                        andBoardLengths:
 				                        (self
 					                         generateHyperJumpParameters:
 					                         aPairOfLengths
 					                         and: aParsecArray))).
-			                      (#( 99 100 )
-			                       -> (AtomicBombEffect createWith: '')) }.
-
-	tileEffectArray := OrderedCollection new.
-
+			                      (#( 99 100 ) -> AtomicBombEffect new) }.
 	tileNumber := 0.
+	tileEffectArray := OrderedCollection new.
 
 	1 to: aPairOfLengths first do: [ :i |
 		tileEffectArray add:
 			(probabilityEffects at:
 				 (self determineRange: probabilityEffects keys)) value ].
 
-	tileEffectArray at: 1 put: (NullEffect createWith: '').
+	tileEffectArray at: 1 put: NullEffect new.
 
-	tileEffectArray
-		at: aPairOfLengths first
-		put: (NullEffect createWith: '').
+	tileEffectArray at: aWormHolePair first put: (WormholeEffect
+			 fromPosition: aWormHolePair first
+			 toPosition: aWormHolePair last).
 
-
-	tileEffectArray
-		at: aWormHolePair first
-		put: (WormholeEffect createWith: aWormHolePair).
-
-	tileEffectArray
-		at: aWormHolePair last
-		put: (WormholeEffect createWith: aWormHolePair reversed).
-
+	tileEffectArray at: aWormHolePair last put: (WormholeEffect
+			 fromPosition: aWormHolePair last
+			 toPosition: aWormHolePair first).
 
 	^ tileEffectArray
 ]
@@ -75,7 +66,6 @@ LoadedTileEffectsCreator >> determineRange: aRangeOfKeys [
 LoadedTileEffectsCreator >> generateHyperJumpParameters: aPairOfLenghts and: aParsecArray [
 
 	^ Dictionary newFrom: {
-			  ('parsecArray' -> aParsecArray).
 			  ('Tiles' -> aPairOfLenghts first).
 			  ('Parsecs' -> aPairOfLenghts last) }
 ]

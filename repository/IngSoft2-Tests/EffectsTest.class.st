@@ -9,9 +9,7 @@ EffectsTest >> testWhenApplyingAtomicBombEffectAllShipsMoveBackToFirstTile [
 
 	| aBoard aShipName aDictionaryOfEffects aGame |
 	aDictionaryOfEffects := Dictionary new
-		                        at: 7
-		                        put:
-			                        (OrderedCollection with: AtomicBombEffect);
+		                        at: 7 put: AtomicBombEffect new;
 		                        yourself.
 
 	aBoard := SetBoard
@@ -51,9 +49,7 @@ EffectsTest >> testWhenApplyingBlackHoleEffectShipMoves4SpacesBack [
 
 	| aBoard aShipName aDictionaryOfEffects aGame |
 	aDictionaryOfEffects := Dictionary new
-		                        at: 8
-		                        put:
-			                        (OrderedCollection with: BlackHoleEffect);
+		                        at: 8 put: BlackHoleEffect new;
 		                        yourself.
 
 	aBoard := SetBoard
@@ -82,9 +78,7 @@ EffectsTest >> testWhenApplyingBlackHoleShipNotOnLap1CanMoveBelowFirstTilePositi
 
 	| aBoard aShipName aDictionaryOfEffects aGame |
 	aDictionaryOfEffects := Dictionary new
-		                        at: 3
-		                        put:
-			                        (OrderedCollection with: BlackHoleEffect);
+		                        at: 3 put: BlackHoleEffect new;
 		                        yourself.
 	aBoard := SetBoard
 		          withLengthInTileAndParsec: #( 10 10 )
@@ -112,18 +106,18 @@ EffectsTest >> testWhenApplyingBlackHoleShipNotOnLap1CanMoveBelowFirstTilePositi
 { #category : #tests }
 EffectsTest >> testWhenApplyingHyperJumpEffectShipMovesAVariableParsecDistance [
 
-	| aBoard aShipName aDictionaryOfEffects aGame aDic |
+	| aBoard aShipName aDictionaryOfEffects aGame aDic aParsecArray |
+	aParsecArray := #( 4 3 5 1 ).
 	aDic := Dictionary newFrom: {
-			        ('parsecArray' -> #( 2 5 3 1 )).
 			        ('Tiles' -> 20).
 			        ('Parsecs' -> 10) }.
 
 	aDictionaryOfEffects := Dictionary new
 		                        at: 3
 		                        put:
-			                        (OrderedCollection
-				                         with: HyperJumpEffect
-				                         with: aDic);
+			                        (HyperJumpEffect
+				                         withParsecArray: aParsecArray
+				                         andBoardLengths: aDic);
 		                        yourself.
 
 	aBoard := SetBoard
@@ -152,10 +146,7 @@ EffectsTest >> testWhenApplyingHyperSpaceJumpEffectShipLosesAShield [
 
 	| aBoard aShipName aDictionaryOfEffects aGame |
 	aDictionaryOfEffects := Dictionary new
-		                        at: 4
-		                        put:
-			                        (OrderedCollection with:
-					                         HyperSpaceJumpEffect);
+		                        at: 4 put: HyperSpaceJumpEffect new;
 		                        yourself.
 
 	aBoard := SetBoard
@@ -182,10 +173,7 @@ EffectsTest >> testWhenApplyingHyperSpaceJumpEffectShipMoves4SpacesForward [
 
 	| aBoard aShipName aDictionaryOfEffects aGame |
 	aDictionaryOfEffects := Dictionary new
-		                        at: 4
-		                        put:
-			                        (OrderedCollection with:
-					                         HyperSpaceJumpEffect);
+		                        at: 4 put: HyperSpaceJumpEffect new;
 		                        yourself.
 
 	aBoard := SetBoard
@@ -216,9 +204,7 @@ EffectsTest >> testWhenApplyingMoonWalkEffectAllShipsButTriggeringShipMoveAVaria
 	aDictionaryOfEffects := Dictionary new
 		                        at: 13
 		                        put:
-			                        (OrderedCollection
-				                         with: MoonWalkEffect
-				                         with: 3);
+			                        (MoonWalkEffect withMoonwalkDistance: 3);
 		                        yourself.
 	aBoard := SetBoard
 		          withLengthInTileAndParsec: #( 20 20 )
@@ -254,9 +240,7 @@ EffectsTest >> testWhenApplyingMoonWalkEffectShipLapsBehaveCorrectly [
 	aDictionaryOfEffects := Dictionary new
 		                        at: 5
 		                        put:
-			                        (OrderedCollection
-				                         with: MoonWalkEffect
-				                         with: 3);
+			                        (MoonWalkEffect withMoonwalkDistance: 3);
 		                        yourself.
 	aBoard := SetBoard
 		          withLengthInTileAndParsec: #( 10 10 )
