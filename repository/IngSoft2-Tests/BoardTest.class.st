@@ -20,7 +20,12 @@ BoardTest >> testBoardCannotBeInitializedWithLessThanOneTile [
 	| numTiles |
 	numTiles := 0.
 	self
-		should: [ SetBoard withTiles: numTiles withAmountOfLaps:1 ]
+		should: [
+			SetBoard
+				withLengthInTileAndParsec: #( 0 0 )
+				withWormHolePositions: #( 0 0 )
+				withAmountOfLaps: 1
+				withEffectsInPosition: Dictionary new ]
 		raise: Error
 		withMessage: 'Board tiles must be greater than 0'
 ]
@@ -38,9 +43,12 @@ BoardTest >> testBoardHasANumberOfParsecs [
 { #category : #tests }
 BoardTest >> testBoardHasANumberOfTiles [
 
-	| numTiles aBoard |
-	numTiles := 3.
-	aBoard := SetBoard withTiles: numTiles withAmountOfLaps:1.
+	| aBoard |
+	aBoard := SetBoard
+		          withLengthInTileAndParsec: #( 3 3 )
+		          withWormHolePositions: #( 2 3 )
+		          withAmountOfLaps: 1
+		          withEffectsInPosition: Dictionary new.
 
 	self assert: aBoard numbOfTiles equals: 3
 ]

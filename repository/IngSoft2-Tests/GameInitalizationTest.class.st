@@ -26,7 +26,11 @@ GameInitalizationTest >> testGameCannotBeInitializedWithoutADice [
 
 	| aBoard aCollectionOfNames aDie |
 	aCollectionOfNames := OrderedCollection with: 'Juan'.
-	aBoard := SetBoard withTiles: 13 withAmountOfLaps: 1.
+	aBoard := SetBoard
+		          withLengthInTileAndParsec: #( 13 13 )
+		          withWormHolePositions: #( 2 3 )
+		          withAmountOfLaps: 1
+		          withEffectsInPosition: Dictionary new.
 
 
 
@@ -49,7 +53,11 @@ GameInitalizationTest >> testGameCannotBeInitializedWithoutAnyShipNames [
 	self
 		should: [
 			Game
-				withBoard: (SetBoard withTiles: 20 withAmountOfLaps:1)
+				withBoard: (SetBoard
+						 withLengthInTileAndParsec: #( 20 20 )
+						 withWormHolePositions: #( 2 3 )
+						 withAmountOfLaps: 1
+						 withEffectsInPosition: Dictionary new)
 				withShipNames: aCollectionOfNames
 				withDice: (Dice with: aCollectionOfDie) ]
 		raise: Error
@@ -60,7 +68,11 @@ GameInitalizationTest >> testGameCannotBeInitializedWithoutAnyShipNames [
 GameInitalizationTest >> testGameDoesNotAllowRepeatedShipNames [
 
 	| aGame aBoard aCollectionOfNames aCollectionOfDie |
-	aBoard := SetBoard withTiles: 5 withAmountOfLaps: 1.
+	aBoard := (SetBoard
+				          withLengthInTileAndParsec: #( 5 5 )
+				          withWormHolePositions: #(2 3)
+				          withAmountOfLaps: 1
+				          withEffectsInPosition: Dictionary new).
 	aCollectionOfNames := OrderedCollection
 		                      with: 'Juan'
 		                      with: 'Jose'

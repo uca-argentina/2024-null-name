@@ -19,65 +19,18 @@ SetBoard class >> numberOfTileIsValid: aNumberOfTiles [
 ]
 
 { #category : #'class initialization' }
-SetBoard class >> withTiles: aNumberOfTiles withAmountOfLaps: anAmountOfLaps [
-	self numberOfTileIsValid: aNumberOfTiles.
+SetBoard class >> withLengthInTileAndParsec: aPairOfLengths withWormHolePositions: aWormHoleTilePair withAmountOfLaps: anAmountOfLaps withEffectsInPosition: aDictionaryOfEffectsAndParameters [
+
+	self numberOfTileIsValid: aPairOfLengths first.
+	self
+		wormHolePairIsValid: aWormHoleTilePair
+		with: aPairOfLengths first.
 
 	^ self new
-		  initializeWithAmoutTiles: aNumberOfTiles
-		  withWormHolePositions: #(1 1)
-		withEffectsInPosition: Dictionary new
-		withAmountOfLaps: anAmountOfLaps
-]
-
-{ #category : #initialization }
-SetBoard class >> withTiles: aNumberOfTiles withWormHolePositions: aWormHoleTilePair [
-
-	self numberOfTileIsValid: aNumberOfTiles.
-	self wormHolePairIsValid: aWormHoleTilePair with: aNumberOfTiles.
-
-	^ self new
-		  initializeWithAmoutTiles: aNumberOfTiles
-		  withWormHolePositions: aWormHoleTilePair
-		  withEffectsInPosition: Dictionary new
-		  withAmountOfLaps: 1
-]
-
-{ #category : #initialization }
-SetBoard class >> withTiles: aNumberOfTiles withWormHolePositions: aWormHoleTilePair withAmountOfLaps: anAmountOfLaps [
-
-	self numberOfTileIsValid: aNumberOfTiles.
-	self wormHolePairIsValid: aWormHoleTilePair with: aNumberOfTiles.
-
-	^ self new
-		  initializeWithAmoutTiles: aNumberOfTiles
-		  withWormHolePositions: aWormHoleTilePair
-		  withEffectsInPosition: Dictionary new
-		  withAmountOfLaps: anAmountOfLaps
-]
-
-{ #category : #'class initialization' }
-SetBoard class >> withTiles: aNumberOfTiles withWormHolePositions: aWormHoleTilePair withEffectsInPosition: aDictionaryOfEffectsAndParameters [
-
-	self numberOfTileIsValid: aNumberOfTiles.
-	self wormHolePairIsValid: aWormHoleTilePair with: aNumberOfTiles.
-
-	^ self new
-		  initializeWithAmoutTiles: aNumberOfTiles
+		  initializeWithLengths: aPairOfLengths
 		  withWormHolePositions: aWormHoleTilePair
 		  withEffectsInPosition: aDictionaryOfEffectsAndParameters
-		  withAmountOfLaps: 1
-]
-
-{ #category : #'class initialization' }
-SetBoard class >> withTiles: aNumberOfTiles withWormHolePositions: aWormHoleTilePair withEffectsInPosition: aDictionaryOfEffectsAndParameters withAmountOfLaps: anAmountOfLaps [
-	self numberOfTileIsValid: aNumberOfTiles.
-	self wormHolePairIsValid: aWormHoleTilePair with: aNumberOfTiles.
-
-	^ self new
-		  initializeWithAmoutTiles: aNumberOfTiles
-		  withWormHolePositions: aWormHoleTilePair
-		withEffectsInPosition:aDictionaryOfEffectsAndParameters
-		withAmountOfLaps: anAmountOfLaps
+		  withAmountOfLaps: anAmountOfLaps
 ]
 
 { #category : #'argument validation' }
@@ -121,6 +74,30 @@ SetBoard >> initializeWithAmoutTiles: aNumberOfTiles withWormHolePositions: aWor
 	tileEffectArray add: (NullEffect createWith: #(  )) ].
 
 	1 to: aNumberOfTiles do: [ :i |
+		(aDictionaryOfEffectsAndParameters includesKey: i) ifTrue: [
+			tileEffectArray
+				at: i
+				put: ((aDictionaryOfEffectsAndParameters at: i) first createWith:
+						 (aDictionaryOfEffectsAndParameters at: i) last) ] ].
+
+	tileEffectArray
+		at: aWormHoleTilePair first
+		put: (WormholeEffect createWith: aWormHoleTilePair).
+	tileEffectArray
+		at: aWormHoleTilePair last
+		put: (WormholeEffect createWith: aWormHoleTilePair reversed)
+]
+
+{ #category : #initialization }
+SetBoard >> initializeWithLengths: aPairOfLengths withWormHolePositions: aWormHoleTilePair withEffectsInPosition: aDictionaryOfEffectsAndParameters withAmountOfLaps: anAmountOfLaps [
+
+	maxLap := anAmountOfLaps.
+	tileEffectArray := OrderedCollection new.
+
+	1 to: aPairOfLengths first do: [ :i |
+	tileEffectArray add: (NullEffect createWith: #(  )) ].
+
+	1 to: aPairOfLengths first do: [ :i |
 		(aDictionaryOfEffectsAndParameters includesKey: i) ifTrue: [
 			tileEffectArray
 				at: i

@@ -15,7 +15,11 @@ GameFinishTest >> testGameKnowTheWinnerShip [
 		                    with: (LoadedDie of: 3).
 
 	aGame := Game
-		         withBoard: (SetBoard withTiles: 17 withAmountOfLaps:1)
+		         withBoard: ((SetBoard
+				          withLengthInTileAndParsec: #( 17 17 )
+				          withWormHolePositions: #(2 3)
+				          withAmountOfLaps: 1
+				          withEffectsInPosition: Dictionary new))
 		         withShipNames: aCollectionOfNames
 		         withDice: (Dice with: aCollectionOfDie).
 
@@ -30,7 +34,11 @@ GameFinishTest >> testGameKnowTheWinnerShip [
 GameFinishTest >> testIfGameIsNotFinishedThenIsFinishedIsTrue [
 
 	| aGame aBoard aCollectionOfNames aCollectionOfDie |
-	aBoard := SetBoard withTiles: 10 withAmountOfLaps: 1.
+	aBoard := (SetBoard
+				          withLengthInTileAndParsec: #( 10 10 )
+				          withWormHolePositions: #(2 3)
+				          withAmountOfLaps: 1
+				          withEffectsInPosition: Dictionary new).
 	aCollectionOfNames := OrderedCollection with: 'Juan'.
 	aCollectionOfDie := OrderedCollection with: (LoadedDie of: 10).
 
@@ -56,7 +64,11 @@ GameFinishTest >> testIfGameIsOngoingThereIsNoWinner [
 		                    with: (LoadedDie of: 3).
 
 	aGame := Game
-		         withBoard: (SetBoard withTiles: 17 withAmountOfLaps: 1)
+		         withBoard: (SetBoard
+				          withLengthInTileAndParsec: #( 17 17 )
+				          withWormHolePositions: #(2 3)
+				          withAmountOfLaps: 1
+				          withEffectsInPosition: Dictionary new)
 		         withShipNames: aCollectionOfNames
 		         withDice: (Dice with: aCollectionOfDie).
 
@@ -77,7 +89,11 @@ GameFinishTest >> testIfThereIsAWinnerThereAreNoMoreMovements [
 		                    with: (LoadedDie of: 3).
 
 	aGame := Game
-		         withBoard: (SetBoard withTiles: 17 withAmountOfLaps: 1)
+		         withBoard: (SetBoard
+				          withLengthInTileAndParsec: #( 17 17 )
+				          withWormHolePositions: #(2 3)
+				          withAmountOfLaps: 1
+				          withEffectsInPosition: Dictionary new)
 		         withShipNames: aCollectionOfNames
 		         withDice: (Dice with: aCollectionOfDie).
 
@@ -100,7 +116,11 @@ GameFinishTest >> testWhenOneShipReachesTheEndGameIsFinished [
 	aCollectionOfDie := OrderedCollection with: (LoadedDie of: 9).
 
 	aGame := Game
-		         withBoard: (SetBoard withTiles: 16 withAmountOfLaps: 1)
+		         withBoard: (SetBoard
+				          withLengthInTileAndParsec: #( 16 16 )
+				          withWormHolePositions: #(2 3)
+				          withAmountOfLaps: 1
+				          withEffectsInPosition: Dictionary new)
 		         withShipNames: aCollectionOfNames
 		         withDice: (Dice with: aCollectionOfDie).
 	aGame playTurn.

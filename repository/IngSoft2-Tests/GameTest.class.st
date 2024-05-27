@@ -27,7 +27,11 @@ GameTest >> testAGameCanShowTheCurrentRanking [
 		                    (SequenceDie withSequence: #( 3 1 8 )).
 
 	aGame := Game
-		         withBoard: (SetBoard withTiles: 15 withAmountOfLaps:3)
+		         withBoard: (SetBoard
+				          withLengthInTileAndParsec: #( 15 15 )
+				          withWormHolePositions: #(5 5)
+				          withAmountOfLaps: 3
+				          withEffectsInPosition: Dictionary new)
 		         withShipNames: aCollectionOfNames
 		         withDice: (Dice with: aCollectionOfDie).
 
@@ -64,7 +68,11 @@ GameTest >> testGameCanTellAllShipPositions [
 		                    (SequenceDie withSequence: #( 9 10 9 )).
 
 	aGame := Game
-		         withBoard: (SetBoard withTiles: 30 withAmountOfLaps:1)
+		         withBoard: (SetBoard
+				          withLengthInTileAndParsec: #( 30 30 )
+				          withWormHolePositions: #( 2 3 )
+				          withAmountOfLaps: 1
+				          withEffectsInPosition: Dictionary new)
 		         withShipNames: aCollectionOfNames
 		         withDice: (Dice with: aCollectionOfDie).
 

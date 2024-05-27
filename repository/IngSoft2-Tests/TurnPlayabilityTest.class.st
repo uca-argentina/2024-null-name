@@ -33,7 +33,11 @@ TurnPlayabilityTest >> testWhenAShipFinishesLapThenPositionIsAdjustedAccordingly
 	aCollectionOfDie := OrderedCollection with: (LoadedDie of: 10).
 
 	aGame := Game
-		         withBoard: (SetBoard withTiles: 10 withAmountOfLaps: 3)
+		         withBoard: (SetBoard
+				          withLengthInTileAndParsec: #( 10 10 )
+				          withWormHolePositions: #(2 3)
+				          withAmountOfLaps: 3
+				          withEffectsInPosition: Dictionary new)
 		         withShipNames: aCollectionOfNames
 		         withDice: (Dice with: aCollectionOfDie).
 
@@ -55,7 +59,11 @@ TurnPlayabilityTest >> testWhenFinishedTheEndingPositionOfTheWinnerEqualsTheFirs
 		                    with: (LoadedDie of: 3).
 
 	aGame := Game
-		         withBoard: (SetBoard withTiles: 27 withAmountOfLaps: 1)
+		         withBoard: (SetBoard
+				          withLengthInTileAndParsec: #( 27 27 )
+				          withWormHolePositions: #( 2 3 )
+				          withAmountOfLaps: 1
+				          withEffectsInPosition: Dictionary new)
 		         withShipNames: aCollectionOfNames
 		         withDice: (Dice with: aCollectionOfDie).
 
@@ -74,31 +82,32 @@ TurnPlayabilityTest >> testWhenFinishedTheEndingPositionOfTheWinnerEqualsTheFirs
 { #category : #tests }
 TurnPlayabilityTest >> testWhenShipHasNoShieldsLeftThenCannotPlayTurn [
 
-    | aGame aCollectionOfNames aWormHoleTilePair aCollectionOfDie |
-    aCollectionOfNames := OrderedCollection with: 'Juan' with: 'Pedro'.
-    aWormHoleTilePair := #( 10 15 ).
-    aCollectionOfDie := OrderedCollection with:
-                            (SequenceDie withSequence:
-                                 #( 1 1 1 1 1 2 1 1 1 3 )).
+	| aGame aCollectionOfNames aWormHoleTilePair aCollectionOfDie |
+	aCollectionOfNames := OrderedCollection with: 'Juan' with: 'Pedro'.
+	aWormHoleTilePair := #( 10 15 ).
+	aCollectionOfDie := OrderedCollection with:
+		                    (SequenceDie withSequence:
+			                     #( 1 1 1 1 1 2 1 1 1 3 )).
 
 
-    aGame := Game
-                 withBoard: (SetBoard
-                          withTiles: 16
-                          withWormHolePositions: aWormHoleTilePair
-                          withAmountOfLaps: 3)
-                 withShipNames: aCollectionOfNames
-                 withDice: (Dice with: aCollectionOfDie).
+	aGame := Game
+		         withBoard: (SetBoard
+				          withLengthInTileAndParsec: #( 16 16 )
+				          withWormHolePositions: aWormHoleTilePair
+				          withAmountOfLaps: 3
+				          withEffectsInPosition: Dictionary new)
+		         withShipNames: aCollectionOfNames
+		         withDice: (Dice with: aCollectionOfDie).
 
-    aGame playTurn.
-    aGame playTurn.
-    aGame playTurn.
-    aGame playTurn.
-    aGame playTurn.
-    aGame playTurn.
-    aGame playTurn.
+	aGame playTurn.
+	aGame playTurn.
+	aGame playTurn.
+	aGame playTurn.
+	aGame playTurn.
+	aGame playTurn.
+	aGame playTurn.
 
-    self assert: aGame playTurn equals: 'Pedro lost their turn'
+	self assert: aGame playTurn equals: 'Pedro lost their turn'
 ]
 
 { #category : #tests }
@@ -114,9 +123,10 @@ TurnPlayabilityTest >> testWhenShipWithNoShieldLosesTwoTurnsThenCanPlayAgain [
 
     aGame := Game
                  withBoard: (SetBoard
-                          withTiles: 16
-                          withWormHolePositions: aWormHoleTilePair
-                          withAmountOfLaps: 3)
+				          withLengthInTileAndParsec: #( 16 16 )
+				          withWormHolePositions: aWormHoleTilePair
+				          withAmountOfLaps: 3
+				          withEffectsInPosition: Dictionary new)
                  withShipNames: aCollectionOfNames
                  withDice: (Dice with: aCollectionOfDie).
 
@@ -143,31 +153,32 @@ TurnPlayabilityTest >> testWhenShipWithNoShieldLosesTwoTurnsThenCanPlayAgain [
 { #category : #tests }
 TurnPlayabilityTest >> testWhenShipWithNoShieldsCannotSkipTurn [
 
-    | aGame aCollectionOfNames aWormHoleTilePair aCollectionOfDie |
-    aCollectionOfNames := OrderedCollection with: 'Juan' with: 'Pedro'.
-    aWormHoleTilePair := #( 10 15 ).
-    aCollectionOfDie := OrderedCollection with:
-                            (SequenceDie withSequence:
-                                 #( 1 1 1 1 1 2 1 1 1 3 )).
+	| aGame aCollectionOfNames aWormHoleTilePair aCollectionOfDie |
+	aCollectionOfNames := OrderedCollection with: 'Juan' with: 'Pedro'.
+	aWormHoleTilePair := #( 10 15 ).
+	aCollectionOfDie := OrderedCollection with:
+		                    (SequenceDie withSequence:
+			                     #( 1 1 1 1 1 2 1 1 1 3 )).
 
 
-    aGame := Game
-                 withBoard: (SetBoard 
-                          withTiles: 16
-                          withWormHolePositions: aWormHoleTilePair
-                          withAmountOfLaps: 3)
-                 withShipNames: aCollectionOfNames
-                 withDice: (Dice with: aCollectionOfDie).
+	aGame := Game
+		         withBoard: (SetBoard
+				          withLengthInTileAndParsec: #( 16 16 )
+				          withWormHolePositions: aWormHoleTilePair
+				          withAmountOfLaps: 3
+				          withEffectsInPosition: Dictionary new)
+		         withShipNames: aCollectionOfNames
+		         withDice: (Dice with: aCollectionOfDie).
 
-    aGame playTurn.
-    aGame playTurn.
-    aGame playTurn.
-    aGame playTurn.
-    aGame playTurn.
-    aGame playTurn.
-    aGame playTurn.
+	aGame playTurn.
+	aGame playTurn.
+	aGame playTurn.
+	aGame playTurn.
+	aGame playTurn.
+	aGame playTurn.
+	aGame playTurn.
 
-    self assert: aGame skipTurn equals: 'Pedro lost their turn'
+	self assert: aGame skipTurn equals: 'Pedro lost their turn'
 ]
 
 { #category : #tests }
@@ -181,8 +192,10 @@ TurnPlayabilityTest >> testWhenTurnIsSkippedThenShipRestoresAllShields [
     aGame := Game
                  withBoard:
                  (SetBoard
-                      withTiles: 16
-                      withWormHolePositions: aWormHoleTilePair)
+				          withLengthInTileAndParsec: #( 16 16 )
+				          withWormHolePositions: aWormHoleTilePair
+				          withAmountOfLaps: 1
+				          withEffectsInPosition: Dictionary new)
                  withShipNames: aCollectionOfNames
                  withDice: (Dice with: aCollectionOfDie).
 

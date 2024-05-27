@@ -67,26 +67,6 @@ Board >> applyTileEffectOn: aGame triggeredBy: aShip [
 ]
 
 { #category : #initialization }
-Board >> initializeWithAmoutTiles: aNumberOfTiles withWormHolePositions: aWormHoleTilePair withAmountOfParsecs: aNumberOfParsecs withAmountOfLaps: anAmountOfLaps withParsecArray: aParsecArray [
-
-	| aPairOfLengths aTileEffectsCreator |
-	maxLap := anAmountOfLaps.
-	tileEffectArray := OrderedCollection new.
-	parsecs := aNumberOfParsecs.
-
-	aPairOfLengths := OrderedCollection
-		                  with: aNumberOfTiles
-		                  with: aNumberOfParsecs.
-	
-	aTileEffectsCreator := TileEffectsCreator new.
-
-	tileEffectArray := aTileEffectsCreator
-		                   createWithWormHolePositions: aWormHoleTilePair
-		                   withBoardLenghts: aPairOfLengths
-								withParsecArrry: aParsecArray.
-]
-
-{ #category : #initialization }
 Board >> initializeWithLengths: aPairOfLengths withWormHolePositions: aWormHoleTilePair withAmountOfLaps: anAmountOfLaps withParsecArray: aParsecArray [
 
 	| aTileEffectsCreator |

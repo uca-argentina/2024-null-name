@@ -15,9 +15,10 @@ BattleTest >> testShipsCannotBattleInTheFirstTileOfABoard [
 
 	aGame := Game
 		         withBoard: (SetBoard
-				          withTiles: 16
+				          withLengthInTileAndParsec: #( 16 16 )
 				          withWormHolePositions: aWormHoleTilePair
-				          withAmountOfLaps: 3)
+				          withAmountOfLaps: 3
+				          withEffectsInPosition: Dictionary new)
 		         withShipNames: aCollectionOfNames
 		         withDice: (Dice with: aCollectionOfDie).
 
@@ -38,10 +39,11 @@ BattleTest >> testWhenShipInAGameLandsInATileWithAnotherShipThenTheyBattle [
 		                    (SequenceDie withSequence: #( 10 10 4 5 )).
 
 	aGame := Game
-		         withBoard:
-		         (SetBoard
-			          withTiles: 16
-			          withWormHolePositions: aWormHoleTilePair)
+		         withBoard: (SetBoard
+				          withLengthInTileAndParsec: #( 16 16 )
+				          withWormHolePositions: aWormHoleTilePair
+				          withAmountOfLaps: 1
+				          withEffectsInPosition: Dictionary new)
 		         withShipNames: aCollectionOfNames
 		         withDice: (Dice with: aCollectionOfDie).
 
@@ -54,24 +56,25 @@ BattleTest >> testWhenShipInAGameLandsInATileWithAnotherShipThenTheyBattle [
 { #category : #tests }
 BattleTest >> testWhenShipLosesABattleThenGoBackToFirstTile [
 
-	| aGame aCollectionOfNames aWormHoleTilePair aCollectionOfDie|
+	| aGame aCollectionOfNames aWormHoleTilePair aCollectionOfDie |
 	aCollectionOfNames := OrderedCollection with: 'Juan' with: 'Pedro'.
 	aWormHoleTilePair := #( 10 15 ).
-	aCollectionOfDie := OrderedCollection
-		                    with: (SequenceDie withSequence: #(10 10 4 5)).
-	
-	
+	aCollectionOfDie := OrderedCollection with:
+		                    (SequenceDie withSequence: #( 10 10 4 5 )).
+
+
 	aGame := Game
-		         withBoard:
-		         (SetBoard
-			          withTiles: 16
-			          withWormHolePositions: aWormHoleTilePair)
+		         withBoard: (SetBoard
+				          withLengthInTileAndParsec: #( 16 16 )
+				          withWormHolePositions: aWormHoleTilePair
+				          withAmountOfLaps: 1
+				          withEffectsInPosition: Dictionary new)
 		         withShipNames: aCollectionOfNames
 		         withDice: (Dice with: aCollectionOfDie).
 
 	aGame playTurn.
 	aGame playTurn.
-	
+
 	self
 		assert: (aGame allShipsPosition at: 'Pedro')
 		equals: #( 1 1 ) asOrderedCollection
