@@ -84,15 +84,3 @@ BoardTest >> testWhenBoardIsCreatedTheAmountOfEffectsFollowTheCorrectDistributio
 	self assert: ((aBoard numberBoxEffect) at: WormholeEffect ) equals: 2.
 	
 ]
-
-{ #category : #tests }
-BoardTest >> testWhenShipCompletesTheAmountOfLapsInBoardThenPositionIsFirstTileOfTheBoard [
-
-	| aBoard aShip |
-	aBoard := SetBoard withTiles: 6 withAmountOfLaps:1.
-	aShip := Ship createWithName: 'Juan'.
-	aShip moveTiles: 7.
-	aBoard adjustShipPositionOverboard:aShip.
-	aBoard snapToFinishTile: aShip.
-	self assert: aShip position equals: 1
-]

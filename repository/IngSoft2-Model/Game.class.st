@@ -23,9 +23,9 @@ Game class >> isValid: aBoard with: aNameCollection and: aDice [
 
 	aNameCollection isEmpty ifTrue: [
 		Error signal: 'Game cannot be created without any Ship names' ].
-	aBoard ifNil: [
+	(aBoard respondsTo: #numbOfTiles) ifFalse: [
 		Error signal: 'Game cannot be started without a board' ].
-	aDice ifNil: [
+	(aDice respondsTo: #throw) ifFalse: [
 		Error signal: 'Game cannot be started without at least one die' ]
 ]
 

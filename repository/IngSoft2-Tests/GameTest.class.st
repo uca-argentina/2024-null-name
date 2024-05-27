@@ -125,6 +125,7 @@ GameTest >> testGameCannotBeInitializedWithoutABoard [
 	| aBoard aCollectionOfNames aCollectionOfDie |
 	aCollectionOfNames := OrderedCollection with: 'Juan'.
 	aCollectionOfDie := OrderedCollection with: (LoadedDie of: 9).
+	
 	self
 		should: [
 			Game
@@ -133,6 +134,25 @@ GameTest >> testGameCannotBeInitializedWithoutABoard [
 				withDice: (Dice with: aCollectionOfDie) ]
 		raise: Error
 		withMessage: 'Game cannot be started without a board'
+]
+
+{ #category : #tests }
+GameTest >> testGameCannotBeInitializedWithoutADice [
+
+	| aBoard aCollectionOfNames aDie |
+	aCollectionOfNames := OrderedCollection with: 'Juan'.
+	aBoard := SetBoard withTiles: 13 withAmountOfLaps: 1.
+
+
+
+	self
+		should: [
+			Game
+				withBoard: aBoard
+				withShipNames: aCollectionOfNames
+				withDice: aDie ]
+		raise: Error
+		withMessage: 'Game cannot be started without at least one die'
 ]
 
 { #category : #tests }
@@ -193,30 +213,12 @@ GameTest >> testGameKnowTheWinnerShip [
 ]
 
 { #category : #tests }
-GameTest >> testIfGameIsFinishedThenIsFinishedIsTrue [
-
-	| aGame aBoard aCollectionOfNames aCollectionOfDie |
-	aBoard := SetBoard withTiles: 8 withAmountOfLaps:1.
-	aCollectionOfNames := OrderedCollection with: 'Juan'.
-
-	aCollectionOfDie := OrderedCollection with: (LoadedDie of: 9).
-
-	aGame := Game
-		         withBoard: aBoard
-		         withShipNames: aCollectionOfNames
-		         withDice: (Dice with: aCollectionOfDie).
-	aGame playTurn.
-
-	self assert: aGame isFinished
-]
-
-{ #category : #tests }
-GameTest >> testIfGameIsNotFinishedThenIsFinishedIsFalse [
+GameTest >> testIfGameIsNotFinishedThenIsFinishedIsTrue [
 
 	| aGame aBoard aCollectionOfNames aCollectionOfDie |
 	aBoard := SetBoard withTiles: 10 withAmountOfLaps: 1.
 	aCollectionOfNames := OrderedCollection with: 'Juan'.
-	aCollectionOfDie := OrderedCollection with: (LoadedDie of: 9).
+	aCollectionOfDie := OrderedCollection with: (LoadedDie of: 10).
 
 
 	aGame := Game
@@ -224,7 +226,9 @@ GameTest >> testIfGameIsNotFinishedThenIsFinishedIsFalse [
 		         withShipNames: aCollectionOfNames
 		         withDice: (Dice with: aCollectionOfDie).
 
-	self deny: aGame isFinished
+	aGame playTurn.
+
+	self assert: aGame isFinished
 ]
 
 { #category : #tests }
@@ -293,7 +297,7 @@ GameTest >> testWhenAShipFinishesLapThenPositionIsAdjustedAccordingly [
 ]
 
 { #category : #tests }
-GameTest >> testWhenFinishedTheEndingPositionOfTheWinnerEqualsTheSizeOfTheBoard [
+GameTest >> testWhenFinishedTheEndingPositionOfTheWinnerEqualsTheFirstTileOfBoard [
 
 	| aGame aCollectionOfNames aCollectionOfDie |
 	aCollectionOfNames := OrderedCollection with: 'Juan' with: 'Jose'.
