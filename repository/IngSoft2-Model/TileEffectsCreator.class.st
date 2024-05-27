@@ -17,9 +17,10 @@ TileEffectsCreator >> createWithWormHolePositions: aWormHoleTilePair withBoardLe
 			                       -> (BlackHoleEffect createWith: '')).
 			                      (#( 61 80 )
 			                       -> (HyperSpaceJumpEffect createWith: '')).
-			                      (#( 81 90 ) -> (MoonWalkEffect createWith:
-				                        (self generateMoonWalkParameters:
-					                         aPairOfLengths first))).
+			                      (#( 81 90 ) -> [
+			                       MoonWalkEffect createWith:
+				                       (self generateMoonWalkParameters:
+					                        aPairOfLengths first) ]).
 			                      (#( 91 98 ) -> (HyperJumpEffect createWith:
 				                        (self generateHyperJumpParameters:
 					                         aPairOfLengths))).
@@ -34,6 +35,10 @@ TileEffectsCreator >> createWithWormHolePositions: aWormHoleTilePair withBoardLe
 				 (self determineRange: probabilityEffects keys)) value ].
 
 	tileEffectArray at: 1 put: (NullEffect createWith: '').
+
+	tileEffectArray
+		at: aWormHoleTilePair first
+		put: (WormholeEffect createWith: aWormHoleTilePair).
 
 	tileEffectArray
 		at: aWormHoleTilePair last
@@ -59,11 +64,14 @@ TileEffectsCreator >> generateHyperJumpParameters: aPairOfLenghts [
 	| aParsecCollection |
 	aParsecCollection := OrderedCollection new.
 
-	1 to: (5 atRandom) do: [:i|
+	1 to: 5 atRandom do: [ :i |
 		aParsecCollection add:
-			((1 to: aPairOfLenghts last) atRandom asInteger) ].
+			(1 to: aPairOfLenghts last) atRandom asInteger ].
 
-	^ OrderedCollection with: aParsecCollection with: aPairOfLenghts
+	^ Dictionary newFrom: {
+			  ('parsecArray' -> aParsecCollection).
+			  ('Tiles' -> aPairOfLenghts first).
+			  ('Parsecs' -> aPairOfLenghts last) }
 ]
 
 { #category : #generators }

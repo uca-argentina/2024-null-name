@@ -109,15 +109,15 @@ EffectsTest >> testWhenApplyingBlackHoleShipNotOnLap1CanMoveBelowFirstTilePositi
 { #category : #tests }
 EffectsTest >> testWhenApplyingHyperJumpEffectShipMovesAVariableParsecDistance [
 
-	| aBoard aShipName aDictionaryOfEffects aGame |
-	aDictionaryOfEffects := Dictionary new
-		                        at: 3 put: (OrderedCollection
-				                         with: HyperJumpEffect
-				                         with:
-					                         (OrderedCollection
-						                          with: #( 2 5 3 1 )
-						                          with: #( 10 20 )));
-		                        yourself.
+	| aBoard aShipName aDictionaryOfEffects aGame aDic |
+	aDic := Dictionary newFrom: {
+			        ('parsecArray' -> #( 2 5 3 1 )).
+			        ('Tiles' -> 20).
+			        ('Parsecs' -> 10) }.
+
+	aDictionaryOfEffects := Dictionary new at: 3 put: (OrderedCollection
+			                         with: HyperJumpEffect with: aDic
+			                         );yourself .
 
 	aBoard := SetBoard
 		          withTiles: 20
@@ -135,7 +135,7 @@ EffectsTest >> testWhenApplyingHyperJumpEffectShipMovesAVariableParsecDistance [
 
 	self
 		assert: (aGame allShipsPosition at: 'Juan')
-		equals: #( 13 1 ) asOrderedCollection.
+		equals: #( 13 1 ) asOrderedCollection
 ]
 
 { #category : #tests }

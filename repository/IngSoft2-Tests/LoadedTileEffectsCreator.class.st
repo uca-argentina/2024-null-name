@@ -15,21 +15,20 @@ LoadedTileEffectsCreator >> createWithWormHolePositions: aWormHoleTilePair withB
 
 	| tileEffectArray probabilityEffects |
 	probabilityEffects := Dictionary newFrom: {
-			                      (#( 0 40 ) -> [ NullEffect createWith: '' ]).
+			                      (#( 0 40 ) -> (NullEffect createWith: '')).
 			                      (#( 41 60 )
-			                       -> [ BlackHoleEffect createWith: '' ]).
+			                       -> (BlackHoleEffect createWith: '')).
 			                      (#( 61 80 )
-			                       -> [ HyperSpaceJumpEffect createWith: '' ]).
+			                       -> (HyperSpaceJumpEffect createWith: '')).
 			                      (#( 81 90 ) -> [
 			                       MoonWalkEffect createWith:
 				                       (self generateMoonWalkParameters:
 					                        aPairOfLengths first) ]).
-			                      (#( 91 98 ) -> [
-			                       HyperJumpEffect createWith:
-				                       (self generateHyperJumpParameters:
-					                        aPairOfLengths) ]).
+			                      (#( 91 98 ) -> (HyperJumpEffect createWith:
+				                        (self generateHyperJumpParameters:
+					                         aPairOfLengths))).
 			                      (#( 99 100 )
-			                       -> [ AtomicBombEffect createWith: '' ]) }.
+			                       -> (AtomicBombEffect createWith: '')) }.
 
 	tileEffectArray := OrderedCollection new.
 
@@ -56,7 +55,6 @@ LoadedTileEffectsCreator >> createWithWormHolePositions: aWormHoleTilePair withB
 		put: (WormholeEffect createWith: aWormHoleTilePair reversed).
 
 
-
 	^ tileEffectArray
 ]
 
@@ -77,11 +75,14 @@ LoadedTileEffectsCreator >> generateHyperJumpParameters: aPairOfLenghts [
 	| aParsecCollection |
 	aParsecCollection := OrderedCollection new.
 
-	1 to: (5 atRandom) do: [:i|
+	1 to: 5 atRandom do: [ :i |
 		aParsecCollection add:
-			((1 to: aPairOfLenghts last) atRandom asInteger) ].
+			(1 to: aPairOfLenghts last) atRandom asInteger ].
 
-	^ OrderedCollection with: aParsecCollection with: aPairOfLenghts
+	^ Dictionary newFrom: {
+			  ('parsecArray' -> aParsecCollection).
+			  ('Tiles' -> aPairOfLenghts first).
+			  ('Parsecs' -> aPairOfLenghts last) }
 ]
 
 { #category : #generators }

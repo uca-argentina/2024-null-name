@@ -36,11 +36,11 @@ HyperJumpEffect >> currentParsec [
 { #category : #initialization }
 HyperJumpEffect >> initializeWithParsecs: aCollectionOfParameters [
 
-	parsecCollection := aCollectionOfParameters first
+	parsecCollection := (aCollectionOfParameters at: 'parsecArray')
 		                    asSortedCollection: [ :a :b | a > b ].
 
-	boardParsecToTileRatio := aCollectionOfParameters last last
-	                          // aCollectionOfParameters last first.
-
+	boardParsecToTileRatio := (aCollectionOfParameters
+		                          at: 'Tiles') // (aCollectionOfParameters
+		                          at: 'Parsecs').
 	parsecNumber := 0
 ]
