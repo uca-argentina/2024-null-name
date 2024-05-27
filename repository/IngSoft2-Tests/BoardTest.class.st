@@ -80,7 +80,7 @@ BoardTest >> testWhenBoardIsCreatedTheAmountOfEffectsFollowTheCorrectDistributio
 		          withLengthInTileAndParsec: aPairOfLengths
 		          withWormHolePositions: aWormHoleTilePair
 		          withAmountOfLaps: aNumberOfLaps
-		          withParsecArray: #( 1 3 5 1 ) asOrderedCollection.
+		          withParsecArray: #( 1 3 5 1 ).
 
 
 	self assert: (aBoard numberBoxEffect at: NullEffect) equals: 40.
@@ -92,4 +92,38 @@ BoardTest >> testWhenBoardIsCreatedTheAmountOfEffectsFollowTheCorrectDistributio
 	self assert: (aBoard numberBoxEffect at: HyperJumpEffect) equals: 8.
 	self assert: (aBoard numberBoxEffect at: AtomicBombEffect) equals: 2.
 	self assert: (aBoard numberBoxEffect at: WormholeEffect) equals: 2
+]
+
+{ #category : #tests }
+BoardTest >> testWormHoleEffectCannotBeCreatedInFirstTileOfBoard [
+
+	| aWormholePositons |
+	aWormholePositons := #( 1 3 ).
+
+	self
+		should: [
+			Board
+				withLengthInTileAndParsec: #(3 3)
+				withWormHolePositions: aWormholePositons
+				withAmountOfLaps: 3
+				withParsecArray: #(2 1 3 1) ]
+		raise: Error
+		withMessage: 'Wormhole cannot be created in first tile of board'
+]
+
+{ #category : #tests }
+BoardTest >> testWormHoleTilePairsCannotOverlap [
+
+	| aWormholePositons |
+	aWormholePositons := #( 3 3 ).
+
+	self
+		should: [
+			Board
+				withLengthInTileAndParsec: #(3 3)
+				withWormHolePositions: aWormholePositons
+				withAmountOfLaps: 3
+				withParsecArray: #(2 1 3 1) ]
+		raise: Error
+		withMessage: 'Wormhole tiles cannot be in the same position'
 ]

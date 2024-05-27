@@ -29,7 +29,7 @@ GameTest >> testAGameCanShowTheCurrentRanking [
 	aGame := Game
 		         withBoard: (SetBoard
 				          withLengthInTileAndParsec: #( 15 15 )
-				          withWormHolePositions: #(5 5)
+				          withWormHolePositions: #(5 6)
 				          withAmountOfLaps: 3)
 		         withShipNames: aCollectionOfNames
 		         withDice: (Dice with: aCollectionOfDie).

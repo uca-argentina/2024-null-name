@@ -32,15 +32,19 @@ Board class >> withLengthInTileAndParsec: aPairOfLengths  withWormHolePositions:
 		  initializeWithLengths: aPairOfLengths
 		  withWormHolePositions: aWormHoleTilePair
 		  withAmountOfLaps: anAmountOfLaps
-		  withParsecArray: aParsecArray
+		  withParsecArray: aParsecArray asOrderedCollection
 ]
 
 { #category : #'argument validation' }
 Board class >> wormHolePairIsValid: aWormHoleTilePair with: aNumberOfTiles [
 
-	aWormHoleTilePair do: [ :i |
-		(i <= aNumberOfTiles and: i strictlyPositive) ifFalse: [
-			Error signal: 'Wormhole tiles are out of bounds' ] ]
+	(aWormHoleTilePair allSatisfy: [ :i |
+		 i <= aNumberOfTiles and: i strictlyPositive ]) ifFalse: [
+		Error signal: 'Wormhole tiles are out of bounds' ].
+	(aWormHoleTilePair anySatisfy: [ :i | i = 1 ]) ifTrue: [
+		Error signal: 'Wormhole cannot be created in first tile of board' ].
+	aWormHoleTilePair first = aWormHoleTilePair last ifTrue: [
+		Error signal: 'Wormhole tiles cannot be in the same position' ]
 ]
 
 { #category : #accessing }

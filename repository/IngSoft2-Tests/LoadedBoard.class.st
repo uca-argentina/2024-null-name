@@ -29,15 +29,19 @@ LoadedBoard class >> withLengthInTileAndParsec: aPairOfLengths  withWormHolePosi
 		  initializeWithLengths: aPairOfLengths
 		  withWormHolePositions: aWormHoleTilePair
 		  withAmountOfLaps: anAmountOfLaps
-		  withParsecArray: aParsecArray
+		  withParsecArray: aParsecArray asOrderedCollection 
 ]
 
 { #category : #'argument validation' }
 LoadedBoard class >> wormHolePairIsValid: aWormHoleTilePair with: aNumberOfTiles [
 
-	aWormHoleTilePair do: [ :i |
-		(i <= aNumberOfTiles and: i strictlyPositive) ifFalse: [
-			Error signal: 'Wormhole tiles are out of bounds' ] ]
+	(aWormHoleTilePair allSatisfy: [ :i |
+		 i <= aNumberOfTiles and: i strictlyPositive ]) ifFalse: [
+		Error signal: 'Wormhole tiles are out of bounds' ].
+	(aWormHoleTilePair anySatisfy: [ :i | i = 1 ]) ifTrue: [
+		Error signal: 'Wormhole cannot be created in first tile of board' ].
+	aWormHoleTilePair first = aWormHoleTilePair last ifTrue: [
+		Error signal: 'Wormhole tiles cannot be in the same position' ]
 ]
 
 { #category : #accessing }
@@ -61,27 +65,6 @@ LoadedBoard >> adjustShipPositionOverboard: aShip [
 LoadedBoard >> applyTileEffectOn: aGame triggeredBy: aShip [
 
 	(tileEffectArray at: aShip position) applyOn: aGame
-]
-
-{ #category : #initialization }
-LoadedBoard >> initializeWithAmoutTiles: aNumberOfTiles withWormHolePositions: aWormHoleTilePair withAmountOfParsecs: aNumberOfParsecs withAmountOfLaps: anAmountOfLaps withParsecArray: aParsecArray [
-
-	| aPairOfLengths aTileEffectsCreator |
-	maxLap := anAmountOfLaps.
-	tileEffectArray := OrderedCollection new.
-	parsecs := aNumberOfParsecs.
-
-	aPairOfLengths := OrderedCollection
-		                  with: aNumberOfTiles
-		                  with: aNumberOfParsecs.
-	
-	aTileEffectsCreator := LoadedTileEffectsCreator new.
-
-	tileEffectArray := aTileEffectsCreator
-		                   createWithWormHolePositions: aWormHoleTilePair
-		                   withBoardLenghts: aPairOfLengths
-								withParsecArrry: aParsecArray.
-
 ]
 
 { #category : #initialization }

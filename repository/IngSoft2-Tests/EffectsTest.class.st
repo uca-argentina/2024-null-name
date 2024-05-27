@@ -88,7 +88,7 @@ EffectsTest >> testWhenApplyingBlackHoleShipNotOnLap1CanMoveBelowFirstTilePositi
 		                        yourself.
 	aBoard := SetBoard
 		          withLengthInTileAndParsec: #( 10 10 )
-		          withWormHolePositions: #( 2 2 )
+		          withWormHolePositions: #( 2 4 )
 		          withAmountOfLaps: 3
 		          withEffectsInPosition: aDictionaryOfEffects.
 
