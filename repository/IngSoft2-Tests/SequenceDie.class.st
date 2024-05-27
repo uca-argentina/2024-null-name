@@ -11,14 +11,14 @@ Class {
 	#category : #'IngSoft2-Tests'
 }
 
-{ #category : #'instance creation' }
+{ #category : #'argument validation' }
 SequenceDie class >> isValid: aSequenceOfRolls [
 	aSequenceOfRolls
 		detect: [ :rollNumber | rollNumber < 0 ]
 		ifFound: [ Error signal: 'Die cannot have faces lesser than 1' ]
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'class initialization' }
 SequenceDie class >> withSequence: aSequenceOfRolls [
 	self isValid: aSequenceOfRolls.
 	^(self new) initializeWithSequence: aSequenceOfRolls.

@@ -20,29 +20,14 @@ LoadedBoard class >> numberOfTileIsValid: aNumberOfTiles [
 ]
 
 { #category : #'class initialization' }
-LoadedBoard class >> withTiles: aNumberOfTiles withWormHolePositions: aWormHoleTilePair withParsecs: aNumberOfParsecs withAmountOfLaps: anAmountOfLaps [ 
+LoadedBoard class >> withLengthInTileAndParsec: aPairOfLengths  withWormHolePositions: aWormHoleTilePair withAmountOfLaps: anAmountOfLaps withParsecArray: aParsecArray [
 
-	self numberOfTileIsValid: aNumberOfTiles.
-	self wormHolePairIsValid: aWormHoleTilePair with: aNumberOfTiles.
-
-	^ self new
-		  initializeWithAmoutTiles: aNumberOfTiles
-		  withWormHolePositions: aWormHoleTilePair
-		  withAmountOfParsecs: aNumberOfParsecs
-		  withAmountOfLaps: anAmountOfLaps
-		  withParsecArray: (#(1 1 1) asOrderedCollection)
-]
-
-{ #category : #'class initialization' }
-LoadedBoard class >> withTiles: aNumberOfTiles withWormHolePositions: aWormHoleTilePair withParsecs: aNumberOfParsecs withAmountOfLaps: anAmountOfLaps withParsecArray: aParsecArray [
-
-	self numberOfTileIsValid: aNumberOfTiles.
-	self wormHolePairIsValid: aWormHoleTilePair with: aNumberOfTiles.
+	self numberOfTileIsValid: aPairOfLengths first.
+	self wormHolePairIsValid: aWormHoleTilePair with: aPairOfLengths first.
 
 	^ self new
-		  initializeWithAmoutTiles: aNumberOfTiles
+		  initializeWithLengths: aPairOfLengths
 		  withWormHolePositions: aWormHoleTilePair
-		  withAmountOfParsecs: aNumberOfParsecs
 		  withAmountOfLaps: anAmountOfLaps
 		  withParsecArray: aParsecArray
 ]
@@ -97,6 +82,22 @@ LoadedBoard >> initializeWithAmoutTiles: aNumberOfTiles withWormHolePositions: a
 		                   withBoardLenghts: aPairOfLengths
 								withParsecArrry: aParsecArray.
 
+]
+
+{ #category : #initialization }
+LoadedBoard >> initializeWithLengths: aPairOfLengths withWormHolePositions: aWormHoleTilePair withAmountOfLaps: anAmountOfLaps withParsecArray: aParsecArray [
+
+	|  aTileEffectsCreator |
+	maxLap := anAmountOfLaps.
+	tileEffectArray := OrderedCollection new.
+	parsecs := aPairOfLengths last.
+
+	aTileEffectsCreator := LoadedTileEffectsCreator new.
+
+	tileEffectArray := aTileEffectsCreator
+		                   createWithWormHolePositions: aWormHoleTilePair
+		                   withBoardLenghts: aPairOfLengths
+		                   withParsecArrry: aParsecArray
 ]
 
 { #category : #testing }

@@ -15,11 +15,10 @@ TurnPlayabilityTest >> testAGameTurnCanBeSkipped [
 
 	aGame := Game
 		         withBoard: (Board
-				          withTiles: 16
+				          withLengthInTileAndParsec: #( 16 16 )
 				          withWormHolePositions: aWormHoleTilePair
-				          withParsecs: 16
 				          withAmountOfLaps: 3
-				          withParsecArray: #( 2 1 3 4 ))
+				          withParsecArray: #( 1 3 1 5 ))
 		         withShipNames: aCollectionOfNames
 		         withDice: (Dice with: aCollectionOfDie).
 

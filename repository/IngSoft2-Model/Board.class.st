@@ -23,15 +23,14 @@ Board class >> numberOfTileIsValid: aNumberOfTiles [
 ]
 
 { #category : #'class initialization' }
-Board class >> withTiles: aNumberOfTiles withWormHolePositions: aWormHoleTilePair withParsecs: aNumberOfParsecs withAmountOfLaps: anAmountOfLaps withParsecArray: aParsecArray [
+Board class >> withLengthInTileAndParsec: aPairOfLengths  withWormHolePositions: aWormHoleTilePair withAmountOfLaps: anAmountOfLaps withParsecArray: aParsecArray [
 
-	self numberOfTileIsValid: aNumberOfTiles.
-	self wormHolePairIsValid: aWormHoleTilePair with: aNumberOfTiles.
+	self numberOfTileIsValid: aPairOfLengths first.
+	self wormHolePairIsValid: aWormHoleTilePair with: aPairOfLengths first.
 
 	^ self new
-		  initializeWithAmoutTiles: aNumberOfTiles
+		  initializeWithLengths: aPairOfLengths
 		  withWormHolePositions: aWormHoleTilePair
-		  withAmountOfParsecs: aNumberOfParsecs
 		  withAmountOfLaps: anAmountOfLaps
 		  withParsecArray: aParsecArray
 ]
@@ -85,6 +84,21 @@ Board >> initializeWithAmoutTiles: aNumberOfTiles withWormHolePositions: aWormHo
 		                   createWithWormHolePositions: aWormHoleTilePair
 		                   withBoardLenghts: aPairOfLengths
 								withParsecArrry: aParsecArray.
+]
+
+{ #category : #initialization }
+Board >> initializeWithLengths: aPairOfLengths withWormHolePositions: aWormHoleTilePair withAmountOfLaps: anAmountOfLaps withParsecArray: aParsecArray [
+
+	| aTileEffectsCreator |
+	maxLap := anAmountOfLaps.
+	parsecs := aPairOfLengths last.
+	tileEffectArray := OrderedCollection new.
+	
+	aTileEffectsCreator := TileEffectsCreator new.
+	tileEffectArray := aTileEffectsCreator
+		                   createWithWormHolePositions: aWormHoleTilePair
+		                   withBoardLenghts: aPairOfLengths
+		                   withParsecArrry: aParsecArray
 ]
 
 { #category : #testing }

@@ -28,11 +28,9 @@ BoardTest >> testBoardCannotBeInitializedWithLessThanOneTile [
 { #category : #tests }
 BoardTest >> testBoardHasANumberOfParsecs [
 
-	| numTiles aBoard numParsecs|
-	numTiles := 4.
-	numParsecs := 2.
+	|aBoard|
 	
-	aBoard := Board  withTiles: numTiles withWormHolePositions: #(2 3) withParsecs: numParsecs withAmountOfLaps:1 withParsecArray: (#(1 2 1 4) asOrderedCollection) .
+	aBoard := Board  withLengthInTileAndParsec: #(4 2)  withWormHolePositions: #(2 3) withAmountOfLaps: 1 withParsecArray: #(2 1 3 4) .
 
 	self assert: aBoard numOfParsecs equals: 2
 ]
@@ -56,11 +54,10 @@ BoardTest >> testSpecialTilesCannotBeCreatedIfPositionsExceedBoardSize [
 	self
 		should: [
 			Board
-				withTiles: 3
+				withLengthInTileAndParsec: #(3 3)
 				withWormHolePositions: aWormholePositons
-				withParsecs: 3
-				withAmountOfLaps: 1
-				withParsecArray: #( 1 3 5 1 ) asOrderedCollection ]
+				withAmountOfLaps: 3
+				withParsecArray: #(2 1 3 1) ]
 		raise: Error
 		withMessage: 'Wormhole tiles are out of bounds'
 ]
@@ -68,25 +65,25 @@ BoardTest >> testSpecialTilesCannotBeCreatedIfPositionsExceedBoardSize [
 { #category : #tests }
 BoardTest >> testWhenBoardIsCreatedTheAmountOfEffectsFollowTheCorrectDistribution [
 
-	| aBoard aNumberOfTiles aWormHoleTilePair aNumberOfParsecs aNumberOfLaps |
-	aNumberOfTiles := 102.
+	| aBoard aPairOfLengths aWormHoleTilePair aNumberOfLaps |
 	aWormHoleTilePair := #( 2 4 ).
-	aNumberOfParsecs := 10.
 	aNumberOfLaps := 1.
+	aPairOfLengths := #( 102 10 ).
 
 	aBoard := LoadedBoard
-		          withTiles: aNumberOfTiles
+		          withLengthInTileAndParsec: aPairOfLengths
 		          withWormHolePositions: aWormHoleTilePair
-		          withParsecs: aNumberOfParsecs
 		          withAmountOfLaps: aNumberOfLaps
-		withParsecArray: #(1 3 5 1) asOrderedCollection .
+		          withParsecArray: #( 1 3 5 1 ) asOrderedCollection.
 
-	self assert: ((aBoard numberBoxEffect) at: NullEffect  ) equals: 40.
-	self assert: ((aBoard numberBoxEffect) at: BlackHoleEffect  ) equals: 20.
-	self assert: (aBoard numberBoxEffect at: HyperSpaceJumpEffect) equals: 20.
-	self assert: ((aBoard numberBoxEffect) at: MoonWalkEffect ) equals: 10.
-	self assert: ((aBoard numberBoxEffect) at: HyperJumpEffect ) equals: 8.
-	self assert: ((aBoard numberBoxEffect) at: AtomicBombEffect ) equals: 2.
-	self assert: ((aBoard numberBoxEffect) at: WormholeEffect ) equals: 2.
-	
+
+	self assert: (aBoard numberBoxEffect at: NullEffect) equals: 40.
+	self assert: (aBoard numberBoxEffect at: BlackHoleEffect) equals: 20.
+	self
+		assert: (aBoard numberBoxEffect at: HyperSpaceJumpEffect)
+		equals: 20.
+	self assert: (aBoard numberBoxEffect at: MoonWalkEffect) equals: 10.
+	self assert: (aBoard numberBoxEffect at: HyperJumpEffect) equals: 8.
+	self assert: (aBoard numberBoxEffect at: AtomicBombEffect) equals: 2.
+	self assert: (aBoard numberBoxEffect at: WormholeEffect) equals: 2
 ]
