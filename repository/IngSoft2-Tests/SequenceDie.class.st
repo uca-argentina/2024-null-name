@@ -35,8 +35,8 @@ SequenceDie >> initializeWithSequence: aSequenceOfRolls [
 SequenceDie >> nextRollPosition [
 
 	currentRollPosition := currentRollPosition < rollSequence size
-		               ifTrue: [ currentRollPosition + 1 ]
-		               ifFalse: [ 1 ].
+		                       ifTrue: [ currentRollPosition + 1 ]
+		                       ifFalse: [ 1 ].
 	^ currentRollPosition
 ]
 

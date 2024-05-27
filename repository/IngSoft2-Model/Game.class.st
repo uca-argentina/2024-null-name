@@ -139,8 +139,6 @@ Game >> playTurn [
 Game >> shipRankings [
 
 	| sortedShips rankDictionary |
-	
-	
 	sortedShips := self allShipsPosition associations
 		               asSortedCollection: [ :a :b |
 			               a value first > b value first and:
@@ -148,7 +146,7 @@ Game >> shipRankings [
 
 	rankDictionary := Dictionary new.
 	rankDictionary addAll: sortedShips.
-	
+
 	^ rankDictionary
 ]
 
@@ -157,10 +155,10 @@ Game >> skipTurn [
 
 	gameTurnHandler canPlayNextTurnOf: self isFinished.
 	theShipInCurrentTurn := gameShips at: gameTurnHandler currentTurn.
-	
+
 	theShipInCurrentTurn canPlayTurn ifFalse: [
 		^ self loseTurn: theShipInCurrentTurn ].
-	
+
 	theShipInCurrentTurn healFullShields.
 	gameTurnHandler nextTurn.
 	^ theShipInCurrentTurn shipName , ' skipped their turn'

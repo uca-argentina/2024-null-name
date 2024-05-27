@@ -78,7 +78,7 @@ LoadedBoard >> applyTileEffectOn: aGame triggeredBy: aShip [
 { #category : #initialization }
 LoadedBoard >> initializeWithLengths: aPairOfLengths withWormHolePositions: aWormHolePair withAmountOfLaps: anAmountOfLaps withParsecArray: aParsecArray [
 
-	|  aTileEffectsCreator |
+	| aTileEffectsCreator |
 	maxLap := anAmountOfLaps.
 	tileEffectArray := OrderedCollection new.
 	parsecs := aPairOfLengths last.
@@ -99,7 +99,8 @@ LoadedBoard >> isInLastTile: aShip [
 
 { #category : #accessing }
 LoadedBoard >> numOfParsecs [
-	^ parsecs 
+
+	^ parsecs
 ]
 
 { #category : #accessing }
@@ -134,6 +135,5 @@ LoadedBoard >> numberBoxEffect [
 { #category : #accessing }
 LoadedBoard >> snapToFinishTile: aShip [
 
-	(aShip lapsDone > maxLap)
-		ifTrue: [ aShip moveToFirstTile ]
+	aShip lapsDone > maxLap ifTrue: [ aShip moveToFirstTile ]
 ]

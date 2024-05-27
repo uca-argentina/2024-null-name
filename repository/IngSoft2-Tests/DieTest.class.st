@@ -15,7 +15,7 @@ DieTest >> should: aErrorBlock raise: anErrorClass withMessage: anErrorMessage [
 ]
 
 { #category : #tests }
-DieTest >> testDiceHasNDieInIT [
+DieTest >> testDiceHasNDieInIt [
 
 	| aDice |
 	aDice := Dice with: (OrderedCollection
@@ -38,8 +38,10 @@ DieTest >> testDiceRequiresAtLeastOneDie [
 DieTest >> testDiceRollBetweenThesizeOfDiceAndTheSumOfTheDieFaces [
 
 	| aDice |
-	
-	aDice := Dice with: (OrderedCollection with:(Die of: 3) with: (Die of: 4) with: (Die of: 5) ).
+	aDice := Dice with: (OrderedCollection
+			          with: (Die of: 3)
+			          with: (Die of: 4)
+			          with: (Die of: 5)).
 	self assert: (aDice throw between: 3 and: 12)
 ]
 

@@ -26,6 +26,7 @@ WormholeEffect >> affectAShip: aShip [
 ]
 
 { #category : #initialization }
-WormholeEffect >> initializeInPosition: firstPosition toPosition: lastPosition [ 
+WormholeEffect >> initializeInPosition: firstPosition toPosition: lastPosition [
+
 	wormholeDistance := lastPosition - firstPosition
 ]

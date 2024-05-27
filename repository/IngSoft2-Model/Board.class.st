@@ -85,7 +85,7 @@ Board >> initializeWithLengths: aPairOfLengths withWormHolePositions: aWormHoleP
 	maxLap := anAmountOfLaps.
 	parsecs := aPairOfLengths last.
 	tileEffectArray := OrderedCollection new.
-	
+
 	aTileEffectsCreator := TileEffectsCreator new.
 	tileEffectArray := aTileEffectsCreator
 		                   createWithWormHolePositions: aWormHolePair
@@ -101,7 +101,8 @@ Board >> isInLastTile: aShip [
 
 { #category : #accessing }
 Board >> numOfParsecs [
-	^ parsecs 
+
+	^ parsecs
 ]
 
 { #category : #accessing }
@@ -136,6 +137,5 @@ Board >> numberBoxEffect [
 { #category : #accessing }
 Board >> snapToFinishTile: aShip [
 
-	(aShip lapsDone > maxLap)
-		ifTrue: [ aShip moveToFirstTile ]
+	aShip lapsDone > maxLap ifTrue: [ aShip moveToFirstTile ]
 ]

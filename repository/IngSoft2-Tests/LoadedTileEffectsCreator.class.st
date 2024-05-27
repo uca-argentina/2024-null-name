@@ -25,8 +25,10 @@ LoadedTileEffectsCreator >> createWithWormHolePositions: aWormHolePair withBoard
 				                       (self generateMoonWalkParameters:
 					                        aPairOfLengths first) ]).
 			                      (#( 91 98 ) -> (HyperJumpEffect createWith:
-				                        (self generateHyperJumpParameters:
-					                         aPairOfLengths and: aParsecArray))).
+				                        (self
+					                         generateHyperJumpParameters:
+					                         aPairOfLengths
+					                         and: aParsecArray))).
 			                      (#( 99 100 )
 			                       -> (AtomicBombEffect createWith: '')) }.
 
@@ -70,7 +72,7 @@ LoadedTileEffectsCreator >> determineRange: aRangeOfKeys [
 ]
 
 { #category : #generators }
-LoadedTileEffectsCreator >> generateHyperJumpParameters: aPairOfLenghts  and: aParsecArray [
+LoadedTileEffectsCreator >> generateHyperJumpParameters: aPairOfLenghts and: aParsecArray [
 
 	^ Dictionary newFrom: {
 			  ('parsecArray' -> aParsecArray).

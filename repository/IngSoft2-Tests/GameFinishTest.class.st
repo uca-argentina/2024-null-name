@@ -15,10 +15,10 @@ GameFinishTest >> testGameKnowTheWinnerShip [
 		                    with: (LoadedDie of: 3).
 
 	aGame := Game
-		         withBoard: ((SetBoard
+		         withBoard: (SetBoard
 				          withLengthInTileAndParsec: #( 17 17 )
-				          withWormHolePositions: #(2 3)
-				          withAmountOfLaps: 1))
+				          withWormHolePositions: #( 2 3 )
+				          withAmountOfLaps: 1)
 		         withShipNames: aCollectionOfNames
 		         withDice: (Dice with: aCollectionOfDie).
 
@@ -33,10 +33,10 @@ GameFinishTest >> testGameKnowTheWinnerShip [
 GameFinishTest >> testIfGameIsNotFinishedThenIsFinishedIsTrue [
 
 	| aGame aBoard aCollectionOfNames aCollectionOfDie |
-	aBoard := (SetBoard
-				          withLengthInTileAndParsec: #( 10 10 )
-				          withWormHolePositions: #(2 3)
-				          withAmountOfLaps: 1).
+	aBoard := SetBoard
+		          withLengthInTileAndParsec: #( 10 10 )
+		          withWormHolePositions: #( 2 3 )
+		          withAmountOfLaps: 1.
 	aCollectionOfNames := OrderedCollection with: 'Juan'.
 	aCollectionOfDie := OrderedCollection with: (LoadedDie of: 10).
 
@@ -64,7 +64,7 @@ GameFinishTest >> testIfGameIsOngoingThereIsNoWinner [
 	aGame := Game
 		         withBoard: (SetBoard
 				          withLengthInTileAndParsec: #( 17 17 )
-				          withWormHolePositions: #(2 3)
+				          withWormHolePositions: #( 2 3 )
 				          withAmountOfLaps: 1)
 		         withShipNames: aCollectionOfNames
 		         withDice: (Dice with: aCollectionOfDie).
@@ -88,7 +88,7 @@ GameFinishTest >> testIfThereIsAWinnerThereAreNoMoreMovements [
 	aGame := Game
 		         withBoard: (SetBoard
 				          withLengthInTileAndParsec: #( 17 17 )
-				          withWormHolePositions: #(2 3)
+				          withWormHolePositions: #( 2 3 )
 				          withAmountOfLaps: 1)
 		         withShipNames: aCollectionOfNames
 		         withDice: (Dice with: aCollectionOfDie).
@@ -114,7 +114,7 @@ GameFinishTest >> testWhenOneShipReachesTheEndGameIsFinished [
 	aGame := Game
 		         withBoard: (SetBoard
 				          withLengthInTileAndParsec: #( 16 16 )
-				          withWormHolePositions: #(2 3)
+				          withWormHolePositions: #( 2 3 )
 				          withAmountOfLaps: 1)
 		         withShipNames: aCollectionOfNames
 		         withDice: (Dice with: aCollectionOfDie).

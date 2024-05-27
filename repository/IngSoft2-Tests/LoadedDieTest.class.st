@@ -23,7 +23,7 @@ LoadedDieTest >> testALoadedDieCanThrowASequenceOfDifferentRolls [
 	self assert: aDie throw equals: 4.
 	self assert: aDie throw equals: 9.
 	self assert: aDie throw equals: 5.
-	self assert: aDie throw equals: 4.
+	self assert: aDie throw equals: 4
 ]
 
 { #category : #asserting }

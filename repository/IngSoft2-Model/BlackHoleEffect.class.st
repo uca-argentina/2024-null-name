@@ -14,5 +14,6 @@ BlackHoleEffect class >> createWith: aCollectionOfParameters [
 
 { #category : #applying }
 BlackHoleEffect >> affectAShip: aShip [
+
 	aShip moveTiles: -4
 ]

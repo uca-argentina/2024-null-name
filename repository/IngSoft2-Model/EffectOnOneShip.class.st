@@ -9,7 +9,8 @@ Class {
 
 { #category : #applying }
 EffectOnOneShip >> affectAShip: aShip [
-	^self subclassResponsibility.
+
+	^ self subclassResponsibility
 ]
 
 { #category : #applying }

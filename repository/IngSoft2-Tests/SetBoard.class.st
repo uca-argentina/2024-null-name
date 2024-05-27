@@ -127,6 +127,5 @@ SetBoard >> numbOfTiles [
 { #category : #accessing }
 SetBoard >> snapToFinishTile: aShip [
 
-	(aShip lapsDone > maxLap)
-		ifTrue: [ aShip moveToFirstTile ]
+	aShip lapsDone > maxLap ifTrue: [ aShip moveToFirstTile ]
 ]

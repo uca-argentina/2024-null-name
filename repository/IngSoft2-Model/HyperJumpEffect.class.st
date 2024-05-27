@@ -39,8 +39,7 @@ HyperJumpEffect >> initializeWithParsecs: aCollectionOfParameters [
 	parsecCollection := (aCollectionOfParameters at: 'parsecArray')
 		                    asSortedCollection: [ :a :b | a > b ].
 
-	boardParsecToTileRatio := (aCollectionOfParameters
-		                          at: 'Tiles') // (aCollectionOfParameters
-		                          at: 'Parsecs').
+	boardParsecToTileRatio := (aCollectionOfParameters at: 'Tiles')
+	                          // (aCollectionOfParameters at: 'Parsecs').
 	parsecNumber := 0
 ]
