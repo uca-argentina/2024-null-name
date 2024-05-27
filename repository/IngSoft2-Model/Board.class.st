@@ -93,7 +93,7 @@ Board >> adjustShipPositionBelowOne: aShip [
 { #category : #accessing }
 Board >> adjustShipPositionOverboard: aShip [
 
-	(aShip position > tileEffectArray size and: aShip lapsLeft < maxLap)
+	(aShip position > tileEffectArray size and: aShip lapsLeft <= maxLap)
 		ifFalse: [ ^ self ].
 	aShip moveTiles: tileEffectArray size negated.
 	aShip modifyLap: 1
@@ -128,7 +128,7 @@ Board >> initializeWithAmoutTiles: aNumberOfTiles withWormHolePositions: aWormHo
 { #category : #testing }
 Board >> isInLastTile: aShip [
 
-	^ aShip position = tileEffectArray size and: aShip lapsLeft = maxLap
+	^ aShip position = 1 and: aShip lapsLeft > maxLap
 ]
 
 { #category : #accessing }
@@ -168,8 +168,8 @@ Board >> numberBoxEffect [
 ]
 
 { #category : #accessing }
-Board >> snapToLastTile: aShip [
+Board >> snapToFinishTile: aShip [
 
-	(aShip position > tileEffectArray size and: aShip lapsLeft = maxLap)
-		ifTrue: [ aShip moveTiles: tileEffectArray size - aShip position ]
+	(aShip lapsLeft > maxLap)
+		ifTrue: [ aShip moveToFirstTile ]
 ]

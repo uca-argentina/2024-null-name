@@ -20,7 +20,7 @@ BoardTest >> testBoardCannotBeInitializedWithLessThanOneTile [
 	| numTiles |
 	numTiles := 0.
 	self
-		should: [ SimpleBoard withTiles: numTiles ]
+		should: [ SetBoard withTiles: numTiles withAmountOfLaps:1 ]
 		raise: Error
 		withMessage: 'Board tiles must be greater than 0'
 ]
@@ -42,20 +42,9 @@ BoardTest >> testBoardHasANumberOfTiles [
 
 	| numTiles aBoard |
 	numTiles := 3.
-	aBoard := SimpleBoard withTiles: numTiles.
+	aBoard := SetBoard withTiles: numTiles withAmountOfLaps:1.
 
 	self assert: aBoard numbOfTiles equals: 3
-]
-
-{ #category : #tests }
-BoardTest >> testIfShipMovesOverBoardBoundsThenSnapBackToLastTile [
-
-	| aBoard aShip |
-	aBoard := SimpleBoard withTiles: 6.
-	aShip := Ship createWithName: 'Juan'.
-	aShip moveTiles: 7.
-	aBoard snapToLastTile: aShip.
-	self assert: aShip position equals: 6
 ]
 
 { #category : #tests }
@@ -69,4 +58,16 @@ BoardTest >> testSpecialTilesCannotBeCreatedIfPositionsExceedBoardSize [
 		Board withTiles: 3 withWormHolePositions: aWormholePositons ]
 		raise: Error
 		withMessage: 'Wormhole tiles are out of bounds'
+]
+
+{ #category : #tests }
+BoardTest >> testWhenShipCompletesTheAmountOfLapsInBoardThenPositionIsFirstTileOfTheBoard [
+
+	| aBoard aShip |
+	aBoard := SetBoard withTiles: 6 withAmountOfLaps:1.
+	aShip := Ship createWithName: 'Juan'.
+	aShip moveTiles: 7.
+	aBoard adjustShipPositionOverboard:aShip.
+	aBoard snapToFinishTile: aShip.
+	self assert: aShip position equals: 1
 ]

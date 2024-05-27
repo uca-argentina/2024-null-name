@@ -18,6 +18,17 @@ SetBoard class >> numberOfTileIsValid: aNumberOfTiles [
 		Error signal: 'Board tiles must be greater than 0' ]
 ]
 
+{ #category : #'class initialization' }
+SetBoard class >> withTiles: aNumberOfTiles withAmountOfLaps: anAmountOfLaps [
+	self numberOfTileIsValid: aNumberOfTiles.
+
+	^ self new
+		  initializeWithAmoutTiles: aNumberOfTiles
+		  withWormHolePositions: #(1 1)
+		withEffectsInPosition: Dictionary new
+		withAmountOfLaps: anAmountOfLaps
+]
+
 { #category : #initialization }
 SetBoard class >> withTiles: aNumberOfTiles withWormHolePositions: aWormHoleTilePair [
 
@@ -88,7 +99,7 @@ SetBoard >> adjustShipPositionBelowOne: aShip [
 { #category : #accessing }
 SetBoard >> adjustShipPositionOverboard: aShip [
 
-	(aShip position > tileEffectArray size and: aShip lapsLeft < maxLap)
+	(aShip position > tileEffectArray size and: aShip lapsLeft <= maxLap)
 		ifFalse: [ ^ self ].
 	aShip moveTiles: tileEffectArray size negated.
 	aShip modifyLap: 1
@@ -127,7 +138,7 @@ SetBoard >> initializeWithAmoutTiles: aNumberOfTiles withWormHolePositions: aWor
 { #category : #testing }
 SetBoard >> isInLastTile: aShip [
 
-	^ aShip position = tileEffectArray size and: aShip lapsLeft = maxLap
+	^ aShip position = 1 and: aShip lapsLeft > maxLap
 ]
 
 { #category : #accessing }
@@ -137,8 +148,8 @@ SetBoard >> numbOfTiles [
 ]
 
 { #category : #accessing }
-SetBoard >> snapToLastTile: aShip [
+SetBoard >> snapToFinishTile: aShip [
 
-	(aShip position > tileEffectArray size and: aShip lapsLeft = maxLap)
-		ifTrue: [ aShip moveTiles: tileEffectArray size - aShip position ]
+	(aShip lapsLeft > maxLap)
+		ifTrue: [ aShip moveToFirstTile ]
 ]

@@ -27,7 +27,7 @@ GameTest >> testAGameCanShowTheCurrentRanking [
 		                    (SequenceDie withSequence: #( 3 1 8 )).
 
 	aGame := Game
-		         withBoard: (SimpleBoard withTiles: 15 withAmountOfLaps:3)
+		         withBoard: (SetBoard withTiles: 15 withAmountOfLaps:3)
 		         withShipNames: aCollectionOfNames
 		         withDice: (Dice with: aCollectionOfDie).
 
@@ -84,7 +84,7 @@ GameTest >> testGameCanBePlayedWithMoreThanOneDie [
 		                    with: (LoadedDie of: 9)
 		                    with: (LoadedDie of: 3).
 	aGame := Game
-		         withBoard: (SimpleBoard withTiles: 16)
+		         withBoard: (SetBoard withTiles: 16 withAmountOfLaps:1)
 		         withShipNames: aCollectionOfNames
 		         withDice: (Dice with: aCollectionOfDie).
 	aGame playTurn.
@@ -103,7 +103,7 @@ GameTest >> testGameCanTellAllShipPositions [
 		                    (SequenceDie withSequence: #( 9 10 9 )).
 
 	aGame := Game
-		         withBoard: (SimpleBoard withTiles: 30)
+		         withBoard: (SetBoard withTiles: 30 withAmountOfLaps:1)
 		         withShipNames: aCollectionOfNames
 		         withDice: (Dice with: aCollectionOfDie).
 
@@ -144,7 +144,7 @@ GameTest >> testGameCannotBeInitializedWithoutAnyShipNames [
 	self
 		should: [
 			Game
-				withBoard: (SimpleBoard withTiles: 20)
+				withBoard: (SetBoard withTiles: 20 withAmountOfLaps:1)
 				withShipNames: aCollectionOfNames
 				withDice: (Dice with: aCollectionOfDie) ]
 		raise: Error
@@ -155,7 +155,7 @@ GameTest >> testGameCannotBeInitializedWithoutAnyShipNames [
 GameTest >> testGameDoesNotAllowRepeatedShipNames [
 
 	| aGame aBoard aCollectionOfNames aCollectionOfDie |
-	aBoard := SimpleBoard withTiles: 5.
+	aBoard := SetBoard withTiles: 5 withAmountOfLaps: 1.
 	aCollectionOfNames := OrderedCollection
 		                      with: 'Juan'
 		                      with: 'Jose'
@@ -181,7 +181,7 @@ GameTest >> testGameKnowTheWinnerShip [
 		                    with: (LoadedDie of: 3).
 
 	aGame := Game
-		         withBoard: (SimpleBoard withTiles: 17)
+		         withBoard: (SetBoard withTiles: 17 withAmountOfLaps:1)
 		         withShipNames: aCollectionOfNames
 		         withDice: (Dice with: aCollectionOfDie).
 
@@ -196,7 +196,7 @@ GameTest >> testGameKnowTheWinnerShip [
 GameTest >> testIfGameIsFinishedThenIsFinishedIsTrue [
 
 	| aGame aBoard aCollectionOfNames aCollectionOfDie |
-	aBoard := SimpleBoard withTiles: 8.
+	aBoard := SetBoard withTiles: 8 withAmountOfLaps:1.
 	aCollectionOfNames := OrderedCollection with: 'Juan'.
 
 	aCollectionOfDie := OrderedCollection with: (LoadedDie of: 9).
@@ -213,8 +213,8 @@ GameTest >> testIfGameIsFinishedThenIsFinishedIsTrue [
 { #category : #tests }
 GameTest >> testIfGameIsNotFinishedThenIsFinishedIsFalse [
 
-	| aGame aBoard aCollectionOfNames aCollectionOfDie|
-	aBoard := SimpleBoard withTiles: 10.
+	| aGame aBoard aCollectionOfNames aCollectionOfDie |
+	aBoard := SetBoard withTiles: 10 withAmountOfLaps: 1.
 	aCollectionOfNames := OrderedCollection with: 'Juan'.
 	aCollectionOfDie := OrderedCollection with: (LoadedDie of: 9).
 
@@ -230,7 +230,7 @@ GameTest >> testIfGameIsNotFinishedThenIsFinishedIsFalse [
 { #category : #tests }
 GameTest >> testIfGameIsOngoingThereIsNoWinner [
 
-	| aGame aCollectionOfNames aCollectionOfDie|
+	| aGame aCollectionOfNames aCollectionOfDie |
 	aCollectionOfNames := OrderedCollection with: 'Juan' with: 'Jose'.
 
 	aCollectionOfDie := OrderedCollection
@@ -238,10 +238,9 @@ GameTest >> testIfGameIsOngoingThereIsNoWinner [
 		                    with: (LoadedDie of: 3).
 
 	aGame := Game
-		         withBoard: (SimpleBoard withTiles: 17)
+		         withBoard: (SetBoard withTiles: 17 withAmountOfLaps: 1)
 		         withShipNames: aCollectionOfNames
-		         withDice:
-		         (Dice with: aCollectionOfDie).
+		         withDice: (Dice with: aCollectionOfDie).
 
 	aGame playTurn.
 	aGame playTurn.
@@ -260,7 +259,7 @@ GameTest >> testIfThereIsAWinnerThereAreNoMoreMovements [
 		                    with: (LoadedDie of: 3).
 
 	aGame := Game
-		         withBoard: (SimpleBoard withTiles: 17)
+		         withBoard: (SetBoard withTiles: 17 withAmountOfLaps: 1)
 		         withShipNames: aCollectionOfNames
 		         withDice: (Dice with: aCollectionOfDie).
 
@@ -282,7 +281,7 @@ GameTest >> testWhenAShipFinishesLapThenPositionIsAdjustedAccordingly [
 	aCollectionOfDie := OrderedCollection with: (LoadedDie of: 10).
 
 	aGame := Game
-		         withBoard: (SimpleBoard withTiles: 10 withAmountOfLaps: 3)
+		         withBoard: (SetBoard withTiles: 10 withAmountOfLaps: 3)
 		         withShipNames: aCollectionOfNames
 		         withDice: (Dice with: aCollectionOfDie).
 
@@ -296,18 +295,17 @@ GameTest >> testWhenAShipFinishesLapThenPositionIsAdjustedAccordingly [
 { #category : #tests }
 GameTest >> testWhenFinishedTheEndingPositionOfTheWinnerEqualsTheSizeOfTheBoard [
 
-	| aGame aCollectionOfNames aCollectionOfDie|
+	| aGame aCollectionOfNames aCollectionOfDie |
 	aCollectionOfNames := OrderedCollection with: 'Juan' with: 'Jose'.
-	
+
 	aCollectionOfDie := OrderedCollection
 		                    with: (LoadedDie of: 9)
 		                    with: (LoadedDie of: 3).
-	
+
 	aGame := Game
-		         withBoard: (SimpleBoard withTiles: 27)
+		         withBoard: (SetBoard withTiles: 27 withAmountOfLaps: 1)
 		         withShipNames: aCollectionOfNames
-		         withDice:
-		         (Dice  with: aCollectionOfDie).
+		         withDice: (Dice with: aCollectionOfDie).
 
 	aGame playTurn.
 	aGame playTurn.
@@ -318,7 +316,7 @@ GameTest >> testWhenFinishedTheEndingPositionOfTheWinnerEqualsTheSizeOfTheBoard 
 
 	self
 		assert: (aGame allShipsPosition at: 'Juan')
-		equals: #( 27 1 ) asOrderedCollection.
+		equals: #( 1 2 ) asOrderedCollection
 ]
 
 { #category : #tests }
@@ -326,12 +324,11 @@ GameTest >> testWhenOneShipReachesTheEndGameIsFinished [
 
 	| aGame aCollectionOfNames aCollectionOfDie |
 	aCollectionOfNames := OrderedCollection with: 'Juan'.
-	
-	aCollectionOfDie := OrderedCollection
-		                    with: (LoadedDie of: 9).
-	
+
+	aCollectionOfDie := OrderedCollection with: (LoadedDie of: 9).
+
 	aGame := Game
-		         withBoard: (SimpleBoard withTiles: 16)
+		         withBoard: (SetBoard withTiles: 16 withAmountOfLaps: 1)
 		         withShipNames: aCollectionOfNames
 		         withDice: (Dice with: aCollectionOfDie).
 	aGame playTurn.

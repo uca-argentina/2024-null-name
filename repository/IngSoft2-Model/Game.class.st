@@ -130,7 +130,7 @@ Game >> playTurn [
 	movement := dice throw.
 	theShipInCurrentTurn moveTiles: movement.
 	gameBoard adjustShipPositionOverboard: theShipInCurrentTurn.
-	gameBoard snapToLastTile: theShipInCurrentTurn.
+	gameBoard snapToFinishTile: theShipInCurrentTurn.
 	gameBoard applyTileEffectOn: self triggeredBy: theShipInCurrentTurn.
 	shipBattleHandler checkShipBattle: theShipInCurrentTurn.
 	gameTurnHandler nextTurn
