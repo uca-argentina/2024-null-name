@@ -20,45 +20,6 @@ LoadedBoard class >> numberOfTileIsValid: aNumberOfTiles [
 ]
 
 { #category : #'class initialization' }
-LoadedBoard class >> withTiles: aNumberOfTiles withWormHolePositions: aWormHoleTilePair [
-
-	self numberOfTileIsValid: aNumberOfTiles.
-	self wormHolePairIsValid: aWormHoleTilePair with: aNumberOfTiles.
-
-	^ self new
-		  initializeWithAmoutTiles: aNumberOfTiles
-		  withWormHolePositions: aWormHoleTilePair
-		  withAmountOfParsecs: aNumberOfTiles
-		  withAmountOfLaps: 1
-]
-
-{ #category : #'class initialization' }
-LoadedBoard class >> withTiles: aNumberOfTiles withWormHolePositions: aWormHoleTilePair withAmountOfLaps: anAmountOfLaps [
-
-	self numberOfTileIsValid: aNumberOfTiles.
-	self wormHolePairIsValid: aWormHoleTilePair with: aNumberOfTiles.
-
-	^ self new
-		  initializeWithAmoutTiles: aNumberOfTiles
-		  withWormHolePositions: aWormHoleTilePair
-		  withAmountOfParsecs: aNumberOfTiles
-		  withAmountOfLaps: anAmountOfLaps
-]
-
-{ #category : #'class initialization' }
-LoadedBoard class >> withTiles: aNumberOfTiles withWormHolePositions: aWormHoleTilePair withParsecs: aNumberOfParsecs [
-
-	self numberOfTileIsValid: aNumberOfTiles.
-	self wormHolePairIsValid: aWormHoleTilePair with: aNumberOfTiles.
-
-	^ self new
-		  initializeWithAmoutTiles: aNumberOfTiles
-		  withWormHolePositions: aWormHoleTilePair
-		  withAmountOfParsecs: aNumberOfParsecs
-		  withAmountOfLaps: 1
-]
-
-{ #category : #'class initialization' }
 LoadedBoard class >> withTiles: aNumberOfTiles withWormHolePositions: aWormHoleTilePair withParsecs: aNumberOfParsecs withAmountOfLaps: anAmountOfLaps [ 
 
 	self numberOfTileIsValid: aNumberOfTiles.
@@ -69,6 +30,21 @@ LoadedBoard class >> withTiles: aNumberOfTiles withWormHolePositions: aWormHoleT
 		  withWormHolePositions: aWormHoleTilePair
 		  withAmountOfParsecs: aNumberOfParsecs
 		  withAmountOfLaps: anAmountOfLaps
+		  withParsecArray: (#(1 1 1) asOrderedCollection)
+]
+
+{ #category : #'class initialization' }
+LoadedBoard class >> withTiles: aNumberOfTiles withWormHolePositions: aWormHoleTilePair withParsecs: aNumberOfParsecs withAmountOfLaps: anAmountOfLaps withParsecArray: aParsecArray [
+
+	self numberOfTileIsValid: aNumberOfTiles.
+	self wormHolePairIsValid: aWormHoleTilePair with: aNumberOfTiles.
+
+	^ self new
+		  initializeWithAmoutTiles: aNumberOfTiles
+		  withWormHolePositions: aWormHoleTilePair
+		  withAmountOfParsecs: aNumberOfParsecs
+		  withAmountOfLaps: anAmountOfLaps
+		  withParsecArray: aParsecArray
 ]
 
 { #category : #'argument validation' }
@@ -103,7 +79,7 @@ LoadedBoard >> applyTileEffectOn: aGame triggeredBy: aShip [
 ]
 
 { #category : #initialization }
-LoadedBoard >> initializeWithAmoutTiles: aNumberOfTiles withWormHolePositions: aWormHoleTilePair withAmountOfParsecs: aNumberOfParsecs withAmountOfLaps: anAmountOfLaps [
+LoadedBoard >> initializeWithAmoutTiles: aNumberOfTiles withWormHolePositions: aWormHoleTilePair withAmountOfParsecs: aNumberOfParsecs withAmountOfLaps: anAmountOfLaps withParsecArray: aParsecArray [
 
 	| aPairOfLengths aTileEffectsCreator |
 	maxLap := anAmountOfLaps.
@@ -118,7 +94,8 @@ LoadedBoard >> initializeWithAmoutTiles: aNumberOfTiles withWormHolePositions: a
 
 	tileEffectArray := aTileEffectsCreator
 		                   createWithWormHolePositions: aWormHoleTilePair
-		                   withBoardLenghts: aPairOfLengths.
+		                   withBoardLenghts: aPairOfLengths
+								withParsecArrry: aParsecArray.
 
 ]
 

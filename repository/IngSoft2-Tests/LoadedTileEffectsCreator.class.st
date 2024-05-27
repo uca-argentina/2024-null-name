@@ -11,7 +11,7 @@ Class {
 }
 
 { #category : #'creating collection' }
-LoadedTileEffectsCreator >> createWithWormHolePositions: aWormHoleTilePair withBoardLenghts: aPairOfLengths [
+LoadedTileEffectsCreator >> createWithWormHolePositions: aWormHoleTilePair withBoardLenghts: aPairOfLengths withParsecArrry: aParsecArray [
 
 	| tileEffectArray probabilityEffects |
 	probabilityEffects := Dictionary newFrom: {
@@ -26,7 +26,7 @@ LoadedTileEffectsCreator >> createWithWormHolePositions: aWormHoleTilePair withB
 					                        aPairOfLengths first) ]).
 			                      (#( 91 98 ) -> (HyperJumpEffect createWith:
 				                        (self generateHyperJumpParameters:
-					                         aPairOfLengths))).
+					                         aPairOfLengths and: aParsecArray))).
 			                      (#( 99 100 )
 			                       -> (AtomicBombEffect createWith: '')) }.
 
@@ -70,17 +70,10 @@ LoadedTileEffectsCreator >> determineRange: aRangeOfKeys [
 ]
 
 { #category : #generators }
-LoadedTileEffectsCreator >> generateHyperJumpParameters: aPairOfLenghts [
-
-	| aParsecCollection |
-	aParsecCollection := OrderedCollection new.
-
-	1 to: 5 atRandom do: [ :i |
-		aParsecCollection add:
-			(1 to: aPairOfLenghts last) atRandom asInteger ].
+LoadedTileEffectsCreator >> generateHyperJumpParameters: aPairOfLenghts  and: aParsecArray [
 
 	^ Dictionary newFrom: {
-			  ('parsecArray' -> aParsecCollection).
+			  ('parsecArray' -> aParsecArray).
 			  ('Tiles' -> aPairOfLenghts first).
 			  ('Parsecs' -> aPairOfLenghts last) }
 ]

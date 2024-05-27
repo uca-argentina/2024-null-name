@@ -17,7 +17,9 @@ TurnPlayabilityTest >> testAGameTurnCanBeSkipped [
 		         withBoard: (Board
 				          withTiles: 16
 				          withWormHolePositions: aWormHoleTilePair
-				          withAmountOfLaps: 3)
+				          withParsecs: 16
+				          withAmountOfLaps: 3
+				          withParsecArray: #( 2 1 3 4 ))
 		         withShipNames: aCollectionOfNames
 		         withDice: (Dice with: aCollectionOfDie).
 

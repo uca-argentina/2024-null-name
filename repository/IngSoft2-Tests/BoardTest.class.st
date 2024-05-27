@@ -32,7 +32,7 @@ BoardTest >> testBoardHasANumberOfParsecs [
 	numTiles := 4.
 	numParsecs := 2.
 	
-	aBoard := Board  withTiles: numTiles withWormHolePositions: #(2 3) withParsecs: numParsecs.
+	aBoard := Board  withTiles: numTiles withWormHolePositions: #(2 3) withParsecs: numParsecs withAmountOfLaps:1 withParsecArray: (#(1 2 1 4) asOrderedCollection) .
 
 	self assert: aBoard numOfParsecs equals: 2
 ]
@@ -55,7 +55,12 @@ BoardTest >> testSpecialTilesCannotBeCreatedIfPositionsExceedBoardSize [
 
 	self
 		should: [
-		Board withTiles: 3 withWormHolePositions: aWormholePositons ]
+			Board
+				withTiles: 3
+				withWormHolePositions: aWormholePositons
+				withParsecs: 3
+				withAmountOfLaps: 1
+				withParsecArray: #( 1 3 5 1 ) asOrderedCollection ]
 		raise: Error
 		withMessage: 'Wormhole tiles are out of bounds'
 ]
@@ -73,7 +78,8 @@ BoardTest >> testWhenBoardIsCreatedTheAmountOfEffectsFollowTheCorrectDistributio
 		          withTiles: aNumberOfTiles
 		          withWormHolePositions: aWormHoleTilePair
 		          withParsecs: aNumberOfParsecs
-		          withAmountOfLaps: aNumberOfLaps.
+		          withAmountOfLaps: aNumberOfLaps
+		withParsecArray: #(1 3 5 1) asOrderedCollection .
 
 	self assert: ((aBoard numberBoxEffect) at: NullEffect  ) equals: 40.
 	self assert: ((aBoard numberBoxEffect) at: BlackHoleEffect  ) equals: 20.
