@@ -12,6 +12,13 @@ Class {
 }
 
 { #category : #'argument validation' }
+SetBoard class >> amountOfLapsIsValid: anAmountOfLaps [
+
+	anAmountOfLaps strictlyPositive ifFalse: [
+		Error signal: 'Cannot play with less than 1 lap' ]
+]
+
+{ #category : #'argument validation' }
 SetBoard class >> numberOfTileIsValid: aNumberOfTiles [
 
 	aNumberOfTiles strictlyPositive ifFalse: [
@@ -22,9 +29,8 @@ SetBoard class >> numberOfTileIsValid: aNumberOfTiles [
 SetBoard class >> withLengthInTileAndParsec: aPairOfLengths withWormHolePositions: aWormHolePair withAmountOfLaps: anAmountOfLaps [
 
 	self numberOfTileIsValid: aPairOfLengths first.
-	self
-		wormHolePairIsValid: aWormHolePair
-		with: aPairOfLengths first.
+	self wormHolePairIsValid: aWormHolePair with: aPairOfLengths first.
+	self amountOfLapsIsValid: anAmountOfLaps.
 
 	^ self new
 		  initializeWithLengths: aPairOfLengths
@@ -37,9 +43,8 @@ SetBoard class >> withLengthInTileAndParsec: aPairOfLengths withWormHolePosition
 SetBoard class >> withLengthInTileAndParsec: aPairOfLengths withWormHolePositions: aWormHolePair withAmountOfLaps: anAmountOfLaps withEffectsInPosition: aDictionaryOfEffectsAndParameters [
 
 	self numberOfTileIsValid: aPairOfLengths first.
-	self
-		wormHolePairIsValid: aWormHolePair
-		with: aPairOfLengths first.
+	self wormHolePairIsValid: aWormHolePair with: aPairOfLengths first.
+	self amountOfLapsIsValid: anAmountOfLaps.
 
 	^ self new
 		  initializeWithLengths: aPairOfLengths

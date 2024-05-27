@@ -37,7 +37,6 @@ Game class >> withBoard: aBoard withShipNames: aNameCollection withDice: aDice [
 		  initializeGameWith: aBoard
 		  withShipNames: aNameCollection asSet
 		  withDice: aDice
-		  withAmountOfLaps: 1
 ]
 
 { #category : #accessing }
@@ -93,7 +92,7 @@ Game >> applyEffectOnOneShip: anEffect [
 ]
 
 { #category : #initialization }
-Game >> initializeGameWith: aBoard withShipNames: aNameCollection withDice: aDice withAmountOfLaps: anAmountOfLaps [
+Game >> initializeGameWith: aBoard withShipNames: aNameCollection withDice: aDice [
 
 	gameBoard := aBoard.
 	gameShips := aNameCollection asOrderedCollection collect: [ :aName |

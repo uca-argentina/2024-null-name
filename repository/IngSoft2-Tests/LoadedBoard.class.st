@@ -13,6 +13,13 @@ Class {
 }
 
 { #category : #'argument validation' }
+LoadedBoard class >> amountOfLapsIsValid: anAmountOfLaps [
+
+	anAmountOfLaps strictlyPositive ifFalse: [
+		Error signal: 'Cannot play with less than 1 lap' ]
+]
+
+{ #category : #'argument validation' }
 LoadedBoard class >> numberOfTileIsValid: aNumberOfTiles [
 
 	aNumberOfTiles strictlyPositive ifFalse: [
@@ -24,6 +31,7 @@ LoadedBoard class >> withLengthInTileAndParsec: aPairOfLengths  withWormHolePosi
 
 	self numberOfTileIsValid: aPairOfLengths first.
 	self wormHolePairIsValid: aWormHolePair with: aPairOfLengths first.
+	self amountOfLapsIsValid: anAmountOfLaps.
 
 	^ self new
 		  initializeWithLengths: aPairOfLengths

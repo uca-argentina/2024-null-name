@@ -55,6 +55,23 @@ BoardTest >> testBoardHasANumberOfTiles [
 ]
 
 { #category : #tests }
+BoardTest >> testBoardMustHaveAtLeast1Lap [
+
+	| aWormHolePair |
+	aWormHolePair := #( 3 4 ).
+
+	self
+		should: [
+			Board
+				withLengthInTileAndParsec: #( 4 4 )
+				withWormHolePositions: aWormHolePair
+				withAmountOfLaps: 0
+				withParsecArray: #( 2 1 3 1 ) ]
+		raise: Error
+		withMessage: 'Cannot play with less than 1 lap'
+]
+
+{ #category : #tests }
 BoardTest >> testSpecialTilesCannotBeCreatedIfPositionsExceedBoardSize [
 
 	| aWormHolePair |
