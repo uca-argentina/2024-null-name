@@ -18,8 +18,7 @@ GameFinishTest >> testGameKnowTheWinnerShip [
 		         withBoard: ((SetBoard
 				          withLengthInTileAndParsec: #( 17 17 )
 				          withWormHolePositions: #(2 3)
-				          withAmountOfLaps: 1
-				          withEffectsInPosition: Dictionary new))
+				          withAmountOfLaps: 1))
 		         withShipNames: aCollectionOfNames
 		         withDice: (Dice with: aCollectionOfDie).
 
@@ -37,8 +36,7 @@ GameFinishTest >> testIfGameIsNotFinishedThenIsFinishedIsTrue [
 	aBoard := (SetBoard
 				          withLengthInTileAndParsec: #( 10 10 )
 				          withWormHolePositions: #(2 3)
-				          withAmountOfLaps: 1
-				          withEffectsInPosition: Dictionary new).
+				          withAmountOfLaps: 1).
 	aCollectionOfNames := OrderedCollection with: 'Juan'.
 	aCollectionOfDie := OrderedCollection with: (LoadedDie of: 10).
 
@@ -67,8 +65,7 @@ GameFinishTest >> testIfGameIsOngoingThereIsNoWinner [
 		         withBoard: (SetBoard
 				          withLengthInTileAndParsec: #( 17 17 )
 				          withWormHolePositions: #(2 3)
-				          withAmountOfLaps: 1
-				          withEffectsInPosition: Dictionary new)
+				          withAmountOfLaps: 1)
 		         withShipNames: aCollectionOfNames
 		         withDice: (Dice with: aCollectionOfDie).
 
@@ -92,8 +89,7 @@ GameFinishTest >> testIfThereIsAWinnerThereAreNoMoreMovements [
 		         withBoard: (SetBoard
 				          withLengthInTileAndParsec: #( 17 17 )
 				          withWormHolePositions: #(2 3)
-				          withAmountOfLaps: 1
-				          withEffectsInPosition: Dictionary new)
+				          withAmountOfLaps: 1)
 		         withShipNames: aCollectionOfNames
 		         withDice: (Dice with: aCollectionOfDie).
 
@@ -119,8 +115,7 @@ GameFinishTest >> testWhenOneShipReachesTheEndGameIsFinished [
 		         withBoard: (SetBoard
 				          withLengthInTileAndParsec: #( 16 16 )
 				          withWormHolePositions: #(2 3)
-				          withAmountOfLaps: 1
-				          withEffectsInPosition: Dictionary new)
+				          withAmountOfLaps: 1)
 		         withShipNames: aCollectionOfNames
 		         withDice: (Dice with: aCollectionOfDie).
 	aGame playTurn.

@@ -17,8 +17,7 @@ BattleTest >> testShipsCannotBattleInTheFirstTileOfABoard [
 		         withBoard: (SetBoard
 				          withLengthInTileAndParsec: #( 16 16 )
 				          withWormHolePositions: aWormHoleTilePair
-				          withAmountOfLaps: 3
-				          withEffectsInPosition: Dictionary new)
+				          withAmountOfLaps: 3)
 		         withShipNames: aCollectionOfNames
 		         withDice: (Dice with: aCollectionOfDie).
 
@@ -42,8 +41,7 @@ BattleTest >> testWhenShipInAGameLandsInATileWithAnotherShipThenTheyBattle [
 		         withBoard: (SetBoard
 				          withLengthInTileAndParsec: #( 16 16 )
 				          withWormHolePositions: aWormHoleTilePair
-				          withAmountOfLaps: 1
-				          withEffectsInPosition: Dictionary new)
+				          withAmountOfLaps: 1)
 		         withShipNames: aCollectionOfNames
 		         withDice: (Dice with: aCollectionOfDie).
 
@@ -67,8 +65,7 @@ BattleTest >> testWhenShipLosesABattleThenGoBackToFirstTile [
 		         withBoard: (SetBoard
 				          withLengthInTileAndParsec: #( 16 16 )
 				          withWormHolePositions: aWormHoleTilePair
-				          withAmountOfLaps: 1
-				          withEffectsInPosition: Dictionary new)
+				          withAmountOfLaps: 1)
 		         withShipNames: aCollectionOfNames
 		         withDice: (Dice with: aCollectionOfDie).
 

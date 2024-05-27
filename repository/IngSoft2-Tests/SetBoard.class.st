@@ -19,6 +19,21 @@ SetBoard class >> numberOfTileIsValid: aNumberOfTiles [
 ]
 
 { #category : #'class initialization' }
+SetBoard class >> withLengthInTileAndParsec: aPairOfLengths withWormHolePositions: aWormHoleTilePair withAmountOfLaps: anAmountOfLaps [
+
+	self numberOfTileIsValid: aPairOfLengths first.
+	self
+		wormHolePairIsValid: aWormHoleTilePair
+		with: aPairOfLengths first.
+
+	^ self new
+		  initializeWithLengths: aPairOfLengths
+		  withWormHolePositions: aWormHoleTilePair
+		  withEffectsInPosition: Dictionary new
+		  withAmountOfLaps: anAmountOfLaps
+]
+
+{ #category : #'class initialization' }
 SetBoard class >> withLengthInTileAndParsec: aPairOfLengths withWormHolePositions: aWormHoleTilePair withAmountOfLaps: anAmountOfLaps withEffectsInPosition: aDictionaryOfEffectsAndParameters [
 
 	self numberOfTileIsValid: aPairOfLengths first.
@@ -62,30 +77,6 @@ SetBoard >> adjustShipPositionOverboard: aShip [
 SetBoard >> applyTileEffectOn: aGame triggeredBy: aShip [
 
 	(tileEffectArray at: aShip position) applyOn: aGame
-]
-
-{ #category : #initialization }
-SetBoard >> initializeWithAmoutTiles: aNumberOfTiles withWormHolePositions: aWormHoleTilePair withEffectsInPosition: aDictionaryOfEffectsAndParameters withAmountOfLaps: anAmountOfLaps [
-
-	maxLap := anAmountOfLaps.
-	tileEffectArray := OrderedCollection new.
-
-	1 to: aNumberOfTiles do: [ :i |
-	tileEffectArray add: (NullEffect createWith: #(  )) ].
-
-	1 to: aNumberOfTiles do: [ :i |
-		(aDictionaryOfEffectsAndParameters includesKey: i) ifTrue: [
-			tileEffectArray
-				at: i
-				put: ((aDictionaryOfEffectsAndParameters at: i) first createWith:
-						 (aDictionaryOfEffectsAndParameters at: i) last) ] ].
-
-	tileEffectArray
-		at: aWormHoleTilePair first
-		put: (WormholeEffect createWith: aWormHoleTilePair).
-	tileEffectArray
-		at: aWormHoleTilePair last
-		put: (WormholeEffect createWith: aWormHoleTilePair reversed)
 ]
 
 { #category : #initialization }

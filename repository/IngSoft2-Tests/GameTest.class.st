@@ -30,8 +30,7 @@ GameTest >> testAGameCanShowTheCurrentRanking [
 		         withBoard: (SetBoard
 				          withLengthInTileAndParsec: #( 15 15 )
 				          withWormHolePositions: #(5 5)
-				          withAmountOfLaps: 3
-				          withEffectsInPosition: Dictionary new)
+				          withAmountOfLaps: 3)
 		         withShipNames: aCollectionOfNames
 		         withDice: (Dice with: aCollectionOfDie).
 
@@ -71,8 +70,7 @@ GameTest >> testGameCanTellAllShipPositions [
 		         withBoard: (SetBoard
 				          withLengthInTileAndParsec: #( 30 30 )
 				          withWormHolePositions: #( 2 3 )
-				          withAmountOfLaps: 1
-				          withEffectsInPosition: Dictionary new)
+				          withAmountOfLaps: 1)
 		         withShipNames: aCollectionOfNames
 		         withDice: (Dice with: aCollectionOfDie).
 

@@ -300,8 +300,7 @@ EffectsTest >> testWhenApplyingWormholeEffectOnShipMoveAccordingly [
 	aBoard := SetBoard
 		          withLengthInTileAndParsec: #( 6 6 )
 		          withWormHolePositions: aWormHoleTilePair
-		          withAmountOfLaps: 3
-		          withEffectsInPosition: Dictionary new.
+		          withAmountOfLaps: 3.
 	aShipName := OrderedCollection with: 'Juan'.
 	aGame := Game
 		         withBoard: aBoard
