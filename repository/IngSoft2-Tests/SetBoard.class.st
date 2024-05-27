@@ -91,7 +91,7 @@ SetBoard class >> wormHolePairIsValid: aWormHoleTilePair with: aNumberOfTiles [
 { #category : #accessing }
 SetBoard >> adjustShipPositionBelowOne: aShip [
 
-	(aShip position < 1 and: aShip lapsLeft > 1) ifFalse: [ ^ self ].
+	(aShip position < 1 and: aShip lapsDone > 1) ifFalse: [ ^ self ].
 	aShip moveTiles: tileEffectArray size.
 	aShip modifyLap: -1
 ]
@@ -99,7 +99,7 @@ SetBoard >> adjustShipPositionBelowOne: aShip [
 { #category : #accessing }
 SetBoard >> adjustShipPositionOverboard: aShip [
 
-	(aShip position > tileEffectArray size and: aShip lapsLeft <= maxLap)
+	(aShip position > tileEffectArray size and: aShip lapsDone <= maxLap)
 		ifFalse: [ ^ self ].
 	aShip moveTiles: tileEffectArray size negated.
 	aShip modifyLap: 1
@@ -138,7 +138,7 @@ SetBoard >> initializeWithAmoutTiles: aNumberOfTiles withWormHolePositions: aWor
 { #category : #testing }
 SetBoard >> isInLastTile: aShip [
 
-	^ aShip position = 1 and: aShip lapsLeft > maxLap
+	^ aShip position = 1 and: aShip lapsDone > maxLap
 ]
 
 { #category : #accessing }
@@ -150,6 +150,6 @@ SetBoard >> numbOfTiles [
 { #category : #accessing }
 SetBoard >> snapToFinishTile: aShip [
 
-	(aShip lapsLeft > maxLap)
+	(aShip lapsDone > maxLap)
 		ifTrue: [ aShip moveToFirstTile ]
 ]

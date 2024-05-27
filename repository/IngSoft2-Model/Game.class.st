@@ -60,7 +60,7 @@ Game >> allShipsPosition [
 	gameShips do: [ :aShip |
 		shipPositions
 			at: aShip shipName
-			put: (OrderedCollection with: aShip position with: aShip lapsLeft);
+			put: (OrderedCollection with: aShip position with: aShip lapsDone);
 			yourself ].
 	^ shipPositions
 ]
@@ -140,14 +140,16 @@ Game >> playTurn [
 Game >> shipRankings [
 
 	| sortedShips rankDictionary |
+	
+	
 	sortedShips := self allShipsPosition associations
 		               asSortedCollection: [ :a :b |
 			               a value first > b value first and:
 				               a value last >= b value last ].
 
 	rankDictionary := Dictionary new.
-	sortedShips withIndexDo: [ :assoc :index |
-		rankDictionary at: index put: assoc ].
+	rankDictionary addAll: sortedShips.
+	
 	^ rankDictionary
 ]
 

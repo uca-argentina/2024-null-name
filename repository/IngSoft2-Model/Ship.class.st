@@ -59,7 +59,7 @@ Ship >> initializeInTile: aPosition withName: aName [
 ]
 
 { #category : #accessing }
-Ship >> lapsLeft [
+Ship >> lapsDone [
 
 	^ currentLap
 ]
@@ -67,8 +67,8 @@ Ship >> lapsLeft [
 { #category : #modifying }
 Ship >> loseOneShield [
 
-    numberOfShields:= numberOfShields -1 max: 0.
-	(numberOfShields = 0) ifTrue: [ lostTurnCounter := 2 ]
+	numberOfShields := numberOfShields - 1 max: 0.
+	numberOfShields = 0 ifTrue: [ lostTurnCounter := 2 ]
 ]
 
 { #category : #modifying }
@@ -88,9 +88,9 @@ Ship >> modifyLap: aLapAmount [
 Ship >> moveTiles: anAmountOfTiles [
 
 	currentPosition := currentLap = 1
-        ifTrue: [(currentPosition + anAmountOfTiles) max: 1]
-        ifFalse: [currentPosition + anAmountOfTiles].
-
+		                   ifTrue: [
+		                   currentPosition + anAmountOfTiles max: 1 ]
+		                   ifFalse: [ currentPosition + anAmountOfTiles ]
 ]
 
 { #category : #modifying }

@@ -36,14 +36,6 @@ TileEffectsCreator >> createWithWormHolePositions: aWormHoleTilePair withBoardLe
 	tileEffectArray at: 1 put: (NullEffect createWith: '').
 
 	tileEffectArray
-		at: aPairOfLengths first
-		put: (NullEffect createWith: '').
-
-	tileEffectArray
-		at: aWormHoleTilePair first
-		put: (WormholeEffect createWith: aWormHoleTilePair).
-
-	tileEffectArray
 		at: aWormHoleTilePair last
 		put: (WormholeEffect createWith: aWormHoleTilePair reversed).
 
