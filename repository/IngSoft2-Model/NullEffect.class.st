@@ -3,7 +3,7 @@ null pattern implementation
 "
 Class {
 	#name : #NullEffect,
-	#superclass : #EffectOnOneShip,
+	#superclass : #Effect,
 	#category : #'IngSoft2-Model'
 }
 
@@ -11,4 +11,10 @@ Class {
 NullEffect >> affectAShip: aShip [
 	
 	aShip moveTiles: 0
+]
+
+{ #category : #applying }
+NullEffect >> applyOn: aGame [
+
+	^self
 ]

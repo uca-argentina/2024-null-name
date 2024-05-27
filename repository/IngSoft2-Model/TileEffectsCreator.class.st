@@ -10,22 +10,27 @@ Class {
 { #category : #'creating collection' }
 TileEffectsCreator >> createWithWormHolePositions: aWormHolePair withBoardLenghts: aPairOfLengths withParsecArrry: aParsecArray [
 
-	| tileEffectArray probabilityEffects |
+	| tileEffectArray probabilityEffects moonWalkEffectGenerator hyperJumpEffectGenerator boardLengthsDictionary |
+	
+	boardLengthsDictionary := Dictionary newFrom: {
+			                          ('Tiles' -> aPairOfLengths first).
+			                          ('Parsecs' -> aPairOfLengths last) }.
+
+	moonWalkEffectGenerator := [
+	                           MoonWalkEffect withMoonwalkDistance:
+		                           (boardLengthsDictionary at: 'Tiles')
+			                           atRandom ].
+
+	hyperJumpEffectGenerator := HyperJumpEffect
+		                            withParsecArray: aParsecArray
+		                            andBoardLengths: boardLengthsDictionary.
+
 	probabilityEffects := Dictionary newFrom: {
 			                      (#( 0 40 ) -> NullEffect new).
 			                      (#( 41 60 ) -> BlackHoleEffect new).
 			                      (#( 61 80 ) -> HyperSpaceJumpEffect new).
-			                      (#( 81 90 ) -> [
-			                       MoonWalkEffect withMoonwalkDistance:
-				                       (self generateMoonWalkParameters:
-					                        aPairOfLengths first) ]).
-			                      (#( 91 98 ) -> (HyperJumpEffect
-				                        withParsecArray: aParsecArray
-				                        andBoardLengths:
-				                        (self
-					                         generateHyperJumpParameters:
-					                         aPairOfLengths
-					                         and: aParsecArray))).
+			                      (#( 81 90 ) -> moonWalkEffectGenerator).
+			                      (#( 91 98 ) -> hyperJumpEffectGenerator).
 			                      (#( 99 100 ) -> AtomicBombEffect new) }.
 
 	tileEffectArray := OrderedCollection new.
@@ -57,19 +62,4 @@ TileEffectsCreator >> determineRange: aRangeOfKeys [
 
 	^ aRangeOfKeys detect: [ :aRange |
 		  aRandomNumber between: aRange first and: aRange last ]
-]
-
-{ #category : #generators }
-TileEffectsCreator >> generateHyperJumpParameters: aPairOfLenghts  and: aParsecArray [
-
-	^ Dictionary newFrom: {
-			  ('parsecArray' -> aParsecArray).
-			  ('Tiles' -> aPairOfLenghts first).
-			  ('Parsecs' -> aPairOfLenghts last) }
-]
-
-{ #category : #generators }
-TileEffectsCreator >> generateMoonWalkParameters: aBoardLength [
-
-	^ aBoardLength atRandom
 ]

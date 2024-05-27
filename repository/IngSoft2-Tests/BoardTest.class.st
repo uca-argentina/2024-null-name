@@ -102,16 +102,26 @@ BoardTest >> testWhenBoardIsCreatedTheAmountOfEffectsFollowTheCorrectDistributio
 		          withAmountOfLaps: aNumberOfLaps
 		          withParsecArray: #( 1 3 5 1 ).
 
+	self assert: (aBoard allTileEffectsAmount at: NullEffect) equals: 40.
 
-	self assert: (aBoard numberBoxEffect at: NullEffect) equals: 40.
-	self assert: (aBoard numberBoxEffect at: BlackHoleEffect) equals: 20.
 	self
-		assert: (aBoard numberBoxEffect at: HyperSpaceJumpEffect)
+		assert: (aBoard allTileEffectsAmount at: BlackHoleEffect)
 		equals: 20.
-	self assert: (aBoard numberBoxEffect at: MoonWalkEffect) equals: 10.
-	self assert: (aBoard numberBoxEffect at: HyperJumpEffect) equals: 8.
-	self assert: (aBoard numberBoxEffect at: AtomicBombEffect) equals: 2.
-	self assert: (aBoard numberBoxEffect at: WormholeEffect) equals: 2
+	self
+		assert: (aBoard allTileEffectsAmount at: HyperSpaceJumpEffect)
+		equals: 20.
+	self
+		assert: (aBoard allTileEffectsAmount at: MoonWalkEffect)
+		equals: 10.
+	self
+		assert: (aBoard allTileEffectsAmount at: HyperJumpEffect)
+		equals: 8.
+	self
+		assert: (aBoard allTileEffectsAmount at: AtomicBombEffect)
+		equals: 2.
+	self
+		assert: (aBoard allTileEffectsAmount at: WormholeEffect)
+		equals: 2
 ]
 
 { #category : #tests }

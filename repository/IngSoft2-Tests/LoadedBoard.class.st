@@ -69,6 +69,22 @@ LoadedBoard >> adjustShipPositionOverboard: aShip [
 	aShip modifyLap: 1
 ]
 
+{ #category : #'accessing - arguments' }
+LoadedBoard >> allTileEffectsAmount [
+
+	| countDictionary |
+	countDictionary := Dictionary new.
+
+	tileEffectArray do: [ :effect |
+		countDictionary
+			at: effect class
+			ifPresent: [ :count |
+			countDictionary at: effect class put: count + 1 ]
+			ifAbsent: [ countDictionary at: effect class put: 1 ] ].
+
+	^ countDictionary
+]
+
 { #category : #modifying }
 LoadedBoard >> applyTileEffectOn: aGame triggeredBy: aShip [
 
@@ -107,29 +123,6 @@ LoadedBoard >> numOfParsecs [
 LoadedBoard >> numbOfTiles [
 
 	^ tileEffectArray size
-]
-
-{ #category : #'accessing - arguments' }
-LoadedBoard >> numberBoxEffect [
-
-	| countDictionary |
-	countDictionary := Dictionary new.
-
-	tileEffectArray do: [ :effect |
-		| className |
-		className := effect class.
-		countDictionary
-			at: className
-			ifPresent: [ :count | countDictionary at: className put: count + 1 ]
-			ifAbsent: [ countDictionary at: className put: 1 ] ].
-
-	"
-	countDictionary := Dictionary new.
-	countDictionary at: HyperJumpEffect put: 20.
-	countDictionary at: BlackHoleEffect put: 20.
-	countDictionary at: MoonWalkEffect put: 10.
-	"
-	^ countDictionary
 ]
 
 { #category : #accessing }

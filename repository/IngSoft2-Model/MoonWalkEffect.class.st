@@ -10,9 +10,18 @@ Class {
 	#category : #'IngSoft2-Model'
 }
 
+{ #category : #testing }
+MoonWalkEffect class >> isValid: aDistance [
+
+	aDistance strictlyPositive ifFalse: [
+		Error signal: 'Moonwalk distance must be strictly positive' ]
+]
+
 { #category : #'class initialization' }
 MoonWalkEffect class >> withMoonwalkDistance: aDistance [
-
+	
+	self isValid:aDistance.
+	
 	^ self new initializeWithMoonwalkDistance: aDistance 
 ]
 

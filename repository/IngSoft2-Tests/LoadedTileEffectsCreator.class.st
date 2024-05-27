@@ -13,23 +13,28 @@ Class {
 { #category : #'creating collection' }
 LoadedTileEffectsCreator >> createWithWormHolePositions: aWormHolePair withBoardLenghts: aPairOfLengths withParsecArrry: aParsecArray [
 
-	| tileEffectArray probabilityEffects |
+	| tileEffectArray probabilityEffects moonWalkEffectGenerator hyperJumpEffectGenerator lengthsDic |
+	
+	lengthsDic := Dictionary newFrom: {
+			              ('Tiles' -> aPairOfLengths first).
+			              ('Parsecs' -> aPairOfLengths last) }.
+
+	moonWalkEffectGenerator := [
+	                          MoonWalkEffect withMoonwalkDistance:
+		                          ((lengthsDic at: 'Tiles') atRandom) ].
+		
+	hyperJumpEffectGenerator := HyperJumpEffect
+		                           withParsecArray: aParsecArray
+		                           andBoardLengths: lengthsDic.
+
 	probabilityEffects := Dictionary newFrom: {
 			                      (#( 0 40 ) -> NullEffect new).
 			                      (#( 41 60 ) -> BlackHoleEffect new).
 			                      (#( 61 80 ) -> HyperSpaceJumpEffect new).
-			                      (#( 81 90 ) -> [
-			                       MoonWalkEffect withMoonwalkDistance:
-				                       (self generateMoonWalkParameters:
-					                        aPairOfLengths first) ]).
-			                      (#( 91 98 ) -> (HyperJumpEffect
-				                        withParsecArray: aParsecArray
-				                        andBoardLengths:
-				                        (self
-					                         generateHyperJumpParameters:
-					                         aPairOfLengths
-					                         and: aParsecArray))).
+			                      (#( 81 90 ) -> moonWalkEffectGenerator ).
+			                      (#( 91 98 ) -> hyperJumpEffectGenerator).
 			                      (#( 99 100 ) -> AtomicBombEffect new) }.
+	
 	tileNumber := 0.
 	tileEffectArray := OrderedCollection new.
 
@@ -60,18 +65,4 @@ LoadedTileEffectsCreator >> determineRange: aRangeOfKeys [
 
 	^ aRangeOfKeys detect: [ :aRange |
 		  tileNumber between: aRange first and: aRange last ]
-]
-
-{ #category : #generators }
-LoadedTileEffectsCreator >> generateHyperJumpParameters: aPairOfLenghts and: aParsecArray [
-
-	^ Dictionary newFrom: {
-			  ('Tiles' -> aPairOfLenghts first).
-			  ('Parsecs' -> aPairOfLenghts last) }
-]
-
-{ #category : #generators }
-LoadedTileEffectsCreator >> generateMoonWalkParameters: aBoardLength [
-
-	^ aBoardLength atRandom
 ]

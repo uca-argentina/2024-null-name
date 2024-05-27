@@ -4,6 +4,24 @@ Class {
 	#category : #'IngSoft2-Tests'
 }
 
+{ #category : #asserting }
+EffectsTest >> should: aErrorBlock raise: anErrorClass withMessage: anErrorMessage [
+
+	self
+		should: aErrorBlock
+		raise: anErrorClass
+		withExceptionDo: [ :error |
+		self assert: error messageText equals: anErrorMessage ]
+]
+
+{ #category : #tests }
+EffectsTest >> testMoonWalkDistanceCannotBeSmallerThanZero [
+	
+	self should: [ MoonWalkEffect withMoonwalkDistance: -3 ] raise: Error withMessage: 'Moonwalk distance must be strictly positive'
+	
+	
+]
+
 { #category : #tests }
 EffectsTest >> testWhenApplyingAtomicBombEffectAllShipsMoveBackToFirstTile [
 
@@ -139,6 +157,49 @@ EffectsTest >> testWhenApplyingHyperJumpEffectShipMovesAVariableParsecDistance [
 	self
 		assert: (aGame allShipsPosition at: 'Juan')
 		equals: #( 13 1 ) asOrderedCollection
+]
+
+{ #category : #tests }
+EffectsTest >> testWhenApplyingHyperJumpRepeatedlyThenDistanceMovedChanges [
+
+	| aBoard aShipName aDictionaryOfEffects aGame aParsecArray aDic|
+	aParsecArray := #( 2 1 -1 -2).
+	aDic := Dictionary newFrom: {
+			        ('Tiles' -> 20).
+			        ('Parsecs' -> 10) }.
+
+	aDictionaryOfEffects := Dictionary new
+		                        at: 4
+		                        put:
+			                        (HyperJumpEffect
+				                         withParsecArray: aParsecArray
+				                         andBoardLengths: aDic);
+		                        yourself.
+	aBoard := SetBoard
+		          withLengthInTileAndParsec: #( 20 10 )
+		          withWormHolePositions: #( 2 5 )
+		          withAmountOfLaps: 1
+		          withEffectsInPosition: aDictionaryOfEffects.
+
+	aShipName := OrderedCollection with: 'Juan' with: 'Fran' with:'Jorge'.
+	aGame := Game
+		         withBoard: aBoard
+		         withShipNames: aShipName
+		         withDice: (Dice with:
+				          (OrderedCollection with:
+					           (SequenceDie withSequence: #( 3 )))).
+
+	aGame playTurn.
+	aGame playTurn.
+	aGame playTurn.
+
+	self
+		assert: (aGame allShipsPosition at: 'Juan')
+		equals: #( 8 1 ) asOrderedCollection.
+	self assert: (aGame allShipsPosition at: 'Fran')
+		equals: #( 6 1 ) asOrderedCollection.
+	self assert: (aGame allShipsPosition at: 'Jorge')
+		equals: #( 2 1 ) asOrderedCollection
 ]
 
 { #category : #tests }
