@@ -3,7 +3,7 @@ setboard class for testing effects
 "
 Class {
 	#name : #SetBoard,
-	#superclass : #Object,
+	#superclass : #TestObject,
 	#instVars : [
 		'tileEffectArray',
 		'maxLap'

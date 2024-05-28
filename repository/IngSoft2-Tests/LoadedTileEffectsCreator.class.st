@@ -3,7 +3,7 @@ A Loaded tile effect generator for loaded board for testing
 "
 Class {
 	#name : #LoadedTileEffectsCreator,
-	#superclass : #Object,
+	#superclass : #TestObject,
 	#instVars : [
 		'tileNumber',
 		'wormHolePair',

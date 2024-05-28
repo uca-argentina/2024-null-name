@@ -3,7 +3,7 @@ Die that always throws a sequence
 "
 Class {
 	#name : #SequenceDie,
-	#superclass : #Object,
+	#superclass : #TestObject,
 	#instVars : [
 		'rollSequence',
 		'currentRollPosition'

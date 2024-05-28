@@ -15,15 +15,6 @@ ShipTest >> should: anErrorBlock raise: exceptionClass withMessage: anErrorMessa
 ]
 
 { #category : #tests }
-ShipTest >> testIfShipIsInitializedWithaNameItWillHaveThatName [
-
-	| aShip |
-	aShip := Ship createWithName: 'Juan'.
-
-	self assert: aShip shipName equals: 'Juan'
-]
-
-{ #category : #tests }
 ShipTest >> testIfShipMovesIntoPositionBelowOneThenShipPositionIsOne [
 
 	| aShip |
@@ -79,6 +70,15 @@ ShipTest >> testShipsAmountOfShieldCannotBeNegative [
 	aShip1 loseOneShield.
 
 	self assert: aShip1 amountOfShieldsActive equals: 0
+]
+
+{ #category : #tests }
+ShipTest >> testShipsHaveNames [
+
+	| aShip |
+	aShip := Ship createWithName: 'Juan'.
+
+	self assert: aShip shipName equals: 'Juan'
 ]
 
 { #category : #tests }

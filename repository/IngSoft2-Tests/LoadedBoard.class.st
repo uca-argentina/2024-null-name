@@ -3,7 +3,7 @@ A loaded board with effects for testing
 "
 Class {
 	#name : #LoadedBoard,
-	#superclass : #Object,
+	#superclass : #TestObject,
 	#instVars : [
 		'tileEffectArray',
 		'maxLap',
