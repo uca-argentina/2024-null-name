@@ -95,13 +95,13 @@ Board >> initializeWithLengths: aPairOfLengths withWormHolePositions: aWormHoleP
 	| aTileEffectsCreator |
 	maxLap := anAmountOfLaps.
 	parsecs := aPairOfLengths last.
-	tileEffectArray := OrderedCollection new.
 
-	aTileEffectsCreator := TileEffectsCreator new.
-	tileEffectArray := aTileEffectsCreator
-		                   createWithWormHolePositions: aWormHolePair
-		                   withBoardLenghts: aPairOfLengths
-		                   withParsecArrry: aParsecArray
+	aTileEffectsCreator := TileEffectsCreator
+		                       createWithWormHolePositions: aWormHolePair
+		                       withBoardLenghts: aPairOfLengths
+		                       withParsecArray: aParsecArray.
+
+	tileEffectArray := aTileEffectsCreator generateEffectArray
 ]
 
 { #category : #testing }

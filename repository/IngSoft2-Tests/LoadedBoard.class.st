@@ -94,12 +94,12 @@ LoadedBoard >> initializeWithLengths: aPairOfLengths withWormHolePositions: aWor
 	tileEffectArray := OrderedCollection new.
 	parsecs := aPairOfLengths last.
 
-	aTileEffectsCreator := LoadedTileEffectsCreator new.
+	aTileEffectsCreator := LoadedTileEffectsCreator
+		                       createWithWormHolePositions: aWormHolePair
+		                       withBoardLenghts: aPairOfLengths
+		                       withParsecArray: aParsecArray.
 
-	tileEffectArray := aTileEffectsCreator
-		                   createWithWormHolePositions: aWormHolePair
-		                   withBoardLenghts: aPairOfLengths
-		                   withParsecArrry: aParsecArray
+	tileEffectArray := aTileEffectsCreator generateEffectArray.
 ]
 
 { #category : #testing }
