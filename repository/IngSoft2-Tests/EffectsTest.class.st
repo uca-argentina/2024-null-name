@@ -23,6 +23,37 @@ EffectsTest >> testMoonWalkDistanceCannotBeSmallerThanZero [
 ]
 
 { #category : #tests }
+EffectsTest >> testWhenApplying2DifferentHyperJumpEffectsShipsMoveTheBiggestAmountOfParsecsInArray [
+
+	| aBoard aShipName aGame aParsecArray |
+	aParsecArray := #( 3 5 1 ).
+
+	aBoard := LoadedBoard
+		          withLengthInTileAndParsec: #( 102 102 )
+		          withWormHolePositions: #( 2 5 )
+		          withAmountOfLaps: 1
+		          withParsecArray: aParsecArray.
+
+	aShipName := OrderedCollection with: 'Juan' with: 'Pedro'.
+	aGame := Game
+		         withBoard: aBoard
+		         withShipNames: aShipName
+		         withDice: (Dice with:
+				          (OrderedCollection with:
+					           (SequenceDie withSequence: #( 91 92 )))).
+
+	aGame playTurn.
+	aGame playTurn.
+
+	self
+		assert: (aGame allShipsPosition at: 'Juan')
+		equals: #( 97 1 ) asOrderedCollection.
+	self
+		assert: (aGame allShipsPosition at: 'Pedro')
+		equals: #( 98 1 ) asOrderedCollection
+]
+
+{ #category : #tests }
 EffectsTest >> testWhenApplyingAtomicBombEffectAllShipsMoveBackToFirstTile [
 
 	| aBoard aShipName aDictionaryOfEffects aGame |
@@ -119,37 +150,6 @@ EffectsTest >> testWhenApplyingBlackHoleShipNotOnLap1CanMoveBelowFirstTilePositi
 	self
 		assert: (aGame allShipsPosition at: 'Juan')
 		equals: #( 9 1 ) asOrderedCollection
-]
-
-{ #category : #tests }
-EffectsTest >> testWhenApplyingHyperJumpEffectBanana [
-
-	| aBoard aShipName aGame aParsecArray |
-	aParsecArray := #( 3 5 1 ).
-
-	aBoard := LoadedBoard
-		          withLengthInTileAndParsec: #( 102 102 )
-		          withWormHolePositions: #( 2 5 )
-		          withAmountOfLaps: 1
-		          withParsecArray: aParsecArray.
-
-	aShipName := OrderedCollection with: 'Juan' with: 'Pedro'.
-	aGame := Game
-		         withBoard: aBoard
-		         withShipNames: aShipName
-		         withDice: (Dice with:
-				          (OrderedCollection with:
-					           (SequenceDie withSequence: #( 91 92 )))).
-
-	aGame playTurn.
-	aGame playTurn.
-
-	self
-		assert: (aGame allShipsPosition at: 'Juan')
-		equals: #( 97 1 ) asOrderedCollection.
-	self
-		assert: (aGame allShipsPosition at: 'Pedro')
-		equals: #( 96 1 ) asOrderedCollection
 ]
 
 { #category : #tests }

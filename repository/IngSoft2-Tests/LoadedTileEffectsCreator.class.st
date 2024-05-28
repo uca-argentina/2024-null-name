@@ -62,16 +62,17 @@ LoadedTileEffectsCreator >> initializeWithWormHolePositions: aWormHolePair withB
 
 	| moonWalkEffectGenerator hyperJumpEffectGenerator |
 	boardLengths := Dictionary newFrom: {
-			              ('Tiles' -> aPairOfLengths first).
-			              ('Parsecs' -> aPairOfLengths last) }.
+			                ('Tiles' -> aPairOfLengths first).
+			                ('Parsecs' -> aPairOfLengths last) }.
 
 	moonWalkEffectGenerator := [
 	                           MoonWalkEffect withMoonwalkDistance:
 		                           (boardLengths at: 'Tiles') atRandom ].
 
-	hyperJumpEffectGenerator := HyperJumpEffect
+	hyperJumpEffectGenerator := [
+	                            HyperJumpEffect
 		                            withParsecArray: aParsecArray
-		                            andBoardLengths: boardLengths.
+		                            andBoardLengths: boardLengths ].
 	wormHolePair := aWormHolePair.
 
 	probabilityEffects := Dictionary newFrom: {
