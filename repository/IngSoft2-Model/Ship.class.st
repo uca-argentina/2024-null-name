@@ -9,7 +9,8 @@ Class {
 		'currentPosition',
 		'playerName',
 		'numberOfShields',
-		'lapsLeft'
+		'lostTurnCounter',
+		'currentLap'
 	],
 	#category : #'IngSoft2-Model'
 }
@@ -18,17 +19,7 @@ Class {
 Ship class >> createWithName: aName [
 
 	self isValid: aName.
-	^ self new initializeInTile: 1 withName: aName withAmountOfLaps: 1
-]
-
-{ #category : #'class initialization' }
-Ship class >> createWithName: aName withAmountOfLaps: anAmountOfLaps [
-
-	self isValid: aName.
-	^ self new
-		  initializeInTile: 1
-		  withName: aName
-		  withAmountOfLaps: anAmountOfLaps
+	^ self new initializeInTile: 1 withName: aName
 ]
 
 { #category : #testing }
@@ -38,49 +29,74 @@ Ship class >> isValid: aName [
 		Error signal: 'Ship cannot be created with no name' ]
 ]
 
-{ #category : #modifying }
-Ship >> completeLap [
-	lapsLeft  := lapsLeft - 1 .
-]
-
-{ #category : #testing }
-Ship >> hasAmountOfShields: anAmountOfShields [
-	^(numberOfShields = anAmountOfShields).
-]
-
 { #category : #accessing }
-Ship >> inLastLap [
+Ship >> amountOfShieldsActive [
 
-	^ lapsLeft = 1
+	^ numberOfShields
+]
+
+{ #category : #comparing }
+Ship >> canPlayTurn [
+
+	^ lostTurnCounter = 0
+]
+
+{ #category : #modifying }
+Ship >> healFullShields [
+
+	numberOfShields := 3
 ]
 
 { #category : #initialization }
-Ship >> initializeInTile: aPosition withName: aName withAmountOfLaps: anAmountOfLaps [
+Ship >> initializeInTile: aPosition withName: aName [
 
 	currentPosition := aPosition.
 	playerName := aName.
 	numberOfShields := 3.
-	lapsLeft := anAmountOfLaps
+	lostTurnCounter := 0.
+	currentLap := 1
 	
 ]
 
 { #category : #accessing }
-Ship >> lapsLeft [
-	^ lapsLeft 
+Ship >> lapsDone [
+
+	^ currentLap
 ]
 
 { #category : #modifying }
 Ship >> loseOneShield [
 
-    (numberOfShields-1) < 0 ifTrue: [
-        Error signal: 'Amount of shields cannot be less than zero' ].
-    numberOfShields := numberOfShields - 1.
+	numberOfShields := numberOfShields - 1 max: 0.
+	numberOfShields = 0 ifTrue: [ lostTurnCounter := 2 ]
+]
+
+{ #category : #modifying }
+Ship >> lostTurnCounterDown [
+
+	lostTurnCounter := lostTurnCounter - 1 max: 0.
+	self canPlayTurn ifTrue: [ self healFullShields ]
+]
+
+{ #category : #modifying }
+Ship >> modifyLap: aLapAmount [
+
+	currentLap := currentLap + aLapAmount max: 1
 ]
 
 { #category : #modifying }
 Ship >> moveTiles: anAmountOfTiles [
 
-	currentPosition := currentPosition + anAmountOfTiles max: 1
+	currentPosition := currentLap = 1
+		                   ifTrue: [
+		                   currentPosition + anAmountOfTiles max: 1 ]
+		                   ifFalse: [ currentPosition + anAmountOfTiles ]
+]
+
+{ #category : #modifying }
+Ship >> moveToFirstTile [
+
+	currentPosition := 1
 ]
 
 { #category : #accessing }

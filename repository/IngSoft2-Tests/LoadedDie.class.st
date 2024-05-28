@@ -3,7 +3,7 @@ Loaded Die class
 "
 Class {
 	#name : #LoadedDie,
-	#superclass : #Object,
+	#superclass : #TestObject,
 	#instVars : [
 		'faces'
 	],

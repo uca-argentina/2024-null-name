@@ -4,29 +4,29 @@ moves ship to another fixed position
 "
 Class {
 	#name : #WormholeEffect,
-	#superclass : #Effect,
+	#superclass : #EffectOnOneShip,
 	#instVars : [
 		'wormholeDistance'
 	],
 	#category : #'IngSoft2-Model'
 }
 
-{ #category : #'instance creation' }
-WormholeEffect class >> fromPosition: firstPosition toPosition: endPosition [
+{ #category : #'class initialization' }
+WormholeEffect class >> fromPosition: firstPosition toPosition: lastPosition [
 
 	^ self new
 		  initializeInPosition: firstPosition
-		  toPosition: endPosition
+		  toPosition: lastPosition
 ]
 
 { #category : #applying }
-WormholeEffect >> applyOn: aShip [
+WormholeEffect >> affectAShip: aShip [
 
 	aShip moveTiles: wormholeDistance
 ]
 
-{ #category : #'instance creation' }
-WormholeEffect >> initializeInPosition: firstPosition toPosition: endPosition [
+{ #category : #initialization }
+WormholeEffect >> initializeInPosition: firstPosition toPosition: lastPosition [
 
-	wormholeDistance := endPosition - firstPosition
+	wormholeDistance := lastPosition - firstPosition
 ]
