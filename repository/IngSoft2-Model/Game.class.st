@@ -69,8 +69,7 @@ Game >> applyEffectOnAllShips: anEffect [
 
 	anEffect affectAShipCollection: gameShips.
 	gameShips do: [ :aShip |
-		gameBoard adjustShipPositionOverboard: aShip.
-		gameBoard adjustShipPositionBelowOne: aShip ]
+		gameBoard adjustShipPosition: aShip.]
 ]
 
 { #category : #event }
@@ -78,8 +77,7 @@ Game >> applyEffectOnAllShipsButOne: anEffect [
 
 	anEffect affectAllShips: gameShips but: theShipInCurrentTurn.
 	gameShips do: [ :aShip |
-		gameBoard adjustShipPositionOverboard: aShip.
-		gameBoard adjustShipPositionBelowOne: aShip ]
+		gameBoard adjustShipPosition: aShip. ]
 ]
 
 { #category : #event }
@@ -87,8 +85,7 @@ Game >> applyEffectOnOneShip: anEffect [
 
 	anEffect affectAShip: theShipInCurrentTurn.
 	gameShips do: [ :aShip |
-		gameBoard adjustShipPositionOverboard: aShip.
-		gameBoard adjustShipPositionBelowOne: aShip ]
+		gameBoard adjustShipPosition: aShip.]
 ]
 
 { #category : #initialization }
@@ -128,7 +125,7 @@ Game >> playTurn [
 
 	movement := dice throw.
 	theShipInCurrentTurn moveTiles: movement.
-	gameBoard adjustShipPositionOverboard: theShipInCurrentTurn.
+	gameBoard adjustShipPosition: theShipInCurrentTurn.
 	gameBoard snapToFinishTile: theShipInCurrentTurn.
 	gameBoard applyTileEffectOn: self triggeredBy: theShipInCurrentTurn.
 	shipBattleHandler checkShipBattle: theShipInCurrentTurn.

@@ -66,21 +66,11 @@ SetBoard class >> wormHolePairIsValid: aWormHolePair with: aNumberOfTiles [
 ]
 
 { #category : #accessing }
-SetBoard >> adjustShipPositionBelowOne: aShip [
+SetBoard >> adjustShipPosition: aShip [
 
-	(aShip position < 1 and: aShip lapsDone > 1) ifFalse: [ ^ self ].
-
-
-	aShip modifyLap: aShip position - 1 // tileEffectArray size.
-	aShip moveTiles: tileEffectArray size
-		* (aShip position - 1 // tileEffectArray size) negated
-]
-
-{ #category : #accessing }
-SetBoard >> adjustShipPositionOverboard: aShip [
-
-	(aShip position > tileEffectArray size and: aShip lapsDone <= maxLap)
-		ifFalse: [ ^ self ].
+	((aShip position > tileEffectArray size and: aShip lapsDone <= maxLap)
+		 or: (aShip position < 1 and: aShip lapsDone > 1)) ifFalse: [
+		^ self ].
 
 	aShip modifyLap: aShip position - 1 // tileEffectArray size.
 	aShip moveTiles: tileEffectArray size
