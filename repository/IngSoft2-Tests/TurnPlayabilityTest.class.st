@@ -30,13 +30,14 @@ TurnPlayabilityTest >> testWhenAShipFinishesLapThenPositionIsAdjustedAccordingly
 
 	| aGame aCollectionOfNames aCollectionOfDie |
 	aCollectionOfNames := OrderedCollection with: 'Juan'.
-	aCollectionOfDie := OrderedCollection with: (LoadedDie of: 10).
+	aCollectionOfDie := OrderedCollection with:
+		                    (SequenceDie withSequence: #( 10 20 )).
 
 	aGame := Game
 		         withBoard: (SetBoard
 				          withLengthInTileAndParsec: #( 10 10 )
 				          withWormHolePositions: #( 2 3 )
-				          withAmountOfLaps: 3)
+				          withAmountOfLaps: 5)
 		         withShipNames: aCollectionOfNames
 		         withDice: (Dice with: aCollectionOfDie).
 
@@ -44,7 +45,12 @@ TurnPlayabilityTest >> testWhenAShipFinishesLapThenPositionIsAdjustedAccordingly
 
 	self
 		assert: (aGame allShipsPosition at: 'Juan')
-		equals: #( 1 2 ) asOrderedCollection
+		equals: #( 1 2 ) asOrderedCollection.
+	aGame playTurn.
+	
+	self
+		assert: (aGame allShipsPosition at: 'Juan')
+		equals: #( 1 4 ) asOrderedCollection.
 ]
 
 { #category : #tests }

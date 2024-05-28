@@ -59,8 +59,11 @@ Board class >> wormHolePairIsValid: aWormHolePair with: aNumberOfTiles [
 Board >> adjustShipPositionBelowOne: aShip [
 
 	(aShip position < 1 and: aShip lapsDone > 1) ifFalse: [ ^ self ].
-	aShip moveTiles: tileEffectArray size.
-	aShip modifyLap: -1
+
+
+	aShip modifyLap: aShip position - 1 // tileEffectArray size.
+	aShip moveTiles: tileEffectArray size
+		* (aShip position - 1 // tileEffectArray size) negated
 ]
 
 { #category : #accessing }
@@ -68,8 +71,10 @@ Board >> adjustShipPositionOverboard: aShip [
 
 	(aShip position > tileEffectArray size and: aShip lapsDone <= maxLap)
 		ifFalse: [ ^ self ].
-	aShip moveTiles: tileEffectArray size negated.
-	aShip modifyLap: 1
+
+	aShip modifyLap: aShip position - 1 // tileEffectArray size.
+	aShip moveTiles: tileEffectArray size
+		* (aShip position - 1 // tileEffectArray size) negated
 ]
 
 { #category : #'accessing - arguments' }

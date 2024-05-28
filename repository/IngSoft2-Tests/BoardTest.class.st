@@ -91,15 +91,14 @@ BoardTest >> testSpecialTilesCannotBeCreatedIfPositionsExceedBoardSize [
 { #category : #tests }
 BoardTest >> testWhenBoardIsCreatedTheAmountOfEffectsFollowTheCorrectDistribution [
 
-	| aBoard aPairOfLengths aWormHolePair aNumberOfLaps |
+	| aBoard aPairOfLengths aWormHolePair |
 	aWormHolePair := #( 2 4 ).
-	aNumberOfLaps := 1.
 	aPairOfLengths := #( 102 10 ).
 
 	aBoard := LoadedBoard
 		          withLengthInTileAndParsec: aPairOfLengths
 		          withWormHolePositions: aWormHolePair
-		          withAmountOfLaps: aNumberOfLaps
+		          withAmountOfLaps: 1
 		          withParsecArray: #( 1 3 5 1 ).
 
 	self assert: (aBoard allTileEffectsAmount at: NullEffect) equals: 40.

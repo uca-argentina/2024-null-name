@@ -14,27 +14,26 @@ Class {
 LoadedTileEffectsCreator >> createWithWormHolePositions: aWormHolePair withBoardLenghts: aPairOfLengths withParsecArrry: aParsecArray [
 
 	| tileEffectArray probabilityEffects moonWalkEffectGenerator hyperJumpEffectGenerator lengthsDic |
-	
 	lengthsDic := Dictionary newFrom: {
 			              ('Tiles' -> aPairOfLengths first).
 			              ('Parsecs' -> aPairOfLengths last) }.
 
 	moonWalkEffectGenerator := [
-	                          MoonWalkEffect withMoonwalkDistance:
-		                          ((lengthsDic at: 'Tiles') atRandom) ].
-		
+	                           MoonWalkEffect withMoonwalkDistance:
+		                           (lengthsDic at: 'Tiles') atRandom ].
+
 	hyperJumpEffectGenerator := HyperJumpEffect
-		                           withParsecArray: aParsecArray
-		                           andBoardLengths: lengthsDic.
+		                            withParsecArray: aParsecArray
+		                            andBoardLengths: lengthsDic.
 
 	probabilityEffects := Dictionary newFrom: {
 			                      (#( 0 40 ) -> NullEffect new).
 			                      (#( 41 60 ) -> BlackHoleEffect new).
 			                      (#( 61 80 ) -> HyperSpaceJumpEffect new).
-			                      (#( 81 90 ) -> moonWalkEffectGenerator ).
+			                      (#( 81 90 ) -> moonWalkEffectGenerator).
 			                      (#( 91 98 ) -> hyperJumpEffectGenerator).
 			                      (#( 99 100 ) -> AtomicBombEffect new) }.
-	
+
 	tileNumber := 0.
 	tileEffectArray := OrderedCollection new.
 
