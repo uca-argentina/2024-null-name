@@ -24,7 +24,7 @@ TurnHandler >> canPlayNextTurnOf: aGameStatus [
 		Error signal: 'Game is Over you cant Keep Playing' ]
 ]
 
-{ #category : #modifying }
+{ #category : #accessing }
 TurnHandler >> currentTurn [
 
 	^ currentTurn

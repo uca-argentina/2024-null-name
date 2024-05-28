@@ -25,12 +25,14 @@ Dice class >> with: aDieCollection [
 
 { #category : #initialization }
 Dice >> inializeWith: aDieCollection [
+
 	dice := aDieCollection
 ]
 
 { #category : #action }
-Dice >> numberOfDie [ 
-	^dice size
+Dice >> numberOfDie [
+
+	^ dice size
 ]
 
 { #category : #action }

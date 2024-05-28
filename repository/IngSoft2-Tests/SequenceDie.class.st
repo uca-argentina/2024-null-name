@@ -3,7 +3,7 @@ Die that always throws a sequence
 "
 Class {
 	#name : #SequenceDie,
-	#superclass : #Object,
+	#superclass : #TestObject,
 	#instVars : [
 		'rollSequence',
 		'currentRollPosition'
@@ -11,21 +11,21 @@ Class {
 	#category : #'IngSoft2-Tests'
 }
 
-{ #category : #'instance creation' }
+{ #category : #'argument validation' }
 SequenceDie class >> isValid: aSequenceOfRolls [
 	aSequenceOfRolls
-		detect: [ :rollNumber | rollNumber < 3 ]
-		ifFound: [ Error signal: 'Faces should be more than 2' ]
+		detect: [ :rollNumber | rollNumber < 0 ]
+		ifFound: [ Error signal: 'Die cannot have faces lesser than 1' ]
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'class initialization' }
 SequenceDie class >> withSequence: aSequenceOfRolls [
 	self isValid: aSequenceOfRolls.
-	^(self new) initializeWithSequende: aSequenceOfRolls.
+	^(self new) initializeWithSequence: aSequenceOfRolls.
 ]
 
 { #category : #initialization }
-SequenceDie >> initializeWithSequende: aSequenceOfRolls [
+SequenceDie >> initializeWithSequence: aSequenceOfRolls [
 
 	rollSequence := aSequenceOfRolls.
 	currentRollPosition := 0
@@ -35,8 +35,8 @@ SequenceDie >> initializeWithSequende: aSequenceOfRolls [
 SequenceDie >> nextRollPosition [
 
 	currentRollPosition := currentRollPosition < rollSequence size
-		               ifTrue: [ currentRollPosition + 1 ]
-		               ifFalse: [ 1 ].
+		                       ifTrue: [ currentRollPosition + 1 ]
+		                       ifFalse: [ 1 ].
 	^ currentRollPosition
 ]
 

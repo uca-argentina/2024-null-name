@@ -8,7 +8,7 @@ Class {
 }
 
 { #category : #applying }
-NullEffect >> applyOn: aShip [
+NullEffect >> applyOn: aGame [
 
-	aShip moveTiles: 0
+	^self
 ]
