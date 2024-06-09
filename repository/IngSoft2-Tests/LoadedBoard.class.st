@@ -1,36 +1,33 @@
 "
-Board class
-
-NOTE TO FUTURE SELF:
-""Can implement more effects by making a collection of Effects that create diferent tiles""
+A loaded board with effects for testing
 "
 Class {
-	#name : #Board,
-	#superclass : #Object,
+	#name : #LoadedBoard,
+	#superclass : #TestObject,
 	#instVars : [
 		'tileEffectArray',
 		'maxLap',
 		'parsecs'
 	],
-	#category : #'IngSoft2-Model'
+	#category : #'IngSoft2-Tests'
 }
 
 { #category : #'argument validation' }
-Board class >> amountOfLapsIsValid: anAmountOfLaps [
+LoadedBoard class >> amountOfLapsIsValid: anAmountOfLaps [
 
 	anAmountOfLaps strictlyPositive ifFalse: [
 		Error signal: 'Cannot play with less than 1 lap' ]
 ]
 
 { #category : #'argument validation' }
-Board class >> numberOfTileIsValid: aNumberOfTiles [
+LoadedBoard class >> numberOfTileIsValid: aNumberOfTiles [
 
 	aNumberOfTiles strictlyPositive ifFalse: [
 		Error signal: 'Board tiles must be greater than 0' ]
 ]
 
 { #category : #'class initialization' }
-Board class >> withLengthInTileAndParsec: aPairOfLengths  withWormHolePositions: aWormHolePair withAmountOfLaps: anAmountOfLaps withParsecArray: aParsecArray [
+LoadedBoard class >> withLengthInTileAndParsec: aPairOfLengths  withWormHolePositions: aWormHolePair withAmountOfLaps: anAmountOfLaps withParsecArray: aParsecArray [
 
 	self numberOfTileIsValid: aPairOfLengths first.
 	self wormHolePairIsValid: aWormHolePair with: aPairOfLengths first.
@@ -40,11 +37,11 @@ Board class >> withLengthInTileAndParsec: aPairOfLengths  withWormHolePositions:
 		  initializeWithLengths: aPairOfLengths
 		  withWormHolePositions: aWormHolePair
 		  withAmountOfLaps: anAmountOfLaps
-		  withParsecArray: aParsecArray asOrderedCollection
+		  withParsecArray: aParsecArray asOrderedCollection 
 ]
 
 { #category : #'argument validation' }
-Board class >> wormHolePairIsValid: aWormHolePair with: aNumberOfTiles [
+LoadedBoard class >> wormHolePairIsValid: aWormHolePair with: aNumberOfTiles [
 
 	(aWormHolePair allSatisfy: [ :i |
 		 i <= aNumberOfTiles and: i strictlyPositive ]) ifFalse: [
@@ -56,7 +53,7 @@ Board class >> wormHolePairIsValid: aWormHolePair with: aNumberOfTiles [
 ]
 
 { #category : #accessing }
-Board >> adjustShipPosition: aShip [
+LoadedBoard >> adjustShipPosition: aShip [
 
 	((aShip position > tileEffectArray size and: aShip lapsDone <= maxLap)
 		 or: (aShip position < 1 and: aShip lapsDone > 1)) ifFalse: [
@@ -68,7 +65,7 @@ Board >> adjustShipPosition: aShip [
 ]
 
 { #category : #'accessing - arguments' }
-Board >> allTileEffectsAmount [
+LoadedBoard >> allTileEffectsAmount [
 
 	| countDictionary |
 	countDictionary := Dictionary new.
@@ -84,46 +81,47 @@ Board >> allTileEffectsAmount [
 ]
 
 { #category : #modifying }
-Board >> applyTileEffectOn: aGame triggeredBy: aShip [
+LoadedBoard >> applyTileEffectOn: aGame triggeredBy: aShip [
 
 	(tileEffectArray at: aShip position) applyOn: aGame
 ]
 
 { #category : #initialization }
-Board >> initializeWithLengths: aPairOfLengths withWormHolePositions: aWormHolePair withAmountOfLaps: anAmountOfLaps withParsecArray: aParsecArray [
+LoadedBoard >> initializeWithLengths: aPairOfLengths withWormHolePositions: aWormHolePair withAmountOfLaps: anAmountOfLaps withParsecArray: aParsecArray [
 
 	| aTileEffectsCreator |
 	maxLap := anAmountOfLaps.
+	tileEffectArray := OrderedCollection new.
 	parsecs := aPairOfLengths last.
 
-	aTileEffectsCreator := TileEffectsCreator
+	aTileEffectsCreator := LoadedTileEffectsCreator
 		                       createWithWormHolePositions: aWormHolePair
 		                       withBoardLenghts: aPairOfLengths
 		                       withParsecArray: aParsecArray.
 
-	tileEffectArray := aTileEffectsCreator generateEffectArray
+	tileEffectArray := aTileEffectsCreator generateEffectArray.
 ]
 
 { #category : #testing }
-Board >> isInLastTile: aShip [
+LoadedBoard >> isInLastTile: aShip [
 
 	^ aShip position = 1 and: aShip lapsDone > maxLap
 ]
 
 { #category : #accessing }
-Board >> numOfParsecs [
+LoadedBoard >> numOfParsecs [
 
 	^ parsecs
 ]
 
 { #category : #accessing }
-Board >> numbOfTiles [
+LoadedBoard >> numbOfTiles [
 
 	^ tileEffectArray size
 ]
 
 { #category : #accessing }
-Board >> snapToFinishTile: aShip [
+LoadedBoard >> snapToFinishTile: aShip [
 
 	aShip lapsDone > maxLap ifTrue: [ aShip moveToFirstTile ]
 ]
