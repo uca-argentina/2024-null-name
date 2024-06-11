@@ -17,13 +17,6 @@ TurnHandler class >> withAnAmountOfTurns: anAmountOfTurns [
 	^ self new initializeWithAmountOfTurns: anAmountOfTurns
 ]
 
-{ #category : #testing }
-TurnHandler >> canPlayNextTurnOf: aGameStatus [
-
-	aGameStatus ifTrue: [
-		Error signal: 'Game is Over you cant Keep Playing' ]
-]
-
 { #category : #accessing }
 TurnHandler >> currentTurn [
 

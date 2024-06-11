@@ -15,6 +15,35 @@ EffectsTest >> should: aErrorBlock raise: anErrorClass withMessage: anErrorMessa
 ]
 
 { #category : #tests }
+EffectsTest >> testBlackHoleEffectCannotBeAplliedAfterGameIsFinished [
+
+	| aBoard aShipName aDictionaryOfEffects aGame |
+	aDictionaryOfEffects := Dictionary new
+		                        at: 2 put: BlackHoleEffect new;
+		                        yourself.
+	aBoard := SetBoard
+		          withLengthInTileAndParsec: #( 10 10 )
+		          withWormHolePositions: #( 2 4 )
+		          withAmountOfLaps: 1
+		          withEffectsInPosition: aDictionaryOfEffects.
+
+	aShipName := OrderedCollection with: 'Juan'.
+
+	aGame := Game
+		         withBoard: aBoard
+		         withShipNames: aShipName
+		         withDice: (Dice with:
+				          (OrderedCollection with:
+					           (SequenceDie withSequence: #( 11 )))).
+
+	aGame playTurn.
+
+	self
+		assert: (aGame allShipsPosition at: 'Juan')
+		equals: #( 1 2 ) asOrderedCollection
+]
+
+{ #category : #tests }
 EffectsTest >> testMoonWalkDistanceCannotBeSmallerThanZero [
 	
 	self should: [ MoonWalkEffect withMoonwalkDistance: -3 ] raise: Error withMessage: 'Moonwalk distance must be strictly positive'
@@ -54,7 +83,7 @@ EffectsTest >> testWhenApplying2DifferentHyperJumpEffectsShipsMoveTheBiggestAmou
 ]
 
 { #category : #tests }
-EffectsTest >> testWhenApplyingAtomicBombEffectAllShipsMoveBackToFirstTile [
+EffectsTest >> testWhenApplyingAtomicBombEffectAllShipsMoveBackToFirstTileOfTheirCurrentLap [
 
 	| aBoard aShipName aDictionaryOfEffects aGame |
 	aDictionaryOfEffects := Dictionary new
@@ -64,7 +93,7 @@ EffectsTest >> testWhenApplyingAtomicBombEffectAllShipsMoveBackToFirstTile [
 	aBoard := SetBoard
 		          withLengthInTileAndParsec: #( 10 10 )
 		          withWormHolePositions: #( 2 5 )
-		          withAmountOfLaps: 1
+		          withAmountOfLaps: 2
 		          withEffectsInPosition: aDictionaryOfEffects.
 
 	aShipName := OrderedCollection
@@ -76,7 +105,7 @@ EffectsTest >> testWhenApplyingAtomicBombEffectAllShipsMoveBackToFirstTile [
 		         withShipNames: aShipName
 		         withDice: (Dice with:
 				          (OrderedCollection with:
-					           (SequenceDie withSequence: #( 3 2 4 )))).
+					           (SequenceDie withSequence: #( 3 2 10 )))).
 	aGame playTurn.
 	aGame playTurn.
 	aGame playTurn.
@@ -90,7 +119,7 @@ EffectsTest >> testWhenApplyingAtomicBombEffectAllShipsMoveBackToFirstTile [
 		equals: #( 1 1 ) asOrderedCollection.
 	self
 		assert: (aGame allShipsPosition at: 'Jose')
-		equals: #( 1 1 ) asOrderedCollection
+		equals: #( 1 2 ) asOrderedCollection
 ]
 
 { #category : #tests }

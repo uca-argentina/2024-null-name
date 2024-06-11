@@ -88,6 +88,13 @@ Game >> applyEffectOnOneShip: anEffect [
 		gameBoard adjustShipPosition: aShip.]
 ]
 
+{ #category : #testing }
+Game >> canPlayNextTurnOf [
+
+	self isFinished ifTrue: [
+		Error signal: 'Game is Over you cant Keep Playing' ]
+]
+
 { #category : #initialization }
 Game >> initializeGameWith: aBoard withShipNames: aNameCollection withDice: aDice [
 
@@ -117,7 +124,7 @@ Game >> loseTurn: aShip [
 Game >> playTurn [
 
 	| movement |
-	gameTurnHandler canPlayNextTurnOf: self isFinished.
+	self canPlayNextTurnOf.
 	theShipInCurrentTurn := gameShips at: gameTurnHandler currentTurn.
 
 	theShipInCurrentTurn canPlayTurn ifFalse: [
@@ -150,7 +157,7 @@ Game >> shipRankings [
 { #category : #modifying }
 Game >> skipTurn [
 
-	gameTurnHandler canPlayNextTurnOf: self isFinished.
+	self canPlayNextTurnOf.
 	theShipInCurrentTurn := gameShips at: gameTurnHandler currentTurn.
 
 	theShipInCurrentTurn canPlayTurn ifFalse: [
