@@ -6,28 +6,30 @@ Class {
 	#superclass : #Object,
 	#instVars : [
 		'currentTurn',
-		'turnsPerRound'
+		'turnsPerRound',
+		'ships'
 	],
 	#category : #'IngSoft2-Model'
 }
 
 { #category : #'class initialization' }
-TurnHandler class >> withAnAmountOfTurns: anAmountOfTurns [
+TurnHandler class >> withShips: anAmountOfTurns [
 
-	^ self new initializeWithAmountOfTurns: anAmountOfTurns
+	^ self new initializeWithShips: anAmountOfTurns
 ]
 
 { #category : #accessing }
-TurnHandler >> currentTurn [
+TurnHandler >> currentTurnShip [
 
-	^ currentTurn
+	^ ships at: currentTurn
 ]
 
 { #category : #testing }
-TurnHandler >> initializeWithAmountOfTurns: anAmountOfTurns [
+TurnHandler >> initializeWithShips: aCollectionOfShips [
 
 	currentTurn := 1.
-	turnsPerRound := anAmountOfTurns
+	turnsPerRound := aCollectionOfShips size.
+	ships := aCollectionOfShips.
 ]
 
 { #category : #modifying }

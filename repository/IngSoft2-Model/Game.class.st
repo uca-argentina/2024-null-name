@@ -102,7 +102,7 @@ Game >> initializeGameWith: aBoard withShipNames: aNameCollection withDice: aDic
 	gameShips := aNameCollection asOrderedCollection collect: [ :aName |
 		             Ship createWithName: aName ].
 	dice := aDice.
-	gameTurnHandler := TurnHandler withAnAmountOfTurns: gameShips size.
+	gameTurnHandler := TurnHandler withShips: gameShips.
 	shipBattleHandler := ShipBattle withDice: dice withShips: gameShips
 ]
 
@@ -125,7 +125,7 @@ Game >> playTurn [
 
 	| movement |
 	self canPlayNextTurnOf.
-	theShipInCurrentTurn := gameShips at: gameTurnHandler currentTurn.
+	theShipInCurrentTurn := gameTurnHandler currentTurnShip.
 
 	theShipInCurrentTurn canPlayTurn ifFalse: [
 		^ self loseTurn: theShipInCurrentTurn ].
@@ -158,7 +158,7 @@ Game >> shipRankings [
 Game >> skipTurn [
 
 	self canPlayNextTurnOf.
-	theShipInCurrentTurn := gameShips at: gameTurnHandler currentTurn.
+	theShipInCurrentTurn := gameTurnHandler currentTurnShip.
 
 	theShipInCurrentTurn canPlayTurn ifFalse: [
 		^ self loseTurn: theShipInCurrentTurn ].
