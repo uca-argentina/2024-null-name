@@ -10,7 +10,8 @@ Class {
 		'playerName',
 		'numberOfShields',
 		'lostTurnCounter',
-		'currentLap'
+		'currentLap',
+		'maxShields'
 	],
 	#category : #'IngSoft2-Model'
 }
@@ -44,7 +45,7 @@ Ship >> canPlayTurn [
 { #category : #modifying }
 Ship >> healFullShields [
 
-	numberOfShields := 3
+	numberOfShields := maxShields
 ]
 
 { #category : #initialization }
@@ -52,10 +53,10 @@ Ship >> initializeInTile: aPosition withName: aName [
 
 	currentPosition := aPosition.
 	playerName := aName.
-	numberOfShields := 3.
+	maxShields := 3.
+	numberOfShields := maxShields.
 	lostTurnCounter := 0.
 	currentLap := 1
-	
 ]
 
 { #category : #accessing }
