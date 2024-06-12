@@ -5,9 +5,9 @@ Class {
 	#name : #TurnHandler,
 	#superclass : #Object,
 	#instVars : [
-		'currentTurn',
 		'turnsPerRound',
-		'ships'
+		'ships',
+		'currentTurnShip'
 	],
 	#category : #'IngSoft2-Model'
 }
@@ -21,13 +21,13 @@ TurnHandler class >> withShips: anAmountOfTurns [
 { #category : #accessing }
 TurnHandler >> currentTurnShip [
 
-	^ ships at: currentTurn
+	^ currentTurnShip
 ]
 
 { #category : #testing }
 TurnHandler >> initializeWithShips: aCollectionOfShips [
 
-	currentTurn := 1.
+	currentTurnShip := aCollectionOfShips first.
 	turnsPerRound := aCollectionOfShips size.
 	ships := aCollectionOfShips.
 ]
@@ -35,8 +35,10 @@ TurnHandler >> initializeWithShips: aCollectionOfShips [
 { #category : #modifying }
 TurnHandler >> nextTurn [
 
-	currentTurn := currentTurn < turnsPerRound
-		               ifTrue: [ currentTurn + 1 ]
-		               ifFalse: [ 1 ].
-	^ currentTurn
+	| turnNumber |
+	turnNumber := ships indexOf: currentTurnShip.
+	currentTurnShip := turnNumber < turnsPerRound
+		                   ifTrue: [ ships at: turnNumber + 1 ]
+		                   ifFalse: [ ships at: 1 ].
+	^ currentTurnShip
 ]
