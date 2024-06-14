@@ -124,6 +124,60 @@ BoardTest >> testWhenBoardIsCreatedTheAmountOfEffectsFollowTheCorrectDistributio
 ]
 
 { #category : #tests }
+BoardTest >> testWhenBoardIsCreatedWithRandomizedEffectProbabilitiesItFollowsCorrespondingDistribution [
+
+	| aBoard aPairOfLengths aWormHolePair numberOfIterations aDictonaryOfEffectApearences averageEffectDistribution |
+	aWormHolePair := #( 2 4 ).
+	aPairOfLengths := #( 102 10 ).
+	numberOfIterations := 100.
+	averageEffectDistribution := Dictionary new.
+
+	numberOfIterations timesRepeat: [
+		aBoard := Board
+			          withLengthInTileAndParsec: aPairOfLengths
+			          withWormHolePositions: aWormHolePair
+			          withAmountOfLaps: 1
+			          withParsecArray: #( 1 3 5 1 ).
+
+		aDictonaryOfEffectApearences := aBoard allTileEffectsAmount.
+		aDictonaryOfEffectApearences keysDo: [ :effect |
+			| amountOfEffect |
+			amountOfEffect := (aDictonaryOfEffectApearences at: effect) value.
+			averageEffectDistribution
+				at: effect
+				ifPresent: [ :value |
+					averageEffectDistribution
+						at: effect
+						put: value + (amountOfEffect / numberOfIterations) ]
+				ifAbsent: [
+					averageEffectDistribution
+						at: effect
+						put: amountOfEffect / numberOfIterations ] ] ].
+
+
+	self assert: ((averageEffectDistribution at: NullEffect) between: 35 and: 45) .
+
+	self
+		assert: ((averageEffectDistribution at: BlackHoleEffect)
+		between: 18 and: 22).
+	self
+		assert: ((averageEffectDistribution at: HyperSpaceJumpEffect)
+		between: 18 and: 22).
+	self
+		assert: ((averageEffectDistribution at: MoonWalkEffect)
+		between: 9 and: 11).
+	self
+		assert: ((averageEffectDistribution at: HyperJumpEffect)
+		between: 7 and: 9 ).
+	self
+		assert: ((averageEffectDistribution at: AtomicBombEffect)
+		between: 1 and: 3).
+	self
+		assert: (averageEffectDistribution at: WormholeEffect)
+		equals: 2
+]
+
+{ #category : #tests }
 BoardTest >> testWormHoleEffectCannotBeCreatedInFirstTileOfBoard [
 
 	| aWormHolePair |
