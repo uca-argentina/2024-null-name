@@ -125,11 +125,11 @@ BoardTest >> testWhenBoardIsCreatedTheAmountOfEffectsFollowTheCorrectDistributio
 
 { #category : #tests }
 BoardTest >> testWhenBoardIsCreatedWithRandomizedEffectProbabilitiesItFollowsCorrespondingDistribution [
-
+	
 	| aBoard aPairOfLengths aWormHolePair numberOfIterations aDictonaryOfEffectApearences averageEffectDistribution |
 	aWormHolePair := #( 2 4 ).
 	aPairOfLengths := #( 102 10 ).
-	numberOfIterations := 1000.
+	numberOfIterations := 10000.
 	averageEffectDistribution := Dictionary new.
 
 	numberOfIterations timesRepeat: [
