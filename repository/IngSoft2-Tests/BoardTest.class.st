@@ -129,7 +129,7 @@ BoardTest >> testWhenBoardIsCreatedWithRandomizedEffectProbabilitiesItFollowsCor
 	| aBoard aPairOfLengths aWormHolePair numberOfIterations aDictonaryOfEffectApearences averageEffectDistribution |
 	aWormHolePair := #( 2 4 ).
 	aPairOfLengths := #( 102 10 ).
-	numberOfIterations := 100.
+	numberOfIterations := 1000.
 	averageEffectDistribution := Dictionary new.
 
 	numberOfIterations timesRepeat: [
