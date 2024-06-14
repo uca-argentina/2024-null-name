@@ -48,14 +48,14 @@ GameTest >> testAGameCanShowTheCurrentRanking [
 	aShipNameAndPosition at: 'Fran' put: #( 3 1 ) asOrderedCollection.
 
 	self
-		assert: (aGame shipRankings at: 1)
-		equals: (aShipNameAndPosition associationAt: 'Pedro').
+		assert: (aGame shipRankings at: 1) shipName 
+		equals: ('Pedro').
 	self
-		assert: (aGame shipRankings at: 2)
-		equals: (aShipNameAndPosition associationAt: 'Juan').
+		assert: (aGame shipRankings at: 2) shipName
+		equals: ( 'Juan').
 	self
-		assert: (aGame shipRankings at: 3)
-		equals: (aShipNameAndPosition associationAt: 'Fran')
+		assert: (aGame shipRankings at: 3) shipName
+		equals: ('Fran')
 ]
 
 { #category : #tests }

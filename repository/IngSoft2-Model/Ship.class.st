@@ -31,6 +31,14 @@ Ship class >> isValid: aName [
 ]
 
 { #category : #accessing }
+Ship >> > anotherShip [
+
+	^ self lapsDone > anotherShip lapsDone or:
+		  (self lapsDone = anotherShip lapsDone and:
+			   self position > anotherShip position)
+]
+
+{ #category : #accessing }
 Ship >> amountOfShieldsActive [
 
 	^ numberOfShields

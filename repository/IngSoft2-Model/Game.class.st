@@ -143,13 +143,12 @@ Game >> playTurn [
 Game >> shipRankings [
 
 	| sortedShips rankDictionary |
-	sortedShips := self allShipsPosition associations
-		               asSortedCollection: [ :a :b |
-			               a value first > b value first and:
-				               a value last >= b value last ].
+	sortedShips := gameShips asSortedCollection: [ :ship1 :ship2 |
+		               ship1 > ship2 ].
 
 	rankDictionary := Dictionary new.
-	rankDictionary addAll: sortedShips.
+	sortedShips withIndexDo: [ :elemento :indice |
+		rankDictionary at: indice put: elemento ].
 
 	^ rankDictionary
 ]
