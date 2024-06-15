@@ -17,6 +17,7 @@ TileEffectsCreator class >> createWithBoardLength: aBoardLenght withWormHolePosi
 
 	self numberOfTileIsValid: aBoardLenght first.
 	self wormHolePairIsValid: aWormHolePair with: aBoardLenght first.
+	self probabilityDistributionIsValid: aProbabilityDistributionCollection.
 	
 	^ self new
 		  initializeWithLengths: aBoardLenght
@@ -30,6 +31,19 @@ TileEffectsCreator class >> numberOfTileIsValid: aNumberOfTiles [
 
 	aNumberOfTiles strictlyPositive ifFalse: [
 		Error signal: 'Board tiles must be greater than 0' ]
+]
+
+{ #category : #'class initialization' }
+TileEffectsCreator class >> probabilityDistributionIsValid: aProbabilityDistributionCollection [
+
+	| sum |
+	sum := 0.
+
+	aProbabilityDistributionCollection do: [ :effectProbability |
+		sum := sum + effectProbability probability ].
+	sum = 100 ifFalse: [
+		Error signal:
+			'Total efffect probabilities cannot be diferent from 100%' ]
 ]
 
 { #category : #'class initialization' }
