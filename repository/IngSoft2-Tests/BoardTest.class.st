@@ -15,6 +15,39 @@ BoardTest >> should: anErrorBlock raise: exceptionClass withMessage: anErrorMess
 ]
 
 { #category : #tests }
+BoardTest >> testBanana [
+
+	| atileEffectArray aTileEffectCreator aProbabilityDistributionCollection aBoard aBoardLength |
+	"aBoardLength := BoardLength inTiles: 10 inParsecs: 10."
+
+	aProbabilityDistributionCollection := OrderedCollection with:
+		                                      (EffectProbability
+			                                       effect: [
+			                                       MoonWalkEffect
+				                                       withMoonwalkDistance:
+				                                       10 atRandom ]
+			                                       withProbability: 100).
+
+	aTileEffectCreator := TileEffectsCreator
+		                      withBoardLength: #( 10 10 )
+		                      withWormHolePositions: #( 2 3 )
+		                      withParsecArray: #( 2 1 1 4 )
+		                      withProbabilityDistribution:
+		                      aProbabilityDistributionCollection.
+
+	atileEffectArray := aTileEffectCreator generateEffectArray.
+
+	aBoard := Board
+		          withTileEffectCollection: atileEffectArray
+		          withLength: #( 10 10 )
+		          withAmountOfLaps: 3.
+
+	self
+		assert: (aBoard allTileEffectsAmount at: MoonWalkEffect)
+		equals: 7
+]
+
+{ #category : #tests }
 BoardTest >> testBoardCannotBeInitializedWithLessThanOneTile [
 
 	| numTiles |
@@ -93,7 +126,7 @@ BoardTest >> testWhenABoardIsCreatedWithATileEffectCreatorItFollowsTheSetDistrib
 
 	| tileArray aTileEffectCreator aProbabilityDistributionCollection aBoard|
 	
-	aProbabilityDistributionCollection := OrderedCollection with: (EffectProbability effect: NullEffect withProbability: 100).
+	aProbabilityDistributionCollection := OrderedCollection with: (EffectProbability effect: [NullEffect new] withProbability: 100).
 	
 	aTileEffectCreator := TileEffectsCreator withBoardLength: #(10 10)  withWormHolePositions:#(2 3)  withParsecArray: #(2 1 1 4) withProbabilityDistribution: aProbabilityDistributionCollection.
 	
