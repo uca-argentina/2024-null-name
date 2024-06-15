@@ -15,6 +15,9 @@ Class {
 { #category : #'class initialization' }
 TileEffectsCreator class >> createWithBoardLength: aBoardLenght withWormHolePositions: aWormHolePair withParsecArray: aParsecArray withProbabilityDistribution: aProbabilityDistributionCollection [
 
+	self numberOfTileIsValid: aBoardLenght first.
+	self wormHolePairIsValid: aWormHolePair with: aBoardLenght first.
+	
 	^ self new
 		  initializeWithLengths: aBoardLenght
 		  withWormHolePositions: aWormHolePair
@@ -23,12 +26,22 @@ TileEffectsCreator class >> createWithBoardLength: aBoardLenght withWormHolePosi
 ]
 
 { #category : #'class initialization' }
-TileEffectsCreator class >> createWithWormHolePositions: aWormHolePair withBoardLenghts: aPairOfLengths withParsecArray: aParsecArray [
+TileEffectsCreator class >> numberOfTileIsValid: aNumberOfTiles [
 
-	^ self new
-		  initializeWithWormHolePositions: aWormHolePair
-		  withBoardLenghts: aPairOfLengths
-		  withParsecArray: aParsecArray
+	aNumberOfTiles strictlyPositive ifFalse: [
+		Error signal: 'Board tiles must be greater than 0' ]
+]
+
+{ #category : #'class initialization' }
+TileEffectsCreator class >> wormHolePairIsValid: aWormHolePair with: aNumberOfTiles [
+
+	(aWormHolePair allSatisfy: [ :i |
+		 i <= aNumberOfTiles and: i strictlyPositive ]) ifFalse: [
+		Error signal: 'Wormhole tiles are out of bounds' ].
+	(aWormHolePair anySatisfy: [ :i | i = 1 ]) ifTrue: [
+		Error signal: 'Wormhole cannot be created in first tile of board' ].
+	aWormHolePair first = aWormHolePair last ifTrue: [
+		Error signal: 'Wormhole tiles cannot be in the same position' ]
 ]
 
 { #category : #comparing }
@@ -85,33 +98,6 @@ TileEffectsCreator >> initializeWithLengths: aBoardLength withWormHolePositions:
 	probabilityEffects := self transformIntoProbabilityRanges: aProbabilityDistributionCollection
 ]
 
-{ #category : #'creating collection' }
-TileEffectsCreator >> initializeWithWormHolePositions: aWormHolePair withBoardLenghts: aPairOfLengths withParsecArray: aParsecArray [
-
-	| moonWalkEffectGenerator hyperJumpEffectGenerator |
-	boardLengths := Dictionary newFrom: {
-			                ('Tiles' -> aPairOfLengths first).
-			                ('Parsecs' -> aPairOfLengths last) }.
-
-	moonWalkEffectGenerator := [
-	                           MoonWalkEffect withMoonwalkDistance:
-		                           (boardLengths at: 'Tiles') atRandom ].
-
-	hyperJumpEffectGenerator := [
-	                            HyperJumpEffect
-		                            withParsecArray: aParsecArray
-		                            andBoardLengths: boardLengths ].
-	wormHolePair := aWormHolePair.
-
-	probabilityEffects := Dictionary newFrom: {
-			                      (#( 0 40 ) -> NullEffect new).
-			                      (#( 41 60 ) -> BlackHoleEffect new).
-			                      (#( 61 80 ) -> HyperSpaceJumpEffect new).
-			                      (#( 81 90 ) -> moonWalkEffectGenerator).
-			                      (#( 91 98 ) -> hyperJumpEffectGenerator).
-			                      (#( 99 100 ) -> AtomicBombEffect new) }
-]
-
 { #category : #comparing }
 TileEffectsCreator >> transformIntoProbabilityRanges: aProbabilityDistributionCollection [
 
@@ -122,6 +108,7 @@ TileEffectsCreator >> transformIntoProbabilityRanges: aProbabilityDistributionCo
 		effectProbability setRange: acc.
 		acc := acc + effectProbability probability + 1 ].
 	^ aProbabilityDistributionCollection
+	
 	"
 		| range |
 		range := OrderedCollection

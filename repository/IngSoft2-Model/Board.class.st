@@ -22,46 +22,15 @@ Board class >> amountOfLapsIsValid: anAmountOfLaps [
 		Error signal: 'Cannot play with less than 1 lap' ]
 ]
 
-{ #category : #'argument validation' }
-Board class >> numberOfTileIsValid: aNumberOfTiles [
-
-	aNumberOfTiles strictlyPositive ifFalse: [
-		Error signal: 'Board tiles must be greater than 0' ]
-]
-
-{ #category : #'class initialization' }
-Board class >> withLengthInTileAndParsec: aPairOfLengths  withWormHolePositions: aWormHolePair withAmountOfLaps: anAmountOfLaps withParsecArray: aParsecArray [
-
-	self numberOfTileIsValid: aPairOfLengths first.
-	self wormHolePairIsValid: aWormHolePair with: aPairOfLengths first.
-	self amountOfLapsIsValid: anAmountOfLaps.
-
-	^ self new
-		  initializeWithLengths: aPairOfLengths
-		  withWormHolePositions: aWormHolePair
-		  withAmountOfLaps: anAmountOfLaps
-		  withParsecArray: aParsecArray asOrderedCollection
-]
-
 { #category : #'class initialization' }
 Board class >> withTileEffectCollection: aTileEffect withLength: aBoardLength withAmountOfLaps: anAmountOfLaps [
-
+	
+	self amountOfLapsIsValid: anAmountOfLaps.
+	
 	^ self new
 		  initializeWithTileEffectCollection: aTileEffect
 		  withLength: aBoardLength
 		  withAmountOfLaps: anAmountOfLaps
-]
-
-{ #category : #'argument validation' }
-Board class >> wormHolePairIsValid: aWormHolePair with: aNumberOfTiles [
-
-	(aWormHolePair allSatisfy: [ :i |
-		 i <= aNumberOfTiles and: i strictlyPositive ]) ifFalse: [
-		Error signal: 'Wormhole tiles are out of bounds' ].
-	(aWormHolePair anySatisfy: [ :i | i = 1 ]) ifTrue: [
-		Error signal: 'Wormhole cannot be created in first tile of board' ].
-	aWormHolePair first = aWormHolePair last ifTrue: [
-		Error signal: 'Wormhole tiles cannot be in the same position' ]
 ]
 
 { #category : #accessing }
@@ -94,21 +63,6 @@ Board >> allTileEffectsAmount [
 Board >> applyTileEffectOn: aGame At: aPosition [
 
 	(tileEffectArray at: aPosition) applyOn: aGame
-]
-
-{ #category : #initialization }
-Board >> initializeWithLengths: aPairOfLengths withWormHolePositions: aWormHolePair withAmountOfLaps: anAmountOfLaps withParsecArray: aParsecArray [
-
-	| aTileEffectsCreator |
-	maxLap := anAmountOfLaps.
-	parsecs := aPairOfLengths last.
-
-	aTileEffectsCreator := TileEffectsCreator
-		                       createWithWormHolePositions: aWormHolePair
-		                       withBoardLenghts: aPairOfLengths
-		                       withParsecArray: aParsecArray.
-
-	tileEffectArray := aTileEffectsCreator generateEffectArray
 ]
 
 { #category : #initialization }
