@@ -13,16 +13,7 @@ Class {
 }
 
 { #category : #'class initialization' }
-TileEffectsCreator class >> createWithWormHolePositions: aWormHolePair withBoardLenghts: aPairOfLengths withParsecArray: aParsecArray [
-
-	^ self new
-		  initializeWithWormHolePositions: aWormHolePair
-		  withBoardLenghts: aPairOfLengths
-		  withParsecArray: aParsecArray
-]
-
-{ #category : #'class initialization' }
-TileEffectsCreator class >> withBoardLength: aBoardLenght withWormHolePositions: aWormHolePair withParsecArray: aParsecArray withProbabilityDistribution: aProbabilityDistributionCollection [
+TileEffectsCreator class >> createWithBoardLength: aBoardLenght withWormHolePositions: aWormHolePair withParsecArray: aParsecArray withProbabilityDistribution: aProbabilityDistributionCollection [
 
 	^ self new
 		  initializeWithLengths: aBoardLenght
@@ -31,15 +22,24 @@ TileEffectsCreator class >> withBoardLength: aBoardLenght withWormHolePositions:
 		  withProbabilityDistribution: aProbabilityDistributionCollection
 ]
 
+{ #category : #'class initialization' }
+TileEffectsCreator class >> createWithWormHolePositions: aWormHolePair withBoardLenghts: aPairOfLengths withParsecArray: aParsecArray [
+
+	^ self new
+		  initializeWithWormHolePositions: aWormHolePair
+		  withBoardLenghts: aPairOfLengths
+		  withParsecArray: aParsecArray
+]
+
 { #category : #comparing }
-TileEffectsCreator >> determineRange: aRangeOfKeys [
+TileEffectsCreator >> determineRange [
 
 	| aRandomNumber |
 	
 	aRandomNumber := ((0 to: 100) atRandom) asInteger .
 
-	^ aRangeOfKeys detect: [ :aRange |
-		  aRandomNumber between: aRange first and: aRange last ]
+	^ (probabilityEffects detect: [ :aProbabilityEffect |
+		  aProbabilityEffect rangeIncludes: aRandomNumber]) effect 
 ]
 
 { #category : #comparing }
@@ -49,9 +49,7 @@ TileEffectsCreator >> generateEffectArray [
 	tileEffectArray := OrderedCollection new.
 
 	1 to: (boardLengths at: 'Tiles') do: [ :i |
-		tileEffectArray add:
-			(probabilityEffects at:
-				 (self determineRange: probabilityEffects keys)) value ].
+	tileEffectArray add: self determineRange ].
 
 	tileEffectArray at: 1 put: NullEffect new.
 
@@ -67,12 +65,12 @@ TileEffectsCreator >> generateEffectArray [
 ]
 
 { #category : #'creating collection' }
-TileEffectsCreator >> initializeWithLengths: aBoardLenght withWormHolePositions: aWormHolePair withParsecArray: aParsecArray withProbabilityDistribution: aProbabilityDistributionCollection [
+TileEffectsCreator >> initializeWithLengths: aBoardLength withWormHolePositions: aWormHolePair withParsecArray: aParsecArray withProbabilityDistribution: aProbabilityDistributionCollection [
 
 	| moonWalkEffectGenerator hyperJumpEffectGenerator |
 	boardLengths := Dictionary newFrom: {
-			                ('Tiles' -> aBoardLenght first).
-			                ('Parsecs' -> aBoardLenght last) }.
+			                ('Tiles' -> aBoardLength first).
+			                ('Parsecs' -> aBoardLength last) }.
 	
 	moonWalkEffectGenerator := [
 	                           MoonWalkEffect withMoonwalkDistance:
@@ -117,18 +115,18 @@ TileEffectsCreator >> initializeWithWormHolePositions: aWormHolePair withBoardLe
 { #category : #comparing }
 TileEffectsCreator >> transformIntoProbabilityRanges: aProbabilityDistributionCollection [
 
-	| dic acc  |
-	dic := Dictionary new.
+	| acc |
 	acc := 0.
 
-
 	aProbabilityDistributionCollection do: [ :effectProbability |
+		effectProbability setRange: acc.
+		acc := acc + effectProbability probability + 1 ].
+	^ aProbabilityDistributionCollection
+	"
 		| range |
 		range := OrderedCollection
 			         with: acc
 			         with: acc + effectProbability probability.
-		dic at: range put: effectProbability effect.
-		acc := acc + effectProbability probability + 1 ].
-
-	^ dic
+		dic at: range put: effectProbability effect."
+	"^ dic"
 ]

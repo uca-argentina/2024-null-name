@@ -3,7 +3,9 @@ Class {
 	#superclass : #Object,
 	#instVars : [
 		'effect',
-		'probability'
+		'probability',
+		'lowerBound',
+		'upperBound'
 	],
 	#category : #'IngSoft2-Model'
 }
@@ -18,7 +20,8 @@ EffectProbability class >> effect: aEffect withProbability: aProbability [
 
 { #category : #initialization }
 EffectProbability >> effect [
-	^effect  
+
+	^ effect value
 ]
 
 { #category : #initialization }
@@ -30,5 +33,19 @@ EffectProbability >> initializeWithEffect: aEffect withProbability: aProbability
 
 { #category : #initialization }
 EffectProbability >> probability [
-	^probability 
+
+	^ probability
+]
+
+{ #category : #testing }
+EffectProbability >> rangeIncludes: aNumber [
+
+	^ aNumber between: lowerBound and: upperBound
+]
+
+{ #category : #initialization }
+EffectProbability >> setRange: aLowerBound [
+
+	lowerBound := aLowerBound.
+	upperBound := aLowerBound + probability
 ]

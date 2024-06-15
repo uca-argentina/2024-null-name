@@ -29,7 +29,7 @@ BoardTest >> testBanana [
 			                                       withProbability: 100).
 
 	aTileEffectCreator := TileEffectsCreator
-		                      withBoardLength: #( 10 10 )
+		                      createWithBoardLength: #( 10 10 )
 		                      withWormHolePositions: #( 2 3 )
 		                      withParsecArray: #( 2 1 1 4 )
 		                      withProbabilityDistribution:
@@ -128,7 +128,7 @@ BoardTest >> testWhenABoardIsCreatedWithATileEffectCreatorItFollowsTheSetDistrib
 	
 	aProbabilityDistributionCollection := OrderedCollection with: (EffectProbability effect: [NullEffect new] withProbability: 100).
 	
-	aTileEffectCreator := TileEffectsCreator withBoardLength: #(10 10)  withWormHolePositions:#(2 3)  withParsecArray: #(2 1 1 4) withProbabilityDistribution: aProbabilityDistributionCollection.
+	aTileEffectCreator := TileEffectsCreator createWithBoardLength: #(10 10)  withWormHolePositions:#(2 3)  withParsecArray: #(2 1 1 4) withProbabilityDistribution: aProbabilityDistributionCollection.
 	
 	tileArray := aTileEffectCreator generateEffectArray.
 	
