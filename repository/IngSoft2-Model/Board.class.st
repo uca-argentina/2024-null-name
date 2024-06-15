@@ -43,6 +43,15 @@ Board class >> withLengthInTileAndParsec: aPairOfLengths  withWormHolePositions:
 		  withParsecArray: aParsecArray asOrderedCollection
 ]
 
+{ #category : #'class initialization' }
+Board class >> withTileEffectCollection: aTileEffect withLength: aBoardLength withAmountOfLaps: anAmountOfLaps [
+
+	^ self new
+		  initializeWithTileEffectCollection: aTileEffect
+		  withLength: aBoardLength
+		  withAmountOfLaps: anAmountOfLaps
+]
+
 { #category : #'argument validation' }
 Board class >> wormHolePairIsValid: aWormHolePair with: aNumberOfTiles [
 
@@ -100,6 +109,15 @@ Board >> initializeWithLengths: aPairOfLengths withWormHolePositions: aWormHoleP
 		                       withParsecArray: aParsecArray.
 
 	tileEffectArray := aTileEffectsCreator generateEffectArray
+]
+
+{ #category : #initialization }
+Board >> initializeWithTileEffectCollection: aTileEffectCollection withLength: aLenght withAmountOfLaps: anAmountOfLaps [
+
+	maxLap := anAmountOfLaps.
+	parsecs := aLenght last.
+
+	tileEffectArray := aTileEffectCollection
 ]
 
 { #category : #testing }

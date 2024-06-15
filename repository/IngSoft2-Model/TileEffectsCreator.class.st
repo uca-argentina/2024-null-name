@@ -21,6 +21,16 @@ TileEffectsCreator class >> createWithWormHolePositions: aWormHolePair withBoard
 		  withParsecArray: aParsecArray
 ]
 
+{ #category : #'class initialization' }
+TileEffectsCreator class >> withBoardLength: aBoardLenght withWormHolePositions: aWormHolePair withParsecArray: aParsecArray withProbabilityDistribution: aProbabilityDistributionCollection [
+
+	^ self new
+		  initializeWithLengths: aBoardLenght
+		  withWormHolePositions: aWormHolePair
+		  withParsecArray: aParsecArray asOrderedCollection
+		  withProbabilityDistribution: aProbabilityDistributionCollection
+]
+
 { #category : #comparing }
 TileEffectsCreator >> determineRange: aRangeOfKeys [
 
@@ -57,6 +67,27 @@ TileEffectsCreator >> generateEffectArray [
 ]
 
 { #category : #'creating collection' }
+TileEffectsCreator >> initializeWithLengths: aBoardLenght withWormHolePositions: aWormHolePair withParsecArray: aParsecArray withProbabilityDistribution: aProbabilityDistributionCollection [
+
+	| moonWalkEffectGenerator hyperJumpEffectGenerator |
+	boardLengths := Dictionary newFrom: {
+			                ('Tiles' -> aBoardLenght first).
+			                ('Parsecs' -> aBoardLenght last) }.
+	
+	moonWalkEffectGenerator := [
+	                           MoonWalkEffect withMoonwalkDistance:
+		                           (boardLengths at: 'Tiles') atRandom ].
+
+	hyperJumpEffectGenerator := [
+	                            HyperJumpEffect
+		                            withParsecArray: aParsecArray
+		                            andBoardLengths: boardLengths ].
+	wormHolePair := aWormHolePair.
+
+	probabilityEffects := self transformIntoProbabilityRanges: aProbabilityDistributionCollection
+]
+
+{ #category : #'creating collection' }
 TileEffectsCreator >> initializeWithWormHolePositions: aWormHolePair withBoardLenghts: aPairOfLengths withParsecArray: aParsecArray [
 
 	| moonWalkEffectGenerator hyperJumpEffectGenerator |
@@ -81,4 +112,22 @@ TileEffectsCreator >> initializeWithWormHolePositions: aWormHolePair withBoardLe
 			                      (#( 81 90 ) -> moonWalkEffectGenerator).
 			                      (#( 91 98 ) -> hyperJumpEffectGenerator).
 			                      (#( 99 100 ) -> AtomicBombEffect new) }
+]
+
+{ #category : #comparing }
+TileEffectsCreator >> transformIntoProbabilityRanges: aProbabilityDistributionCollection [
+
+	| dic acc |
+	dic := Dictionary new.
+	acc := 0.
+
+	aProbabilityDistributionCollection do: [ :effectProbability |
+		| range |
+		range := OrderedCollection
+			         with: acc
+			         with: acc + effectProbability probability.
+		dic at: range put: effectProbability effect new.
+		acc := acc + effectProbability probability +1].
+	
+	^dic
 ]

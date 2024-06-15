@@ -89,6 +89,22 @@ BoardTest >> testSpecialTilesCannotBeCreatedIfPositionsExceedBoardSize [
 ]
 
 { #category : #tests }
+BoardTest >> testWhenABoardIsCreatedWithATileEffectCreatorItFollowsTheSetDistributionOfTileEffectCreator [
+
+	| tileArray aTileEffectCreator aProbabilityDistributionCollection aBoard|
+	
+	aProbabilityDistributionCollection := OrderedCollection with: (EffectProbability effect: NullEffect withProbability: 100).
+	
+	aTileEffectCreator := TileEffectsCreator withBoardLength: #(10 10)  withWormHolePositions:#(2 3)  withParsecArray: #(2 1 1 4) withProbabilityDistribution: aProbabilityDistributionCollection.
+	
+	tileArray := aTileEffectCreator generateEffectArray.
+	
+	aBoard:= Board withTileEffectCollection: tileArray withLength: #(10 10) withAmountOfLaps: 3.
+	
+	self assert: (aBoard allTileEffectsAmount at: NullEffect) equals: 8
+]
+
+{ #category : #tests }
 BoardTest >> testWhenBoardIsCreatedTheAmountOfEffectsFollowTheCorrectDistribution [
 
 	| aBoard aPairOfLengths aWormHolePair |
