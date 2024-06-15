@@ -117,17 +117,18 @@ TileEffectsCreator >> initializeWithWormHolePositions: aWormHolePair withBoardLe
 { #category : #comparing }
 TileEffectsCreator >> transformIntoProbabilityRanges: aProbabilityDistributionCollection [
 
-	| dic acc |
+	| dic acc  |
 	dic := Dictionary new.
 	acc := 0.
+
 
 	aProbabilityDistributionCollection do: [ :effectProbability |
 		| range |
 		range := OrderedCollection
 			         with: acc
 			         with: acc + effectProbability probability.
-		dic at: range put: effectProbability effect new.
-		acc := acc + effectProbability probability +1].
-	
-	^dic
+		dic at: range put: effectProbability effect.
+		acc := acc + effectProbability probability + 1 ].
+
+	^ dic
 ]
