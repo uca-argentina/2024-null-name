@@ -48,15 +48,14 @@ TileEffectsCreator class >> wormHolePairIsValid: aWormHolePair with: aNumberOfTi
 TileEffectsCreator >> determineRange [
 
 	| aRandomNumber |
-	
-	aRandomNumber := ((0 to: 100) atRandom) asInteger .
+	aRandomNumber := (1 to: 100) atRandom asInteger.
 
 	^ (probabilityEffects detect: [ :aProbabilityEffect |
-		  aProbabilityEffect rangeIncludes: aRandomNumber]) effect 
+		   aProbabilityEffect rangeIncludes: aRandomNumber ]) effect
 ]
 
 { #category : #comparing }
-TileEffectsCreator >> generateEffectArray [
+TileEffectsCreator >> generateRandomEffectArray [
 
 	| tileEffectArray |
 	tileEffectArray := OrderedCollection new.
@@ -84,7 +83,7 @@ TileEffectsCreator >> initializeWithLengths: aBoardLength withWormHolePositions:
 	boardLengths := Dictionary newFrom: {
 			                ('Tiles' -> aBoardLength first).
 			                ('Parsecs' -> aBoardLength last) }.
-	
+
 	moonWalkEffectGenerator := [
 	                           MoonWalkEffect withMoonwalkDistance:
 		                           (boardLengths at: 'Tiles') atRandom ].
@@ -95,7 +94,8 @@ TileEffectsCreator >> initializeWithLengths: aBoardLength withWormHolePositions:
 		                            andBoardLengths: boardLengths ].
 	wormHolePair := aWormHolePair.
 
-	probabilityEffects := self transformIntoProbabilityRanges: aProbabilityDistributionCollection
+	probabilityEffects := self transformIntoProbabilityRanges:
+		                      aProbabilityDistributionCollection
 ]
 
 { #category : #comparing }
@@ -106,14 +106,6 @@ TileEffectsCreator >> transformIntoProbabilityRanges: aProbabilityDistributionCo
 
 	aProbabilityDistributionCollection do: [ :effectProbability |
 		effectProbability setRange: acc.
-		acc := acc + effectProbability probability + 1 ].
+		acc := acc + effectProbability probability].
 	^ aProbabilityDistributionCollection
-	
-	"
-		| range |
-		range := OrderedCollection
-			         with: acc
-			         with: acc + effectProbability probability.
-		dic at: range put: effectProbability effect."
-	"^ dic"
 ]

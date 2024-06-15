@@ -40,7 +40,8 @@ EffectProbability >> probability [
 { #category : #testing }
 EffectProbability >> rangeIncludes: aNumber [
 
-	^ aNumber between: lowerBound and: upperBound
+	^ (lowerBound < aNumber and: aNumber <= upperBound) or:
+		  (lowerBound = 0 and: aNumber = 0)
 ]
 
 { #category : #initialization }
