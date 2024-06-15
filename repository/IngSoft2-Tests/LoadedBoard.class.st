@@ -81,9 +81,9 @@ LoadedBoard >> allTileEffectsAmount [
 ]
 
 { #category : #modifying }
-LoadedBoard >> applyTileEffectOn: aGame triggeredBy: aShip [
+LoadedBoard >> applyTileEffectOn: aGame At: aPosition [
 
-	(tileEffectArray at: aShip position) applyOn: aGame
+	(tileEffectArray at: aPosition) applyOn: aGame
 ]
 
 { #category : #initialization }

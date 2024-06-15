@@ -9,7 +9,6 @@ Class {
 		'currentPosition',
 		'playerName',
 		'numberOfShields',
-		'lostTurnCounter',
 		'currentLap',
 		'maxShields'
 	],
@@ -44,12 +43,6 @@ Ship >> amountOfShieldsActive [
 	^ numberOfShields
 ]
 
-{ #category : #comparing }
-Ship >> canPlayTurn [
-
-	^ lostTurnCounter = 0
-]
-
 { #category : #modifying }
 Ship >> healFullShields [
 
@@ -63,7 +56,6 @@ Ship >> initializeInTile: aPosition withName: aName [
 	playerName := aName.
 	maxShields := 3.
 	numberOfShields := maxShields.
-	lostTurnCounter := 0.
 	currentLap := 1
 ]
 
@@ -77,14 +69,6 @@ Ship >> lapsDone [
 Ship >> loseOneShield [
 
 	numberOfShields := numberOfShields - 1 max: 0.
-	numberOfShields = 0 ifTrue: [ lostTurnCounter := 2 ]
-]
-
-{ #category : #modifying }
-Ship >> lostTurnCounterDown [
-
-	lostTurnCounter := lostTurnCounter - 1 max: 0.
-	self canPlayTurn ifTrue: [ self healFullShields ]
 ]
 
 { #category : #modifying }

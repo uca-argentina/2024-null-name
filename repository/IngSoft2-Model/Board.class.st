@@ -58,9 +58,7 @@ Board class >> wormHolePairIsValid: aWormHolePair with: aNumberOfTiles [
 { #category : #accessing }
 Board >> adjustShipPosition: aShip [
 
-	((aShip position > tileEffectArray size and: aShip lapsDone <= maxLap)
-		 or: (aShip position < 1 and: aShip lapsDone > 1)) ifFalse: [
-		^ self ].
+	(self shouldAdjustShipPosition: aShip) ifFalse: [ ^ self ].
 
 	aShip modifyLap: aShip position - 1 // tileEffectArray size.
 	aShip moveTiles: tileEffectArray size
@@ -84,9 +82,9 @@ Board >> allTileEffectsAmount [
 ]
 
 { #category : #modifying }
-Board >> applyTileEffectOn: aGame triggeredBy: aShip [
+Board >> applyTileEffectOn: aGame At: aPosition [
 
-	(tileEffectArray at: aShip position) applyOn: aGame
+	(tileEffectArray at: aPosition) applyOn: aGame
 ]
 
 { #category : #initialization }
@@ -120,6 +118,14 @@ Board >> numOfParsecs [
 Board >> numbOfTiles [
 
 	^ tileEffectArray size
+]
+
+{ #category : #accessing }
+Board >> shouldAdjustShipPosition: aShip [
+
+	^ (aShip position > tileEffectArray size and:
+		   aShip lapsDone <= maxLap) or:
+		  (aShip position < 1 and: aShip lapsDone > 1)
 ]
 
 { #category : #accessing }

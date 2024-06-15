@@ -92,7 +92,7 @@ Game >> applyEffectOnOneShip: anEffect [
 Game >> canPlayNextTurnOf [
 
 	self isFinished ifTrue: [
-		Error signal: 'Game is Over you cant Keep Playing' ]
+		Error signal: 'Game is Over you cant Keep Playing' ].
 ]
 
 { #category : #initialization }
@@ -113,29 +113,23 @@ Game >> isFinished [
 ]
 
 { #category : #modifying }
-Game >> loseTurn: aShip [
-
-	gameTurnHandler nextTurn.
-	aShip lostTurnCounterDown.
-	^ aShip shipName , ' lost their turn'
-]
-
-{ #category : #modifying }
 Game >> playTurn [
 
 	| movement |
 	self canPlayNextTurnOf.
+
+	[ gameTurnHandler turnShipCanPlayTurn ]
+		on: TurnExeption
+		do: [ :ex | ^ ex messageText ].
+
 	theShipInCurrentTurn := gameTurnHandler currentTurnShip.
-
-	theShipInCurrentTurn canPlayTurn ifFalse: [
-		^ self loseTurn: theShipInCurrentTurn ].
-
 	movement := dice throw.
 	theShipInCurrentTurn moveTiles: movement.
 	gameBoard adjustShipPosition: theShipInCurrentTurn.
 	gameBoard snapToFinishTile: theShipInCurrentTurn.
-	gameBoard applyTileEffectOn: self triggeredBy: theShipInCurrentTurn.
+	gameBoard applyTileEffectOn: self At: theShipInCurrentTurn position.
 	shipBattleHandler checkShipBattle: theShipInCurrentTurn.
+	gameTurnHandler checkForShipsWithNoShield.
 	gameTurnHandler nextTurn
 ]
 
@@ -157,10 +151,12 @@ Game >> shipRankings [
 Game >> skipTurn [
 
 	self canPlayNextTurnOf.
+	
+	[ gameTurnHandler turnShipCanPlayTurn ]
+		on: TurnExeption
+		do: [ :ex | ^ ex messageText ].
+	
 	theShipInCurrentTurn := gameTurnHandler currentTurnShip.
-
-	theShipInCurrentTurn canPlayTurn ifFalse: [
-		^ self loseTurn: theShipInCurrentTurn ].
 
 	theShipInCurrentTurn healFullShields.
 	gameTurnHandler nextTurn.

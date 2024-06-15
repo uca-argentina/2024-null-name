@@ -96,11 +96,12 @@ GameFinishTest >> testIfThereIsAWinnerThereAreNoMoreMovements [
 	aGame playTurn.
 	aGame playTurn.
 	aGame playTurn.
-
+	
 	self
 		should: [ aGame playTurn ]
 		raise: Error
-		withMessage: 'Game is Over you cant Keep Playing'
+		withMessage: 'Game is Over you cant Keep Playing'.
+		
 ]
 
 { #category : #tests }
