@@ -65,12 +65,16 @@ BoardTest >> testBoardCannotBeInitializedWithLessThanOneTile [
 { #category : #tests }
 BoardTest >> testBoardHasANumberOfParsecs [
 
-	| aBoard |
+	| aBoard aTileArray |
+	aTileArray := OrderedCollection
+		              with: NullEffect new
+		              with: NullEffect new
+		              with: NullEffect new
+		              with: NullEffect new.
 	aBoard := Board
-		          withLengthInTileAndParsec: #( 4 2 )
-		          withWormHolePositions: #( 2 3 )
-		          withAmountOfLaps: 1
-		          withParsecArray: #( 2 1 3 4 ).
+		          withTileEffectCollection: aTileArray
+		          withLength: #( 4 2 )
+		          withAmountOfLaps: 3.
 
 	self assert: aBoard numOfParsecs equals: 2
 ]

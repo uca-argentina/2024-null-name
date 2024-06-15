@@ -7,18 +7,18 @@ Class {
 { #category : #tests }
 TurnPlayabilityTest >> testAGameTurnCanBeSkipped [
 
-	| aGame aCollectionOfNames aWormHolePair aCollectionOfDie |
+	| aGame aCollectionOfNames aWormHolePair aCollectionOfDie aTileArray |
 	aCollectionOfNames := OrderedCollection with: 'Juan' with: 'Pedro'.
 	aWormHolePair := #( 10 15 ).
 	aCollectionOfDie := OrderedCollection with: (LoadedDie of: 5).
-
+	aTileArray := OrderedCollection new.
+	16 timesRepeat: [ aTileArray add: NullEffect new ].
 
 	aGame := Game
 		         withBoard: (Board
-				          withLengthInTileAndParsec: #( 16 16 )
-				          withWormHolePositions: aWormHolePair
-				          withAmountOfLaps: 3
-				          withParsecArray: #( 1 3 1 5 ))
+				          withTileEffectCollection: aTileArray
+				          withLength: #( 16 16 )
+				          withAmountOfLaps: 3)
 		         withShipNames: aCollectionOfNames
 		         withDice: (Dice with: aCollectionOfDie).
 
