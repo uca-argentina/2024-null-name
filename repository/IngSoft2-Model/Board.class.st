@@ -26,7 +26,7 @@ Board class >> amountOfLapsIsValid: anAmountOfLaps [
 Board class >> numberOfParsecsIsValid: aNumberOfParsecs [
 
 	aNumberOfParsecs strictlyPositive ifFalse: [
-		Error signal: 'Board tiles must be greater than 0' ]
+		Error signal: 'Board size in parsecs must be greater than 0' ]
 ]
 
 { #category : #'class initialization' }

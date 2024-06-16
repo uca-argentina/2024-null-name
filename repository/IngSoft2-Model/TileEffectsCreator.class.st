@@ -66,8 +66,6 @@ TileEffectsCreator >> generateLoadedBoardWithAmountOfTiles: anAmountOfTiles with
 
 	| tileEffectArray tileNumber |
 	
-	self numberOfTilesIsValid: anAmountOfTiles.
-	self numberOfParsecsIsValid: anAmountOfParsecs.
 	self wormHolePairIsValid: aWormHolePair with: anAmountOfTiles.
 	
 	tileEffectArray := OrderedCollection new.
@@ -112,8 +110,6 @@ TileEffectsCreator >> generateRandomBoardWithAmountOfTiles: anAmountOfTiles with
 
 	| tileEffectArray |
 	
-	self numberOfTilesIsValid: anAmountOfTiles.
-	self numberOfParsecsIsValid: anAmountOfParsecs.
 	self wormHolePairIsValid: aWormHolePair with: anAmountOfTiles.
 	
 	
@@ -143,20 +139,6 @@ TileEffectsCreator >> initializeWithProbabilityDistribution: aProbabilityDistrib
 
 	probabilityEffects := self transformIntoProbabilityRanges:
 		                      aProbabilityDistributionCollection
-]
-
-{ #category : #'argument validation' }
-TileEffectsCreator >> numberOfParsecsIsValid: aNumberOfParsecs [
-
-	aNumberOfParsecs strictlyPositive ifFalse: [
-		Error signal: 'Board size in parsecs must be greater than 0' ]
-]
-
-{ #category : #'argument validation' }
-TileEffectsCreator >> numberOfTilesIsValid: aNumberOfTiles [
-
-	aNumberOfTiles strictlyPositive ifFalse: [
-		Error signal: 'Board tiles must be greater than 0' ]
 ]
 
 { #category : #comparing }

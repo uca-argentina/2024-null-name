@@ -15,6 +15,25 @@ BoardTest >> should: anErrorBlock raise: exceptionClass withMessage: anErrorMess
 ]
 
 { #category : #tests }
+BoardTest >> testBoardCannotBeInitializedWithLessThanOneParsec [
+
+	| aTileArray |
+	aTileArray := OrderedCollection
+		              with: NullEffect new
+		              with: NullEffect new
+		              with: NullEffect new
+		              with: NullEffect new.
+	self
+		should: [
+			Board
+				withTileEffectCollection: aTileArray
+				withLengthInParsecs: 0
+				withAmountOfLaps: 1 ]
+		raise: Error
+		withMessage: 'Board size in parsecs must be greater than 0'
+]
+
+{ #category : #tests }
 BoardTest >> testBoardCannotBeInitializedWithLessThanOneTile [
 
 	| numTiles aTileArray|
