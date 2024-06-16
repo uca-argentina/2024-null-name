@@ -17,7 +17,7 @@ GameTest >> should: anErrorBlock raise: exceptionClass withMessage: anErrorMessa
 { #category : #tests }
 GameTest >> testAGameCanShowTheCurrentRanking [
 
-	| aGame aCollectionOfNames aCollectionOfDie aShipNameAndPosition |
+	| aGame aCollectionOfNames aCollectionOfDie aShipNameAndPosition aTileArray |
 	aCollectionOfNames := OrderedCollection
 		                      with: 'Juan'
 		                      with: 'Pedro'
@@ -26,10 +26,13 @@ GameTest >> testAGameCanShowTheCurrentRanking [
 	aCollectionOfDie := OrderedCollection with:
 		                    (SequenceDie withSequence: #( 3 1 8 )).
 
+	aTileArray := OrderedCollection new.
+	10 timesRepeat: [ aTileArray add: NullEffect new ].
+
 	aGame := Game
-		         withBoard: (SetBoard
-				          withLengthInTileAndParsec: #( 15 15 )
-				          withWormHolePositions: #( 5 6 )
+		         withBoard: (Board
+				          withTileEffectCollection: aTileArray
+				          withLength: #( 15 15 )
 				          withAmountOfLaps: 3)
 		         withShipNames: aCollectionOfNames
 		         withDice: (Dice with: aCollectionOfDie).
@@ -47,29 +50,27 @@ GameTest >> testAGameCanShowTheCurrentRanking [
 	aShipNameAndPosition at: 'Pedro' put: #( 2 2 ) asOrderedCollection.
 	aShipNameAndPosition at: 'Fran' put: #( 3 1 ) asOrderedCollection.
 
-	self
-		assert: (aGame shipRankings at: 1) shipName 
-		equals: ('Pedro').
-	self
-		assert: (aGame shipRankings at: 2) shipName
-		equals: ( 'Juan').
-	self
-		assert: (aGame shipRankings at: 3) shipName
-		equals: ('Fran')
+	self assert: (aGame shipRankings at: 1) shipName equals: 'Pedro'.
+	self assert: (aGame shipRankings at: 2) shipName equals: 'Juan'.
+	self assert: (aGame shipRankings at: 3) shipName equals: 'Fran'
 ]
 
 { #category : #tests }
 GameTest >> testGameCanTellAllShipPositions [
 
-	| aGame aCollectionOfNames aCollectionOfDie |
+	| aGame aCollectionOfNames aCollectionOfDie aTileArray|
 	aCollectionOfNames := OrderedCollection with: 'Juan' with: 'Jose'.
 	aCollectionOfDie := OrderedCollection with:
 		                    (SequenceDie withSequence: #( 9 10 9 )).
 
+
+	aTileArray := OrderedCollection new.
+	30 timesRepeat: [ aTileArray add: NullEffect new ].
+
 	aGame := Game
-		         withBoard: (SetBoard
-				          withLengthInTileAndParsec: #( 30 30 )
-				          withWormHolePositions: #( 2 3 )
+		         withBoard: (Board
+				          withTileEffectCollection: aTileArray
+				          withLength: #( 30 30 )
 				          withAmountOfLaps: 1)
 		         withShipNames: aCollectionOfNames
 		         withDice: (Dice with: aCollectionOfDie).

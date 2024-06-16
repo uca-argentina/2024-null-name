@@ -7,16 +7,20 @@ Class {
 { #category : #tests }
 BattleTest >> testShipsCannotBattleInTheFirstTileOfABoard [
 
-	| aGame aCollectionOfNames aWormHoleTilePair aCollectionOfDie |
+	| aGame aCollectionOfNames aWormHoleTilePair aCollectionOfDie aTileArray |
 	aCollectionOfNames := OrderedCollection with: 'Juan' with: 'Pedro'.
 	aWormHoleTilePair := #( 10 15 ).
 	aCollectionOfDie := OrderedCollection with:
 		                    (SequenceDie withSequence: #( 16 16 4 5 )).
 
+	aTileArray := OrderedCollection new.
+
+	16 timesRepeat: [ aTileArray add: NullEffect new ].
+
 	aGame := Game
-		         withBoard: (SetBoard
-				          withLengthInTileAndParsec: #( 16 16 )
-				          withWormHolePositions: aWormHoleTilePair
+		         withBoard: (Board
+				          withTileEffectCollection: aTileArray
+				          withLength: #( 16 16 )
 				          withAmountOfLaps: 3)
 		         withShipNames: aCollectionOfNames
 		         withDice: (Dice with: aCollectionOfDie).
@@ -31,16 +35,19 @@ BattleTest >> testShipsCannotBattleInTheFirstTileOfABoard [
 { #category : #tests }
 BattleTest >> testWhenShipInAGameLandsInATileWithAnotherShipThenTheyBattle [
 
-	| aGame aCollectionOfNames aWormHoleTilePair aCollectionOfDie |
+	| aGame aCollectionOfNames aCollectionOfDie aTileArray |
 	aCollectionOfNames := OrderedCollection with: 'Juan' with: 'Pedro'.
-	aWormHoleTilePair := #( 10 15 ).
 	aCollectionOfDie := OrderedCollection with:
 		                    (SequenceDie withSequence: #( 10 10 4 5 )).
 
+
+	aTileArray := OrderedCollection new.
+	16 timesRepeat: [ aTileArray add: NullEffect new ].
+	
 	aGame := Game
-		         withBoard: (SetBoard
-				          withLengthInTileAndParsec: #( 16 16 )
-				          withWormHolePositions: aWormHoleTilePair
+		         withBoard: (Board
+				          withTileEffectCollection: aTileArray
+				          withLength: #( 16 16 )
 				          withAmountOfLaps: 1)
 		         withShipNames: aCollectionOfNames
 		         withDice: (Dice with: aCollectionOfDie).
@@ -54,17 +61,20 @@ BattleTest >> testWhenShipInAGameLandsInATileWithAnotherShipThenTheyBattle [
 { #category : #tests }
 BattleTest >> testWhenShipLosesABattleThenGoBackToFirstTile [
 
-	| aGame aCollectionOfNames aWormHoleTilePair aCollectionOfDie |
+	| aGame aCollectionOfNames aWormHoleTilePair aCollectionOfDie aTileArray|
 	aCollectionOfNames := OrderedCollection with: 'Juan' with: 'Pedro'.
 	aWormHoleTilePair := #( 10 15 ).
 	aCollectionOfDie := OrderedCollection with:
 		                    (SequenceDie withSequence: #( 10 10 4 5 )).
+	
+	aTileArray := OrderedCollection new.
 
+	16 timesRepeat: [ aTileArray add: NullEffect new ].
 
 	aGame := Game
-		         withBoard: (SetBoard
-				          withLengthInTileAndParsec: #( 16 16 )
-				          withWormHolePositions: aWormHoleTilePair
+		         withBoard: (Board
+				          withTileEffectCollection: aTileArray
+				          withLength: #( 16 16 )
 				          withAmountOfLaps: 1)
 		         withShipNames: aCollectionOfNames
 		         withDice: (Dice with: aCollectionOfDie).

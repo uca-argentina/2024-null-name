@@ -23,9 +23,17 @@ Board class >> amountOfLapsIsValid: anAmountOfLaps [
 ]
 
 { #category : #'class initialization' }
+Board class >> numberOfTileIsValid: aNumberOfTiles [
+
+	aNumberOfTiles strictlyPositive ifFalse: [
+		Error signal: 'Board tiles must be greater than 0' ]
+]
+
+{ #category : #'class initialization' }
 Board class >> withTileEffectCollection: aTileEffect withLength: aBoardLength withAmountOfLaps: anAmountOfLaps [
 	
 	self amountOfLapsIsValid: anAmountOfLaps.
+	self numberOfTileIsValid: aBoardLength first.
 	
 	^ self new
 		  initializeWithTileEffectCollection: aTileEffect

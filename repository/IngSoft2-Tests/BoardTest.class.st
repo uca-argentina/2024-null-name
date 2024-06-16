@@ -17,14 +17,18 @@ BoardTest >> should: anErrorBlock raise: exceptionClass withMessage: anErrorMess
 { #category : #tests }
 BoardTest >> testBoardCannotBeInitializedWithLessThanOneTile [
 
-	| numTiles |
+	| numTiles aTileArray|
 	numTiles := 0.
+	
+	aTileArray := OrderedCollection new.
+	
+	
 	self
 		should: [
-			SetBoard
-				withLengthInTileAndParsec: #( 0 0 )
-				withWormHolePositions: #( 0 0 )
-				withAmountOfLaps: 1 ]
+			Board
+				          withTileEffectCollection: aTileArray
+				          withLength: #( 0 0 )
+				          withAmountOfLaps: 1 ]
 		raise: Error
 		withMessage: 'Board tiles must be greater than 0'
 ]
@@ -49,11 +53,15 @@ BoardTest >> testBoardHasANumberOfParsecs [
 { #category : #tests }
 BoardTest >> testBoardHasANumberOfTiles [
 
-	| aBoard |
-	aBoard := SetBoard
-		          withLengthInTileAndParsec: #( 3 3 )
-		          withWormHolePositions: #( 2 3 )
-		          withAmountOfLaps: 1.
+	| aBoard aTileArray|
+	
+	aTileArray := OrderedCollection new.
+	3 timesRepeat: [ aTileArray add: NullEffect new ].
+	
+	aBoard := Board
+				          withTileEffectCollection: aTileArray
+				          withLength: #( 3 3 )
+				          withAmountOfLaps: 1.
 
 	self assert: aBoard numbOfTiles equals: 3
 ]
@@ -154,7 +162,7 @@ BoardTest >> testWhenBoardIsCreatedTheAmountOfEffectsFollowTheCorrectDistributio
 	| aBoard aPairOfLengths aWormHolePair aProbabilityDistributionCollection aTileEffectsCreator aTileArray |
 	aWormHolePair := #( 101 102 ).
 	aPairOfLengths := #( 102 102 ).
-
+	
 	aProbabilityDistributionCollection := OrderedCollection
 		                                      with:
 		                                      (EffectProbability
@@ -191,7 +199,7 @@ BoardTest >> testWhenBoardIsCreatedTheAmountOfEffectsFollowTheCorrectDistributio
 
 	aBoard := Board
 		          withTileEffectCollection: aTileArray
-		          withLength: #( 4 4 )
+		          withLength: aPairOfLengths
 		          withAmountOfLaps: 1.
 
 	self assert: (aBoard allTileEffectsAmount at: NullEffect) equals: 40.

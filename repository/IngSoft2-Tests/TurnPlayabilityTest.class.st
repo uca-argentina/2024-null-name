@@ -12,6 +12,7 @@ TurnPlayabilityTest >> testAGameTurnCanBeSkipped [
 	aWormHolePair := #( 10 15 ).
 	aCollectionOfDie := OrderedCollection with: (LoadedDie of: 5).
 	aTileArray := OrderedCollection new.
+	
 	16 timesRepeat: [ aTileArray add: NullEffect new ].
 
 	aGame := Game
@@ -28,15 +29,18 @@ TurnPlayabilityTest >> testAGameTurnCanBeSkipped [
 { #category : #tests }
 TurnPlayabilityTest >> testWhenAShipFinishesLapThenPositionIsAdjustedAccordingly [
 
-	| aGame aCollectionOfNames aCollectionOfDie |
+	| aGame aCollectionOfNames aCollectionOfDie aTileArray|
 	aCollectionOfNames := OrderedCollection with: 'Juan'.
 	aCollectionOfDie := OrderedCollection with:
 		                    (SequenceDie withSequence: #( 10 20 )).
-
+	
+	aTileArray:= OrderedCollection new.
+	10 timesRepeat: [ aTileArray add: NullEffect new ].
+	
 	aGame := Game
-		         withBoard: (SetBoard
-				          withLengthInTileAndParsec: #( 10 10 )
-				          withWormHolePositions: #( 2 3 )
+		         withBoard: (Board
+				          withTileEffectCollection: aTileArray
+				          withLength: #( 10 10 )
 				          withAmountOfLaps: 5)
 		         withShipNames: aCollectionOfNames
 		         withDice: (Dice with: aCollectionOfDie).
@@ -56,17 +60,20 @@ TurnPlayabilityTest >> testWhenAShipFinishesLapThenPositionIsAdjustedAccordingly
 { #category : #tests }
 TurnPlayabilityTest >> testWhenFinishedTheEndingPositionOfTheWinnerEqualsTheFirstTileOfBoard [
 
-	| aGame aCollectionOfNames aCollectionOfDie |
+	| aGame aCollectionOfNames aCollectionOfDie aTileArray|
 	aCollectionOfNames := OrderedCollection with: 'Juan' with: 'Jose'.
 
 	aCollectionOfDie := OrderedCollection
 		                    with: (LoadedDie of: 9)
 		                    with: (LoadedDie of: 3).
 
+	aTileArray:= OrderedCollection new.
+	27 timesRepeat: [ aTileArray add: NullEffect new ].
+	
 	aGame := Game
-		         withBoard: (SetBoard
-				          withLengthInTileAndParsec: #( 27 27 )
-				          withWormHolePositions: #( 2 3 )
+		         withBoard: (Board
+				          withTileEffectCollection: aTileArray
+				          withLength: #( 27 27 )
 				          withAmountOfLaps: 1)
 		         withShipNames: aCollectionOfNames
 		         withDice: (Dice with: aCollectionOfDie).
@@ -86,18 +93,21 @@ TurnPlayabilityTest >> testWhenFinishedTheEndingPositionOfTheWinnerEqualsTheFirs
 { #category : #tests }
 TurnPlayabilityTest >> testWhenShipHasNoShieldsLeftThenCannotPlayTurn [
 
-	| aGame aCollectionOfNames aWormHolePair aCollectionOfDie |
+	| aGame aCollectionOfNames aWormHolePair aCollectionOfDie aTileArray|
 	aCollectionOfNames := OrderedCollection with: 'Juan' with: 'Pedro'.
 	aWormHolePair := #( 10 15 ).
 	aCollectionOfDie := OrderedCollection with:
 		                    (SequenceDie withSequence:
 			                     #( 1 1 1 1 1 2 1 1 1 3 )).
+	
 
-
+	aTileArray:= OrderedCollection new.
+	16 timesRepeat: [ aTileArray add: NullEffect new ].
+	
 	aGame := Game
-		         withBoard: (SetBoard
-				          withLengthInTileAndParsec: #( 16 16 )
-				          withWormHolePositions: aWormHolePair
+		         withBoard: (Board
+				          withTileEffectCollection: aTileArray
+				          withLength: #( 16 16 )
 				          withAmountOfLaps: 3)
 		         withShipNames: aCollectionOfNames
 		         withDice: (Dice with: aCollectionOfDie).
@@ -116,7 +126,7 @@ TurnPlayabilityTest >> testWhenShipHasNoShieldsLeftThenCannotPlayTurn [
 { #category : #tests }
 TurnPlayabilityTest >> testWhenShipWithNoShieldLosesTwoTurnsThenCanPlayAgain [
 
-	| aGame aCollectionOfNames aWormHolePair aCollectionOfDie |
+	| aGame aCollectionOfNames aWormHolePair aCollectionOfDie aTileArray |
 	aCollectionOfNames := OrderedCollection with: 'Juan' with: 'Pedro'.
 	aWormHolePair := #( 10 15 ).
 	aCollectionOfDie := OrderedCollection with:
@@ -124,10 +134,13 @@ TurnPlayabilityTest >> testWhenShipWithNoShieldLosesTwoTurnsThenCanPlayAgain [
 			                     #( 1 1 1 1 1 2 1 1 1 3 )).
 
 
+	aTileArray := OrderedCollection new.
+	16 timesRepeat: [ aTileArray add: NullEffect new ].
+
 	aGame := Game
-		         withBoard: (SetBoard
-				          withLengthInTileAndParsec: #( 16 16 )
-				          withWormHolePositions: aWormHolePair
+		         withBoard: (Board
+				          withTileEffectCollection: aTileArray
+				          withLength: #( 16 16 )
 				          withAmountOfLaps: 3)
 		         withShipNames: aCollectionOfNames
 		         withDice: (Dice with: aCollectionOfDie).
@@ -155,7 +168,7 @@ TurnPlayabilityTest >> testWhenShipWithNoShieldLosesTwoTurnsThenCanPlayAgain [
 { #category : #tests }
 TurnPlayabilityTest >> testWhenShipWithNoShieldsCannotSkipTurn [
 
-	| aGame aCollectionOfNames aWormHolePair aCollectionOfDie |
+	| aGame aCollectionOfNames aWormHolePair aCollectionOfDie aTileArray |
 	aCollectionOfNames := OrderedCollection with: 'Juan' with: 'Pedro'.
 	aWormHolePair := #( 10 15 ).
 	aCollectionOfDie := OrderedCollection with:
@@ -163,10 +176,13 @@ TurnPlayabilityTest >> testWhenShipWithNoShieldsCannotSkipTurn [
 			                     #( 1 1 1 1 1 2 1 1 1 3 )).
 
 
+	aTileArray := OrderedCollection new.
+	16 timesRepeat: [ aTileArray add: NullEffect new ].
+
 	aGame := Game
-		         withBoard: (SetBoard
-				          withLengthInTileAndParsec: #( 16 16 )
-				          withWormHolePositions: aWormHolePair
+		         withBoard: (Board
+				          withTileEffectCollection: aTileArray
+				          withLength: #( 16 16 )
 				          withAmountOfLaps: 3)
 		         withShipNames: aCollectionOfNames
 		         withDice: (Dice with: aCollectionOfDie).
@@ -185,15 +201,18 @@ TurnPlayabilityTest >> testWhenShipWithNoShieldsCannotSkipTurn [
 { #category : #tests }
 TurnPlayabilityTest >> testWhenTurnIsSkippedThenShipRestoresAllShields [
 
-	| aGame aCollectionOfNames aWormHolePair aCollectionOfDie |
+	| aGame aCollectionOfNames aWormHolePair aCollectionOfDie aTileArray |
 	aCollectionOfNames := OrderedCollection with: 'Juan' with: 'Pedro'.
 	aWormHolePair := #( 10 15 ).
 	aCollectionOfDie := OrderedCollection with: (LoadedDie of: 5).
 
+	aTileArray := OrderedCollection new.
+	16 timesRepeat: [ aTileArray add: NullEffect new ].
+
 	aGame := Game
-		         withBoard: (SetBoard
-				          withLengthInTileAndParsec: #( 16 16 )
-				          withWormHolePositions: aWormHolePair
+		         withBoard: (Board
+				          withTileEffectCollection: aTileArray
+				          withLength: #( 16 16 )
 				          withAmountOfLaps: 1)
 		         withShipNames: aCollectionOfNames
 		         withDice: (Dice with: aCollectionOfDie).

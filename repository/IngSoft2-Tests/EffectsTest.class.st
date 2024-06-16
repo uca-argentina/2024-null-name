@@ -17,15 +17,18 @@ EffectsTest >> should: aErrorBlock raise: anErrorClass withMessage: anErrorMessa
 { #category : #tests }
 EffectsTest >> testBlackHoleEffectCannotBeAplliedAfterGameIsFinished [
 
-	| aBoard aShipName aDictionaryOfEffects aGame |
-	aDictionaryOfEffects := Dictionary new
-		                        at: 2 put: BlackHoleEffect new;
-		                        yourself.
-	aBoard := SetBoard
-		          withLengthInTileAndParsec: #( 10 10 )
-		          withWormHolePositions: #( 2 4 )
-		          withAmountOfLaps: 1
-		          withEffectsInPosition: aDictionaryOfEffects.
+	| aBoard aShipName aGame aTileArray|
+	
+	
+	aTileArray := OrderedCollection new.
+	10 timesRepeat: [ aTileArray add: NullEffect new ].
+	aTileArray at: 2 put: BlackHoleEffect new.
+	
+	aBoard := Board
+				          withTileEffectCollection: aTileArray
+				          withLength: #( 10 10 )
+				          withAmountOfLaps: 1.
+	
 
 	aShipName := OrderedCollection with: 'Juan'.
 
@@ -54,14 +57,50 @@ EffectsTest >> testMoonWalkDistanceCannotBeSmallerThanZero [
 { #category : #tests }
 EffectsTest >> testWhenApplying2DifferentHyperJumpEffectsShipsMoveTheBiggestAmountOfParsecsInArray [
 
-	| aBoard aShipName aGame aParsecArray |
+	| aBoard aShipName aGame aParsecArray aWormHolePair aPairOfLengths aProbabilityDistributionCollection aTileEffectsCreator aTileArray |
 	aParsecArray := #( 3 5 1 ).
+	aWormHolePair := #( 101 102 ).
+	aPairOfLengths := #( 102 102 ).
 
-	aBoard := LoadedBoard
-		          withLengthInTileAndParsec: #( 102 102 )
-		          withWormHolePositions: #( 2 5 )
-		          withAmountOfLaps: 1
-		          withParsecArray: aParsecArray.
+	aProbabilityDistributionCollection := OrderedCollection
+		                                      with:
+		                                      (EffectProbability
+			                                       effect: [ NullEffect ]
+			                                       withProbability: 40)
+		                                      with:
+		                                      (EffectProbability
+			                                       effect: [ BlackHoleEffect ]
+			                                       withProbability: 20)
+		                                      with: (EffectProbability
+				                                       effect: [
+				                                       HyperSpaceJumpEffect ]
+				                                       withProbability: 20)
+		                                      with:
+		                                      (EffectProbability
+			                                       effect: [ MoonWalkEffect ]
+			                                       withProbability: 10)
+		                                      with:
+		                                      (EffectProbability
+			                                       effect: [ HyperJumpEffect ]
+			                                       withProbability: 8)
+		                                      with:
+		                                      (EffectProbability
+			                                       effect: [ AtomicBombEffect ]
+			                                       withProbability: 2).
+
+	aTileEffectsCreator := TileEffectsCreator
+		                       createWithBoardLength: aPairOfLengths
+		                       withWormHolePositions: aWormHolePair
+		                       withParsecArray: aParsecArray
+		                       withProbabilityDistribution:
+		                       aProbabilityDistributionCollection.
+
+	aTileArray := aTileEffectsCreator generateLoadedEffectArray.
+
+	aBoard := Board
+		          withTileEffectCollection: aTileArray
+		          withLength: aPairOfLengths
+		          withAmountOfLaps: 1.
 
 	aShipName := OrderedCollection with: 'Juan' with: 'Pedro'.
 	aGame := Game
@@ -85,16 +124,15 @@ EffectsTest >> testWhenApplying2DifferentHyperJumpEffectsShipsMoveTheBiggestAmou
 { #category : #tests }
 EffectsTest >> testWhenApplyingAtomicBombEffectAllShipsMoveBackToFirstTileOfTheirCurrentLap [
 
-	| aBoard aShipName aDictionaryOfEffects aGame |
-	aDictionaryOfEffects := Dictionary new
-		                        at: 7 put: AtomicBombEffect new;
-		                        yourself.
+	| aBoard aShipName aGame aTileArray |
+	aTileArray := OrderedCollection new.
+	10 timesRepeat: [ aTileArray add: NullEffect new ].
+	aTileArray at: 7 put: AtomicBombEffect new.
 
-	aBoard := SetBoard
-		          withLengthInTileAndParsec: #( 10 10 )
-		          withWormHolePositions: #( 2 5 )
-		          withAmountOfLaps: 2
-		          withEffectsInPosition: aDictionaryOfEffects.
+	aBoard := Board
+		          withTileEffectCollection: aTileArray
+		          withLength: #( 10 10 )
+		          withAmountOfLaps: 2.
 
 	aShipName := OrderedCollection
 		             with: 'Juan'
@@ -125,16 +163,17 @@ EffectsTest >> testWhenApplyingAtomicBombEffectAllShipsMoveBackToFirstTileOfThei
 { #category : #tests }
 EffectsTest >> testWhenApplyingBlackHoleEffectShipMoves4SpacesBack [
 
-	| aBoard aShipName aDictionaryOfEffects aGame |
-	aDictionaryOfEffects := Dictionary new
-		                        at: 8 put: BlackHoleEffect new;
-		                        yourself.
+	| aBoard aShipName aGame aTileArray |
+	aTileArray := OrderedCollection new.
+	10 timesRepeat: [ aTileArray add: NullEffect new ].
+	aTileArray at: 8 put: BlackHoleEffect new.
 
-	aBoard := SetBoard
-		          withLengthInTileAndParsec: #( 10 10 )
-		          withWormHolePositions: #( 2 5 )
-		          withAmountOfLaps: 1
-		          withEffectsInPosition: aDictionaryOfEffects.
+	aBoard := Board
+		          withTileEffectCollection: aTileArray
+		          withLength: #( 10 10 )
+		          withAmountOfLaps: 1.
+
+
 
 	aShipName := OrderedCollection with: 'Juan'.
 	aGame := Game
@@ -154,15 +193,17 @@ EffectsTest >> testWhenApplyingBlackHoleEffectShipMoves4SpacesBack [
 { #category : #tests }
 EffectsTest >> testWhenApplyingBlackHoleShipNotOnLap1CanMoveBelowFirstTilePosition [
 
-	| aBoard aShipName aDictionaryOfEffects aGame |
-	aDictionaryOfEffects := Dictionary new
-		                        at: 3 put: BlackHoleEffect new;
-		                        yourself.
-	aBoard := SetBoard
-		          withLengthInTileAndParsec: #( 10 10 )
-		          withWormHolePositions: #( 2 4 )
-		          withAmountOfLaps: 3
-		          withEffectsInPosition: aDictionaryOfEffects.
+	| aBoard aShipName aGame aTileArray |
+	
+	aTileArray := OrderedCollection new.
+	10 timesRepeat: [ aTileArray add: NullEffect new ].
+	aTileArray at: 3 put: BlackHoleEffect new.
+	
+	aBoard := Board
+				          withTileEffectCollection: aTileArray
+				          withLength: #( 10 10 )
+				          withAmountOfLaps: 2.
+	
 
 	aShipName := OrderedCollection with: 'Juan'.
 
@@ -184,25 +225,25 @@ EffectsTest >> testWhenApplyingBlackHoleShipNotOnLap1CanMoveBelowFirstTilePositi
 { #category : #tests }
 EffectsTest >> testWhenApplyingHyperJumpEffectShipMovesAVariableParsecDistance [
 
-	| aBoard aShipName aDictionaryOfEffects aGame aDic aParsecArray |
+	| aBoard aShipName aGame aDic aParsecArray aTileArray |
 	aParsecArray := #( 4 3 5 1 ).
 	aDic := Dictionary newFrom: {
 			        ('Tiles' -> 20).
 			        ('Parsecs' -> 10) }.
 
-	aDictionaryOfEffects := Dictionary new
-		                        at: 3
-		                        put:
-			                        (HyperJumpEffect
-				                         withParsecArray: aParsecArray
-				                         andBoardLengths: aDic);
-		                        yourself.
 
-	aBoard := SetBoard
-		          withLengthInTileAndParsec: #( 20 10 )
-		          withWormHolePositions: #( 2 5 )
-		          withAmountOfLaps: 1
-		          withEffectsInPosition: aDictionaryOfEffects.
+	aTileArray := OrderedCollection new.
+	20 timesRepeat: [ aTileArray add: NullEffect new ].
+	aTileArray
+		at: 3
+		put:
+		(HyperJumpEffect withParsecArray: aParsecArray andBoardLengths: aDic).
+
+	aBoard := Board
+		          withTileEffectCollection: aTileArray
+		          withLength: #( 20 10 )
+		          withAmountOfLaps: 1.
+
 
 	aShipName := OrderedCollection with: 'Juan'.
 	aGame := Game
@@ -222,26 +263,30 @@ EffectsTest >> testWhenApplyingHyperJumpEffectShipMovesAVariableParsecDistance [
 { #category : #tests }
 EffectsTest >> testWhenApplyingHyperJumpRepeatedlyThenDistanceMovedChanges [
 
-	| aBoard aShipName aDictionaryOfEffects aGame aParsecArray aDic|
-	aParsecArray := #( 2 1 -1 -2).
+	| aBoard aShipName aTileArray aGame aParsecArray aDic |
+	aParsecArray := #( 2 1 -1 -2 ).
+
 	aDic := Dictionary newFrom: {
 			        ('Tiles' -> 20).
 			        ('Parsecs' -> 10) }.
 
-	aDictionaryOfEffects := Dictionary new
-		                        at: 4
-		                        put:
-			                        (HyperJumpEffect
-				                         withParsecArray: aParsecArray
-				                         andBoardLengths: aDic);
-		                        yourself.
-	aBoard := SetBoard
-		          withLengthInTileAndParsec: #( 20 10 )
-		          withWormHolePositions: #( 2 5 )
-		          withAmountOfLaps: 1
-		          withEffectsInPosition: aDictionaryOfEffects.
 
-	aShipName := OrderedCollection with: 'Juan' with: 'Fran' with:'Jorge'.
+	aTileArray := OrderedCollection new.
+	20 timesRepeat: [ aTileArray add: NullEffect new ].
+	aTileArray
+		at: 4
+		put:
+		(HyperJumpEffect withParsecArray: aParsecArray andBoardLengths: aDic).
+
+	aBoard := Board
+		          withTileEffectCollection: aTileArray
+		          withLength: #( 20 10 )
+		          withAmountOfLaps: 1.
+
+	aShipName := OrderedCollection
+		             with: 'Juan'
+		             with: 'Fran'
+		             with: 'Jorge'.
 	aGame := Game
 		         withBoard: aBoard
 		         withShipNames: aShipName
@@ -256,25 +301,27 @@ EffectsTest >> testWhenApplyingHyperJumpRepeatedlyThenDistanceMovedChanges [
 	self
 		assert: (aGame allShipsPosition at: 'Juan')
 		equals: #( 8 1 ) asOrderedCollection.
-	self assert: (aGame allShipsPosition at: 'Fran')
+	self
+		assert: (aGame allShipsPosition at: 'Fran')
 		equals: #( 6 1 ) asOrderedCollection.
-	self assert: (aGame allShipsPosition at: 'Jorge')
+	self
+		assert: (aGame allShipsPosition at: 'Jorge')
 		equals: #( 2 1 ) asOrderedCollection
 ]
 
 { #category : #tests }
 EffectsTest >> testWhenApplyingHyperSpaceJumpEffectShipLosesAShield [
 
-	| aBoard aShipName aDictionaryOfEffects aGame |
-	aDictionaryOfEffects := Dictionary new
-		                        at: 4 put: HyperSpaceJumpEffect new;
-		                        yourself.
+	| aBoard aShipName aTileArray aGame |
+	
+	aTileArray := OrderedCollection new.
+	10 timesRepeat: [ aTileArray add: NullEffect new ].
+	aTileArray at: 4 put: HyperSpaceJumpEffect new.
 
-	aBoard := SetBoard
-		          withLengthInTileAndParsec: #( 10 10 )
-		          withWormHolePositions: #( 2 5 )
-		          withAmountOfLaps: 1
-		          withEffectsInPosition: aDictionaryOfEffects.
+	aBoard := Board
+		          withTileEffectCollection: aTileArray
+		          withLength: #( 10 10 )
+		          withAmountOfLaps: 1.
 
 	aShipName := OrderedCollection with: 'Juan'.
 	aGame := Game
@@ -292,16 +339,16 @@ EffectsTest >> testWhenApplyingHyperSpaceJumpEffectShipLosesAShield [
 { #category : #tests }
 EffectsTest >> testWhenApplyingHyperSpaceJumpEffectShipMoves4SpacesForward [
 
-	| aBoard aShipName aDictionaryOfEffects aGame |
-	aDictionaryOfEffects := Dictionary new
-		                        at: 4 put: HyperSpaceJumpEffect new;
-		                        yourself.
+	| aBoard aShipName aTileArray aGame |
+	
+	aTileArray := OrderedCollection new.
+	10 timesRepeat: [ aTileArray add: NullEffect new ].
+	aTileArray at: 4 put: HyperSpaceJumpEffect new.
 
-	aBoard := SetBoard
-		          withLengthInTileAndParsec: #( 10 10 )
-		          withWormHolePositions: #( 2 5 )
-		          withAmountOfLaps: 1
-		          withEffectsInPosition: aDictionaryOfEffects.
+	aBoard := Board
+		          withTileEffectCollection: aTileArray
+		          withLength: #( 10 10 )
+		          withAmountOfLaps: 2.
 
 	aShipName := OrderedCollection with: 'Juan'.
 	aGame := Game
@@ -321,17 +368,16 @@ EffectsTest >> testWhenApplyingHyperSpaceJumpEffectShipMoves4SpacesForward [
 { #category : #tests }
 EffectsTest >> testWhenApplyingMoonWalkEffectAllShipsButTriggeringShipMoveAVariableDistance [
 
-	| aBoard aShipName aDictionaryOfEffects aGame |
-	aDictionaryOfEffects := Dictionary new
-		                        at: 13
-		                        put:
-			                        (MoonWalkEffect withMoonwalkDistance: 3);
-		                        yourself.
-	aBoard := SetBoard
-		          withLengthInTileAndParsec: #( 20 20 )
-		          withWormHolePositions: #( 2 5 )
-		          withAmountOfLaps: 1
-		          withEffectsInPosition: aDictionaryOfEffects.
+	| aBoard aShipName aGame aTileArray |
+
+	aTileArray := OrderedCollection new.
+	20 timesRepeat: [ aTileArray add: NullEffect new ].
+	aTileArray at: 13 put: (MoonWalkEffect withMoonwalkDistance: 3).
+
+	aBoard := Board
+		          withTileEffectCollection: aTileArray
+		          withLength: #( 20 20 )
+		          withAmountOfLaps: 2.
 
 	aShipName := OrderedCollection with: 'Juan' with: 'Pedro'.
 	aGame := Game
@@ -357,17 +403,17 @@ EffectsTest >> testWhenApplyingMoonWalkEffectAllShipsButTriggeringShipMoveAVaria
 { #category : #tests }
 EffectsTest >> testWhenApplyingMoonWalkEffectShipLapsBehaveCorrectly [
 
-	| aBoard aShipName aDictionaryOfEffects aGame |
-	aDictionaryOfEffects := Dictionary new
-		                        at: 5
-		                        put:
-			                        (MoonWalkEffect withMoonwalkDistance: 3);
-		                        yourself.
-	aBoard := SetBoard
-		          withLengthInTileAndParsec: #( 10 10 )
-		          withWormHolePositions: #( 4 6 )
-		          withAmountOfLaps: 3
-		          withEffectsInPosition: aDictionaryOfEffects.
+	| aBoard aShipName aGame aTileArray|
+	
+	aTileArray := OrderedCollection new.
+	10 timesRepeat: [ aTileArray add: NullEffect new ].
+	aTileArray at: 5 put: (MoonWalkEffect withMoonwalkDistance: 3).
+
+	aBoard := Board
+		          withTileEffectCollection: aTileArray
+		          withLength: #( 10 10 )
+		          withAmountOfLaps: 3.
+	
 	aShipName := OrderedCollection
 		             with: 'Juan'
 		             with: 'Pedro'
@@ -400,12 +446,23 @@ EffectsTest >> testWhenApplyingMoonWalkEffectShipLapsBehaveCorrectly [
 { #category : #tests }
 EffectsTest >> testWhenApplyingWormholeEffectOnShipMoveAccordingly [
 
-	| aGame aBoard aWormHolePair aShipName |
+	| aGame aBoard aWormHolePair aShipName aTileArray |
 	aWormHolePair := #( 2 5 ).
-	aBoard := SetBoard
-		          withLengthInTileAndParsec: #( 6 6 )
-		          withWormHolePositions: aWormHolePair
+
+	aTileArray := OrderedCollection new.
+	10 timesRepeat: [ aTileArray add: NullEffect new ].
+	aTileArray
+		at: 2
+		put: (WormholeEffect  fromPosition: 2 toPosition: 5).
+	aTileArray
+		at: 5
+		put: (WormholeEffect fromPosition: 5 toPosition: 2).
+
+	aBoard := Board
+		          withTileEffectCollection: aTileArray
+		          withLength: #( 6 6 )
 		          withAmountOfLaps: 3.
+
 	aShipName := OrderedCollection with: 'Juan'.
 	aGame := Game
 		         withBoard: aBoard
