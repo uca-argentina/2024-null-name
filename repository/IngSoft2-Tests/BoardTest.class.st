@@ -151,15 +151,42 @@ BoardTest >> testWhenABoardIsCreatedWithATileEffectCreatorItFollowsTheSetDistrib
 { #category : #tests }
 BoardTest >> testWhenBoardIsCreatedTheAmountOfEffectsFollowTheCorrectDistribution [
 
-	| aBoard aPairOfLengths aWormHolePair |
-	aWormHolePair := #( 2 4 ).
-	aPairOfLengths := #( 102 10 ).
-
-	aBoard := LoadedBoard
-		          withLengthInTileAndParsec: aPairOfLengths
-		          withWormHolePositions: aWormHolePair
-		          withAmountOfLaps: 1
-		          withParsecArray: #( 1 3 5 1 ).
+	| aBoard aPairOfLengths aWormHolePair aProbabilityDistributionCollection aTileEffectsCreator aTileArray|
+	
+	aWormHolePair := #(101 102).
+	aPairOfLengths := #( 102 102 ).
+	
+	aProbabilityDistributionCollection := OrderedCollection with:
+		                                      (EffectProbability
+			                                       effect: [ NullEffect new ]
+			                                       withProbability: 40)with:
+		                                      (EffectProbability
+			                                       effect: [ BlackHoleEffect  new ]
+			                                       withProbability: 20)with:
+		                                      (EffectProbability
+			                                       effect: [ HyperSpaceJumpEffect new ]
+			                                       withProbability: 20)with:
+		                                      (EffectProbability
+			                                       effect: [ MoonWalkEffect  new ]
+			                                       withProbability: 10)with:
+		                                      (EffectProbability
+			                                       effect: [ HyperJumpEffect  new ]
+			                                       withProbability: 8)with:
+		                                      (EffectProbability
+			                                       effect: [ AtomicBombEffect  new ]
+			                                       withProbability: 2).
+	
+		aTileEffectsCreator := TileEffectsCreator
+				createWithBoardLength: aPairOfLengths
+				withWormHolePositions: aWormHolePair
+				withParsecArray: #( 1 1 1 )
+				withProbabilityDistribution: aProbabilityDistributionCollection.
+		aTileArray := aTileEffectsCreator generateStandarEffectArray.
+		
+		aBoard := Board
+				withTileEffectCollection: aTileArray
+				withLength: #( 4 4 )
+				withAmountOfLaps: 1.
 
 	self assert: (aBoard allTileEffectsAmount at: NullEffect) equals: 40.
 

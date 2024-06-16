@@ -7,7 +7,8 @@ Class {
 	#instVars : [
 		'wormHolePair',
 		'probabilityEffects',
-		'boardLengths'
+		'boardLengths',
+		'tileNumber'
 	],
 	#category : #'IngSoft2-Model'
 }
@@ -59,7 +60,7 @@ TileEffectsCreator class >> wormHolePairIsValid: aWormHolePair with: aNumberOfTi
 ]
 
 { #category : #comparing }
-TileEffectsCreator >> determineRange [
+TileEffectsCreator >> determineRangeRandom [
 
 	| aRandomNumber |
 	aRandomNumber := (1 to: 100) atRandom asInteger.
@@ -69,13 +70,46 @@ TileEffectsCreator >> determineRange [
 ]
 
 { #category : #comparing }
+TileEffectsCreator >> determineRangeStandar [
+
+	tileNumber := tileNumber + 1 > ((boardLengths at: 'Tiles') - 2)
+		              ifTrue: [ 1 ]
+		              ifFalse: [ tileNumber + 1 ].
+
+	^ (probabilityEffects detect: [ :aProbabilityEffect |
+		   aProbabilityEffect rangeIncludes: tileNumber ]) effect
+]
+
+{ #category : #comparing }
 TileEffectsCreator >> generateRandomEffectArray [
 
 	| tileEffectArray |
 	tileEffectArray := OrderedCollection new.
 
 	1 to: (boardLengths at: 'Tiles') do: [ :i |
-	tileEffectArray add: self determineRange ].
+	tileEffectArray add: self determineRangeRandom ].
+
+	tileEffectArray at: 1 put: NullEffect new.
+
+	tileEffectArray at: wormHolePair first put: (WormholeEffect
+			 fromPosition: wormHolePair first
+			 toPosition: wormHolePair last).
+
+	tileEffectArray at: wormHolePair last put: (WormholeEffect
+			 fromPosition: wormHolePair last
+			 toPosition: wormHolePair first).
+
+	^ tileEffectArray
+]
+
+{ #category : #'as yet unclassified' }
+TileEffectsCreator >> generateStandarEffectArray [
+
+	| tileEffectArray |
+	tileEffectArray := OrderedCollection new.
+	tileNumber := 0.
+	1 to: (boardLengths at: 'Tiles') do: [ :i |
+	tileEffectArray add: self determineRangeStandar ].
 
 	tileEffectArray at: 1 put: NullEffect new.
 
