@@ -60,7 +60,7 @@ Board >> allTileEffectsAmount [
 ]
 
 { #category : #modifying }
-Board >> applyTileEffectOn: aGame At: aPosition [
+Board >> applyTileEffectOn: aGame at: aPosition [
 
 	(tileEffectArray at: aPosition) applyOn: aGame
 ]

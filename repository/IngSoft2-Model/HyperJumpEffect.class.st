@@ -36,6 +36,12 @@ HyperJumpEffect >> currentParsec [
 	^ parsecNumber
 ]
 
+{ #category : #generators }
+HyperJumpEffect >> generateParameters: aTileEffectCreator [
+
+	aTileEffectCreator generateHyperJumpParameters: self
+]
+
 { #category : #initialization }
 HyperJumpEffect >> initializeWithParsecs: aParsecArray andBoardLengths: aPairOfLengths [
 

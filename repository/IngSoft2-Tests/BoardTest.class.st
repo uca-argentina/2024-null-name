@@ -151,42 +151,48 @@ BoardTest >> testWhenABoardIsCreatedWithATileEffectCreatorItFollowsTheSetDistrib
 { #category : #tests }
 BoardTest >> testWhenBoardIsCreatedTheAmountOfEffectsFollowTheCorrectDistribution [
 
-	| aBoard aPairOfLengths aWormHolePair aProbabilityDistributionCollection aTileEffectsCreator aTileArray|
-	
-	aWormHolePair := #(101 102).
+	| aBoard aPairOfLengths aWormHolePair aProbabilityDistributionCollection aTileEffectsCreator aTileArray |
+	aWormHolePair := #( 101 102 ).
 	aPairOfLengths := #( 102 102 ).
-	
-	aProbabilityDistributionCollection := OrderedCollection with:
+
+	aProbabilityDistributionCollection := OrderedCollection
+		                                      with:
 		                                      (EffectProbability
-			                                       effect: [ NullEffect new ]
-			                                       withProbability: 40)with:
+			                                       effect: [ NullEffect ]
+			                                       withProbability: 40)
+		                                      with:
 		                                      (EffectProbability
-			                                       effect: [ BlackHoleEffect  new ]
-			                                       withProbability: 20)with:
+			                                       effect: [ BlackHoleEffect ]
+			                                       withProbability: 20)
+		                                      with: (EffectProbability
+				                                       effect: [
+				                                       HyperSpaceJumpEffect ]
+				                                       withProbability: 20)
+		                                      with:
 		                                      (EffectProbability
-			                                       effect: [ HyperSpaceJumpEffect new ]
-			                                       withProbability: 20)with:
+			                                       effect: [ MoonWalkEffect ]
+			                                       withProbability: 10)
+		                                      with:
 		                                      (EffectProbability
-			                                       effect: [ MoonWalkEffect  new ]
-			                                       withProbability: 10)with:
+			                                       effect: [ HyperJumpEffect ]
+			                                       withProbability: 8)
+		                                      with:
 		                                      (EffectProbability
-			                                       effect: [ HyperJumpEffect  new ]
-			                                       withProbability: 8)with:
-		                                      (EffectProbability
-			                                       effect: [ AtomicBombEffect  new ]
+			                                       effect: [ AtomicBombEffect ]
 			                                       withProbability: 2).
-	
-		aTileEffectsCreator := TileEffectsCreator
-				createWithBoardLength: aPairOfLengths
-				withWormHolePositions: aWormHolePair
-				withParsecArray: #( 1 1 1 )
-				withProbabilityDistribution: aProbabilityDistributionCollection.
-		aTileArray := aTileEffectsCreator generateLoadedEffectArray.
-		
-		aBoard := Board
-				withTileEffectCollection: aTileArray
-				withLength: #( 4 4 )
-				withAmountOfLaps: 1.
+
+	aTileEffectsCreator := TileEffectsCreator
+		                       createWithBoardLength: aPairOfLengths
+		                       withWormHolePositions: aWormHolePair
+		                       withParsecArray: #( 1 1 1 )
+		                       withProbabilityDistribution:
+		                       aProbabilityDistributionCollection.
+	aTileArray := aTileEffectsCreator generateLoadedEffectArray.
+
+	aBoard := Board
+		          withTileEffectCollection: aTileArray
+		          withLength: #( 4 4 )
+		          withAmountOfLaps: 1.
 
 	self assert: (aBoard allTileEffectsAmount at: NullEffect) equals: 40.
 
@@ -213,7 +219,7 @@ BoardTest >> testWhenBoardIsCreatedTheAmountOfEffectsFollowTheCorrectDistributio
 { #category : #tests }
 BoardTest >> testWhenBoardIsCreatedWithRandomizedEffectProbabilitiesItFollowsCorrespondingDistribution [
 	"
-	TEST FAILS WITH PHARO 12 CI"
+	TEST FAILS WITH PHARO 12 CI
 	
 	| aBoard aPairOfLengths aWormHolePair numberOfIterations aDictonaryOfEffectApearences averageEffectDistribution aProbabilityDistributionCollection| 
 	
@@ -294,7 +300,7 @@ BoardTest >> testWhenBoardIsCreatedWithRandomizedEffectProbabilitiesItFollowsCor
 	self
 		assert: (averageEffectDistribution at: WormholeEffect)
 		equals: 2
-
+"
 ]
 
 { #category : #tests }

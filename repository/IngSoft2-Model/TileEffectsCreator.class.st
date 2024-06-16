@@ -7,7 +7,8 @@ Class {
 	#instVars : [
 		'wormHolePair',
 		'probabilityEffects',
-		'boardLengths'
+		'boardLengths',
+		'parsecArray'
 	],
 	#category : #'IngSoft2-Model'
 }
@@ -61,11 +62,22 @@ TileEffectsCreator class >> wormHolePairIsValid: aWormHolePair with: aNumberOfTi
 { #category : #comparing }
 TileEffectsCreator >> determineRangeRandom [
 
-	| aRandomNumber |
+	| aRandomNumber anEffect |
 	aRandomNumber := (1 to: 100) atRandom asInteger.
 
-	^ (probabilityEffects detect: [ :aProbabilityEffect |
-		   aProbabilityEffect rangeIncludes: aRandomNumber ]) effect
+	anEffect := ((probabilityEffects detect: [ :aProbabilityEffect |
+		             aProbabilityEffect rangeIncludes: aRandomNumber ])
+		            effect).
+
+	(anEffect class new) generateParameters: self.
+
+	^ anEffect
+]
+
+{ #category : #comparing }
+TileEffectsCreator >> generateHyperJumpParameters: anEffect [
+
+	anEffect initializeWithParsecs: parsecArray andBoardLengths: boardLengths
 ]
 
 { #category : #'creating collection' }
@@ -76,13 +88,15 @@ TileEffectsCreator >> generateLoadedEffectArray [
 	tileNumber := 0.
 
 	1 to: (boardLengths at: 'Tiles') do: [ :i |
+		| anEffect |
 		tileNumber := tileNumber + 1 > 100
 			              ifTrue: [ 1 ]
 			              ifFalse: [ tileNumber + 1 ].
 
-		tileEffectArray add:
-			(probabilityEffects detect: [ :aProbabilityEffect |
-				 aProbabilityEffect rangeIncludes: tileNumber ]) effect ].
+		anEffect := (probabilityEffects detect: [ :aProbabilityEffect |
+			             aProbabilityEffect rangeIncludes: tileNumber ]) effect.
+
+		tileEffectArray add: (anEffect new generateParameters: self) ].
 
 	tileEffectArray at: 1 put: NullEffect new.
 
@@ -95,6 +109,13 @@ TileEffectsCreator >> generateLoadedEffectArray [
 			 toPosition: wormHolePair first).
 
 	^ tileEffectArray
+]
+
+{ #category : #comparing }
+TileEffectsCreator >> generateMoonWalkParameters: anEffect [
+
+	anEffect initializeWithMoonwalkDistance:
+		(boardLengths at: 'Tiles') atRandom
 ]
 
 { #category : #'creating collection' }
@@ -136,6 +157,7 @@ TileEffectsCreator >> initializeWithLengths: aBoardLength withWormHolePositions:
 		                            withParsecArray: aParsecArray
 		                            andBoardLengths: boardLengths ].
 	wormHolePair := aWormHolePair.
+	parsecArray := aParsecArray.
 
 	probabilityEffects := self transformIntoProbabilityRanges:
 		                      aProbabilityDistributionCollection

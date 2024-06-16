@@ -78,7 +78,7 @@ SetBoard >> adjustShipPosition: aShip [
 ]
 
 { #category : #modifying }
-SetBoard >> applyTileEffectOn: aGame At: aPosition [
+SetBoard >> applyTileEffectOn: aGame at: aPosition [
 
 	(tileEffectArray at: aPosition) applyOn: aGame
 ]

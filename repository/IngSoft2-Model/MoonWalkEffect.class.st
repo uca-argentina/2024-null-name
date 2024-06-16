@@ -33,6 +33,12 @@ MoonWalkEffect >> affectAllShips: aShipCollection but: currentTurnShip [
 		thenCollect: [ :aShip | aShip moveTiles: moonWalkDistance negated ]
 ]
 
+{ #category : #generators }
+MoonWalkEffect >> generateParameters: aTileEffectCreator [
+
+	aTileEffectCreator generateMoonWalkParameters: self
+]
+
 { #category : #initialization }
 MoonWalkEffect >> initializeWithMoonwalkDistance: aDistance [
 

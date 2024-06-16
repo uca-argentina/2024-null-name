@@ -81,7 +81,7 @@ LoadedBoard >> allTileEffectsAmount [
 ]
 
 { #category : #modifying }
-LoadedBoard >> applyTileEffectOn: aGame At: aPosition [
+LoadedBoard >> applyTileEffectOn: aGame at: aPosition [
 
 	(tileEffectArray at: aPosition) applyOn: aGame
 ]

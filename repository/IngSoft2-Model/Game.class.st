@@ -127,7 +127,7 @@ Game >> playTurn [
 	theShipInCurrentTurn moveTiles: movement.
 	gameBoard adjustShipPosition: theShipInCurrentTurn.
 	gameBoard snapToFinishTile: theShipInCurrentTurn.
-	gameBoard applyTileEffectOn: self At: theShipInCurrentTurn position.
+	gameBoard applyTileEffectOn: self at: theShipInCurrentTurn position.
 	shipBattleHandler checkShipBattle: theShipInCurrentTurn.
 	gameTurnHandler checkForShipsWithNoShield.
 	gameTurnHandler nextTurn
