@@ -22,8 +22,15 @@ Board class >> amountOfLapsIsValid: anAmountOfLaps [
 		Error signal: 'Cannot play with less than 1 lap' ]
 ]
 
+{ #category : #'argument validation' }
+Board class >> numberOfParsecsIsValid: aNumberOfParsecs [
+
+	aNumberOfParsecs strictlyPositive ifFalse: [
+		Error signal: 'Board tiles must be greater than 0' ]
+]
+
 { #category : #'class initialization' }
-Board class >> numberOfTileIsValid: aNumberOfTiles [
+Board class >> numberOfTilesIsValid: aNumberOfTiles [
 
 	aNumberOfTiles strictlyPositive ifFalse: [
 		Error signal: 'Board tiles must be greater than 0' ]
@@ -33,7 +40,8 @@ Board class >> numberOfTileIsValid: aNumberOfTiles [
 Board class >> withTileEffectCollection: aTileEffect withLengthInParsecs: aBoardLengthInParsecs withAmountOfLaps: anAmountOfLaps [
 	
 	self amountOfLapsIsValid: anAmountOfLaps.
-	self numberOfTileIsValid: aTileEffect size.
+	self numberOfTilesIsValid: aTileEffect size.
+	self numberOfParsecsIsValid: aBoardLengthInParsecs.
 	
 	^ self new
 		  initializeWithTileEffectCollection: aTileEffect

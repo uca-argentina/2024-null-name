@@ -87,21 +87,24 @@ BoardTest >> testBoardMustHaveAtLeast1Lap [
 { #category : #tests }
 BoardTest >> testSpecialTilesCannotBeCreatedIfPositionsExceedBoardSize [
 
-	| aWormHolePair aProbabilityDistributionCollection|
+	| aWormHolePair aProbabilityDistributionCollection aTileEffectsCreator |
 	aWormHolePair := #( 2 6 ).
 
 	aProbabilityDistributionCollection := OrderedCollection with:
 		                                      (EffectProbability
 			                                       effect: [ NullEffect new ]
 			                                       withProbability: 100).
-
+	aTileEffectsCreator := TileEffectsCreator
+		                       createWithProbabilityDistribution:
+		                       aProbabilityDistributionCollection.
 	self
 		should: [
-			TileEffectsCreator
-				createWithBoardLength: #( 3 3 )
-				withWormHolePositions: aWormHolePair
+			aTileEffectsCreator
+				generateRandomBoardWithAmountOfTiles: 3
+				withAmountOfParsecs: 3
+				withWormHolePair: aWormHolePair
 				withParsecArray: #( 1 1 1 )
-				withProbabilityDistribution: aProbabilityDistributionCollection ]
+				withAmountOfLaps: 1 ]
 		raise: Error
 		withMessage: 'Wormhole tiles are out of bounds'
 ]
@@ -117,14 +120,13 @@ BoardTest >> testTotalSumOfEffectsProbabilitiesIs100 [
 				                                       withMoonwalkDistance:
 				                                       10 atRandom ]
 			                                       withProbability: 80).
-
+ "createWithBoardLength: #( 10 10 )
+				withWormHolePositions: #( 2 3 )
+				withParsecArray: #( 2 1 1 4 )"
 	self
 		should: [
 			TileEffectsCreator
-				createWithBoardLength: #( 10 10 )
-				withWormHolePositions: #( 2 3 )
-				withParsecArray: #( 2 1 1 4 )
-				withProbabilityDistribution: aProbabilityDistributionCollection ]
+				createWithProbabilityDistribution: aProbabilityDistributionCollection ]
 		raise: Error
 		withMessage:
 		'Total efffect probabilities cannot be diferent from 100%'.
@@ -133,24 +135,20 @@ BoardTest >> testTotalSumOfEffectsProbabilitiesIs100 [
 { #category : #tests }
 BoardTest >> testWhenABoardIsCreatedWithATileEffectCreatorItFollowsTheSetDistributionOfTileEffectCreator [
 
-	| tileArray aTileEffectCreator aProbabilityDistributionCollection aBoard |
+	| aTileEffectsCreator aProbabilityDistributionCollection aBoard |
 	aProbabilityDistributionCollection := OrderedCollection with:
 		                                      (EffectProbability
 			                                       effect: [ NullEffect new ]
 			                                       withProbability: 100).
+	aTileEffectsCreator := TileEffectsCreator
+		                       createWithProbabilityDistribution:
+		                       aProbabilityDistributionCollection.
 
-	aTileEffectCreator := TileEffectsCreator
-		                      createWithBoardLength: #( 10 10 )
-		                      withWormHolePositions: #( 2 3 )
-		                      withParsecArray: #( 2 1 1 4 )
-		                      withProbabilityDistribution:
-		                      aProbabilityDistributionCollection.
-
-	tileArray := aTileEffectCreator generateRandomEffectArray.
-
-	aBoard := Board
-		          withTileEffectCollection: tileArray
-		          withLengthInParsecs: 10
+	aBoard := aTileEffectsCreator
+		          generateRandomBoardWithAmountOfTiles: 10
+		          withAmountOfParsecs: 10
+		          withWormHolePair: #( 2 3 )
+		          withParsecArray: #( 2 1 1 4 )
 		          withAmountOfLaps: 3.
 
 	self assert: (aBoard allTileEffectsAmount at: NullEffect) equals: 8
@@ -159,10 +157,10 @@ BoardTest >> testWhenABoardIsCreatedWithATileEffectCreatorItFollowsTheSetDistrib
 { #category : #tests }
 BoardTest >> testWhenBoardIsCreatedTheAmountOfEffectsFollowTheCorrectDistribution [
 
-	| aBoard aPairOfLengths aWormHolePair aProbabilityDistributionCollection aTileEffectsCreator aTileArray |
+	| aBoard aPairOfLengths aWormHolePair aProbabilityDistributionCollection aTileEffectsCreator |
 	aWormHolePair := #( 101 102 ).
 	aPairOfLengths := #( 102 102 ).
-	
+
 	aProbabilityDistributionCollection := OrderedCollection
 		                                      with:
 		                                      (EffectProbability
@@ -190,16 +188,14 @@ BoardTest >> testWhenBoardIsCreatedTheAmountOfEffectsFollowTheCorrectDistributio
 			                                       withProbability: 2).
 
 	aTileEffectsCreator := TileEffectsCreator
-		                       createWithBoardLength: aPairOfLengths
-		                       withWormHolePositions: aWormHolePair
-		                       withParsecArray: #( 1 1 1 )
-		                       withProbabilityDistribution:
+		                       createWithProbabilityDistribution:
 		                       aProbabilityDistributionCollection.
-	aTileArray := aTileEffectsCreator generateLoadedEffectArray.
 
-	aBoard := Board
-		          withTileEffectCollection: aTileArray
-		          withLengthInParsecs: 102
+	aBoard := aTileEffectsCreator
+		          generateLoadedBoardWithAmountOfTiles: 102
+		          withAmountOfParsecs: 102
+		          withWormHolePair: aWormHolePair
+		          withParsecArray: #( 1 1 1 )
 		          withAmountOfLaps: 1.
 
 	self assert: (aBoard allTileEffectsAmount at: NullEffect) equals: 40.
@@ -314,20 +310,24 @@ BoardTest >> testWhenBoardIsCreatedWithRandomizedEffectProbabilitiesItFollowsCor
 { #category : #tests }
 BoardTest >> testWormHoleEffectCannotBeCreatedInFirstTileOfBoard [
 
-	| aWormHolePair aProbabilityDistributionCollection |
+	| aWormHolePair aProbabilityDistributionCollection aTileEffectsCreator |
 	aWormHolePair := #( 1 3 ).
 	aProbabilityDistributionCollection := OrderedCollection with:
 		                                      (EffectProbability
 			                                       effect: [ NullEffect new ]
 			                                       withProbability: 100).
 
+	aTileEffectsCreator := TileEffectsCreator
+		                       createWithProbabilityDistribution:
+		                       aProbabilityDistributionCollection.
 	self
 		should: [
-			TileEffectsCreator
-				createWithBoardLength: #( 3 3 )
-				withWormHolePositions: aWormHolePair
+			aTileEffectsCreator
+				generateRandomBoardWithAmountOfTiles: 3
+				withAmountOfParsecs: 3
+				withWormHolePair: aWormHolePair
 				withParsecArray: #( 1 1 1 )
-				withProbabilityDistribution: aProbabilityDistributionCollection ]
+				withAmountOfLaps: 1 ]
 		raise: Error
 		withMessage: 'Wormhole cannot be created in first tile of board'
 ]
@@ -335,22 +335,25 @@ BoardTest >> testWormHoleEffectCannotBeCreatedInFirstTileOfBoard [
 { #category : #tests }
 BoardTest >> testWormHoleTilePairsCannotOverlap [
 
-	| aWormHolePair aProbabilityDistributionCollection |
+	| aWormHolePair aProbabilityDistributionCollection aTileEffectsCreator |
 	aWormHolePair := #( 3 3 ).
 
 	aProbabilityDistributionCollection := OrderedCollection with:
 		                                      (EffectProbability
 			                                       effect: [ NullEffect new ]
 			                                       withProbability: 100).
-
+	aTileEffectsCreator := TileEffectsCreator
+		                       createWithProbabilityDistribution:
+		                       aProbabilityDistributionCollection.
 
 	self
 		should: [
-			TileEffectsCreator
-				createWithBoardLength: #( 3 3 )
-				withWormHolePositions: aWormHolePair
+			aTileEffectsCreator
+				generateRandomBoardWithAmountOfTiles: 3
+				withAmountOfParsecs: 3
+				withWormHolePair: aWormHolePair
 				withParsecArray: #( 1 1 1 )
-				withProbabilityDistribution: aProbabilityDistributionCollection ]
+				withAmountOfLaps: 1 ]
 		raise: Error
 		withMessage: 'Wormhole tiles cannot be in the same position'
 ]

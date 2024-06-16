@@ -13,7 +13,7 @@ Class {
 	#category : #'IngSoft2-Model'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #'class initialization' }
 EffectProbability class >> effect: aEffect withProbability: aProbability [
 
 	^ self new

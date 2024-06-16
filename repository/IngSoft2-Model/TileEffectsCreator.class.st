@@ -5,33 +5,23 @@ Class {
 	#name : #TileEffectsCreator,
 	#superclass : #Object,
 	#instVars : [
-		'wormHolePair',
 		'probabilityEffects',
-		'boardLengths',
-		'parsecArray'
+		'parsecArray',
+		'tiles',
+		'parsecs'
 	],
 	#category : #'IngSoft2-Model'
 }
 
 { #category : #'class initialization' }
-TileEffectsCreator class >> createWithBoardLength: aBoardLenght withWormHolePositions: aWormHolePair withParsecArray: aParsecArray withProbabilityDistribution: aProbabilityDistributionCollection [
+TileEffectsCreator class >> createWithProbabilityDistribution: aProbabilityDistributionCollection [
 
-	self numberOfTileIsValid: aBoardLenght first.
-	self wormHolePairIsValid: aWormHolePair with: aBoardLenght first.
+	"self numberOfTileIsValid: aBoardLenght first.
+	self wormHolePairIsValid: aWormHolePair with: aBoardLenght first."
 	self probabilityDistributionIsValid: aProbabilityDistributionCollection.
 	
 	^ self new
-		  initializeWithLengths: aBoardLenght
-		  withWormHolePositions: aWormHolePair
-		  withParsecArray: aParsecArray asOrderedCollection
-		  withProbabilityDistribution: aProbabilityDistributionCollection
-]
-
-{ #category : #'class initialization' }
-TileEffectsCreator class >> numberOfTileIsValid: aNumberOfTiles [
-
-	aNumberOfTiles strictlyPositive ifFalse: [
-		Error signal: 'Board tiles must be greater than 0' ]
+		  initializeWithProbabilityDistribution: aProbabilityDistributionCollection
 ]
 
 { #category : #'class initialization' }
@@ -45,18 +35,6 @@ TileEffectsCreator class >> probabilityDistributionIsValid: aProbabilityDistribu
 	sum = 100 ifFalse: [
 		Error signal:
 			'Total efffect probabilities cannot be diferent from 100%' ]
-]
-
-{ #category : #'class initialization' }
-TileEffectsCreator class >> wormHolePairIsValid: aWormHolePair with: aNumberOfTiles [
-
-	(aWormHolePair allSatisfy: [ :i |
-		 i <= aNumberOfTiles and: i strictlyPositive ]) ifFalse: [
-		Error signal: 'Wormhole tiles are out of bounds' ].
-	(aWormHolePair anySatisfy: [ :i | i = 1 ]) ifTrue: [
-		Error signal: 'Wormhole cannot be created in first tile of board' ].
-	aWormHolePair first = aWormHolePair last ifTrue: [
-		Error signal: 'Wormhole tiles cannot be in the same position' ]
 ]
 
 { #category : #comparing }
@@ -77,17 +55,28 @@ TileEffectsCreator >> determineRangeRandom [
 { #category : #comparing }
 TileEffectsCreator >> generateHyperJumpParameters: anEffect [
 
-	anEffect initializeWithParsecs: parsecArray andBoardLengths: boardLengths
+	anEffect
+		initializeWithParsecArray: parsecArray
+		andLengthInTiles: tiles
+		andLengthInParsecs: parsecs
 ]
 
-{ #category : #'creating collection' }
-TileEffectsCreator >> generateLoadedEffectArray [
+{ #category : #generating }
+TileEffectsCreator >> generateLoadedBoardWithAmountOfTiles: anAmountOfTiles withAmountOfParsecs: anAmountOfParsecs withWormHolePair: aWormHolePair withParsecArray: aParsecArray withAmountOfLaps: anAmountOfLaps [
 
 	| tileEffectArray tileNumber |
+	
+	self numberOfTilesIsValid: anAmountOfTiles.
+	self numberOfParsecsIsValid: anAmountOfParsecs.
+	self wormHolePairIsValid: aWormHolePair with: anAmountOfTiles.
+	
 	tileEffectArray := OrderedCollection new.
 	tileNumber := 0.
+	tiles := anAmountOfTiles.
+	parsecs := anAmountOfParsecs.
+	parsecArray := aParsecArray.
 
-	1 to: (boardLengths at: 'Tiles') do: [ :i |
+	1 to: tiles do: [ :i |
 		| anEffect |
 		tileNumber := tileNumber + 1 > 100
 			              ifTrue: [ 1 ]
@@ -100,58 +89,74 @@ TileEffectsCreator >> generateLoadedEffectArray [
 
 	tileEffectArray at: 1 put: NullEffect new.
 
-	tileEffectArray at: wormHolePair first put: (WormholeEffect
-			 fromPosition: wormHolePair first
-			 toPosition: wormHolePair last).
+	tileEffectArray at: aWormHolePair first put: (WormholeEffect
+			 fromPosition: aWormHolePair first
+			 toPosition: aWormHolePair last).
 
-	tileEffectArray at: wormHolePair last put: (WormholeEffect
-			 fromPosition: wormHolePair last
-			 toPosition: wormHolePair first).
+	tileEffectArray at: aWormHolePair last put: (WormholeEffect
+			 fromPosition: aWormHolePair last
+			 toPosition: aWormHolePair first).
 
-	^ tileEffectArray
+	^ Board withTileEffectCollection: tileEffectArray withLengthInParsecs: anAmountOfParsecs withAmountOfLaps: anAmountOfLaps
 ]
 
 { #category : #comparing }
 TileEffectsCreator >> generateMoonWalkParameters: anEffect [
 
 	anEffect initializeWithMoonwalkDistance:
-		(boardLengths at: 'Tiles') atRandom
+		(tiles) atRandom
 ]
 
-{ #category : #'creating collection' }
-TileEffectsCreator >> generateRandomEffectArray [
+{ #category : #generating }
+TileEffectsCreator >> generateRandomBoardWithAmountOfTiles: anAmountOfTiles withAmountOfParsecs: anAmountOfParsecs withWormHolePair: aWormHolePair withParsecArray: aParsecArray withAmountOfLaps: anAmountOfLaps [
 
 	| tileEffectArray |
+	
+	self numberOfTilesIsValid: anAmountOfTiles.
+	self numberOfParsecsIsValid: anAmountOfParsecs.
+	self wormHolePairIsValid: aWormHolePair with: anAmountOfTiles.
+	
+	
 	tileEffectArray := OrderedCollection new.
+	tiles := anAmountOfTiles.
+	parsecs := anAmountOfParsecs.
+	parsecArray := aParsecArray.
 
-	1 to: (boardLengths at: 'Tiles') do: [ :i |
+	1 to: tiles do: [ :i |
 	tileEffectArray add: self determineRangeRandom ].
 
 	tileEffectArray at: 1 put: NullEffect new.
 
-	tileEffectArray at: wormHolePair first put: (WormholeEffect
-			 fromPosition: wormHolePair first
-			 toPosition: wormHolePair last).
+	tileEffectArray at: aWormHolePair first put: (WormholeEffect
+			 fromPosition: aWormHolePair first
+			 toPosition: aWormHolePair last).
 
-	tileEffectArray at: wormHolePair last put: (WormholeEffect
-			 fromPosition: wormHolePair last
-			 toPosition: wormHolePair first).
+	tileEffectArray at: aWormHolePair last put: (WormholeEffect
+			 fromPosition: aWormHolePair last
+			 toPosition: aWormHolePair first).
 
-	^ tileEffectArray
-
+	^ Board withTileEffectCollection: tileEffectArray withLengthInParsecs: anAmountOfParsecs withAmountOfLaps: anAmountOfLaps
 ]
 
-{ #category : #'creating collection' }
-TileEffectsCreator >> initializeWithLengths: aBoardLength withWormHolePositions: aWormHolePair withParsecArray: aParsecArray withProbabilityDistribution: aProbabilityDistributionCollection [
+{ #category : #initialization }
+TileEffectsCreator >> initializeWithProbabilityDistribution: aProbabilityDistributionCollection [
 
-	boardLengths := Dictionary newFrom: {
-			                ('Tiles' -> aBoardLength first).
-			                ('Parsecs' -> aBoardLength last) }.
-
-	wormHolePair := aWormHolePair.
-	parsecArray := aParsecArray.
 	probabilityEffects := self transformIntoProbabilityRanges:
 		                      aProbabilityDistributionCollection
+]
+
+{ #category : #'argument validation' }
+TileEffectsCreator >> numberOfParsecsIsValid: aNumberOfParsecs [
+
+	aNumberOfParsecs strictlyPositive ifFalse: [
+		Error signal: 'Board size in parsecs must be greater than 0' ]
+]
+
+{ #category : #'argument validation' }
+TileEffectsCreator >> numberOfTilesIsValid: aNumberOfTiles [
+
+	aNumberOfTiles strictlyPositive ifFalse: [
+		Error signal: 'Board tiles must be greater than 0' ]
 ]
 
 { #category : #comparing }
@@ -164,4 +169,16 @@ TileEffectsCreator >> transformIntoProbabilityRanges: aProbabilityDistributionCo
 		effectProbability setRange: acc.
 		acc := acc + effectProbability probability].
 	^ aProbabilityDistributionCollection
+]
+
+{ #category : #'argument validation' }
+TileEffectsCreator >> wormHolePairIsValid: aWormHolePair with: aNumberOfTiles [
+
+	(aWormHolePair allSatisfy: [ :i |
+		 i <= aNumberOfTiles and: i strictlyPositive ]) ifFalse: [
+		Error signal: 'Wormhole tiles are out of bounds' ].
+	(aWormHolePair anySatisfy: [ :i | i = 1 ]) ifTrue: [
+		Error signal: 'Wormhole cannot be created in first tile of board' ].
+	aWormHolePair first = aWormHolePair last ifTrue: [
+		Error signal: 'Wormhole tiles cannot be in the same position' ]
 ]
