@@ -32,7 +32,7 @@ GameInitalizationTest >> testGameCannotBeInitializedWithoutADice [
 
 	aBoard := Board
 		          withTileEffectCollection: aTileArray
-		          withLength: #( 13 13 )
+		          withLengthInParsecs: 13
 		          withAmountOfLaps: 1.
 		
 	self
@@ -60,7 +60,7 @@ GameInitalizationTest >> testGameCannotBeInitializedWithoutAnyShipNames [
 			Game
 				withBoard: (Board
 				          withTileEffectCollection: aTileArray
-				          withLength: #( 20 20 )
+				          withLengthInParsecs: 20
 				          withAmountOfLaps: 1)
 				withShipNames: aCollectionOfNames
 				withDice: (Dice with: aCollectionOfDie) ]
@@ -78,7 +78,7 @@ GameInitalizationTest >> testGameDoesNotAllowRepeatedShipNames [
 	
 	aBoard := Board
 				          withTileEffectCollection: aTileArray
-				          withLength: #( 5 5 )
+				          withLengthInParsecs: 5
 				          withAmountOfLaps: 1.
 	aCollectionOfNames := OrderedCollection
 		                      with: 'Juan'

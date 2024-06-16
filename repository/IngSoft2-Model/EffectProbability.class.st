@@ -1,3 +1,6 @@
+"
+associates effects and their generation probability
+"
 Class {
 	#name : #EffectProbability,
 	#superclass : #Object,

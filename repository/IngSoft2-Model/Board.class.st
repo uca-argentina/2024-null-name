@@ -30,14 +30,14 @@ Board class >> numberOfTileIsValid: aNumberOfTiles [
 ]
 
 { #category : #'class initialization' }
-Board class >> withTileEffectCollection: aTileEffect withLength: aBoardLength withAmountOfLaps: anAmountOfLaps [
+Board class >> withTileEffectCollection: aTileEffect withLengthInParsecs: aBoardLengthInParsecs withAmountOfLaps: anAmountOfLaps [
 	
 	self amountOfLapsIsValid: anAmountOfLaps.
-	self numberOfTileIsValid: aBoardLength first.
+	self numberOfTileIsValid: aTileEffect size.
 	
 	^ self new
 		  initializeWithTileEffectCollection: aTileEffect
-		  withLength: aBoardLength
+		  withLengthInParsecs: aBoardLengthInParsecs
 		  withAmountOfLaps: anAmountOfLaps
 ]
 
@@ -74,10 +74,10 @@ Board >> applyTileEffectOn: aGame at: aPosition [
 ]
 
 { #category : #initialization }
-Board >> initializeWithTileEffectCollection: aTileEffectCollection withLength: aLenght withAmountOfLaps: anAmountOfLaps [
+Board >> initializeWithTileEffectCollection: aTileEffectCollection withLengthInParsecs: aBoardLengthInParsecs withAmountOfLaps: anAmountOfLaps [
 
 	maxLap := anAmountOfLaps.
-	parsecs := aLenght last.
+	parsecs := aBoardLengthInParsecs.
 
 	tileEffectArray := aTileEffectCollection
 ]

@@ -138,27 +138,18 @@ TileEffectsCreator >> generateRandomEffectArray [
 			 toPosition: wormHolePair first).
 
 	^ tileEffectArray
+
 ]
 
 { #category : #'creating collection' }
 TileEffectsCreator >> initializeWithLengths: aBoardLength withWormHolePositions: aWormHolePair withParsecArray: aParsecArray withProbabilityDistribution: aProbabilityDistributionCollection [
 
-	| moonWalkEffectGenerator hyperJumpEffectGenerator |
 	boardLengths := Dictionary newFrom: {
 			                ('Tiles' -> aBoardLength first).
 			                ('Parsecs' -> aBoardLength last) }.
 
-	moonWalkEffectGenerator := [
-	                           MoonWalkEffect withMoonwalkDistance:
-		                           (boardLengths at: 'Tiles') atRandom ].
-
-	hyperJumpEffectGenerator := [
-	                            HyperJumpEffect
-		                            withParsecArray: aParsecArray
-		                            andBoardLengths: boardLengths ].
 	wormHolePair := aWormHolePair.
 	parsecArray := aParsecArray.
-
 	probabilityEffects := self transformIntoProbabilityRanges:
 		                      aProbabilityDistributionCollection
 ]

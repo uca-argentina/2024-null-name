@@ -32,7 +32,7 @@ GameTest >> testAGameCanShowTheCurrentRanking [
 	aGame := Game
 		         withBoard: (Board
 				          withTileEffectCollection: aTileArray
-				          withLength: #( 15 15 )
+				          withLengthInParsecs: 15
 				          withAmountOfLaps: 3)
 		         withShipNames: aCollectionOfNames
 		         withDice: (Dice with: aCollectionOfDie).
@@ -70,7 +70,7 @@ GameTest >> testGameCanTellAllShipPositions [
 	aGame := Game
 		         withBoard: (Board
 				          withTileEffectCollection: aTileArray
-				          withLength: #( 30 30 )
+				          withLengthInParsecs: 30
 				          withAmountOfLaps: 1)
 		         withShipNames: aCollectionOfNames
 		         withDice: (Dice with: aCollectionOfDie).

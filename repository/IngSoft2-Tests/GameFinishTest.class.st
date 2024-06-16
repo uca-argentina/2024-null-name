@@ -20,7 +20,7 @@ GameFinishTest >> testGameKnowTheWinnerShip [
 	aGame := Game
 		         withBoard: (Board
 				          withTileEffectCollection: aTileArray
-				          withLength: #( 17 17 )
+				          withLengthInParsecs: 17
 				          withAmountOfLaps: 1)
 		         withShipNames: aCollectionOfNames
 		         withDice: (Dice with: aCollectionOfDie).
@@ -43,7 +43,7 @@ GameFinishTest >> testIfGameIsNotFinishedThenIsFinishedIsTrue [
 
 	aBoard := Board
 		          withTileEffectCollection: aTileArray
-		          withLength: #( 10 10 )
+		          withLengthInParsecs: 10
 		          withAmountOfLaps: 1.
 	aCollectionOfNames := OrderedCollection with: 'Juan'.
 	aCollectionOfDie := OrderedCollection with: (LoadedDie of: 10).
@@ -77,7 +77,7 @@ GameFinishTest >> testIfGameIsOngoingThereIsNoWinner [
 	aGame := Game
 		         withBoard: (	Board
 				          withTileEffectCollection: aTileArray
-				          withLength: #( 17 17 )
+				          withLengthInParsecs: 17
 				          withAmountOfLaps: 1)
 		         withShipNames: aCollectionOfNames
 		         withDice: (Dice with: aCollectionOfDie).
@@ -104,7 +104,7 @@ GameFinishTest >> testIfThereIsAWinnerThereAreNoMoreMovements [
 	aGame := Game
 		         withBoard: (Board
 				          withTileEffectCollection: aTileArray
-				          withLength: #( 17 17 )
+				          withLengthInParsecs: 17
 				          withAmountOfLaps: 1)
 		         withShipNames: aCollectionOfNames
 		         withDice: (Dice with: aCollectionOfDie).
@@ -134,7 +134,7 @@ GameFinishTest >> testWhenOneShipReachesTheEndGameIsFinished [
 	aGame := Game
 		         withBoard: (Board
 				          withTileEffectCollection: aTileArray
-				          withLength: #( 16 16 )
+				          withLengthInParsecs: 16
 				          withAmountOfLaps: 1)
 		         withShipNames: aCollectionOfNames
 		         withDice: (Dice with: aCollectionOfDie).

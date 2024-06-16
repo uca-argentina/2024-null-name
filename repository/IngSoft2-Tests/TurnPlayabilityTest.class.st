@@ -18,7 +18,7 @@ TurnPlayabilityTest >> testAGameTurnCanBeSkipped [
 	aGame := Game
 		         withBoard: (Board
 				          withTileEffectCollection: aTileArray
-				          withLength: #( 16 16 )
+				          withLengthInParsecs: 16
 				          withAmountOfLaps: 3)
 		         withShipNames: aCollectionOfNames
 		         withDice: (Dice with: aCollectionOfDie).
@@ -40,7 +40,7 @@ TurnPlayabilityTest >> testWhenAShipFinishesLapThenPositionIsAdjustedAccordingly
 	aGame := Game
 		         withBoard: (Board
 				          withTileEffectCollection: aTileArray
-				          withLength: #( 10 10 )
+				          withLengthInParsecs: 10
 				          withAmountOfLaps: 5)
 		         withShipNames: aCollectionOfNames
 		         withDice: (Dice with: aCollectionOfDie).
@@ -73,7 +73,7 @@ TurnPlayabilityTest >> testWhenFinishedTheEndingPositionOfTheWinnerEqualsTheFirs
 	aGame := Game
 		         withBoard: (Board
 				          withTileEffectCollection: aTileArray
-				          withLength: #( 27 27 )
+				          withLengthInParsecs: 27
 				          withAmountOfLaps: 1)
 		         withShipNames: aCollectionOfNames
 		         withDice: (Dice with: aCollectionOfDie).
@@ -107,7 +107,7 @@ TurnPlayabilityTest >> testWhenShipHasNoShieldsLeftThenCannotPlayTurn [
 	aGame := Game
 		         withBoard: (Board
 				          withTileEffectCollection: aTileArray
-				          withLength: #( 16 16 )
+				          withLengthInParsecs: 16
 				          withAmountOfLaps: 3)
 		         withShipNames: aCollectionOfNames
 		         withDice: (Dice with: aCollectionOfDie).
@@ -140,7 +140,7 @@ TurnPlayabilityTest >> testWhenShipWithNoShieldLosesTwoTurnsThenCanPlayAgain [
 	aGame := Game
 		         withBoard: (Board
 				          withTileEffectCollection: aTileArray
-				          withLength: #( 16 16 )
+				          withLengthInParsecs: 16
 				          withAmountOfLaps: 3)
 		         withShipNames: aCollectionOfNames
 		         withDice: (Dice with: aCollectionOfDie).
@@ -182,7 +182,7 @@ TurnPlayabilityTest >> testWhenShipWithNoShieldsCannotSkipTurn [
 	aGame := Game
 		         withBoard: (Board
 				          withTileEffectCollection: aTileArray
-				          withLength: #( 16 16 )
+				          withLengthInParsecs: 16
 				          withAmountOfLaps: 3)
 		         withShipNames: aCollectionOfNames
 		         withDice: (Dice with: aCollectionOfDie).
@@ -212,7 +212,7 @@ TurnPlayabilityTest >> testWhenTurnIsSkippedThenShipRestoresAllShields [
 	aGame := Game
 		         withBoard: (Board
 				          withTileEffectCollection: aTileArray
-				          withLength: #( 16 16 )
+				          withLengthInParsecs: 16
 				          withAmountOfLaps: 1)
 		         withShipNames: aCollectionOfNames
 		         withDice: (Dice with: aCollectionOfDie).

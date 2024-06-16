@@ -27,7 +27,7 @@ BoardTest >> testBoardCannotBeInitializedWithLessThanOneTile [
 		should: [
 			Board
 				          withTileEffectCollection: aTileArray
-				          withLength: #( 0 0 )
+				          withLengthInParsecs: 0
 				          withAmountOfLaps: 1 ]
 		raise: Error
 		withMessage: 'Board tiles must be greater than 0'
@@ -44,7 +44,7 @@ BoardTest >> testBoardHasANumberOfParsecs [
 		              with: NullEffect new.
 	aBoard := Board
 		          withTileEffectCollection: aTileArray
-		          withLength: #( 4 2 )
+		          withLengthInParsecs: 2
 		          withAmountOfLaps: 3.
 
 	self assert: aBoard numOfParsecs equals: 2
@@ -60,7 +60,7 @@ BoardTest >> testBoardHasANumberOfTiles [
 	
 	aBoard := Board
 				          withTileEffectCollection: aTileArray
-				          withLength: #( 3 3 )
+				          withLengthInParsecs: 3
 				          withAmountOfLaps: 1.
 
 	self assert: aBoard numbOfTiles equals: 3
@@ -78,7 +78,7 @@ BoardTest >> testBoardMustHaveAtLeast1Lap [
 		should: [
 			Board
 				withTileEffectCollection: aTileArray
-				withLength: #( 4 4 )
+				withLengthInParsecs: 4
 				withAmountOfLaps: 0]
 		raise: Error
 		withMessage: 'Cannot play with less than 1 lap'
@@ -150,7 +150,7 @@ BoardTest >> testWhenABoardIsCreatedWithATileEffectCreatorItFollowsTheSetDistrib
 
 	aBoard := Board
 		          withTileEffectCollection: tileArray
-		          withLength: #( 10 10 )
+		          withLengthInParsecs: 10
 		          withAmountOfLaps: 3.
 
 	self assert: (aBoard allTileEffectsAmount at: NullEffect) equals: 8
@@ -199,7 +199,7 @@ BoardTest >> testWhenBoardIsCreatedTheAmountOfEffectsFollowTheCorrectDistributio
 
 	aBoard := Board
 		          withTileEffectCollection: aTileArray
-		          withLength: aPairOfLengths
+		          withLengthInParsecs: 102
 		          withAmountOfLaps: 1.
 
 	self assert: (aBoard allTileEffectsAmount at: NullEffect) equals: 40.

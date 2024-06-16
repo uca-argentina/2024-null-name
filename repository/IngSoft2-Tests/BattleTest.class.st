@@ -20,7 +20,7 @@ BattleTest >> testShipsCannotBattleInTheFirstTileOfABoard [
 	aGame := Game
 		         withBoard: (Board
 				          withTileEffectCollection: aTileArray
-				          withLength: #( 16 16 )
+				          withLengthInParsecs: 16
 				          withAmountOfLaps: 3)
 		         withShipNames: aCollectionOfNames
 		         withDice: (Dice with: aCollectionOfDie).
@@ -47,7 +47,7 @@ BattleTest >> testWhenShipInAGameLandsInATileWithAnotherShipThenTheyBattle [
 	aGame := Game
 		         withBoard: (Board
 				          withTileEffectCollection: aTileArray
-				          withLength: #( 16 16 )
+				          withLengthInParsecs: 16
 				          withAmountOfLaps: 1)
 		         withShipNames: aCollectionOfNames
 		         withDice: (Dice with: aCollectionOfDie).
@@ -74,7 +74,7 @@ BattleTest >> testWhenShipLosesABattleThenGoBackToFirstTile [
 	aGame := Game
 		         withBoard: (Board
 				          withTileEffectCollection: aTileArray
-				          withLength: #( 16 16 )
+				          withLengthInParsecs: 16
 				          withAmountOfLaps: 1)
 		         withShipNames: aCollectionOfNames
 		         withDice: (Dice with: aCollectionOfDie).
