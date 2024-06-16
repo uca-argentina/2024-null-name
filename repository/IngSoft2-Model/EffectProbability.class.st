@@ -40,8 +40,15 @@ EffectProbability >> probability [
 { #category : #testing }
 EffectProbability >> rangeIncludes: aNumber [
 
-	^ (lowerBound < aNumber and: aNumber <= upperBound) or:
+	^  aNumber between: lowerBound  and: upperBound.
+	
+	"
+	DEJO ESTO POR QUE FUNCIONA DE ALGUNA MANERA NO SE COMO
+	
+	(lowerBound < aNumber and: aNumber <= upperBound) or:
 		  (lowerBound = 0 and: aNumber = 0)
+	
+	"
 ]
 
 { #category : #initialization }

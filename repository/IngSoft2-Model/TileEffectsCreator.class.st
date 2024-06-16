@@ -7,8 +7,7 @@ Class {
 	#instVars : [
 		'wormHolePair',
 		'probabilityEffects',
-		'boardLengths',
-		'tileNumber'
+		'boardLengths'
 	],
 	#category : #'IngSoft2-Model'
 }
@@ -69,25 +68,21 @@ TileEffectsCreator >> determineRangeRandom [
 		   aProbabilityEffect rangeIncludes: aRandomNumber ]) effect
 ]
 
-{ #category : #comparing }
-TileEffectsCreator >> determineRangeStandar [
+{ #category : #'creating collection' }
+TileEffectsCreator >> generateLoadedEffectArray [
 
-	tileNumber := tileNumber + 1 > ((boardLengths at: 'Tiles') - 2)
-		              ifTrue: [ 1 ]
-		              ifFalse: [ tileNumber + 1 ].
-
-	^ (probabilityEffects detect: [ :aProbabilityEffect |
-		   aProbabilityEffect rangeIncludes: tileNumber ]) effect
-]
-
-{ #category : #comparing }
-TileEffectsCreator >> generateRandomEffectArray [
-
-	| tileEffectArray |
+	| tileEffectArray tileNumber |
 	tileEffectArray := OrderedCollection new.
+	tileNumber := 0.
 
 	1 to: (boardLengths at: 'Tiles') do: [ :i |
-	tileEffectArray add: self determineRangeRandom ].
+		tileNumber := tileNumber + 1 > 100
+			              ifTrue: [ 1 ]
+			              ifFalse: [ tileNumber + 1 ].
+
+		tileEffectArray add:
+			(probabilityEffects detect: [ :aProbabilityEffect |
+				 aProbabilityEffect rangeIncludes: tileNumber ]) effect ].
 
 	tileEffectArray at: 1 put: NullEffect new.
 
@@ -102,14 +97,14 @@ TileEffectsCreator >> generateRandomEffectArray [
 	^ tileEffectArray
 ]
 
-{ #category : #'as yet unclassified' }
-TileEffectsCreator >> generateStandarEffectArray [
+{ #category : #'creating collection' }
+TileEffectsCreator >> generateRandomEffectArray [
 
 	| tileEffectArray |
 	tileEffectArray := OrderedCollection new.
-	tileNumber := 0.
+
 	1 to: (boardLengths at: 'Tiles') do: [ :i |
-	tileEffectArray add: self determineRangeStandar ].
+	tileEffectArray add: self determineRangeRandom ].
 
 	tileEffectArray at: 1 put: NullEffect new.
 

@@ -181,7 +181,7 @@ BoardTest >> testWhenBoardIsCreatedTheAmountOfEffectsFollowTheCorrectDistributio
 				withWormHolePositions: aWormHolePair
 				withParsecArray: #( 1 1 1 )
 				withProbabilityDistribution: aProbabilityDistributionCollection.
-		aTileArray := aTileEffectsCreator generateStandarEffectArray.
+		aTileArray := aTileEffectsCreator generateLoadedEffectArray.
 		
 		aBoard := Board
 				withTileEffectCollection: aTileArray
@@ -213,7 +213,7 @@ BoardTest >> testWhenBoardIsCreatedTheAmountOfEffectsFollowTheCorrectDistributio
 { #category : #tests }
 BoardTest >> testWhenBoardIsCreatedWithRandomizedEffectProbabilitiesItFollowsCorrespondingDistribution [
 	"
-	TEST FAILS WITH PHARO 12 CI
+	TEST FAILS WITH PHARO 12 CI"
 	
 	| aBoard aPairOfLengths aWormHolePair numberOfIterations aDictonaryOfEffectApearences averageEffectDistribution aProbabilityDistributionCollection| 
 	
@@ -294,7 +294,7 @@ BoardTest >> testWhenBoardIsCreatedWithRandomizedEffectProbabilitiesItFollowsCor
 	self
 		assert: (averageEffectDistribution at: WormholeEffect)
 		equals: 2
-"
+
 ]
 
 { #category : #tests }
