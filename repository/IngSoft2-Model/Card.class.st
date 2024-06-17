@@ -23,6 +23,12 @@ Card >> = aCard [
 ]
 
 { #category : #comparing }
+Card >> canPlayRightNow: theShipInTurn [
+
+	self subclassResponsibility
+]
+
+{ #category : #comparing }
 Card >> hash [
 
 	^ holder hash

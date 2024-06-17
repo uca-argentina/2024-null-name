@@ -23,10 +23,8 @@ CardsTest >> testACardCanBePlayedDuringAGame [
 		         withShipNames: aCollectionOfNames
 		         withDice: (Dice with: aCollectionOfDie).
 	
-	aGame playCard: Card by: 'Juan'.
 	
-	
-	self assert: (aGame playCard: Card by: 'Juan') equals: 'A Card has been played'.
+	self assert: (aGame playCard: InstantCard  by: 'Juan') equals: 'A Card has been played'.
 	
 
 	
@@ -70,6 +68,38 @@ CardsTest >> testAnInstantCardCanBePlayedDuringAGame [
 ]
 
 { #category : #tests }
+CardsTest >> testAnPermanentCardCanOnlyBePlayedDuringAShipsTurnInAGame [
+
+	| aGame aBoard aCollectionOfNames aCollectionOfDie aTileArray aCardHandler collectionOfCardProbabilities |
+	aTileArray := OrderedCollection new.
+	2 timesRepeat: [ aTileArray add: NullEffect new ].
+
+	aBoard := Board
+		          withTileEffectCollection: aTileArray
+		          withLengthInUnits: (Parsec withNominalValue: 10)
+		          withAmountOfLaps: 10.
+	aCollectionOfNames := OrderedCollection with: 'Juan' with: 'Jose'.
+	aCollectionOfDie := OrderedCollection with: (LoadedDie of: 10).
+
+	collectionOfCardProbabilities := OrderedCollection with:
+		                                 (ProbabilityAssociation
+			                                  associate: PermanentCard
+			                                  withProbability: 100).
+
+	aCardHandler := CardHandler withCardProbabilities:
+		                collectionOfCardProbabilities.
+	aGame := Game
+		         withBoard: aBoard
+		         withShipNames: aCollectionOfNames
+		         withDice: (Dice with: aCollectionOfDie)
+		         withCardHandler: aCardHandler.
+
+	self
+		assert: (aGame playCard: PermanentCard by: 'Jose')
+		equals: 'Ship cannot throw this card as its not his turn'
+]
+
+{ #category : #tests }
 CardsTest >> testCannotPlayACardThatDoesNotBelongToAShip [
 
 	| aGame aBoard aCollectionOfNames aCollectionOfDie aTileArray|
@@ -88,9 +118,7 @@ CardsTest >> testCannotPlayACardThatDoesNotBelongToAShip [
 		         withShipNames: aCollectionOfNames
 		         withDice: (Dice with: aCollectionOfDie).
 	
-	aGame playCard: Card by: 'Juan'.
-	
-	self assert: (aGame playCard: InstantCard by: 'Juan') equals: 'Ship does not have that card'.
+	self assert: (aGame playCard: InstantCard by: 'Jose') equals: 'Ship does not have that card'.
 	
 
 	

@@ -40,7 +40,7 @@ Game class >> withBoard: aBoard withShipNames: aNameCollection withDice: aDice [
 		  withDice: aDice
 		  withGameCardHandler:
 			  (CardHandler withCardProbabilities: (OrderedCollection with:
-					    (ProbabilityAssociation associate: Card withProbability: 100)))
+					    (ProbabilityAssociation associate: InstantCard withProbability: 100)))
 ]
 
 { #category : #'class initialization' }
@@ -120,7 +120,8 @@ Game >> initializeGameWith: aBoard withShipNames: aNameCollection withDice: aDic
 	gameTurnHandler := TurnHandler withShips: gameShips.
 	shipBattleHandler := ShipBattle withDice: dice withShips: gameShips.
 	gameCardHandler := aCardHandler.
-	gameShips do: [:ship | gameCardHandler startingCards: (ship shipName).]
+	theShipInCurrentTurn := gameTurnHandler currentTurnShip.
+	gameShips do: [ :ship | gameCardHandler startingCards: ship shipName ]
 ]
 
 { #category : #testing }
@@ -132,8 +133,15 @@ Game >> isFinished [
 { #category : #'as yet unclassified' }
 Game >> playCard: aCard by: aShipName [
 
-	(gameCardHandler validateCard: (aCard withHolder: aShipName))
-		ifTrue: [ ^ 'Ship does not have that card' ].
+	| aCardToPlay |
+	aCardToPlay := aCard withHolder: aShipName.
+
+	(gameCardHandler validateCard: aCardToPlay) ifTrue: [
+		^ 'Ship does not have that card' ].
+
+	(aCardToPlay canPlayRightNow: theShipInCurrentTurn) ifFalse: [
+		^ 'Ship cannot throw this card as its not his turn' ].
+
 	^ 'A Card has been played'
 ]
 
