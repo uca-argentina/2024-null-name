@@ -12,3 +12,9 @@ Effect >> applyOn: aGame [
 
 	self subclassResponsibility.
 ]
+
+{ #category : #generators }
+Effect >> generateParameters: aTileEffectCreator [
+
+	^ self
+]

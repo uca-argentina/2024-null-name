@@ -24,15 +24,17 @@ GameInitalizationTest >> testGameCannotBeInitializedWithoutABoard [
 { #category : #tests }
 GameInitalizationTest >> testGameCannotBeInitializedWithoutADice [
 
-	| aBoard aCollectionOfNames aDie |
+	| aBoard aCollectionOfNames aDie aTileArray|
 	aCollectionOfNames := OrderedCollection with: 'Juan'.
-	aBoard := SetBoard
-		          withLengthInTileAndParsec: #( 13 13 )
-		          withWormHolePositions: #( 2 3 )
+
+	aTileArray := OrderedCollection new.
+	13 timesRepeat: [ aTileArray add: NullEffect new ].
+
+	aBoard := Board
+		          withTileEffectCollection: aTileArray
+		          withLengthInParsecs: 13
 		          withAmountOfLaps: 1.
-
-
-
+		
 	self
 		should: [
 			Game
@@ -46,16 +48,20 @@ GameInitalizationTest >> testGameCannotBeInitializedWithoutADice [
 { #category : #tests }
 GameInitalizationTest >> testGameCannotBeInitializedWithoutAnyShipNames [
 
-	| aCollectionOfNames aCollectionOfDie |
+	| aCollectionOfNames aCollectionOfDie aTileArray|
 	aCollectionOfNames := OrderedCollection new.
 	aCollectionOfDie := OrderedCollection with: (LoadedDie of: 9).
+	
+	aTileArray := OrderedCollection new.
+	17 timesRepeat: [ aTileArray add: NullEffect new ].
+	
 	self
 		should: [
 			Game
-				withBoard: (SetBoard
-						 withLengthInTileAndParsec: #( 20 20 )
-						 withWormHolePositions: #( 2 3 )
-						 withAmountOfLaps: 1)
+				withBoard: (Board
+				          withTileEffectCollection: aTileArray
+				          withLengthInParsecs: 20
+				          withAmountOfLaps: 1)
 				withShipNames: aCollectionOfNames
 				withDice: (Dice with: aCollectionOfDie) ]
 		raise: Error
@@ -65,11 +71,15 @@ GameInitalizationTest >> testGameCannotBeInitializedWithoutAnyShipNames [
 { #category : #tests }
 GameInitalizationTest >> testGameDoesNotAllowRepeatedShipNames [
 
-	| aGame aBoard aCollectionOfNames aCollectionOfDie |
-	aBoard := SetBoard
-		          withLengthInTileAndParsec: #( 5 5 )
-		          withWormHolePositions: #( 2 3 )
-		          withAmountOfLaps: 1.
+	| aGame aBoard aCollectionOfNames aCollectionOfDie aTileArray|
+	
+	aTileArray := OrderedCollection new.
+	5 timesRepeat: [ aTileArray add: NullEffect new ].
+	
+	aBoard := Board
+				          withTileEffectCollection: aTileArray
+				          withLengthInParsecs: 5
+				          withAmountOfLaps: 1.
 	aCollectionOfNames := OrderedCollection
 		                      with: 'Juan'
 		                      with: 'Jose'

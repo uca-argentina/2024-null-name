@@ -13,11 +13,12 @@ Class {
 }
 
 { #category : #'class initialization' }
-HyperJumpEffect class >> withParsecArray: aParsecArray andBoardLengths: aPairOfLengths [
+HyperJumpEffect class >> withParsecArray: aParsecArray andLengthInTiles: lengthInTiles andLengthInParsecs: lengthInParsecs [
 
 	^ self new
-		  initializeWithParsecs: aParsecArray
-		  andBoardLengths: aPairOfLengths
+		  initializeWithParsecArray: aParsecArray
+		  andLengthInTiles: lengthInTiles
+		  andLengthInParsecs: lengthInParsecs
 ]
 
 { #category : #applying }
@@ -36,12 +37,17 @@ HyperJumpEffect >> currentParsec [
 	^ parsecNumber
 ]
 
+{ #category : #generators }
+HyperJumpEffect >> generateParameters: aTileEffectCreator [
+
+	aTileEffectCreator generateHyperJumpParameters: self
+]
+
 { #category : #initialization }
-HyperJumpEffect >> initializeWithParsecs: aParsecArray andBoardLengths: aPairOfLengths [
+HyperJumpEffect >> initializeWithParsecArray: aParsecArray andLengthInTiles: lengthInTiles andLengthInParsecs: lengthInParsecs [
 
 	parsecCollection := aParsecArray asSortedCollection: [ :a :b | a > b ].
 
-	boardParsecToTileRatio := (aPairOfLengths at: 'Tiles')
-	                          // (aPairOfLengths at: 'Parsecs').
+	boardParsecToTileRatio := lengthInTiles // lengthInParsecs.
 	parsecNumber := 0
 ]
