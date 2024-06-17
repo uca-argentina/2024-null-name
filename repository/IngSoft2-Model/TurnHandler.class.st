@@ -8,7 +8,8 @@ Class {
 		'turnsPerRound',
 		'ships',
 		'currentTurnShip',
-		'shipLostTurns'
+		'shipLostTurns',
+		'lostTurnPenalty'
 	],
 	#category : #'IngSoft2-Model'
 }
@@ -19,12 +20,12 @@ TurnHandler class >> withShips: anAmountOfTurns [
 	^ self new initializeWithShips: anAmountOfTurns
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #modifying }
 TurnHandler >> checkForShipsWithNoShield [
 
 	ships do: [ :ship |
 		((shipLostTurns at: ship) = 0 and: (ship amountOfShieldsActive = 0))
-			ifTrue: [ shipLostTurns at: ship put: 2 ] ]
+			ifTrue: [ shipLostTurns at: ship put: lostTurnPenalty ] ]
 ]
 
 { #category : #accessing }
@@ -39,6 +40,7 @@ TurnHandler >> initializeWithShips: aCollectionOfShips [
 	currentTurnShip := aCollectionOfShips first.
 	turnsPerRound := aCollectionOfShips size.
 	ships := aCollectionOfShips.
+	lostTurnPenalty := 2.
 	shipLostTurns := Dictionary new.
 	ships do: [ :ship | shipLostTurns at: ship put: 0 ]
 ]
