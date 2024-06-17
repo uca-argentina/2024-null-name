@@ -40,14 +40,14 @@ TileEffectsCreator class >> probabilityDistributionIsValid: aProbabilityDistribu
 { #category : #comparing }
 TileEffectsCreator >> determineRangeRandom [
 
-	| aRandomNumber anEffect |
+	| aRandomNumber anEffect anEffectClass |
 	aRandomNumber := (1 to: 100) atRandom asInteger.
 
-	anEffect := ((probabilityEffects detect: [ :aProbabilityEffect |
+	anEffectClass := ((probabilityEffects detect: [ :aProbabilityEffect |
 		             aProbabilityEffect rangeIncludes: aRandomNumber ])
 		            effect).
 
-	(anEffect class new) generateParameters: self.
+	anEffect := (anEffectClass new) generateParameters: self.
 
 	^ anEffect
 ]

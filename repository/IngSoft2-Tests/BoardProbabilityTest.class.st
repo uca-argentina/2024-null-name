@@ -10,21 +10,15 @@ BoardProbabilityTest >> testTotalSumOfEffectsProbabilitiesIs100 [
 	| aProbabilityDistributionCollection |
 	aProbabilityDistributionCollection := OrderedCollection with:
 		                                      (EffectProbability
-			                                       effect: [
-			                                       MoonWalkEffect
-				                                       withMoonwalkDistance:
-				                                       10 atRandom ]
+			                                       effect: [ MoonWalkEffect ]
 			                                       withProbability: 80).
- "createWithBoardLength: #( 10 10 )
-				withWormHolePositions: #( 2 3 )
-				withParsecArray: #( 2 1 1 4 )"
 	self
 		should: [
-			TileEffectsCreator
-				createWithProbabilityDistribution: aProbabilityDistributionCollection ]
+			TileEffectsCreator createWithProbabilityDistribution:
+				aProbabilityDistributionCollection ]
 		raise: Error
 		withMessage:
-		'Total efffect probabilities cannot be diferent from 100%'.
+		'Total efffect probabilities cannot be diferent from 100%'
 ]
 
 { #category : #tests }
@@ -33,7 +27,7 @@ BoardProbabilityTest >> testWhenABoardIsCreatedWithATileEffectCreatorItFollowsTh
 	| aTileEffectsCreator aProbabilityDistributionCollection aBoard |
 	aProbabilityDistributionCollection := OrderedCollection with:
 		                                      (EffectProbability
-			                                       effect: [ NullEffect new ]
+			                                       effect: [ NullEffect ]
 			                                       withProbability: 100).
 	aTileEffectsCreator := TileEffectsCreator
 		                       createWithProbabilityDistribution:
