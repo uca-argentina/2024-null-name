@@ -65,5 +65,5 @@ CardHandler >> transformIntoProbabilityRanges: aProbabilityDistributionCollectio
 { #category : #comparing }
 CardHandler >> validateCard: aCard [
 
-	^ (deck select: [ :card | aCard = card ]) isEmpty
+	^ (deck select: [ :card | card = aCard ]) isEmpty
 ]

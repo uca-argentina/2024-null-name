@@ -19,13 +19,13 @@ Card class >> withHolder: aShipName [
 { #category : #comparing }
 Card >> = aCard [
 
-	^ holder = aCard holder and: self class = aCard class
+	^ self hash = aCard hash and: self class = aCard class
 ]
 
 { #category : #comparing }
 Card >> hash [
 
-	^ holder hash.
+	^ holder hash
 ]
 
 { #category : #accessing }

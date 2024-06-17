@@ -90,8 +90,7 @@ CardsTest >> testCannotPlayACardThatDoesNotBelongToAShip [
 	
 	aGame playCard: Card by: 'Juan'.
 	
-	
-	self assert: (aGame playCard: Card by: 'Jose') equals: 'Ship does not have that card'.
+	self assert: (aGame playCard: InstantCard by: 'Juan') equals: 'Ship does not have that card'.
 	
 
 	
