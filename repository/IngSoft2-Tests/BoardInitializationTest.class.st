@@ -86,6 +86,24 @@ BoardInitializationTest >> testSpecialTilesCannotBeCreatedIfPositionsExceedBoard
 ]
 
 { #category : #tests }
+BoardInitializationTest >> testWhenAssigningALengthInLightYearsParsecsAreCalculatedCorrectly [
+
+	| aBoard aTileArray aLightYearAmount |
+	aTileArray := OrderedCollection
+		              with: NullEffect new
+		              with: NullEffect new
+		              with: NullEffect new
+		              with: NullEffect new.
+	aLightYearAmount := LightYear withNominalValue: 6.
+	aBoard := Board
+		          withTileEffectCollection: aTileArray
+		          withLengthInUnits: aLightYearAmount
+		          withAmountOfLaps: 3.
+
+	self assert: aBoard numOfParsecs equals: 2
+]
+
+{ #category : #tests }
 BoardInitializationTest >> testWormHoleEffectCannotBeCreatedInFirstTileOfBoard [
 
 	| aWormHolePair aProbabilityDistributionCollection aTileEffectsCreator |

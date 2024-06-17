@@ -40,6 +40,8 @@ Unit >> nominalValue [
 ]
 
 { #category : #modifying }
-Unit >> toUnit: aUnit [ 
-	^aUnit withNominalValue: nominalValue 
+Unit >> toUnit: aUnit [
+
+	^ aUnit withNominalValue:
+		  nominalValue * (aUnit ratioInParsecs / self class ratioInParsecs)
 ]

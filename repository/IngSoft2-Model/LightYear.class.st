@@ -10,7 +10,7 @@ Class {
 { #category : #accessing }
 LightYear class >> ratioInParsecs [
 
-	^ 1
+	^ 3
 ]
 
 { #category : #initialization }
