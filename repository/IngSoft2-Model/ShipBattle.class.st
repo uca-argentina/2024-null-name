@@ -23,12 +23,14 @@ ShipBattle class >> withDice: aCollectionOfDice withShips: aCollectionOfShips [
 ShipBattle >> checkShipBattle: currentTurnShip [
 
 	| shipsInSamePosition |
+	
 	currentTurnShip position = 1 ifTrue: [ ^ self ].
 	shipsInSamePosition := ships select: [ :aShip |
 		                       currentTurnShip position = aShip position
 			                       and: currentTurnShip ~= aShip ].
-	shipsInSamePosition isEmpty ifFalse: [
-		self resolveBattleBetween: currentTurnShip and: shipsInSamePosition ]
+	shipsInSamePosition do: [ :aShipInSamePosition |
+		currentTurnShip position = 1 ifTrue: [ ^ self ].
+		self resolveBattleBetween: currentTurnShip and: aShipInSamePosition ]
 ]
 
 { #category : #initialization }

@@ -7,17 +7,20 @@ Class {
 { #category : #tests }
 GameFinishTest >> testGameKnowTheWinnerShip [
 
-	| aGame aCollectionOfNames aCollectionOfDie |
+	| aGame aCollectionOfNames aCollectionOfDie aTileArray|
 	aCollectionOfNames := OrderedCollection with: 'Juan' with: 'Jose'.
 
 	aCollectionOfDie := OrderedCollection
 		                    with: (LoadedDie of: 9)
 		                    with: (LoadedDie of: 3).
 
+	aTileArray := OrderedCollection new.
+	17 timesRepeat: [ aTileArray add: NullEffect new ].
+
 	aGame := Game
-		         withBoard: (SetBoard
-				          withLengthInTileAndParsec: #( 17 17 )
-				          withWormHolePositions: #( 2 3 )
+		         withBoard: (Board
+				          withTileEffectCollection: aTileArray
+				          withLengthInParsecs: 17
 				          withAmountOfLaps: 1)
 		         withShipNames: aCollectionOfNames
 		         withDice: (Dice with: aCollectionOfDie).
@@ -32,13 +35,20 @@ GameFinishTest >> testGameKnowTheWinnerShip [
 { #category : #tests }
 GameFinishTest >> testIfGameIsNotFinishedThenIsFinishedIsTrue [
 
-	| aGame aBoard aCollectionOfNames aCollectionOfDie |
-	aBoard := SetBoard
-		          withLengthInTileAndParsec: #( 10 10 )
-		          withWormHolePositions: #( 2 3 )
+	| aGame aBoard aCollectionOfNames aCollectionOfDie aTileArray |
+	aTileArray := OrderedCollection new.
+	10 timesRepeat: [ aTileArray add: NullEffect new ].
+
+
+
+	aBoard := Board
+		          withTileEffectCollection: aTileArray
+		          withLengthInParsecs: 10
 		          withAmountOfLaps: 1.
 	aCollectionOfNames := OrderedCollection with: 'Juan'.
 	aCollectionOfDie := OrderedCollection with: (LoadedDie of: 10).
+
+
 
 
 	aGame := Game
@@ -54,17 +64,20 @@ GameFinishTest >> testIfGameIsNotFinishedThenIsFinishedIsTrue [
 { #category : #tests }
 GameFinishTest >> testIfGameIsOngoingThereIsNoWinner [
 
-	| aGame aCollectionOfNames aCollectionOfDie |
+	| aGame aCollectionOfNames aCollectionOfDie aTileArray |
 	aCollectionOfNames := OrderedCollection with: 'Juan' with: 'Jose'.
 
 	aCollectionOfDie := OrderedCollection
 		                    with: (LoadedDie of: 9)
 		                    with: (LoadedDie of: 3).
 
+	aTileArray := OrderedCollection new.
+	17 timesRepeat: [ aTileArray add: NullEffect new ].	
+
 	aGame := Game
-		         withBoard: (SetBoard
-				          withLengthInTileAndParsec: #( 17 17 )
-				          withWormHolePositions: #( 2 3 )
+		         withBoard: (	Board
+				          withTileEffectCollection: aTileArray
+				          withLengthInParsecs: 17
 				          withAmountOfLaps: 1)
 		         withShipNames: aCollectionOfNames
 		         withDice: (Dice with: aCollectionOfDie).
@@ -78,17 +91,20 @@ GameFinishTest >> testIfGameIsOngoingThereIsNoWinner [
 { #category : #tests }
 GameFinishTest >> testIfThereIsAWinnerThereAreNoMoreMovements [
 
-	| aGame aCollectionOfNames aCollectionOfDie |
+	| aGame aCollectionOfNames aCollectionOfDie aTileArray|
 	aCollectionOfNames := OrderedCollection with: 'Juan' with: 'Jose'.
 
 	aCollectionOfDie := OrderedCollection
 		                    with: (LoadedDie of: 9)
 		                    with: (LoadedDie of: 3).
 
+	aTileArray := OrderedCollection new.
+	17 timesRepeat: [ aTileArray add: NullEffect new ].
+
 	aGame := Game
-		         withBoard: (SetBoard
-				          withLengthInTileAndParsec: #( 17 17 )
-				          withWormHolePositions: #( 2 3 )
+		         withBoard: (Board
+				          withTileEffectCollection: aTileArray
+				          withLengthInParsecs: 17
 				          withAmountOfLaps: 1)
 		         withShipNames: aCollectionOfNames
 		         withDice: (Dice with: aCollectionOfDie).
@@ -96,25 +112,29 @@ GameFinishTest >> testIfThereIsAWinnerThereAreNoMoreMovements [
 	aGame playTurn.
 	aGame playTurn.
 	aGame playTurn.
-
+	
 	self
 		should: [ aGame playTurn ]
 		raise: Error
-		withMessage: 'Game is Over you cant Keep Playing'
+		withMessage: 'Game is Over you cant Keep Playing'.
+		
 ]
 
 { #category : #tests }
 GameFinishTest >> testWhenOneShipReachesTheEndGameIsFinished [
 
-	| aGame aCollectionOfNames aCollectionOfDie |
+	| aGame aCollectionOfNames aCollectionOfDie aTileArray |
 	aCollectionOfNames := OrderedCollection with: 'Juan'.
 
 	aCollectionOfDie := OrderedCollection with: (LoadedDie of: 9).
-
+	
+	aTileArray := OrderedCollection new.
+	16 timesRepeat: [ aTileArray add: NullEffect new ].
+	
 	aGame := Game
-		         withBoard: (SetBoard
-				          withLengthInTileAndParsec: #( 16 16 )
-				          withWormHolePositions: #( 2 3 )
+		         withBoard: (Board
+				          withTileEffectCollection: aTileArray
+				          withLengthInParsecs: 16
 				          withAmountOfLaps: 1)
 		         withShipNames: aCollectionOfNames
 		         withDice: (Dice with: aCollectionOfDie).

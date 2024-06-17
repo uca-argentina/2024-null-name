@@ -88,6 +88,13 @@ Game >> applyEffectOnOneShip: anEffect [
 		gameBoard adjustShipPosition: aShip.]
 ]
 
+{ #category : #testing }
+Game >> canPlayNextTurnOf [
+
+	self isFinished ifTrue: [
+		Error signal: 'Game is Over you cant Keep Playing' ].
+]
+
 { #category : #initialization }
 Game >> initializeGameWith: aBoard withShipNames: aNameCollection withDice: aDice [
 
@@ -95,7 +102,7 @@ Game >> initializeGameWith: aBoard withShipNames: aNameCollection withDice: aDic
 	gameShips := aNameCollection asOrderedCollection collect: [ :aName |
 		             Ship createWithName: aName ].
 	dice := aDice.
-	gameTurnHandler := TurnHandler withAnAmountOfTurns: gameShips size.
+	gameTurnHandler := TurnHandler withShips: gameShips.
 	shipBattleHandler := ShipBattle withDice: dice withShips: gameShips
 ]
 
@@ -106,29 +113,23 @@ Game >> isFinished [
 ]
 
 { #category : #modifying }
-Game >> loseTurn: aShip [
-
-	gameTurnHandler nextTurn.
-	aShip lostTurnCounterDown.
-	^ aShip shipName , ' lost their turn'
-]
-
-{ #category : #modifying }
 Game >> playTurn [
 
 	| movement |
-	gameTurnHandler canPlayNextTurnOf: self isFinished.
-	theShipInCurrentTurn := gameShips at: gameTurnHandler currentTurn.
+	self canPlayNextTurnOf.
 
-	theShipInCurrentTurn canPlayTurn ifFalse: [
-		^ self loseTurn: theShipInCurrentTurn ].
+	[ gameTurnHandler turnShipCanPlayTurn ]
+		on: TurnExeption
+		do: [ :ex | ^ ex messageText ].
 
+	theShipInCurrentTurn := gameTurnHandler currentTurnShip.
 	movement := dice throw.
 	theShipInCurrentTurn moveTiles: movement.
 	gameBoard adjustShipPosition: theShipInCurrentTurn.
 	gameBoard snapToFinishTile: theShipInCurrentTurn.
-	gameBoard applyTileEffectOn: self triggeredBy: theShipInCurrentTurn.
+	gameBoard applyTileEffectOn: self at: theShipInCurrentTurn position.
 	shipBattleHandler checkShipBattle: theShipInCurrentTurn.
+	gameTurnHandler checkForShipsWithNoShield.
 	gameTurnHandler nextTurn
 ]
 
@@ -136,13 +137,12 @@ Game >> playTurn [
 Game >> shipRankings [
 
 	| sortedShips rankDictionary |
-	sortedShips := self allShipsPosition associations
-		               asSortedCollection: [ :a :b |
-			               a value first > b value first and:
-				               a value last >= b value last ].
+	sortedShips := gameShips asSortedCollection: [ :ship1 :ship2 |
+		               ship1 > ship2 ].
 
 	rankDictionary := Dictionary new.
-	rankDictionary addAll: sortedShips.
+	sortedShips withIndexDo: [ :elemento :indice |
+		rankDictionary at: indice put: elemento ].
 
 	^ rankDictionary
 ]
@@ -150,11 +150,13 @@ Game >> shipRankings [
 { #category : #modifying }
 Game >> skipTurn [
 
-	gameTurnHandler canPlayNextTurnOf: self isFinished.
-	theShipInCurrentTurn := gameShips at: gameTurnHandler currentTurn.
-
-	theShipInCurrentTurn canPlayTurn ifFalse: [
-		^ self loseTurn: theShipInCurrentTurn ].
+	self canPlayNextTurnOf.
+	
+	[ gameTurnHandler turnShipCanPlayTurn ]
+		on: TurnExeption
+		do: [ :ex | ^ ex messageText ].
+	
+	theShipInCurrentTurn := gameTurnHandler currentTurnShip.
 
 	theShipInCurrentTurn healFullShields.
 	gameTurnHandler nextTurn.

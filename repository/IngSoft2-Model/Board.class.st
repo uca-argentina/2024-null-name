@@ -23,44 +23,36 @@ Board class >> amountOfLapsIsValid: anAmountOfLaps [
 ]
 
 { #category : #'argument validation' }
-Board class >> numberOfTileIsValid: aNumberOfTiles [
+Board class >> numberOfParsecsIsValid: aNumberOfParsecs [
+
+	aNumberOfParsecs strictlyPositive ifFalse: [
+		Error signal: 'Board size in parsecs must be greater than 0' ]
+]
+
+{ #category : #'class initialization' }
+Board class >> numberOfTilesIsValid: aNumberOfTiles [
 
 	aNumberOfTiles strictlyPositive ifFalse: [
 		Error signal: 'Board tiles must be greater than 0' ]
 ]
 
 { #category : #'class initialization' }
-Board class >> withLengthInTileAndParsec: aPairOfLengths  withWormHolePositions: aWormHolePair withAmountOfLaps: anAmountOfLaps withParsecArray: aParsecArray [
-
-	self numberOfTileIsValid: aPairOfLengths first.
-	self wormHolePairIsValid: aWormHolePair with: aPairOfLengths first.
+Board class >> withTileEffectCollection: aTileEffect withLengthInParsecs: aBoardLengthInParsecs withAmountOfLaps: anAmountOfLaps [
+	
 	self amountOfLapsIsValid: anAmountOfLaps.
-
+	self numberOfTilesIsValid: aTileEffect size.
+	self numberOfParsecsIsValid: aBoardLengthInParsecs.
+	
 	^ self new
-		  initializeWithLengths: aPairOfLengths
-		  withWormHolePositions: aWormHolePair
+		  initializeWithTileEffectCollection: aTileEffect
+		  withLengthInParsecs: aBoardLengthInParsecs
 		  withAmountOfLaps: anAmountOfLaps
-		  withParsecArray: aParsecArray asOrderedCollection
-]
-
-{ #category : #'argument validation' }
-Board class >> wormHolePairIsValid: aWormHolePair with: aNumberOfTiles [
-
-	(aWormHolePair allSatisfy: [ :i |
-		 i <= aNumberOfTiles and: i strictlyPositive ]) ifFalse: [
-		Error signal: 'Wormhole tiles are out of bounds' ].
-	(aWormHolePair anySatisfy: [ :i | i = 1 ]) ifTrue: [
-		Error signal: 'Wormhole cannot be created in first tile of board' ].
-	aWormHolePair first = aWormHolePair last ifTrue: [
-		Error signal: 'Wormhole tiles cannot be in the same position' ]
 ]
 
 { #category : #accessing }
 Board >> adjustShipPosition: aShip [
 
-	((aShip position > tileEffectArray size and: aShip lapsDone <= maxLap)
-		 or: (aShip position < 1 and: aShip lapsDone > 1)) ifFalse: [
-		^ self ].
+	(self shouldAdjustShipPosition: aShip) ifFalse: [ ^ self ].
 
 	aShip modifyLap: aShip position - 1 // tileEffectArray size.
 	aShip moveTiles: tileEffectArray size
@@ -84,24 +76,18 @@ Board >> allTileEffectsAmount [
 ]
 
 { #category : #modifying }
-Board >> applyTileEffectOn: aGame triggeredBy: aShip [
+Board >> applyTileEffectOn: aGame at: aPosition [
 
-	(tileEffectArray at: aShip position) applyOn: aGame
+	(tileEffectArray at: aPosition) applyOn: aGame
 ]
 
 { #category : #initialization }
-Board >> initializeWithLengths: aPairOfLengths withWormHolePositions: aWormHolePair withAmountOfLaps: anAmountOfLaps withParsecArray: aParsecArray [
+Board >> initializeWithTileEffectCollection: aTileEffectCollection withLengthInParsecs: aBoardLengthInParsecs withAmountOfLaps: anAmountOfLaps [
 
-	| aTileEffectsCreator |
 	maxLap := anAmountOfLaps.
-	parsecs := aPairOfLengths last.
+	parsecs := aBoardLengthInParsecs.
 
-	aTileEffectsCreator := TileEffectsCreator
-		                       createWithWormHolePositions: aWormHolePair
-		                       withBoardLenghts: aPairOfLengths
-		                       withParsecArray: aParsecArray.
-
-	tileEffectArray := aTileEffectsCreator generateEffectArray
+	tileEffectArray := aTileEffectCollection
 ]
 
 { #category : #testing }
@@ -120,6 +106,14 @@ Board >> numOfParsecs [
 Board >> numbOfTiles [
 
 	^ tileEffectArray size
+]
+
+{ #category : #accessing }
+Board >> shouldAdjustShipPosition: aShip [
+
+	^ (aShip position > tileEffectArray size and:
+		   aShip lapsDone <= maxLap) or:
+		  (aShip position < 1 and: aShip lapsDone > 1)
 ]
 
 { #category : #accessing }
