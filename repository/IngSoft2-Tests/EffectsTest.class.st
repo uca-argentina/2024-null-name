@@ -26,7 +26,7 @@ EffectsTest >> testBlackHoleEffectCannotBeAplliedAfterGameIsFinished [
 	
 	aBoard := Board
 				          withTileEffectCollection: aTileArray
-				          withLengthInParsecs: 10
+				          withLengthInUnits: (Parsec withNominalValue: 10)
 				          withAmountOfLaps: 1.
 	
 
@@ -127,7 +127,7 @@ EffectsTest >> testWhenApplyingAtomicBombEffectAllShipsMoveBackToFirstTileOfThei
 
 	aBoard := Board
 		          withTileEffectCollection: aTileArray
-		          withLengthInParsecs: 10
+		          withLengthInUnits: (Parsec withNominalValue: 10)
 		          withAmountOfLaps: 2.
 
 	aShipName := OrderedCollection
@@ -166,7 +166,7 @@ EffectsTest >> testWhenApplyingBlackHoleEffectShipMoves4SpacesBack [
 
 	aBoard := Board
 		          withTileEffectCollection: aTileArray
-		          withLengthInParsecs: 10
+		          withLengthInUnits: (Parsec withNominalValue: 16)
 		          withAmountOfLaps: 1.
 
 
@@ -197,7 +197,7 @@ EffectsTest >> testWhenApplyingBlackHoleShipNotOnLap1CanMoveBelowFirstTilePositi
 	
 	aBoard := Board
 				          withTileEffectCollection: aTileArray
-				          withLengthInParsecs: 10
+				          withLengthInUnits: (Parsec withNominalValue: 16)
 				          withAmountOfLaps: 2.
 	
 
@@ -233,7 +233,7 @@ EffectsTest >> testWhenApplyingHyperJumpEffectShipMovesAVariableParsecDistance [
 
 	aBoard := Board
 		          withTileEffectCollection: aTileArray
-		          withLengthInParsecs: 10
+		          withLengthInUnits: (Parsec withNominalValue: 10)
 		          withAmountOfLaps: 1.
 
 
@@ -267,7 +267,7 @@ EffectsTest >> testWhenApplyingHyperJumpRepeatedlyThenDistanceMovedChanges [
 
 	aBoard := Board
 		          withTileEffectCollection: aTileArray
-		          withLengthInParsecs: 10
+		          withLengthInUnits: (Parsec withNominalValue: 10)
 		          withAmountOfLaps: 1.
 
 	aShipName := OrderedCollection
@@ -307,7 +307,7 @@ EffectsTest >> testWhenApplyingHyperSpaceJumpEffectShipLosesAShield [
 
 	aBoard := Board
 		          withTileEffectCollection: aTileArray
-		          withLengthInParsecs: 10
+		          withLengthInUnits: (Parsec withNominalValue: 10)
 		          withAmountOfLaps: 1.
 
 	aShipName := OrderedCollection with: 'Juan'.
@@ -334,7 +334,7 @@ EffectsTest >> testWhenApplyingHyperSpaceJumpEffectShipMoves4SpacesForward [
 
 	aBoard := Board
 		          withTileEffectCollection: aTileArray
-		          withLengthInParsecs: 10
+		          withLengthInUnits: (Parsec withNominalValue: 10)
 		          withAmountOfLaps: 2.
 
 	aShipName := OrderedCollection with: 'Juan'.
@@ -363,7 +363,7 @@ EffectsTest >> testWhenApplyingMoonWalkEffectAllShipsButTriggeringShipMoveAVaria
 
 	aBoard := Board
 		          withTileEffectCollection: aTileArray
-		          withLengthInParsecs: 20
+		          withLengthInUnits: (Parsec withNominalValue: 20)
 		          withAmountOfLaps: 2.
 
 	aShipName := OrderedCollection with: 'Juan' with: 'Pedro'.
@@ -398,7 +398,7 @@ EffectsTest >> testWhenApplyingMoonWalkEffectShipLapsBehaveCorrectly [
 
 	aBoard := Board
 		          withTileEffectCollection: aTileArray
-		          withLengthInParsecs: 10
+		          withLengthInUnits: (Parsec withNominalValue: 10)
 		          withAmountOfLaps: 3.
 	
 	aShipName := OrderedCollection
@@ -447,7 +447,7 @@ EffectsTest >> testWhenApplyingWormholeEffectOnShipMoveAccordingly [
 
 	aBoard := Board
 		          withTileEffectCollection: aTileArray
-		          withLengthInParsecs: 6
+		          withLengthInUnits: (Parsec withNominalValue: 6)
 		          withAmountOfLaps: 3.
 
 	aShipName := OrderedCollection with: 'Juan'.

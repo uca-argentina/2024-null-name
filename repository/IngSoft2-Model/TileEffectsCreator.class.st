@@ -65,9 +65,8 @@ TileEffectsCreator >> generateHyperJumpParameters: anEffect [
 TileEffectsCreator >> generateLoadedBoardWithAmountOfTiles: anAmountOfTiles withAmountOfParsecs: anAmountOfParsecs withWormHolePair: aWormHolePair withParsecArray: aParsecArray withAmountOfLaps: anAmountOfLaps [
 
 	| tileEffectArray tileNumber |
-	
 	self wormHolePairIsValid: aWormHolePair with: anAmountOfTiles.
-	
+
 	tileEffectArray := OrderedCollection new.
 	tileNumber := 0.
 	tiles := anAmountOfTiles.
@@ -95,7 +94,10 @@ TileEffectsCreator >> generateLoadedBoardWithAmountOfTiles: anAmountOfTiles with
 			 fromPosition: aWormHolePair last
 			 toPosition: aWormHolePair first).
 
-	^ Board withTileEffectCollection: tileEffectArray withLengthInParsecs: anAmountOfParsecs withAmountOfLaps: anAmountOfLaps
+	^ Board
+		  withTileEffectCollection: tileEffectArray
+		  withLengthInUnits: (Parsec withNominalValue: anAmountOfParsecs)
+		  withAmountOfLaps: anAmountOfLaps
 ]
 
 { #category : #comparing }
@@ -109,10 +111,9 @@ TileEffectsCreator >> generateMoonWalkParameters: anEffect [
 TileEffectsCreator >> generateRandomBoardWithAmountOfTiles: anAmountOfTiles withAmountOfParsecs: anAmountOfParsecs withWormHolePair: aWormHolePair withParsecArray: aParsecArray withAmountOfLaps: anAmountOfLaps [
 
 	| tileEffectArray |
-	
 	self wormHolePairIsValid: aWormHolePair with: anAmountOfTiles.
-	
-	
+
+
 	tileEffectArray := OrderedCollection new.
 	tiles := anAmountOfTiles.
 	parsecs := anAmountOfParsecs.
@@ -131,7 +132,10 @@ TileEffectsCreator >> generateRandomBoardWithAmountOfTiles: anAmountOfTiles with
 			 fromPosition: aWormHolePair last
 			 toPosition: aWormHolePair first).
 
-	^ Board withTileEffectCollection: tileEffectArray withLengthInParsecs: anAmountOfParsecs withAmountOfLaps: anAmountOfLaps
+	^ Board
+		  withTileEffectCollection: tileEffectArray
+		  withLengthInUnits: (Parsec withNominalValue: anAmountOfParsecs)
+		  withAmountOfLaps: anAmountOfLaps
 ]
 
 { #category : #initialization }

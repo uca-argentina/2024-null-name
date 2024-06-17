@@ -10,7 +10,8 @@ Class {
 	#instVars : [
 		'tileEffectArray',
 		'maxLap',
-		'parsecs'
+		'parsecs',
+		'lightYears'
 	],
 	#category : #'IngSoft2-Model'
 }
@@ -25,7 +26,7 @@ Board class >> amountOfLapsIsValid: anAmountOfLaps [
 { #category : #'argument validation' }
 Board class >> numberOfParsecsIsValid: aNumberOfParsecs [
 
-	aNumberOfParsecs strictlyPositive ifFalse: [
+	(aNumberOfParsecs nominalValue) strictlyPositive ifFalse: [
 		Error signal: 'Board size in parsecs must be greater than 0' ]
 ]
 
@@ -37,15 +38,15 @@ Board class >> numberOfTilesIsValid: aNumberOfTiles [
 ]
 
 { #category : #'class initialization' }
-Board class >> withTileEffectCollection: aTileEffect withLengthInParsecs: aBoardLengthInParsecs withAmountOfLaps: anAmountOfLaps [
+Board class >> withTileEffectCollection: aTileEffect withLengthInUnits: aBoardLength withAmountOfLaps: anAmountOfLaps [
 	
 	self amountOfLapsIsValid: anAmountOfLaps.
 	self numberOfTilesIsValid: aTileEffect size.
-	self numberOfParsecsIsValid: aBoardLengthInParsecs.
+	self numberOfParsecsIsValid: aBoardLength.
 	
 	^ self new
 		  initializeWithTileEffectCollection: aTileEffect
-		  withLengthInParsecs: aBoardLengthInParsecs
+		  withLengthInUnits: aBoardLength
 		  withAmountOfLaps: anAmountOfLaps
 ]
 
@@ -82,10 +83,11 @@ Board >> applyTileEffectOn: aGame at: aPosition [
 ]
 
 { #category : #initialization }
-Board >> initializeWithTileEffectCollection: aTileEffectCollection withLengthInParsecs: aBoardLengthInParsecs withAmountOfLaps: anAmountOfLaps [
+Board >> initializeWithTileEffectCollection: aTileEffectCollection withLengthInUnits: aBoardLength withAmountOfLaps: anAmountOfLaps [
 
 	maxLap := anAmountOfLaps.
-	parsecs := aBoardLengthInParsecs.
+	parsecs := aBoardLength toUnit: Parsec.
+	lightYears := aBoardLength toUnit: LightYear.
 
 	tileEffectArray := aTileEffectCollection
 ]
@@ -97,9 +99,15 @@ Board >> isInLastTile: aShip [
 ]
 
 { #category : #accessing }
+Board >> numOfLightYears [
+
+	^ lightYears nominalValue
+]
+
+{ #category : #accessing }
 Board >> numOfParsecs [
 
-	^ parsecs
+	^ parsecs nominalValue 
 ]
 
 { #category : #accessing }

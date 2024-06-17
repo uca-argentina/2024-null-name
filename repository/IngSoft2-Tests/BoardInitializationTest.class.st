@@ -17,7 +17,7 @@ BoardInitializationTest >> testBoardCannotBeInitializedWithLessThanOneParsec [
 		should: [
 			Board
 				withTileEffectCollection: aTileArray
-				withLengthInParsecs: 0
+				withLengthInUnits: (Parsec withNominalValue: 0)
 				withAmountOfLaps: 1 ]
 		raise: Error
 		withMessage: 'Board size in parsecs must be greater than 0'
@@ -36,7 +36,7 @@ BoardInitializationTest >> testBoardCannotBeInitializedWithLessThanOneTile [
 		should: [
 			Board
 				          withTileEffectCollection: aTileArray
-				          withLengthInParsecs: 0
+				          withLengthInUnits: 0
 				          withAmountOfLaps: 1 ]
 		raise: Error
 		withMessage: 'Board tiles must be greater than 0'
@@ -54,7 +54,7 @@ BoardInitializationTest >> testBoardMustHaveAtLeast1Lap [
 		should: [
 			Board
 				withTileEffectCollection: aTileArray
-				withLengthInParsecs: 4
+				withLengthInUnits: 4
 				withAmountOfLaps: 0]
 		raise: Error
 		withMessage: 'Cannot play with less than 1 lap'

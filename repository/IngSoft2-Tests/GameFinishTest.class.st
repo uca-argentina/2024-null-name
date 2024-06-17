@@ -20,7 +20,7 @@ GameFinishTest >> testGameKnowTheWinnerShip [
 	aGame := Game
 		         withBoard: (Board
 				          withTileEffectCollection: aTileArray
-				          withLengthInParsecs: 17
+				          withLengthInUnits: (Parsec withNominalValue: 10)
 				          withAmountOfLaps: 1)
 		         withShipNames: aCollectionOfNames
 		         withDice: (Dice with: aCollectionOfDie).
@@ -43,7 +43,7 @@ GameFinishTest >> testIfGameIsNotFinishedThenIsFinishedIsTrue [
 
 	aBoard := Board
 		          withTileEffectCollection: aTileArray
-		          withLengthInParsecs: 10
+		          withLengthInUnits: (Parsec withNominalValue: 10)
 		          withAmountOfLaps: 1.
 	aCollectionOfNames := OrderedCollection with: 'Juan'.
 	aCollectionOfDie := OrderedCollection with: (LoadedDie of: 10).
@@ -77,7 +77,7 @@ GameFinishTest >> testIfGameIsOngoingThereIsNoWinner [
 	aGame := Game
 		         withBoard: (	Board
 				          withTileEffectCollection: aTileArray
-				          withLengthInParsecs: 17
+				          withLengthInUnits: (Parsec withNominalValue: 10)
 				          withAmountOfLaps: 1)
 		         withShipNames: aCollectionOfNames
 		         withDice: (Dice with: aCollectionOfDie).
@@ -104,7 +104,7 @@ GameFinishTest >> testIfThereIsAWinnerThereAreNoMoreMovements [
 	aGame := Game
 		         withBoard: (Board
 				          withTileEffectCollection: aTileArray
-				          withLengthInParsecs: 17
+				          withLengthInUnits: (Parsec withNominalValue: 10)
 				          withAmountOfLaps: 1)
 		         withShipNames: aCollectionOfNames
 		         withDice: (Dice with: aCollectionOfDie).
@@ -134,7 +134,7 @@ GameFinishTest >> testWhenOneShipReachesTheEndGameIsFinished [
 	aGame := Game
 		         withBoard: (Board
 				          withTileEffectCollection: aTileArray
-				          withLengthInParsecs: 16
+				          withLengthInUnits: (Parsec withNominalValue: 10)
 				          withAmountOfLaps: 1)
 		         withShipNames: aCollectionOfNames
 		         withDice: (Dice with: aCollectionOfDie).
