@@ -10,7 +10,8 @@ Class {
 		'dice',
 		'gameTurnHandler',
 		'shipBattleHandler',
-		'theShipInCurrentTurn'
+		'theShipInCurrentTurn',
+		'gameCardHandler'
 	],
 	#classInstVars : [
 		'isFinished'
@@ -103,13 +104,23 @@ Game >> initializeGameWith: aBoard withShipNames: aNameCollection withDice: aDic
 		             Ship createWithName: aName ].
 	dice := aDice.
 	gameTurnHandler := TurnHandler withShips: gameShips.
-	shipBattleHandler := ShipBattle withDice: dice withShips: gameShips
+	shipBattleHandler := ShipBattle withDice: dice withShips: gameShips.
+	gameCardHandler := CardHandler new.
+	gameShips do: [:ship | gameCardHandler startingCards: (ship shipName).]
 ]
 
 { #category : #testing }
 Game >> isFinished [
 
 	^ gameShips anySatisfy: [ :aShip | gameBoard isInLastTile: aShip ]
+]
+
+{ #category : #'as yet unclassified' }
+Game >> playCard: aCard by: aShipName [
+
+	(gameCardHandler validateCard: (aCard withHolder: aShipName))
+		ifTrue: [ ^ 'Ship does not have that card' ].
+	^ 'A Card has been played'
 ]
 
 { #category : #modifying }
@@ -131,6 +142,12 @@ Game >> playTurn [
 	shipBattleHandler checkShipBattle: theShipInCurrentTurn.
 	gameTurnHandler checkForShipsWithNoShield.
 	gameTurnHandler nextTurn
+]
+
+{ #category : #'as yet unclassified' }
+Game >> shipCards: aShip [
+
+	^ gameCardHandler deck select: [ :card | card holder = aShip ]
 ]
 
 { #category : #accessing }
