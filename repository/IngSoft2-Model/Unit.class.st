@@ -10,12 +10,6 @@ Class {
 	#category : #'IngSoft2-Model'
 }
 
-{ #category : #testing }
-Unit class >> isAbstract [
-
-	^ self == Unit
-]
-
 { #category : #'as yet unclassified' }
 Unit class >> ratioInParsecs [
 	^ self subclassResponsibility
