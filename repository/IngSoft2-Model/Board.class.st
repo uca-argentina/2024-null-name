@@ -24,10 +24,13 @@ Board class >> amountOfLapsIsValid: anAmountOfLaps [
 ]
 
 { #category : #'argument validation' }
-Board class >> numberOfParsecsIsValid: aNumberOfParsecs [
+Board class >> amountOfUnitIsValid: aBoardLength [
 
-	(aNumberOfParsecs nominalValue) strictlyPositive ifFalse: [
-		Error signal: 'Board size in parsecs must be greater than 0' ]
+	(aBoardLength toUnit: Parsec) nominalValue strictlyPositive ifFalse: [
+		Error signal: 'Board size in parsecs must be greater than 0' ].
+	
+	(aBoardLength toUnit: LightYear) nominalValue >= 3 ifFalse: [
+		Error signal: 'Not enough LightYears for a single Parsec' ]
 ]
 
 { #category : #'class initialization' }
@@ -42,7 +45,7 @@ Board class >> withTileEffectCollection: aTileEffect withLengthInUnits: aBoardLe
 	
 	self amountOfLapsIsValid: anAmountOfLaps.
 	self numberOfTilesIsValid: aTileEffect size.
-	self numberOfParsecsIsValid: aBoardLength.
+	self amountOfUnitIsValid: aBoardLength.
 	
 	^ self new
 		  initializeWithTileEffectCollection: aTileEffect

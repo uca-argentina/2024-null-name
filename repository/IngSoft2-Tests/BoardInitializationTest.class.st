@@ -43,6 +43,25 @@ BoardInitializationTest >> testBoardCannotBeInitializedWithLessThanOneTile [
 ]
 
 { #category : #tests }
+BoardInitializationTest >> testBoardCannotBeInitializedWithLessThanThreeLightYears [
+
+	| aTileArray |
+	aTileArray := OrderedCollection
+		              with: NullEffect new
+		              with: NullEffect new
+		              with: NullEffect new
+		              with: NullEffect new.
+	self
+		should: [
+			Board
+				withTileEffectCollection: aTileArray
+				withLengthInUnits: (LightYear withNominalValue: 2)
+				withAmountOfLaps: 1 ]
+		raise: Error
+		withMessage: 'Not enough LightYears for a single Parsec'
+]
+
+{ #category : #tests }
 BoardInitializationTest >> testBoardMustHaveAtLeast1Lap [
 
 	| aWormHolePair aTileArray|
