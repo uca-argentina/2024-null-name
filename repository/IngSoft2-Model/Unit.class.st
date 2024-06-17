@@ -21,10 +21,16 @@ Unit class >> withNominalValue: aNominalValue [
 	^ self new initializeWithNominalValue: aNominalValue
 ]
 
+{ #category : #modifying }
+Unit >> > aUnit [
+
+	^ nominalValue > (aUnit toUnit: self class) nominalValue
+]
+
 { #category : #initialization }
 Unit >> initializeWithNominalValue: aNominalValue [
 
-	^ self subclassResponsibility
+	self subclassResponsibility
 ]
 
 { #category : #accessing }

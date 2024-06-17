@@ -86,7 +86,7 @@ BoardTest >> testWormHoleTilePairsCannotOverlap [
 				generateRandomBoardWithAmountOfTiles: 3
 				withAmountOfParsecs: 3
 				withWormHolePair: aWormHolePair
-				withParsecArray: #( 1 1 1 )
+				withHyperJumpArray: #( 1 1 1 )
 				withAmountOfLaps: 1 ]
 		raise: Error
 		withMessage: 'Wormhole tiles cannot be in the same position'

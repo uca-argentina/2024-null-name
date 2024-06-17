@@ -6,9 +6,9 @@ Class {
 	#superclass : #Object,
 	#instVars : [
 		'probabilityEffects',
-		'parsecArray',
 		'tiles',
-		'parsecs'
+		'parsecs',
+		'hyperJumpArray'
 	],
 	#category : #'IngSoft2-Model'
 }
@@ -16,8 +16,6 @@ Class {
 { #category : #'class initialization' }
 TileEffectsCreator class >> createWithProbabilityDistribution: aProbabilityDistributionCollection [
 
-	"self numberOfTileIsValid: aBoardLenght first.
-	self wormHolePairIsValid: aWormHolePair with: aBoardLenght first."
 	self probabilityDistributionIsValid: aProbabilityDistributionCollection.
 	
 	^ self new
@@ -56,13 +54,13 @@ TileEffectsCreator >> determineRangeRandom [
 TileEffectsCreator >> generateHyperJumpParameters: anEffect [
 
 	anEffect
-		initializeWithParsecArray: parsecArray
+		initializeWithParsecArray: hyperJumpArray
 		andLengthInTiles: tiles
 		andLengthInParsecs: parsecs
 ]
 
 { #category : #generating }
-TileEffectsCreator >> generateLoadedBoardWithAmountOfTiles: anAmountOfTiles withAmountOfParsecs: anAmountOfParsecs withWormHolePair: aWormHolePair withParsecArray: aParsecArray withAmountOfLaps: anAmountOfLaps [
+TileEffectsCreator >> generateLoadedBoardWithAmountOfTiles: anAmountOfTiles withAmountOfParsecs: anAmountOfParsecs withWormHolePair: aWormHolePair withHyperJumpArray: aHyperJumpArray withAmountOfLaps: anAmountOfLaps [
 
 	| tileEffectArray tileNumber |
 	self wormHolePairIsValid: aWormHolePair with: anAmountOfTiles.
@@ -71,7 +69,7 @@ TileEffectsCreator >> generateLoadedBoardWithAmountOfTiles: anAmountOfTiles with
 	tileNumber := 0.
 	tiles := anAmountOfTiles.
 	parsecs := anAmountOfParsecs.
-	parsecArray := aParsecArray.
+	hyperJumpArray := aHyperJumpArray.
 
 	1 to: tiles do: [ :i |
 		| anEffect |
@@ -108,7 +106,7 @@ TileEffectsCreator >> generateMoonWalkParameters: anEffect [
 ]
 
 { #category : #generating }
-TileEffectsCreator >> generateRandomBoardWithAmountOfTiles: anAmountOfTiles withAmountOfParsecs: anAmountOfParsecs withWormHolePair: aWormHolePair withParsecArray: aParsecArray withAmountOfLaps: anAmountOfLaps [
+TileEffectsCreator >> generateRandomBoardWithAmountOfTiles: anAmountOfTiles withAmountOfParsecs: anAmountOfParsecs withWormHolePair: aWormHolePair withHyperJumpArray: aHyperJumpArray withAmountOfLaps: anAmountOfLaps [
 
 	| tileEffectArray |
 	self wormHolePairIsValid: aWormHolePair with: anAmountOfTiles.
@@ -117,7 +115,7 @@ TileEffectsCreator >> generateRandomBoardWithAmountOfTiles: anAmountOfTiles with
 	tileEffectArray := OrderedCollection new.
 	tiles := anAmountOfTiles.
 	parsecs := anAmountOfParsecs.
-	parsecArray := aParsecArray.
+	hyperJumpArray := aHyperJumpArray.
 
 	1 to: tiles do: [ :i |
 	tileEffectArray add: self determineRangeRandom ].

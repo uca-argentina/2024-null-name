@@ -37,7 +37,7 @@ BoardProbabilityTest >> testWhenABoardIsCreatedWithATileEffectCreatorItFollowsTh
 		          generateRandomBoardWithAmountOfTiles: 10
 		          withAmountOfParsecs: 10
 		          withWormHolePair: #( 2 3 )
-		          withParsecArray: #( 2 1 1 4 )
+		          withHyperJumpArray: #( 2 1 1 4 )
 		          withAmountOfLaps: 3.
 
 	self assert: (aBoard allTileEffectsAmount at: NullEffect) equals: 8
@@ -84,7 +84,7 @@ BoardProbabilityTest >> testWhenBoardIsCreatedTheAmountOfEffectsFollowTheCorrect
 		          generateLoadedBoardWithAmountOfTiles: 102
 		          withAmountOfParsecs: 102
 		          withWormHolePair: aWormHolePair
-		          withParsecArray: #( 1 1 1 )
+		          withHyperJumpArray: #( 1 1 1 )
 		          withAmountOfLaps: 1.
 
 	self assert: (aBoard allTileEffectsAmount at: NullEffect) equals: 40.

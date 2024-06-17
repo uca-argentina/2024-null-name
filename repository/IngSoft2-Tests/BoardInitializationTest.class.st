@@ -98,7 +98,7 @@ BoardInitializationTest >> testSpecialTilesCannotBeCreatedIfPositionsExceedBoard
 				generateRandomBoardWithAmountOfTiles: 3
 				withAmountOfParsecs: 3
 				withWormHolePair: aWormHolePair
-				withParsecArray: #( 1 1 1 )
+				withHyperJumpArray: #( 1 1 1 )
 				withAmountOfLaps: 1 ]
 		raise: Error
 		withMessage: 'Wormhole tiles are out of bounds'
@@ -141,7 +141,7 @@ BoardInitializationTest >> testWormHoleEffectCannotBeCreatedInFirstTileOfBoard [
 				generateRandomBoardWithAmountOfTiles: 3
 				withAmountOfParsecs: 3
 				withWormHolePair: aWormHolePair
-				withParsecArray: #( 1 1 1 )
+				withHyperJumpArray: #( 1 1 1 )
 				withAmountOfLaps: 1 ]
 		raise: Error
 		withMessage: 'Wormhole cannot be created in first tile of board'
