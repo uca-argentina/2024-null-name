@@ -38,6 +38,20 @@ Game class >> withBoard: aBoard withShipNames: aNameCollection withDice: aDice [
 		  initializeGameWith: aBoard
 		  withShipNames: aNameCollection asSet
 		  withDice: aDice
+		  withGameCardHandler:
+			  (CardHandler withCardProbabilities: (OrderedCollection with:
+					    (ProbabilityAssociation associate: Card withProbability: 100)))
+]
+
+{ #category : #'class initialization' }
+Game class >> withBoard: aBoard withShipNames: aNameCollection withDice: aDice withCardHandler: aCardHandler [
+
+	self isValid: aBoard with: aNameCollection and: aDice.
+	^ self new
+		  initializeGameWith: aBoard
+		  withShipNames: aNameCollection
+		  withDice: aDice
+		  withGameCardHandler: aCardHandler
 ]
 
 { #category : #accessing }
@@ -97,7 +111,7 @@ Game >> canPlayNextTurnOf [
 ]
 
 { #category : #initialization }
-Game >> initializeGameWith: aBoard withShipNames: aNameCollection withDice: aDice [
+Game >> initializeGameWith: aBoard withShipNames: aNameCollection withDice: aDice withGameCardHandler: aCardHandler [
 
 	gameBoard := aBoard.
 	gameShips := aNameCollection asOrderedCollection collect: [ :aName |
@@ -105,7 +119,7 @@ Game >> initializeGameWith: aBoard withShipNames: aNameCollection withDice: aDic
 	dice := aDice.
 	gameTurnHandler := TurnHandler withShips: gameShips.
 	shipBattleHandler := ShipBattle withDice: dice withShips: gameShips.
-	gameCardHandler := CardHandler new.
+	gameCardHandler := aCardHandler.
 	gameShips do: [:ship | gameCardHandler startingCards: (ship shipName).]
 ]
 

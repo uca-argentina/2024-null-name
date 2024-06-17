@@ -19,7 +19,7 @@ Card class >> withHolder: aShipName [
 { #category : #comparing }
 Card >> = aCard [
 
-	^ holder = aCard holder
+	^ holder = aCard holder and: self class = aCard class
 ]
 
 { #category : #comparing }

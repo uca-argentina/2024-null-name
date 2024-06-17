@@ -5,10 +5,30 @@ Class {
 	#name : #CardHandler,
 	#superclass : #Object,
 	#instVars : [
-		'deck'
+		'deck',
+		'probabilityCards'
 	],
 	#category : #'IngSoft2-Model'
 }
+
+{ #category : #'class initialization' }
+CardHandler class >> withCardProbabilities: aCollectionOfCardProbabilities [ 
+	
+	^ (self new) initalizeWithProbabilities: aCollectionOfCardProbabilities.
+]
+
+{ #category : #comparing }
+CardHandler >> cardAtRandom [
+
+	| aRandomNumber aCardClass |
+	aRandomNumber := (1 to: 100) atRandom asInteger.
+
+	aCardClass := ((probabilityCards detect: [ :aProbabilityCard |
+		             aProbabilityCard rangeIncludes: aRandomNumber ])
+		            associatedObject).
+
+	^ aCardClass
+]
 
 { #category : #accessing }
 CardHandler >> deck [
@@ -17,16 +37,29 @@ CardHandler >> deck [
 ]
 
 { #category : #initialization }
-CardHandler >> initialize [
-
+CardHandler >> initalizeWithProbabilities: aCollectionOfCardProbabilities [ 
+	
+	probabilityCards := self transformIntoProbabilityRanges: aCollectionOfCardProbabilities .
 	deck := OrderedCollection new
 ]
 
 { #category : #generating }
 CardHandler >> startingCards: aShipName [
 
-	deck add: (Card withHolder: aShipName).
-	deck add: (Card withHolder: aShipName).
+	2 timesRepeat: [ deck add: (self cardAtRandom withHolder: aShipName) ].
+
+]
+
+{ #category : #comparing }
+CardHandler >> transformIntoProbabilityRanges: aProbabilityDistributionCollection [
+
+	| acc |
+	acc := 0.
+
+	aProbabilityDistributionCollection do: [ :effectProbability |
+		effectProbability setRange: acc.
+		acc := acc + effectProbability probability].
+	^ aProbabilityDistributionCollection
 ]
 
 { #category : #comparing }

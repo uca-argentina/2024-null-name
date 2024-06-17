@@ -5,7 +5,7 @@ Class {
 }
 
 { #category : #tests }
-CardsTest >> testAnInstantCardCanBePlayedDuringAGame [
+CardsTest >> testACardCanBePlayedDuringAGame [
 
 	| aGame aBoard aCollectionOfNames aCollectionOfDie aTileArray|
 	aTileArray := OrderedCollection new.
@@ -34,6 +34,39 @@ CardsTest >> testAnInstantCardCanBePlayedDuringAGame [
 		
 		
 	
+]
+
+{ #category : #tests }
+CardsTest >> testAnInstantCardCanBePlayedDuringAGame [
+
+	| aGame aBoard aCollectionOfNames aCollectionOfDie aTileArray aCardHandler collectionOfCardProbabilities |
+	aTileArray := OrderedCollection new.
+	2 timesRepeat: [ aTileArray add: NullEffect new ].
+
+	aBoard := Board
+		          withTileEffectCollection: aTileArray
+		          withLengthInUnits: (Parsec withNominalValue: 10)
+		          withAmountOfLaps: 1.
+	aCollectionOfNames := OrderedCollection with: 'Juan'.
+	aCollectionOfDie := OrderedCollection with: (LoadedDie of: 10).
+
+	collectionOfCardProbabilities := OrderedCollection with:
+		                                 (ProbabilityAssociation
+			                                  associate: InstantCard
+			                                  withProbability: 100).
+
+	aCardHandler := CardHandler withCardProbabilities:
+		                collectionOfCardProbabilities.
+	
+	aGame := Game
+		         withBoard: aBoard
+		         withShipNames: aCollectionOfNames
+		         withDice: (Dice with: aCollectionOfDie)
+					withCardHandler: aCardHandler.
+
+	self
+		assert: (aGame playCard: InstantCard by: 'Juan')
+		equals: 'A Card has been played'
 ]
 
 { #category : #tests }

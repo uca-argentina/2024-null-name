@@ -43,7 +43,7 @@ TileEffectsCreator >> determineRangeRandom [
 
 	anEffectClass := ((probabilityEffects detect: [ :aProbabilityEffect |
 		             aProbabilityEffect rangeIncludes: aRandomNumber ])
-		            effect).
+		            associatedObject).
 
 	anEffect := (anEffectClass new) generateParameters: self.
 
@@ -78,7 +78,7 @@ TileEffectsCreator >> generateLoadedBoardWithAmountOfTiles: anAmountOfTiles with
 			              ifFalse: [ tileNumber + 1 ].
 
 		anEffect := (probabilityEffects detect: [ :aProbabilityEffect |
-			             aProbabilityEffect rangeIncludes: tileNumber ]) effect.
+			             aProbabilityEffect rangeIncludes: tileNumber ]) associatedObject.
 
 		tileEffectArray add: (anEffect new generateParameters: self) ].
 

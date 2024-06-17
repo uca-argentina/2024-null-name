@@ -86,8 +86,8 @@ BoardInitializationTest >> testSpecialTilesCannotBeCreatedIfPositionsExceedBoard
 	aWormHolePair := #( 2 6 ).
 
 	aProbabilityDistributionCollection := OrderedCollection with:
-		                                      (EffectProbability
-			                                       effect: [ NullEffect ]
+		                                      (ProbabilityAssociation
+			                                       associate: [ NullEffect ]
 			                                       withProbability: 100).
 	aTileEffectsCreator := TileEffectsCreator
 		                       createWithProbabilityDistribution:
@@ -128,8 +128,8 @@ BoardInitializationTest >> testWormHoleEffectCannotBeCreatedInFirstTileOfBoard [
 	| aWormHolePair aProbabilityDistributionCollection aTileEffectsCreator |
 	aWormHolePair := #( 1 3 ).
 	aProbabilityDistributionCollection := OrderedCollection with:
-		                                      (EffectProbability
-			                                       effect: [ NullEffect ]
+		                                      (ProbabilityAssociation
+			                                       associate: [ NullEffect ]
 			                                       withProbability: 100).
 
 	aTileEffectsCreator := TileEffectsCreator

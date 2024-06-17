@@ -9,8 +9,8 @@ BoardProbabilityTest >> testTotalSumOfEffectsProbabilitiesIs100 [
 
 	| aProbabilityDistributionCollection |
 	aProbabilityDistributionCollection := OrderedCollection with:
-		                                      (EffectProbability
-			                                       effect: [ MoonWalkEffect ]
+		                                      (ProbabilityAssociation
+			                                       associate: [ MoonWalkEffect ]
 			                                       withProbability: 80).
 	self
 		should: [
@@ -26,8 +26,8 @@ BoardProbabilityTest >> testWhenABoardIsCreatedWithATileEffectCreatorItFollowsTh
 
 	| aTileEffectsCreator aProbabilityDistributionCollection aBoard |
 	aProbabilityDistributionCollection := OrderedCollection with:
-		                                      (EffectProbability
-			                                       effect: [ NullEffect ]
+		                                      (ProbabilityAssociation
+			                                       associate: [ NullEffect ]
 			                                       withProbability: 100).
 	aTileEffectsCreator := TileEffectsCreator
 		                       createWithProbabilityDistribution:
@@ -52,28 +52,28 @@ BoardProbabilityTest >> testWhenBoardIsCreatedTheAmountOfEffectsFollowTheCorrect
 
 	aProbabilityDistributionCollection := OrderedCollection
 		                                      with:
-		                                      (EffectProbability
-			                                       effect: [ NullEffect ]
+		                                      (ProbabilityAssociation
+			                                       associate: [ NullEffect ]
 			                                       withProbability: 40)
 		                                      with:
-		                                      (EffectProbability
-			                                       effect: [ BlackHoleEffect ]
+		                                      (ProbabilityAssociation
+			                                       associate: [ BlackHoleEffect ]
 			                                       withProbability: 20)
-		                                      with: (EffectProbability
-				                                       effect: [
+		                                      with: (ProbabilityAssociation
+				                                       associate: [
 				                                       HyperSpaceJumpEffect ]
 				                                       withProbability: 20)
 		                                      with:
-		                                      (EffectProbability
-			                                       effect: [ MoonWalkEffect ]
+		                                      (ProbabilityAssociation
+			                                       associate: [ MoonWalkEffect ]
 			                                       withProbability: 10)
 		                                      with:
-		                                      (EffectProbability
-			                                       effect: [ HyperJumpEffect ]
+		                                      (ProbabilityAssociation
+			                                       associate: [ HyperJumpEffect ]
 			                                       withProbability: 8)
 		                                      with:
-		                                      (EffectProbability
-			                                       effect: [ AtomicBombEffect ]
+		                                      (ProbabilityAssociation
+			                                       associate: [ AtomicBombEffect ]
 			                                       withProbability: 2).
 
 	aTileEffectsCreator := TileEffectsCreator

@@ -73,8 +73,8 @@ BoardTest >> testWormHoleTilePairsCannotOverlap [
 	aWormHolePair := #( 3 3 ).
 
 	aProbabilityDistributionCollection := OrderedCollection with:
-		                                      (EffectProbability
-			                                       effect: [ NullEffect ]
+		                                      (ProbabilityAssociation
+			                                       associate: [ NullEffect ]
 			                                       withProbability: 100).
 	aTileEffectsCreator := TileEffectsCreator
 		                       createWithProbabilityDistribution:
