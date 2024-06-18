@@ -1,7 +1,3 @@
-"
-Please comment me using the following template inspired by Class Responsibility Collaborator (CRC) design:
-
-"
 Class {
 	#name : #RepeatCard,
 	#superclass : #Card,

@@ -1,6 +1,3 @@
-"
-Please comment me using the following template inspired by Class Responsibility Collaborator (CRC) desi
-"
 Class {
 	#name : #CancellationCard,
 	#superclass : #Card,

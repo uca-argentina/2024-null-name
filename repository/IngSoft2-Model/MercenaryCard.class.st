@@ -1,6 +1,3 @@
-"
-a
-"
 Class {
 	#name : #MercenaryCard,
 	#superclass : #Card,

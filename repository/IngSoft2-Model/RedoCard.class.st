@@ -1,6 +1,3 @@
-"
-s
-"
 Class {
 	#name : #RedoCard,
 	#superclass : #Card,
