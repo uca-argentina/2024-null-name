@@ -5,6 +5,12 @@ Class {
 }
 
 { #category : #tests }
+BattleTest >> testBanana [
+
+	self assert: 1 equals: 1
+]
+
+{ #category : #tests }
 BattleTest >> testShipsCannotBattleInTheFirstTileOfABoard [
 
 	| aGame aCollectionOfNames aWormHoleTilePair aCollectionOfDie aTileArray |
