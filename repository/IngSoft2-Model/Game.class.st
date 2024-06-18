@@ -142,9 +142,30 @@ Game >> playCard: aCard by: aShipName [
 	(aCardToPlay canPlayRightNow: theShipInCurrentTurn) ifFalse: [
 		^ 'Ship cannot throw this card as its not his turn' ].
 	
+	gameCardHandler activateCard: aCardToPlay.
 	gameCardHandler removeCardFromShipDeck: aCardToPlay.
 	
 	^ 'A ' ,aCardToPlay class name, ' has been played'
+]
+
+{ #category : #'as yet unclassified' }
+Game >> playCard: aCard by: aShipName toTarget: aTarget [
+
+	| aCardToPlay |
+	aCardToPlay := aCard withHolder: aShipName.
+
+	(gameCardHandler validateCard: aCardToPlay) ifTrue: [
+		^ 'Ship does not have that card' ].
+
+	(aCardToPlay canPlayRightNow: theShipInCurrentTurn) ifFalse: [
+		^ 'Ship cannot throw this card as its not his turn' ].
+
+	(self targetIsValid: aTarget) ifFalse: [ ^ 'Target is not valid' ].
+
+	gameCardHandler activateCard: aCardToPlay withTarget: aTarget.
+	gameCardHandler removeCardFromShipDeck: aCardToPlay.
+
+	^ 'A ' , aCardToPlay class name , ' has been played'
 ]
 
 { #category : #modifying }
@@ -158,7 +179,7 @@ Game >> playTurn [
 		do: [ :ex | ^ ex messageText ].
 
 	theShipInCurrentTurn := gameTurnHandler currentTurnShip.
-	movement := dice throw.
+	movement := dice throw + (gameCardHandler movementCardsActivated: theShipInCurrentTurn).
 	theShipInCurrentTurn moveTiles: movement.
 	gameBoard adjustShipPosition: theShipInCurrentTurn.
 	gameBoard snapToFinishTile: theShipInCurrentTurn.
@@ -202,6 +223,13 @@ Game >> skipTurn [
 	theShipInCurrentTurn healFullShields.
 	gameTurnHandler nextTurn.
 	^ theShipInCurrentTurn shipName , ' skipped their turn'
+]
+
+{ #category : #'as yet unclassified' }
+Game >> targetIsValid: aTarget [
+
+	^(gameShips select: [ :ship | ship shipName = aTarget ]) isEmpty or:
+		(gameCardHandler checkTarget: aTarget)
 ]
 
 { #category : #accessing }

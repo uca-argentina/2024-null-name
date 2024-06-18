@@ -6,7 +6,8 @@ Class {
 	#superclass : #Object,
 	#instVars : [
 		'deck',
-		'probabilityCards'
+		'probabilityCards',
+		'activeCards'
 	],
 	#category : #'IngSoft2-Model'
 }
@@ -15,6 +16,20 @@ Class {
 CardHandler class >> withCardProbabilities: aCollectionOfCardProbabilities [ 
 	
 	^ (self new) initalizeWithProbabilities: aCollectionOfCardProbabilities.
+]
+
+{ #category : #generating }
+CardHandler >> activateCard: aCardToPlay [
+
+	activeCards add: (aCardToPlay).
+
+]
+
+{ #category : #generating }
+CardHandler >> activateCard: aCardToPlay withTarget: aTarget [
+
+	activeCards add: (aCardToPlay withTarget: aTarget).
+
 ]
 
 { #category : #comparing }
@@ -30,6 +45,12 @@ CardHandler >> cardAtRandom [
 	^ aCardClass
 ]
 
+{ #category : #'as yet unclassified' }
+CardHandler >> checkTarget: aTarget [
+
+	^ (activeCards select: [ :card | aTarget = card ]) isEmpty
+]
+
 { #category : #accessing }
 CardHandler >> deck [
 
@@ -40,13 +61,25 @@ CardHandler >> deck [
 CardHandler >> initalizeWithProbabilities: aCollectionOfCardProbabilities [ 
 	
 	probabilityCards := self transformIntoProbabilityRanges: aCollectionOfCardProbabilities .
-	deck := OrderedCollection new
+	deck := OrderedCollection new.
+	activeCards := OrderedCollection new.
+]
+
+{ #category : #'as yet unclassified' }
+CardHandler >> movementCardsActivated: theShipInTurn [
+
+	^ (activeCards select: [ :card |
+		 card hasTarget: theShipInTurn shipName ]) sum: [ :card |
+		card applyMovement ]
+	
 ]
 
 { #category : #comparing }
 CardHandler >> removeCardFromShipDeck: aCard [
 
-deck remove: aCard ifAbsent: [ Error signal: 'Card was not found in Ship Deck' ]
+	deck
+		remove: aCard
+		ifAbsent: [ Error signal: 'Card was not found in Ship Deck' ]
 ]
 
 { #category : #generating }

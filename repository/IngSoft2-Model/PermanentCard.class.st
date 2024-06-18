@@ -1,3 +1,6 @@
+"
+s
+"
 Class {
 	#name : #PermanentCard,
 	#superclass : #Card,

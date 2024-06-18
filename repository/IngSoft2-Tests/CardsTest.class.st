@@ -152,6 +152,78 @@ CardsTest >> testWhenGameIsStartedShipsHave2Cards [
 ]
 
 { #category : #tests }
+CardsTest >> testWhenOneAccelerationCardIsPlayedShipsMoveOneExtraTile [
+
+	| aGame aBoard aCollectionOfNames aCollectionOfDie aTileArray collectionOfCardProbabilities aCardHandler |
+	aTileArray := OrderedCollection new.
+	10 timesRepeat: [ aTileArray add: NullEffect new ].
+
+	aBoard := Board
+		          withTileEffectCollection: aTileArray
+		          withLengthInUnits: (Parsec withNominalValue: 10)
+		          withAmountOfLaps: 1.
+	aCollectionOfNames := OrderedCollection with: 'Juan' with: 'Jose'.
+	aCollectionOfDie := OrderedCollection with:
+		                    (SequenceDie withSequence: #( 5 4 )).
+
+	collectionOfCardProbabilities := OrderedCollection with:
+		                                 (ProbabilityAssociation
+			                                  associate: AccelerationCard
+			                                  withProbability: 100).
+
+	aCardHandler := CardHandler withCardProbabilities:
+		                collectionOfCardProbabilities.
+	aGame := Game
+		         withBoard: aBoard
+		         withShipNames: aCollectionOfNames
+		         withDice: (Dice with: aCollectionOfDie)
+		         withCardHandler: aCardHandler.
+
+	aGame playCard: AccelerationCard by: 'Juan'.
+	aGame playTurn.
+	aGame playTurn.
+
+	self assert: (aGame allShipsPosition at: 'Juan') first equals: 7.
+	self assert: (aGame allShipsPosition at: 'Jose') first equals: 6
+]
+
+{ #category : #tests }
+CardsTest >> testWhenOneSpeedCardIsPlayedTargetedShipMoveOneExtraTile [
+
+	| aGame aBoard aCollectionOfNames aCollectionOfDie aTileArray collectionOfCardProbabilities aCardHandler |
+	aTileArray := OrderedCollection new.
+	10 timesRepeat: [ aTileArray add: NullEffect new ].
+
+	aBoard := Board
+		          withTileEffectCollection: aTileArray
+		          withLengthInUnits: (Parsec withNominalValue: 10)
+		          withAmountOfLaps: 1.
+	aCollectionOfNames := OrderedCollection with: 'Juan' with: 'Jose'.
+	aCollectionOfDie := OrderedCollection with:
+		                    (SequenceDie withSequence: #( 5 4 )).
+
+	collectionOfCardProbabilities := OrderedCollection with:
+		                                 (ProbabilityAssociation
+			                                  associate: SpeedCard
+			                                  withProbability: 100).
+
+	aCardHandler := CardHandler withCardProbabilities:
+		                collectionOfCardProbabilities.
+	aGame := Game
+		         withBoard: aBoard
+		         withShipNames: aCollectionOfNames
+		         withDice: (Dice with: aCollectionOfDie)
+		         withCardHandler: aCardHandler.
+
+	aGame playCard: SpeedCard by: 'Juan' toTarget: 'Juan'.
+	aGame playTurn.
+	aGame playTurn.
+
+	self assert: (aGame allShipsPosition at: 'Juan') first equals: 7.
+	self assert: (aGame allShipsPosition at: 'Jose') first equals: 5
+]
+
+{ #category : #tests }
 CardsTest >> testWhenPlayingACardShipCardsDeckSizeChanges [
 
 	| aGame aBoard aCollectionOfNames aCollectionOfDie aTileArray |
