@@ -160,7 +160,7 @@ Game >> playCard: aCard by: aShipName toTarget: aTarget [
 
 	| aCardToPlay |
 	aCardToPlay := aCard withHolder: aShipName.
-
+	
 	(gameCardHandler validateCard: aCardToPlay) ifTrue: [
 		^ 'Ship does not have that card' ].
 
@@ -206,7 +206,10 @@ Game >> repeateEffectTo: aShipName [
 
 	| aShip |
 	aShip := gameShips detect: [ :ship | ship shipName = aShipName ].
-	lastEffect affectAShip: aShip.
+
+	(lastEffect respondsTo: #affectAShip:) ifFalse: [ ^ self ].
+	
+	lastEffect affectAShip: aShip
 ]
 
 { #category : #accessing }

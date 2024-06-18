@@ -8,7 +8,8 @@ Class {
 		'deck',
 		'probabilityCards',
 		'activeCards',
-		'game'
+		'game',
+		'lastCardPlayed'
 	],
 	#category : #'IngSoft2-Model'
 }
@@ -22,13 +23,15 @@ CardHandler class >> withCardProbabilities: aCollectionOfCardProbabilities [
 { #category : #generating }
 CardHandler >> activateCard: aCardToPlay [
 
-	aCardToPlay activate: self
+	aCardToPlay activate: self.
+	lastCardPlayed := aCardToPlay
 ]
 
 { #category : #generating }
 CardHandler >> activateCard: aCardToPlay withTarget: aTarget [
 	
 	aCardToPlay activate: self withTarget: aTarget.
+	lastCardPlayed := aCardToPlay
 
 ]
 
@@ -86,7 +89,14 @@ CardHandler >> initalizeWithProbabilities: aCollectionOfCardProbabilities [
 	probabilityCards := self transformIntoProbabilityRanges:
 		                    aCollectionOfCardProbabilities.
 	deck := OrderedCollection new.
-	activeCards := OrderedCollection new
+	activeCards := OrderedCollection new.
+	lastCardPlayed := NullCard new.
+]
+
+{ #category : #accessing }
+CardHandler >> lastCardPlayed [
+
+	^ lastCardPlayed
 ]
 
 { #category : #'as yet unclassified' }
