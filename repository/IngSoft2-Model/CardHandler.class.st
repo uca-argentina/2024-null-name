@@ -21,15 +21,20 @@ CardHandler class >> withCardProbabilities: aCollectionOfCardProbabilities [
 { #category : #generating }
 CardHandler >> activateCard: aCardToPlay [
 
-	activeCards add: (aCardToPlay).
-
+	aCardToPlay activate: self
 ]
 
 { #category : #generating }
 CardHandler >> activateCard: aCardToPlay withTarget: aTarget [
+	
+	aCardToPlay activate: self withTarget: aTarget.
 
-	activeCards add: (aCardToPlay withTarget: aTarget).
+]
 
+{ #category : #comparing }
+CardHandler >> addToActiveCards: aCard [
+
+	activeCards add: aCard
 ]
 
 { #category : #comparing }
@@ -48,13 +53,18 @@ CardHandler >> cardAtRandom [
 { #category : #'as yet unclassified' }
 CardHandler >> checkTarget: aTarget [
 
-	^ (activeCards select: [ :card | aTarget = card ]) isEmpty
+	^ (activeCards select: [ :card | aTarget = card ]) isNotEmpty
 ]
 
 { #category : #accessing }
 CardHandler >> deck [
 
 	^ deck
+]
+
+{ #category : #'as yet unclassified' }
+CardHandler >> giveCard: aCard to: aShip [ 
+	deck add: (aCard withHolder: aShip).
 ]
 
 { #category : #initialization }
@@ -80,6 +90,12 @@ CardHandler >> removeCardFromShipDeck: aCard [
 	deck
 		remove: aCard
 		ifAbsent: [ Error signal: 'Card was not found in Ship Deck' ]
+]
+
+{ #category : #comparing }
+CardHandler >> removeFromActiveCard: aTarget [
+
+	activeCards remove: aTarget
 ]
 
 { #category : #generating }

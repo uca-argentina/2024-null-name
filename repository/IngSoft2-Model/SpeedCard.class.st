@@ -11,6 +11,12 @@ Class {
 }
 
 { #category : #comparing }
+SpeedCard >> activate: aCardHandler withTarget: aTarget [
+
+	aCardHandler addToActiveCards: (self withTarget: aTarget)
+]
+
+{ #category : #comparing }
 SpeedCard >> applyMovement [
 
 	^ 1

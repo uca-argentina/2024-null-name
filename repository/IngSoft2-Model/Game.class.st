@@ -110,6 +110,11 @@ Game >> canPlayNextTurnOf [
 		Error signal: 'Game is Over you cant Keep Playing' ].
 ]
 
+{ #category : #'as yet unclassified' }
+Game >> giveCardToCurrentShip: aCardGeneratorEffect [ 
+	gameCardHandler giveCard: aCardGeneratorEffect to: (theShipInCurrentTurn shipName)
+]
+
 { #category : #initialization }
 Game >> initializeGameWith: aBoard withShipNames: aNameCollection withDice: aDice withGameCardHandler: aCardHandler [
 
@@ -178,7 +183,6 @@ Game >> playTurn [
 		on: TurnExeption
 		do: [ :ex | ^ ex messageText ].
 
-	theShipInCurrentTurn := gameTurnHandler currentTurnShip.
 	movement := dice throw + (gameCardHandler movementCardsActivated: theShipInCurrentTurn).
 	theShipInCurrentTurn moveTiles: movement.
 	gameBoard adjustShipPosition: theShipInCurrentTurn.
@@ -186,7 +190,8 @@ Game >> playTurn [
 	gameBoard applyTileEffectOn: self at: theShipInCurrentTurn position.
 	shipBattleHandler checkShipBattle: theShipInCurrentTurn.
 	gameTurnHandler checkForShipsWithNoShield.
-	gameTurnHandler nextTurn
+	gameTurnHandler nextTurn.
+	theShipInCurrentTurn := gameTurnHandler currentTurnShip.
 ]
 
 { #category : #accessing }
@@ -228,7 +233,7 @@ Game >> skipTurn [
 { #category : #'as yet unclassified' }
 Game >> targetIsValid: aTarget [
 
-	^(gameShips select: [ :ship | ship shipName = aTarget ]) isEmpty or:
+	^(gameShips select: [ :ship | ship shipName = aTarget ]) isNotEmpty or:
 		(gameCardHandler checkTarget: aTarget)
 ]
 

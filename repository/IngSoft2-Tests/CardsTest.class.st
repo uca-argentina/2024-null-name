@@ -35,39 +35,6 @@ CardsTest >> testACardCanBePlayedDuringAGame [
 ]
 
 { #category : #tests }
-CardsTest >> testAnInstantCardCanBePlayedDuringAGame [
-
-	| aGame aBoard aCollectionOfNames aCollectionOfDie aTileArray aCardHandler collectionOfCardProbabilities |
-	aTileArray := OrderedCollection new.
-	2 timesRepeat: [ aTileArray add: NullEffect new ].
-
-	aBoard := Board
-		          withTileEffectCollection: aTileArray
-		          withLengthInUnits: (Parsec withNominalValue: 10)
-		          withAmountOfLaps: 1.
-	aCollectionOfNames := OrderedCollection with: 'Juan'.
-	aCollectionOfDie := OrderedCollection with: (LoadedDie of: 10).
-
-	collectionOfCardProbabilities := OrderedCollection with:
-		                                 (ProbabilityAssociation
-			                                  associate: InstantCard
-			                                  withProbability: 100).
-
-	aCardHandler := CardHandler withCardProbabilities:
-		                collectionOfCardProbabilities.
-	
-	aGame := Game
-		         withBoard: aBoard
-		         withShipNames: aCollectionOfNames
-		         withDice: (Dice with: aCollectionOfDie)
-					withCardHandler: aCardHandler.
-
-	self
-		assert: (aGame playCard: InstantCard by: 'Juan')
-		equals: 'A InstantCard has been played'
-]
-
-{ #category : #tests }
 CardsTest >> testAnPermanentCardCanOnlyBePlayedDuringAShipsTurnInAGame [
 
 	| aGame aBoard aCollectionOfNames aCollectionOfDie aTileArray aCardHandler collectionOfCardProbabilities |
@@ -83,7 +50,7 @@ CardsTest >> testAnPermanentCardCanOnlyBePlayedDuringAShipsTurnInAGame [
 
 	collectionOfCardProbabilities := OrderedCollection with:
 		                                 (ProbabilityAssociation
-			                                  associate: PermanentCard
+			                                  associate: AccelerationCard 
 			                                  withProbability: 100).
 
 	aCardHandler := CardHandler withCardProbabilities:
@@ -95,7 +62,7 @@ CardsTest >> testAnPermanentCardCanOnlyBePlayedDuringAShipsTurnInAGame [
 		         withCardHandler: aCardHandler.
 
 	self
-		assert: (aGame playCard: PermanentCard by: 'Jose')
+		assert: (aGame playCard: AccelerationCard by: 'Jose')
 		equals: 'Ship cannot throw this card as its not his turn'
 ]
 
@@ -126,6 +93,94 @@ CardsTest >> testCannotPlayACardThatDoesNotBelongToAShip [
 		
 		
 	
+]
+
+{ #category : #tests }
+CardsTest >> testWhenACancelationCardIsPlayedDeactivateTargetedCard [
+
+	| aGame aBoard aCollectionOfNames aCollectionOfDie aTileArray collectionOfCardProbabilities aCardHandler |
+	aTileArray := OrderedCollection new.
+	10 timesRepeat: [ aTileArray add: NullEffect new ].
+
+
+	aTileArray at: 6 put: (CardGeneratorEffect withProbabilities:
+			 (OrderedCollection with: (ProbabilityAssociation
+					   associate: CancellationCard
+					   withProbability: 100))).
+
+	aBoard := Board
+		          withTileEffectCollection: aTileArray
+		          withLengthInUnits: (Parsec withNominalValue: 10)
+		          withAmountOfLaps: 1.
+	aCollectionOfNames := OrderedCollection with: 'Juan' with: 'Jose'.
+	aCollectionOfDie := OrderedCollection with:
+		                    (SequenceDie withSequence: #( 5 4 )).
+
+	collectionOfCardProbabilities := OrderedCollection with:
+		                                 (ProbabilityAssociation
+			                                  associate: AccelerationCard
+			                                  withProbability: 100).
+
+	aCardHandler := CardHandler withCardProbabilities:
+		                collectionOfCardProbabilities.
+
+
+
+	aGame := Game
+		         withBoard: aBoard
+		         withShipNames: aCollectionOfNames
+		         withDice: (Dice with: aCollectionOfDie)
+		         withCardHandler: aCardHandler.
+
+	aGame playTurn.
+	aGame playCard: AccelerationCard by: 'Jose'.
+	aGame playCard: CancellationCard by: 'Juan' toTarget: (AccelerationCard withHolder: 'Jose').
+	aGame playTurn.
+	
+	self assert: (aGame allShipsPosition at: 'Jose') first equals: 5
+]
+
+{ #category : #tests }
+CardsTest >> testWhenACancelationCardIsPlayedItCannotTargetANonexistentCard [
+
+	| aGame aBoard aCollectionOfNames aCollectionOfDie aTileArray collectionOfCardProbabilities aCardHandler |
+	aTileArray := OrderedCollection new.
+	10 timesRepeat: [ aTileArray add: NullEffect new ].
+
+
+	aTileArray at: 6 put: (CardGeneratorEffect withProbabilities:
+			 (OrderedCollection with: (ProbabilityAssociation
+					   associate: CancellationCard
+					   withProbability: 100))).
+
+	aBoard := Board
+		          withTileEffectCollection: aTileArray
+		          withLengthInUnits: (Parsec withNominalValue: 10)
+		          withAmountOfLaps: 1.
+	aCollectionOfNames := OrderedCollection with: 'Juan' with: 'Jose'.
+	aCollectionOfDie := OrderedCollection with:
+		                    (SequenceDie withSequence: #( 5 4 )).
+
+	collectionOfCardProbabilities := OrderedCollection with:
+		                                 (ProbabilityAssociation
+			                                  associate: AccelerationCard
+			                                  withProbability: 100).
+
+	aCardHandler := CardHandler withCardProbabilities:
+		                collectionOfCardProbabilities.
+
+	aGame := Game
+		         withBoard: aBoard
+		         withShipNames: aCollectionOfNames
+		         withDice: (Dice with: aCollectionOfDie)
+		         withCardHandler: aCardHandler.
+
+	aGame playTurn.
+	aGame playCard: AccelerationCard by: 'Jose'.
+	aGame playCard: CancellationCard by: 'Juan' toTarget: (SpeedCard withHolder: 'Jose').
+	aGame playTurn.
+	
+	self assert: (aGame allShipsPosition at: 'Jose') first equals: 6
 ]
 
 { #category : #tests }

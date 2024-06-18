@@ -8,6 +8,12 @@ Class {
 }
 
 { #category : #comparing }
+AccelerationCard >> activate: aCardHandler [
+
+	aCardHandler addToActiveCards: self.
+]
+
+{ #category : #comparing }
 AccelerationCard >> applyMovement [
 
 	^ 1
