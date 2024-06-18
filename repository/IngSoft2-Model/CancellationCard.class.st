@@ -1,6 +1,3 @@
-"
-Please comment me using the following template inspired by Class Responsibility Collaborator (CRC) desi
-"
 Class {
 	#name : #CancellationCard,
 	#superclass : #Card,
@@ -8,7 +5,7 @@ Class {
 }
 
 { #category : #comparing }
-CancellationCard >> activate: aCardHandler withTarget: aTarget withGame: aGame [
+CancellationCard >> activate: aCardHandler withTarget: aTarget withBlockOfCode: aGame [
 
 	aCardHandler removeFromActiveCard: aTarget.
 ]

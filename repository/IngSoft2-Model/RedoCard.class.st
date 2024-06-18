@@ -1,6 +1,3 @@
-"
-s
-"
 Class {
 	#name : #RedoCard,
 	#superclass : #Card,
@@ -8,7 +5,7 @@ Class {
 }
 
 { #category : #comparing }
-RedoCard >> activate: aCardHandler withTarget: aShipName withGame: aGame [
+RedoCard >> activate: aCardHandler withTarget: aShipName withBlockOfCode: aGame [
 
 	aCardHandler
 		activateCard: (aCardHandler lastCardPlayed class withHolder: holder)

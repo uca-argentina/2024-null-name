@@ -1,6 +1,3 @@
-"
-a
-"
 Class {
 	#name : #MercenaryCard,
 	#superclass : #Card,
@@ -8,8 +5,8 @@ Class {
 }
 
 { #category : #comparing }
-MercenaryCard >> activate: aCardHandler withTarget: aTarget withGame: aGame [
-	aGame createShipCoalitionWithLeader: holder andMercenary: aTarget 
+MercenaryCard >> activate: aCardHandler withTarget: aTarget withBlockOfCode: aBlockOfCode [
+	aBlockOfCode value: holder value: aTarget 
 ]
 
 { #category : #comparing }

@@ -1,7 +1,3 @@
-"
-Please comment me using the following template inspired by Class Responsibility Collaborator (CRC) design:
-
-"
 Class {
 	#name : #RepeatCard,
 	#superclass : #Card,
@@ -9,7 +5,7 @@ Class {
 }
 
 { #category : #comparing }
-RepeatCard >> activate: aCardHandler withTarget: aTarget withGame: aGame [
+RepeatCard >> activate: aCardHandler withTarget: aTarget withBlockOfCode: aGame [
 
 	aCardHandler applyLastEffectOn: aTarget
 ]

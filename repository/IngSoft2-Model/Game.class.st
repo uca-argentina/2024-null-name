@@ -111,14 +111,6 @@ Game >> canPlayNextTurnOf [
 		Error signal: 'Game is Over you cant Keep Playing' ].
 ]
 
-{ #category : #modifying }
-Game >> createShipCoalitionWithLeader: aLeaderName andMercenary: aMercenaryName [
-
-	shipBattleHandler addCoalition: (ShipCoalition
-			 withLeader: (self shipWithName: aLeaderName)
-			 andMercenary: (self shipWithName: aMercenaryName))
-]
-
 { #category : #event }
 Game >> giveCardToCurrentShip: aCardGeneratorEffect [ 
 	gameCardHandler giveCard: aCardGeneratorEffect to: (theShipInCurrentTurn shipName)
@@ -159,7 +151,10 @@ Game >> playCard: aCard by: aShipName toTarget: aTarget [
 
 	(self targetIsValid: aTarget) ifFalse: [ ^ 'Target is not valid' ].
 
-	gameCardHandler activateCard: aCardToPlay withTarget: aTarget withGame: self.
+	gameCardHandler activateCard: aCardToPlay withTarget: aTarget withGame: [:aLeaderName :aMercenaryName|
+			shipBattleHandler addCoalition: (ShipCoalition
+			 withLeader: (self shipWithName: aLeaderName)
+			 andMercenary: (self shipWithName: aMercenaryName)) ].
 	gameCardHandler removeCardFromShipDeck: aCardToPlay.
 
 	^ 'A ' , aCardToPlay class name , ' has been played'
