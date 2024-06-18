@@ -159,7 +159,10 @@ Game >> playCard: aCard by: aShipName toTarget: aTarget [
 
 	(self targetIsValid: aTarget) ifFalse: [ ^ 'Target is not valid' ].
 
-	gameCardHandler activateCard: aCardToPlay withTarget: aTarget withGame: self.
+	gameCardHandler activateCard: aCardToPlay withTarget: aTarget withGame: [:aLeaderName :aMercenaryName|
+			shipBattleHandler addCoalition: (ShipCoalition
+			 withLeader: (self shipWithName: aLeaderName)
+			 andMercenary: (self shipWithName: aMercenaryName)) ].
 	gameCardHandler removeCardFromShipDeck: aCardToPlay.
 
 	^ 'A ' , aCardToPlay class name , ' has been played'

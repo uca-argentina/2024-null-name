@@ -23,7 +23,7 @@ CardHandler class >> withCardProbabilities: aCollectionOfCardProbabilities [
 { #category : #generating }
 CardHandler >> activateCard: aCardToPlay withTarget: aTarget withGame: aGame [
 	
-	aCardToPlay activate: self withTarget: aTarget withGame: aGame.
+	aCardToPlay activate: self withTarget: aTarget withBlockOfCode: aGame.
 	aCardToPlay class = RedoCard ifFalse: [ lastCardPlayed := aCardToPlay ]
 
 ]
