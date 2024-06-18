@@ -9,7 +9,8 @@ Class {
 		'probabilityCards',
 		'activeCards',
 		'game',
-		'lastCardPlayed'
+		'lastCardPlayed',
+		'probabilityManager'
 	],
 	#category : #'IngSoft2-Model'
 }
@@ -42,15 +43,8 @@ CardHandler >> applyLastEffectOn: aTarget [
 
 { #category : #comparing }
 CardHandler >> cardAtRandom [
-
-	| aRandomNumber aCardClass |
-	aRandomNumber := (1 to: 100) atRandom asInteger.
-
-	aCardClass := ((probabilityCards detect: [ :aProbabilityCard |
-		             aProbabilityCard rangeIncludes: aRandomNumber ])
-		            associatedObject).
-
-	^ aCardClass
+	
+	^ probabilityManager elementAtRandom: probabilityCards
 ]
 
 { #category : #'argument validation' }
@@ -79,11 +73,14 @@ CardHandler >> giveCard: aCard to: aShip [
 { #category : #initialization }
 CardHandler >> initalizeWithProbabilities: aCollectionOfCardProbabilities [
 
-	probabilityCards := self transformIntoProbabilityRanges:
+	probabilityManager := ProbabilityManager new.
+
+	probabilityCards := probabilityManager
+		                    transformIntoProbabilityRanges:
 		                    aCollectionOfCardProbabilities.
 	deck := OrderedCollection new.
 	activeCards := OrderedCollection new.
-	lastCardPlayed := NullCard new.
+	lastCardPlayed := NullCard new
 ]
 
 { #category : #accessing }
@@ -127,18 +124,6 @@ CardHandler >> startingCards: aShipName [
 
 	2 timesRepeat: [ deck add: (self cardAtRandom withHolder: aShipName) ].
 
-]
-
-{ #category : #comparing }
-CardHandler >> transformIntoProbabilityRanges: aProbabilityDistributionCollection [
-
-	| acc |
-	acc := 0.
-
-	aProbabilityDistributionCollection do: [ :effectProbability |
-		effectProbability setRange: acc.
-		acc := acc + effectProbability probability].
-	^ aProbabilityDistributionCollection
 ]
 
 { #category : #comparing }

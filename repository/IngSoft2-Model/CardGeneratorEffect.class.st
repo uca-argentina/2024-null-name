@@ -2,7 +2,8 @@ Class {
 	#name : #CardGeneratorEffect,
 	#superclass : #EffectOnOneShip,
 	#instVars : [
-		'probabilityCards'
+		'probabilityCards',
+		'probabilityManager'
 	],
 	#category : #'IngSoft2-Model'
 }
@@ -35,30 +36,14 @@ CardGeneratorEffect >> generateParameters: aTileEffectCreator [
 { #category : #applying }
 CardGeneratorEffect >> generateRandomCard [
 
-	| aRandomNumber aCardClass |
-	aRandomNumber := (1 to: 100) atRandom asInteger.
-
-	aCardClass := ((probabilityCards detect: [ :aProbabilityCard |
-		             aProbabilityCard rangeIncludes: aRandomNumber ])
-		            associatedObject).
-
-	^ aCardClass
+	^ probabilityManager elementAtRandom: probabilityCards
 ]
 
 { #category : #initialization }
 CardGeneratorEffect >> initalizeWithProbabilities: aCollectionOfCardProbabilities [ 
 	
-	 probabilityCards := self transformIntoProbabilityRanges: aCollectionOfCardProbabilities .  
-]
-
-{ #category : #comparing }
-CardGeneratorEffect >> transformIntoProbabilityRanges: aProbabilityDistributionCollection [
-
-	| acc |
-	acc := 0.
-
-	aProbabilityDistributionCollection do: [ :effectProbability |
-		effectProbability setRange: acc.
-		acc := acc + effectProbability probability].
-	^ aProbabilityDistributionCollection
+	
+	probabilityManager := ProbabilityManager new.
+	
+	 probabilityCards := probabilityManager transformIntoProbabilityRanges: aCollectionOfCardProbabilities .  
 ]

@@ -9,7 +9,8 @@ Class {
 		'tiles',
 		'parsecs',
 		'hyperJumpArray',
-		'cardProbabilities'
+		'cardProbabilities',
+		'probabilityManager'
 	],
 	#category : #'IngSoft2-Model'
 }
@@ -39,16 +40,8 @@ TileEffectsCreator class >> probabilityDistributionIsValid: aProbabilityDistribu
 { #category : #comparing }
 TileEffectsCreator >> determineRangeRandom [
 
-	| aRandomNumber anEffect anEffectClass |
-	aRandomNumber := (1 to: 100) atRandom asInteger.
-
-	anEffectClass := ((probabilityEffects detect: [ :aProbabilityEffect |
-		             aProbabilityEffect rangeIncludes: aRandomNumber ])
-		            associatedObject).
-
-	anEffect := (anEffectClass new) generateParameters: self.
-
-	^ anEffect
+	^ (probabilityManager elementAtRandom: probabilityEffects) new
+		  generateParameters: self
 ]
 
 { #category : #comparing }
@@ -147,20 +140,11 @@ TileEffectsCreator >> generateRandomBoardWithAmountOfTiles: anAmountOfTiles with
 { #category : #initialization }
 TileEffectsCreator >> initializeWithProbabilityDistribution: aProbabilityDistributionCollection [
 
-	probabilityEffects := self transformIntoProbabilityRanges:
+	probabilityManager := ProbabilityManager new.
+
+	probabilityEffects := probabilityManager
+		                      transformIntoProbabilityRanges:
 		                      aProbabilityDistributionCollection
-]
-
-{ #category : #comparing }
-TileEffectsCreator >> transformIntoProbabilityRanges: aProbabilityDistributionCollection [
-
-	| acc |
-	acc := 0.
-
-	aProbabilityDistributionCollection do: [ :effectProbability |
-		effectProbability setRange: acc.
-		acc := acc + effectProbability probability].
-	^ aProbabilityDistributionCollection
 ]
 
 { #category : #'argument validation' }
