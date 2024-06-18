@@ -21,16 +21,9 @@ CardHandler class >> withCardProbabilities: aCollectionOfCardProbabilities [
 ]
 
 { #category : #generating }
-CardHandler >> activateCard: aCardToPlay [
-
-	aCardToPlay activate: self.
-	aCardToPlay class = RedoCard ifFalse: [ lastCardPlayed := aCardToPlay ]
-]
-
-{ #category : #generating }
-CardHandler >> activateCard: aCardToPlay withTarget: aTarget [
+CardHandler >> activateCard: aCardToPlay withTarget: aTarget withGame: aGame [
 	
-	aCardToPlay activate: self withTarget: aTarget.
+	aCardToPlay activate: self withTarget: aTarget withGame: aGame.
 	aCardToPlay class = RedoCard ifFalse: [ lastCardPlayed := aCardToPlay ]
 
 ]

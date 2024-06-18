@@ -8,11 +8,12 @@ Class {
 }
 
 { #category : #comparing }
-RedoCard >> activate: aCardHandler withTarget: aShipName [
+RedoCard >> activate: aCardHandler withTarget: aShipName withGame: aGame [
 
 	aCardHandler
 		activateCard: (aCardHandler lastCardPlayed class withHolder: holder)
-		withTarget: aShipName. 
+		withTarget: aShipName
+		withGame: aGame
 ]
 
 { #category : #comparing }

@@ -111,6 +111,14 @@ Game >> canPlayNextTurnOf [
 		Error signal: 'Game is Over you cant Keep Playing' ].
 ]
 
+{ #category : #modifying }
+Game >> createShipCoalitionWithLeader: aLeaderName andMercenary: aMercenaryName [
+
+	shipBattleHandler addCoalition: (ShipCoalition
+			 withLeader: (self shipWithName: aLeaderName)
+			 andMercenary: (self shipWithName: aMercenaryName))
+]
+
 { #category : #event }
 Game >> giveCardToCurrentShip: aCardGeneratorEffect [ 
 	gameCardHandler giveCard: aCardGeneratorEffect to: (theShipInCurrentTurn shipName)
@@ -137,24 +145,6 @@ Game >> isFinished [
 	^ gameShips anySatisfy: [ :aShip | gameBoard isInLastTile: aShip ]
 ]
 
-{ #category : #modifying }
-Game >> playCard: aCard by: aShipName [
-
-	| aCardToPlay |
-	aCardToPlay := aCard withHolder: aShipName.
-
-	(gameCardHandler validateCard: aCardToPlay) ifTrue: [
-		^ 'Ship does not have that card' ].
-
-	(aCardToPlay canPlayRightNow: theShipInCurrentTurn) ifFalse: [
-		^ 'Ship cannot throw this card as its not his turn' ].
-	
-	gameCardHandler activateCard: aCardToPlay.
-	gameCardHandler removeCardFromShipDeck: aCardToPlay.
-	
-	^ 'A ' ,aCardToPlay class name, ' has been played'
-]
-
 { #category : #event }
 Game >> playCard: aCard by: aShipName toTarget: aTarget [
 
@@ -169,7 +159,7 @@ Game >> playCard: aCard by: aShipName toTarget: aTarget [
 
 	(self targetIsValid: aTarget) ifFalse: [ ^ 'Target is not valid' ].
 
-	gameCardHandler activateCard: aCardToPlay withTarget: aTarget.
+	gameCardHandler activateCard: aCardToPlay withTarget: aTarget withGame: self.
 	gameCardHandler removeCardFromShipDeck: aCardToPlay.
 
 	^ 'A ' , aCardToPlay class name , ' has been played'
@@ -205,7 +195,7 @@ Game >> playTurn [
 Game >> repeateEffectTo: aShipName [
 
 	| aShip |
-	aShip := gameShips detect: [ :ship | ship shipName = aShipName ].
+	aShip := self shipWithName: aShipName.
 
 	(lastEffect respondsTo: #affectAShip:) ifFalse: [ ^ self ].
 	
@@ -232,6 +222,11 @@ Game >> shipRankings [
 	^ rankDictionary
 ]
 
+{ #category : #accessing }
+Game >> shipWithName: aShipName [ 
+	^ gameShips detect: [ :ship | ship shipName = aShipName ].
+]
+
 { #category : #modifying }
 Game >> skipTurn [
 
@@ -251,8 +246,8 @@ Game >> skipTurn [
 { #category : #validating }
 Game >> targetIsValid: aTarget [
 
-	^(gameShips select: [ :ship | ship shipName = aTarget ]) isNotEmpty or:
-		(gameCardHandler checkTarget: aTarget)
+	^ ((gameShips select: [ :ship | ship shipName = aTarget ]) isNotEmpty
+		  or: (gameCardHandler checkTarget: aTarget))or: aTarget = 'all'
 ]
 
 { #category : #accessing }

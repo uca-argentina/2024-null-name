@@ -8,7 +8,7 @@ Class {
 }
 
 { #category : #comparing }
-CancellationCard >> activate: aCardHandler withTarget: aTarget [
+CancellationCard >> activate: aCardHandler withTarget: aTarget withGame: aGame [
 
 	aCardHandler removeFromActiveCard: aTarget.
 ]

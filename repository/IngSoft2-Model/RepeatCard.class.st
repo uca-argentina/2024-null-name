@@ -9,8 +9,9 @@ Class {
 }
 
 { #category : #comparing }
-RepeatCard >> activate: aCardHandler withTarget: aTarget [ 
-	aCardHandler applyLastEffectOn: aTarget.
+RepeatCard >> activate: aCardHandler withTarget: aTarget withGame: aGame [
+
+	aCardHandler applyLastEffectOn: aTarget
 ]
 
 { #category : #comparing }

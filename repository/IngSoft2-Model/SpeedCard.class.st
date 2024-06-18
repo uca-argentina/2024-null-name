@@ -11,7 +11,7 @@ Class {
 }
 
 { #category : #comparing }
-SpeedCard >> activate: aCardHandler withTarget: aTarget [
+SpeedCard >> activate: aCardHandler withTarget: aTarget withGame: aGame [
 
 	aCardHandler addToActiveCards: (self withTarget: aTarget)
 ]

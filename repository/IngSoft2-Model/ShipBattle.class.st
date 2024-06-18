@@ -6,7 +6,8 @@ Class {
 	#superclass : #Object,
 	#instVars : [
 		'dice',
-		'ships'
+		'ships',
+		'listOfCoalitions'
 	],
 	#category : #'IngSoft2-Model'
 }
@@ -19,36 +20,67 @@ ShipBattle class >> withDice: aCollectionOfDice withShips: aCollectionOfShips [
 		  withDice: aCollectionOfDice
 ]
 
+{ #category : #adding }
+ShipBattle >> addCoalition: aShipCoalition [ 
+	listOfCoalitions add: aShipCoalition
+]
+
 { #category : #initialization }
 ShipBattle >> checkShipBattle: currentTurnShip [
 
 	| shipsInSamePosition |
-	
 	currentTurnShip position = 1 ifTrue: [ ^ self ].
 	shipsInSamePosition := ships select: [ :aShip |
-		                       currentTurnShip position = aShip position
-			                       and: currentTurnShip ~= aShip ].
+		                       (currentTurnShip inSamePositionAs: aShip)
+			                       and:
+			                       (self
+				                        coalitionBetween: currentTurnShip
+				                        and: aShip) isEmpty ].
 	shipsInSamePosition do: [ :aShipInSamePosition |
 		currentTurnShip position = 1 ifTrue: [ ^ self ].
-		self resolveBattleBetween: currentTurnShip and: aShipInSamePosition ]
+		self
+			resolveBattleBetween: (self getMercenaries: currentTurnShip)
+			and: (self getMercenaries: aShipInSamePosition) ]
+]
+
+{ #category : #verifying }
+ShipBattle >> coalitionBetween: aShip and: anotherShip [
+
+	^ listOfCoalitions select: [ :aCoallition |
+		  (aCoallition hasShip: aShip) and: (aCoallition hasShip: anotherShip) ]
+]
+
+{ #category : #accessing }
+ShipBattle >> getMercenaries: aShip [
+
+	| anArmy |
+	anArmy := (listOfCoalitions select: [ :aCoallition |
+		           aCoallition leaderIs: aShip ]) collect: [ :aCoallition |
+		          aCoallition mercenary ].
+	anArmy add: aShip.
+	^ anArmy
 ]
 
 { #category : #initialization }
 ShipBattle >> initializeWithShips: aCollectionOfShips withDice: aCollectionOfDice [
 
 	dice := aCollectionOfDice.
-	ships := aCollectionOfShips
+	ships := aCollectionOfShips.
+	listOfCoalitions := OrderedCollection new.
 ]
 
 { #category : #event }
-ShipBattle >> resolveBattleBetween: aShip and: aShip2 [
+ShipBattle >> resolveBattleBetween: aShipArmy and: anotherShipArmy [
 
-	| aShipDiceRoll anotherShipDiceRoll loserShip |
-	aShipDiceRoll := dice throw.
-	anotherShipDiceRoll := dice throw.
-	loserShip := aShipDiceRoll > anotherShipDiceRoll
-		             ifTrue: [ aShip2 ]
-		             ifFalse: [ aShip ].
-	loserShip loseOneShield.
-	loserShip moveToFirstTile
+	| aShipDiceRoll anotherShipDiceRoll loserShipArmy |
+	aShipDiceRoll := 0.
+	anotherShipDiceRoll := 0.
+	aShipArmy size timesRepeat: [ aShipDiceRoll + dice throw ].
+	anotherShipArmy size timesRepeat: [ aShipDiceRoll + dice throw ].
+	loserShipArmy := aShipDiceRoll > anotherShipDiceRoll
+		                 ifTrue: [ anotherShipArmy ]
+		                 ifFalse: [ aShipArmy ].
+	loserShipArmy do: [ :aShip |
+		aShip loseOneShield.
+		aShip moveToFirstTile ]
 ]
