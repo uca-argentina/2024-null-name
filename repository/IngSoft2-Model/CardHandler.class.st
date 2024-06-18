@@ -10,7 +10,8 @@ Class {
 		'activeCards',
 		'game',
 		'lastCardPlayed',
-		'probabilityManager'
+		'probabilityManager',
+		'lastEffect'
 	],
 	#category : #'IngSoft2-Model'
 }
@@ -38,7 +39,16 @@ CardHandler >> addToActiveCards: aCard [
 { #category : #generating }
 CardHandler >> applyLastEffectOn: aTarget [
 
-	game repeatEffectTo: aTarget.
+	| aShip |
+	aShip := game shipWithName: aTarget.
+
+	(lastEffect respondsTo: #affectAShip:) ifFalse: [
+		CardExeption signal: lastEffect class name
+			, ' is last effect, and doesnt target a single ship' ].
+
+	lastEffect affectAShip: aShip.
+
+	game adjustShipPosition: aShip
 ]
 
 { #category : #comparing }
@@ -87,6 +97,12 @@ CardHandler >> initalizeWithProbabilities: aCollectionOfCardProbabilities [
 CardHandler >> lastCardPlayed [
 
 	^ lastCardPlayed
+]
+
+{ #category : #comparing }
+CardHandler >> lastEffect: anEffect [
+
+	lastEffect := anEffect
 ]
 
 { #category : #modifying }

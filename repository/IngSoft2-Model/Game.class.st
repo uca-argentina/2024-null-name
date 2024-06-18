@@ -11,8 +11,7 @@ Class {
 		'gameTurnHandler',
 		'shipBattleHandler',
 		'theShipInCurrentTurn',
-		'gameCardHandler',
-		'lastEffect'
+		'gameCardHandler'
 	],
 	#classInstVars : [
 		'isFinished'
@@ -53,6 +52,13 @@ Game class >> withBoard: aBoard withShipNames: aNameCollection withDice: aDice w
 		  withShipNames: aNameCollection
 		  withDice: aDice
 		  withGameCardHandler: aCardHandler
+]
+
+{ #category : #accessing }
+Game >> adjustShipPosition: aShip [
+
+	gameBoard adjustShipPosition: aShip.
+	gameBoard snapToFinishTile: aShip
 ]
 
 { #category : #accessing }
@@ -185,29 +191,18 @@ Game >> playTurn [
 	            (gameCardHandler movementCardsActivated:
 		             theShipInCurrentTurn).
 	theShipInCurrentTurn moveTiles: movement.
+	
+	self adjustShipPosition: theShipInCurrentTurn.
+	"
 	gameBoard adjustShipPosition: theShipInCurrentTurn.
-	gameBoard snapToFinishTile: theShipInCurrentTurn.
-	lastEffect := gameBoard effectInPosition:
-		              theShipInCurrentTurn position.
+	gameBoard snapToFinishTile: theShipInCurrentTurn."
+	gameCardHandler lastEffect:
+		(gameBoard effectInPosition: theShipInCurrentTurn position).
 	gameBoard applyTileEffectOn: self at: theShipInCurrentTurn position.
 	shipBattleHandler checkShipBattle: theShipInCurrentTurn.
 	gameTurnHandler checkForShipsWithNoShield.
 	gameTurnHandler nextTurn.
 	theShipInCurrentTurn := gameTurnHandler currentTurnShip
-]
-
-{ #category : #accessing }
-Game >> repeatEffectTo: aShipName [
-
-	| aShip |
-	aShip := self shipWithName: aShipName.
-
-	(lastEffect respondsTo: #affectAShip:) ifFalse: [
-		CardExeption signal: lastEffect class name
-			, ' is last effect, and doesnt target a single ship' ].
-
-	lastEffect affectAShip: aShip.
-	gameBoard adjustShipPosition: aShip
 ]
 
 { #category : #accessing }
@@ -238,17 +233,20 @@ Game >> shipWithName: aShipName [
 { #category : #modifying }
 Game >> skipTurn [
 
+	| skipedTurn |
 	self canPlayNextTurnOf.
-	
+
 	[ gameTurnHandler turnShipCanPlayTurn ]
 		on: TurnExeption
 		do: [ :ex | ^ ex messageText ].
-	
-	theShipInCurrentTurn := gameTurnHandler currentTurnShip.
 
 	theShipInCurrentTurn healFullShields.
+
 	gameTurnHandler nextTurn.
-	^ theShipInCurrentTurn shipName , ' skipped their turn'
+	skipedTurn := theShipInCurrentTurn shipName , ' skipped their turn'.
+	theShipInCurrentTurn := gameTurnHandler currentTurnShip.
+	
+	^ skipedTurn
 ]
 
 { #category : #validating }
