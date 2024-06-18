@@ -40,7 +40,7 @@ Game class >> withBoard: aBoard withShipNames: aNameCollection withDice: aDice [
 		  withDice: aDice
 		  withGameCardHandler:
 			  (CardHandler withCardProbabilities: (OrderedCollection with:
-					    (ProbabilityAssociation associate: InstantCard withProbability: 100)))
+					    (ProbabilityAssociation associate: NullCard withProbability: 100)))
 ]
 
 { #category : #'class initialization' }
@@ -130,7 +130,7 @@ Game >> isFinished [
 	^ gameShips anySatisfy: [ :aShip | gameBoard isInLastTile: aShip ]
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #modifying }
 Game >> playCard: aCard by: aShipName [
 
 	| aCardToPlay |
@@ -141,8 +141,10 @@ Game >> playCard: aCard by: aShipName [
 
 	(aCardToPlay canPlayRightNow: theShipInCurrentTurn) ifFalse: [
 		^ 'Ship cannot throw this card as its not his turn' ].
-
-	^ 'A Card has been played'
+	
+	gameCardHandler removeCardFromShipDeck: aCardToPlay.
+	
+	^ 'A ' ,aCardToPlay class name, ' has been played'
 ]
 
 { #category : #modifying }
@@ -166,7 +168,7 @@ Game >> playTurn [
 	gameTurnHandler nextTurn
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 Game >> shipCards: aShip [
 
 	^ gameCardHandler deck select: [ :card | card holder = aShip ]

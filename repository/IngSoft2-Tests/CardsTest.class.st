@@ -24,7 +24,7 @@ CardsTest >> testACardCanBePlayedDuringAGame [
 		         withDice: (Dice with: aCollectionOfDie).
 	
 	
-	self assert: (aGame playCard: InstantCard  by: 'Juan') equals: 'A Card has been played'.
+	self assert: (aGame playCard: NullCard  by: 'Juan') equals: 'A NullCard has been played'.
 	
 
 	
@@ -64,7 +64,7 @@ CardsTest >> testAnInstantCardCanBePlayedDuringAGame [
 
 	self
 		assert: (aGame playCard: InstantCard by: 'Juan')
-		equals: 'A Card has been played'
+		equals: 'A InstantCard has been played'
 ]
 
 { #category : #tests }
@@ -149,4 +149,29 @@ CardsTest >> testWhenGameIsStartedShipsHave2Cards [
 		         withDice: (Dice with: aCollectionOfDie).
 
 	self assert: (aGame shipCards: 'Juan') size equals: 2
+]
+
+{ #category : #tests }
+CardsTest >> testWhenPlayingACardShipCardsDeckSizeChanges [
+
+	| aGame aBoard aCollectionOfNames aCollectionOfDie aTileArray |
+	aTileArray := OrderedCollection new.
+	2 timesRepeat: [ aTileArray add: NullEffect new ].
+
+	aBoard := Board
+		          withTileEffectCollection: aTileArray
+		          withLengthInUnits: (Parsec withNominalValue: 10)
+		          withAmountOfLaps: 1.
+	aCollectionOfNames := OrderedCollection with: 'Juan' with: 'Jose'.
+	aCollectionOfDie := OrderedCollection with: (LoadedDie of: 10).
+
+	aGame := Game
+		         withBoard: aBoard
+		         withShipNames: aCollectionOfNames
+		         withDice: (Dice with: aCollectionOfDie).
+
+	aGame playCard: NullCard by: 'Juan'.
+
+	self assert: (aGame shipCards: 'Juan') size equals: 1.
+	self assert: (aGame shipCards: 'Jose') size equals: 2
 ]

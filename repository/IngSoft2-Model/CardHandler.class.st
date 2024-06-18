@@ -43,6 +43,12 @@ CardHandler >> initalizeWithProbabilities: aCollectionOfCardProbabilities [
 	deck := OrderedCollection new
 ]
 
+{ #category : #comparing }
+CardHandler >> removeCardFromShipDeck: aCard [
+
+deck remove: aCard ifAbsent: [ Error signal: 'Card was not found in Ship Deck' ]
+]
+
 { #category : #generating }
 CardHandler >> startingCards: aShipName [
 
