@@ -19,9 +19,16 @@ CardGeneratorEffect class >> withProbabilities: aClass with: aProbabilityAssocia
 ]
 
 { #category : #applying }
-CardGeneratorEffect >> applyOn: aGame [
+CardGeneratorEffect >> affectAShip: aShip [
 
-	aGame giveCardToCurrentShip: self generateRandomCard
+	^ self
+]
+
+{ #category : #applying }
+CardGeneratorEffect >> applyOn: aGame [
+	
+	self affectAShip: self.
+	aGame giveCardToCurrentShip: (self generateRandomCard)
 ]
 
 { #category : #applying }
