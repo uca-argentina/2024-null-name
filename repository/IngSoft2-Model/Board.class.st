@@ -86,6 +86,12 @@ Board >> applyTileEffectOn: aGame at: aPosition [
 ]
 
 { #category : #initialization }
+Board >> effectInPosition: aPosition [
+
+	^ tileEffectArray at: aPosition
+]
+
+{ #category : #initialization }
 Board >> initializeWithTileEffectCollection: aTileEffectCollection withLengthInUnits: aBoardLength withAmountOfLaps: anAmountOfLaps [
 
 	maxLap := anAmountOfLaps.

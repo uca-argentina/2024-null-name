@@ -11,7 +11,8 @@ Class {
 		'gameTurnHandler',
 		'shipBattleHandler',
 		'theShipInCurrentTurn',
-		'gameCardHandler'
+		'gameCardHandler',
+		'lastEffect'
 	],
 	#classInstVars : [
 		'isFinished'
@@ -125,6 +126,7 @@ Game >> initializeGameWith: aBoard withShipNames: aNameCollection withDice: aDic
 	gameTurnHandler := TurnHandler withShips: gameShips.
 	shipBattleHandler := ShipBattle withDice: dice withShips: gameShips.
 	gameCardHandler := aCardHandler.
+	gameCardHandler forGame: self.
 	theShipInCurrentTurn := gameTurnHandler currentTurnShip.
 	gameShips do: [ :ship | gameCardHandler startingCards: ship shipName ]
 ]
@@ -183,15 +185,28 @@ Game >> playTurn [
 		on: TurnExeption
 		do: [ :ex | ^ ex messageText ].
 
-	movement := dice throw + (gameCardHandler movementCardsActivated: theShipInCurrentTurn).
+	movement := dice throw
+	            +
+	            (gameCardHandler movementCardsActivated:
+		             theShipInCurrentTurn).
 	theShipInCurrentTurn moveTiles: movement.
 	gameBoard adjustShipPosition: theShipInCurrentTurn.
 	gameBoard snapToFinishTile: theShipInCurrentTurn.
+	lastEffect := gameBoard effectInPosition:
+		              theShipInCurrentTurn position.
 	gameBoard applyTileEffectOn: self at: theShipInCurrentTurn position.
 	shipBattleHandler checkShipBattle: theShipInCurrentTurn.
 	gameTurnHandler checkForShipsWithNoShield.
 	gameTurnHandler nextTurn.
-	theShipInCurrentTurn := gameTurnHandler currentTurnShip.
+	theShipInCurrentTurn := gameTurnHandler currentTurnShip
+]
+
+{ #category : #accessing }
+Game >> repeateEffectTo: aShipName [
+
+	| aShip |
+	aShip := gameShips detect: [ :ship | ship shipName = aShipName ].
+	lastEffect affectAShip: aShip.
 ]
 
 { #category : #accessing }

@@ -7,7 +7,8 @@ Class {
 	#instVars : [
 		'deck',
 		'probabilityCards',
-		'activeCards'
+		'activeCards',
+		'game'
 	],
 	#category : #'IngSoft2-Model'
 }
@@ -37,6 +38,12 @@ CardHandler >> addToActiveCards: aCard [
 	activeCards add: aCard
 ]
 
+{ #category : #generating }
+CardHandler >> applyLastEffectOn: aTarget [
+
+	game repeateEffectTo: aTarget.
+]
+
 { #category : #comparing }
 CardHandler >> cardAtRandom [
 
@@ -62,17 +69,24 @@ CardHandler >> deck [
 	^ deck
 ]
 
+{ #category : #generating }
+CardHandler >> forGame: aGame [
+
+	game := aGame
+]
+
 { #category : #'as yet unclassified' }
 CardHandler >> giveCard: aCard to: aShip [ 
 	deck add: (aCard withHolder: aShip).
 ]
 
 { #category : #initialization }
-CardHandler >> initalizeWithProbabilities: aCollectionOfCardProbabilities [ 
-	
-	probabilityCards := self transformIntoProbabilityRanges: aCollectionOfCardProbabilities .
+CardHandler >> initalizeWithProbabilities: aCollectionOfCardProbabilities [
+
+	probabilityCards := self transformIntoProbabilityRanges:
+		                    aCollectionOfCardProbabilities.
 	deck := OrderedCollection new.
-	activeCards := OrderedCollection new.
+	activeCards := OrderedCollection new
 ]
 
 { #category : #'as yet unclassified' }

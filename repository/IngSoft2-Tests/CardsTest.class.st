@@ -184,6 +184,43 @@ CardsTest >> testWhenACancelationCardIsPlayedItCannotTargetANonexistentCard [
 ]
 
 { #category : #tests }
+CardsTest >> testWhenApplingRepeatCardLastEffectIsAppliedToTheTargetedShip [
+
+	| aGame aBoard aCollectionOfNames aCollectionOfDie aTileArray collectionOfCardProbabilities aCardHandler |
+	aTileArray := OrderedCollection new.
+	15 timesRepeat: [ aTileArray add: NullEffect new ].
+	
+	aTileArray at: 10 put: BlackHoleEffect new.
+	
+	aBoard := Board
+		          withTileEffectCollection: aTileArray
+		          withLengthInUnits: (Parsec withNominalValue: 10)
+		          withAmountOfLaps: 1.
+	aCollectionOfNames := OrderedCollection with: 'Juan' with: 'Jose'.
+	aCollectionOfDie := OrderedCollection with:
+		                    (SequenceDie withSequence: #( 9 4 )).
+
+	collectionOfCardProbabilities := OrderedCollection with:
+		                                 (ProbabilityAssociation
+			                                  associate: RepeatCard
+			                                  withProbability: 100).
+
+	aCardHandler := CardHandler withCardProbabilities:
+		                collectionOfCardProbabilities.
+
+	aGame := Game
+		         withBoard: aBoard
+		         withShipNames: aCollectionOfNames
+		         withDice: (Dice with: aCollectionOfDie)
+		         withCardHandler: aCardHandler.
+
+	aGame playTurn.
+	aGame playCard: RepeatCard by: 'Jose' toTarget: 'Juan'.
+	
+	self assert: (aGame allShipsPosition at: 'Juan') equals: #(2 1) asOrderedCollection 
+]
+
+{ #category : #tests }
 CardsTest >> testWhenGameIsStartedShipsHave2Cards [
 
 	| aGame aBoard aCollectionOfNames aCollectionOfDie aTileArray |
