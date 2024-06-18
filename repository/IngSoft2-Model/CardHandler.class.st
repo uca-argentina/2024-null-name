@@ -78,10 +78,9 @@ CardHandler >> initalizeWithProbabilities: aCollectionOfCardProbabilities [
 { #category : #'as yet unclassified' }
 CardHandler >> movementCardsActivated: theShipInTurn [
 
-	^ (activeCards select: [ :card |
-		 card hasTarget: theShipInTurn shipName ]) sum: [ :card |
-		card applyMovement ]
-	
+	^ ((activeCards select: [ :card |
+		    card hasTarget: theShipInTurn shipName ]) sum: [ :card |
+		   card applyMovement ]) max: 0
 ]
 
 { #category : #comparing }
