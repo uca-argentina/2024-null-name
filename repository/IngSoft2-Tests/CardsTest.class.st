@@ -261,6 +261,57 @@ CardsTest >> testWhenApplingRepeatCardOnlyEffectsTargetedToOneShipCanBeRepeated 
 ]
 
 { #category : #tests }
+CardsTest >> testWhenApplyingRedoCardBanana [
+
+	| aGame aBoard aCollectionOfNames aCollectionOfDie aTileArray collectionOfCardProbabilities aCardHandler |
+	aTileArray := OrderedCollection new.
+	15 timesRepeat: [ aTileArray add: NullEffect new ].
+
+	aTileArray
+		at: 6
+		put:
+			(CardGeneratorEffect withProbabilities: (OrderedCollection with:
+					  (ProbabilityAssociation
+						   associate: SpeedCard
+						   withProbability: 100))).
+
+	aBoard := Board
+		          withTileEffectCollection: aTileArray
+		          withLengthInUnits: (Parsec withNominalValue: 10)
+		          withAmountOfLaps: 1.
+
+	aCollectionOfNames := OrderedCollection with: 'Juan' with: 'Jose'.
+	aCollectionOfDie := OrderedCollection with:
+		                    (SequenceDie withSequence: #( 5 1)).
+
+	collectionOfCardProbabilities := OrderedCollection with:
+		                                 (ProbabilityAssociation
+			                                  associate: RedoCard
+			                                  withProbability: 100).
+
+	aCardHandler := CardHandler withCardProbabilities:
+		                collectionOfCardProbabilities.
+
+	aGame := Game
+		         withBoard: aBoard
+		         withShipNames: aCollectionOfNames
+		         withDice: (Dice with: aCollectionOfDie)
+		         withCardHandler: aCardHandler.
+
+	aGame playTurn. 
+	aGame playTurn.
+	aGame playCard: SpeedCard by: 'Juan' toTarget: 'Juan'. 
+	aGame playCard: RedoCard by: 'Juan' toTarget: 'Juan'.
+	aGame playTurn.
+	aGame playCard: RedoCard by: 'Jose' toTarget: 'Jose'. 
+	aGame playTurn.
+
+	self
+		assert: (aGame allShipsPosition at: 'Jose')
+		equals: #( 4 1 ) asOrderedCollection
+]
+
+{ #category : #tests }
 CardsTest >> testWhenApplyingRedoCardLastCardIsPlayedAgain [
 
 	| aGame aBoard aCollectionOfNames aCollectionOfDie aTileArray collectionOfCardProbabilities aCardHandler |

@@ -111,7 +111,7 @@ Game >> canPlayNextTurnOf [
 		Error signal: 'Game is Over you cant Keep Playing' ].
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #event }
 Game >> giveCardToCurrentShip: aCardGeneratorEffect [ 
 	gameCardHandler giveCard: aCardGeneratorEffect to: (theShipInCurrentTurn shipName)
 ]
@@ -155,7 +155,7 @@ Game >> playCard: aCard by: aShipName [
 	^ 'A ' ,aCardToPlay class name, ' has been played'
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #event }
 Game >> playCard: aCard by: aShipName toTarget: aTarget [
 
 	| aCardToPlay |
@@ -248,7 +248,7 @@ Game >> skipTurn [
 	^ theShipInCurrentTurn shipName , ' skipped their turn'
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #validating }
 Game >> targetIsValid: aTarget [
 
 	^(gameShips select: [ :ship | ship shipName = aTarget ]) isNotEmpty or:

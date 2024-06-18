@@ -12,7 +12,7 @@ RedoCard >> activate: aCardHandler withTarget: aShipName [
 
 	aCardHandler
 		activateCard: (aCardHandler lastCardPlayed class withHolder: holder)
-		withTarget: aShipName
+		withTarget: aShipName. 
 ]
 
 { #category : #comparing }

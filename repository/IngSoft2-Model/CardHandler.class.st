@@ -24,14 +24,14 @@ CardHandler class >> withCardProbabilities: aCollectionOfCardProbabilities [
 CardHandler >> activateCard: aCardToPlay [
 
 	aCardToPlay activate: self.
-	lastCardPlayed := aCardToPlay
+	aCardToPlay class = RedoCard ifFalse: [ lastCardPlayed := aCardToPlay ]
 ]
 
 { #category : #generating }
 CardHandler >> activateCard: aCardToPlay withTarget: aTarget [
 	
 	aCardToPlay activate: self withTarget: aTarget.
-	lastCardPlayed := aCardToPlay
+	aCardToPlay class = RedoCard ifFalse: [ lastCardPlayed := aCardToPlay ]
 
 ]
 
@@ -60,7 +60,7 @@ CardHandler >> cardAtRandom [
 	^ aCardClass
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'argument validation' }
 CardHandler >> checkTarget: aTarget [
 
 	^ (activeCards select: [ :card | aTarget = card ]) isNotEmpty
@@ -78,7 +78,7 @@ CardHandler >> forGame: aGame [
 	game := aGame
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #modifying }
 CardHandler >> giveCard: aCard to: aShip [ 
 	deck add: (aCard withHolder: aShip).
 ]
@@ -99,7 +99,7 @@ CardHandler >> lastCardPlayed [
 	^ lastCardPlayed
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #modifying }
 CardHandler >> movementCardsActivated: theShipInTurn [
 
 	| sum |
