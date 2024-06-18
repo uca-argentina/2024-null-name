@@ -26,6 +26,12 @@ CardGeneratorEffect >> applyOn: aGame [
 	aGame giveCardToCurrentShip: (self generateRandomCard)
 ]
 
+{ #category : #generators }
+CardGeneratorEffect >> generateParameters: aTileEffectCreator [
+
+	aTileEffectCreator generateCardGeneratorParameters: self
+]
+
 { #category : #applying }
 CardGeneratorEffect >> generateRandomCard [
 

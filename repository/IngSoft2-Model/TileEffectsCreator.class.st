@@ -8,7 +8,8 @@ Class {
 		'probabilityEffects',
 		'tiles',
 		'parsecs',
-		'hyperJumpArray'
+		'hyperJumpArray',
+		'cardProbabilities'
 	],
 	#category : #'IngSoft2-Model'
 }
@@ -51,6 +52,12 @@ TileEffectsCreator >> determineRangeRandom [
 ]
 
 { #category : #comparing }
+TileEffectsCreator >> generateCardGeneratorParameters: anEffect [
+
+	anEffect initalizeWithProbabilities: cardProbabilities
+]
+
+{ #category : #comparing }
 TileEffectsCreator >> generateHyperJumpParameters: anEffect [
 
 	anEffect
@@ -60,7 +67,7 @@ TileEffectsCreator >> generateHyperJumpParameters: anEffect [
 ]
 
 { #category : #generating }
-TileEffectsCreator >> generateLoadedBoardWithAmountOfTiles: anAmountOfTiles withAmountOfParsecs: anAmountOfParsecs withWormHolePair: aWormHolePair withHyperJumpArray: aHyperJumpArray withAmountOfLaps: anAmountOfLaps [
+TileEffectsCreator >> generateLoadedBoardWithAmountOfTiles: anAmountOfTiles withAmountOfParsecs: anAmountOfParsecs withWormHolePair: aWormHolePair withHyperJumpArray: aHyperJumpArray withAmountOfLaps: anAmountOfLaps withCardProbabilities: aCardProbability [
 
 	| tileEffectArray tileNumber |
 	self wormHolePairIsValid: aWormHolePair with: anAmountOfTiles.
@@ -70,6 +77,7 @@ TileEffectsCreator >> generateLoadedBoardWithAmountOfTiles: anAmountOfTiles with
 	tiles := anAmountOfTiles.
 	parsecs := anAmountOfParsecs.
 	hyperJumpArray := aHyperJumpArray.
+	cardProbabilities := aCardProbability.
 
 	1 to: tiles do: [ :i |
 		| anEffect |
