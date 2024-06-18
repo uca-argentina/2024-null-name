@@ -35,6 +35,48 @@ CardsTest >> testACardCanBePlayedDuringAGame [
 ]
 
 { #category : #tests }
+CardsTest >> testAShipCannotBeHiredByMoreThanOneShip [
+
+	| aGame aBoard aCollectionOfNames aCollectionOfDie aTileArray collectionOfCardProbabilities aCardHandler |
+	aTileArray := OrderedCollection new.
+	10 timesRepeat: [ aTileArray add: NullEffect new ].
+
+	aBoard := Board
+		          withTileEffectCollection: aTileArray
+		          withLengthInUnits: (Parsec withNominalValue: 10)
+		          withAmountOfLaps: 1.
+	aCollectionOfNames := OrderedCollection
+		                      with: 'Juan'
+		                      with: 'Jose'
+		                      with: 'Pedro'.
+	aCollectionOfDie := OrderedCollection with:
+		                    (SequenceDie withSequence: #( 7 4 4 )).
+
+	collectionOfCardProbabilities := OrderedCollection with:
+		                                 (ProbabilityAssociation
+			                                  associate: MercenaryCard
+			                                  withProbability: 100).
+
+	aCardHandler := CardHandler withCardProbabilities:
+		                collectionOfCardProbabilities.
+
+	aGame := Game
+		         withBoard: aBoard
+		         withShipNames: aCollectionOfNames
+		         withDice: (Dice with: aCollectionOfDie)
+		         withCardHandler: aCardHandler.
+
+	aGame playTurn.
+	aGame playCard: MercenaryCard by: 'Jose' toTarget: 'Juan'.
+	aGame playTurn.
+
+	self
+		assert: (aGame playCard: MercenaryCard by: 'Pedro' toTarget: 'Juan')
+		equals: 'Targeted ship is already a mercenary in another coalition'.
+	self assert: (aGame shipCards: 'Pedro') size equals: 2
+]
+
+{ #category : #tests }
 CardsTest >> testAnPermanentCardCanOnlyBePlayedDuringAShipsTurnInAGame [
 
 	| aGame aBoard aCollectionOfNames aCollectionOfDie aTileArray aCardHandler collectionOfCardProbabilities |
@@ -50,7 +92,7 @@ CardsTest >> testAnPermanentCardCanOnlyBePlayedDuringAShipsTurnInAGame [
 
 	collectionOfCardProbabilities := OrderedCollection with:
 		                                 (ProbabilityAssociation
-			                                  associate: AccelerationCard 
+			                                  associate: AccelerationCard
 			                                  withProbability: 100).
 
 	aCardHandler := CardHandler withCardProbabilities:
@@ -62,7 +104,8 @@ CardsTest >> testAnPermanentCardCanOnlyBePlayedDuringAShipsTurnInAGame [
 		         withCardHandler: aCardHandler.
 
 	self
-		assert: (aGame playCard: AccelerationCard by: 'Jose' toTarget: nil)
+		assert:
+		(aGame playCard: AccelerationCard by: 'Jose' toTarget: 'all')
 		equals: 'Ship cannot throw this card as its not his turn'
 ]
 
@@ -85,7 +128,7 @@ CardsTest >> testCannotPlayACardThatDoesNotBelongToAShip [
 		         withShipNames: aCollectionOfNames
 		         withDice: (Dice with: aCollectionOfDie).
 	
-	self assert: (aGame playCard: AccelerationCard by: 'Jose' toTarget: nil) equals: 'Ship does not have that card'.
+	self assert: (aGame playCard: AccelerationCard by: 'Jose' toTarget: 'all') equals: 'Ship does not have that card'.
 	
 
 	
@@ -93,46 +136,6 @@ CardsTest >> testCannotPlayACardThatDoesNotBelongToAShip [
 		
 		
 	
-]
-
-{ #category : #tests }
-CardsTest >> testWBanana [
-
-	| aGame aBoard aCollectionOfNames aCollectionOfDie aTileArray collectionOfCardProbabilities aCardHandler |
-	aTileArray := OrderedCollection new.
-	10 timesRepeat: [ aTileArray add: NullEffect new ].
-
-	aBoard := Board
-		          withTileEffectCollection: aTileArray
-		          withLengthInUnits: (Parsec withNominalValue: 10)
-		          withAmountOfLaps: 1.
-	aCollectionOfNames := OrderedCollection
-		                      with: 'Juan'
-		                      with: 'Jose'
-		                      with: 'Pedro'.
-	aCollectionOfDie := OrderedCollection with:
-		                    (SequenceDie withSequence: #( 5 4 4 )).
-
-	collectionOfCardProbabilities := OrderedCollection with:
-		                                 (ProbabilityAssociation
-			                                  associate: MercenaryCard
-			                                  withProbability: 100).
-
-	aCardHandler := CardHandler withCardProbabilities:
-		                collectionOfCardProbabilities.
-
-	aGame := Game
-		         withBoard: aBoard
-		         withShipNames: aCollectionOfNames
-		         withDice: (Dice with: aCollectionOfDie)
-		         withCardHandler: aCardHandler.
-
-	aGame playTurn.
-	aGame playCard: MercenaryCard by: 'Jose' toTarget: 'Juan'.
-	aGame playTurn.
-	aGame playTurn.
-
-	self assert: (aGame allShipAmountOfShields at: 'Pedro') equals: 2
 ]
 
 { #category : #tests }
@@ -292,7 +295,11 @@ CardsTest >> testWhenApplingRepeatCardOnlyEffectsTargetedToOneShipCanBeRepeated 
 		         withCardHandler: aCardHandler.
 
 	aGame playTurn.
-	aGame playCard: RepeatCard by: 'Jose' toTarget: 'Juan'.
+
+	self
+		assert: (aGame playCard: RepeatCard by: 'Jose' toTarget: 'Juan')
+		equals:
+		'AtomicBombEffect is last effect, and doesnt target a single ship'.
 
 	self
 		assert: (aGame allShipsPosition at: 'Juan')
@@ -399,6 +406,44 @@ CardsTest >> testWhenApplyingRedoCardMultipleTimesApplyLastNonRedoCard [
 	self
 		assert: (aGame allShipsPosition at: 'Jose')
 		equals: #( 4 1 ) asOrderedCollection
+]
+
+{ #category : #tests }
+CardsTest >> testWhenApplyingRepeatCardShipDoesNotMoveOutOfBounds [
+	| aGame aBoard aCollectionOfNames aCollectionOfDie aTileArray collectionOfCardProbabilities aCardHandler |
+	aTileArray := OrderedCollection new.
+	10 timesRepeat: [ aTileArray add: NullEffect new ].
+
+	aTileArray at: 6 put: BlackHoleEffect new.
+
+	aBoard := Board
+		          withTileEffectCollection: aTileArray
+		          withLengthInUnits: (Parsec withNominalValue: 10)
+		          withAmountOfLaps: 1.
+	aCollectionOfNames := OrderedCollection with: 'Juan' with: 'Jose'.
+	aCollectionOfDie := OrderedCollection with:
+		                    (SequenceDie withSequence: #( 5 )).
+
+	collectionOfCardProbabilities := OrderedCollection with:
+		                                 (ProbabilityAssociation
+			                                  associate: RepeatCard
+			                                  withProbability: 100).
+
+	aCardHandler := CardHandler withCardProbabilities:
+		                collectionOfCardProbabilities.
+
+	aGame := Game
+		         withBoard: aBoard
+		         withShipNames: aCollectionOfNames
+		         withDice: (Dice with: aCollectionOfDie)
+		         withCardHandler: aCardHandler.
+
+	aGame playTurn.
+	aGame playCard: RepeatCard by: 'Jose' toTarget: 'Juan'.
+
+	self
+		assert: (aGame allShipsPosition at: 'Juan')
+		equals: #( 1 1 ) asOrderedCollection.
 ]
 
 { #category : #tests }
@@ -556,4 +601,44 @@ CardsTest >> testWhenPlayingACardShipCardsDeckSizeChanges [
 
 	self assert: (aGame shipCards: 'Juan') size equals: 1.
 	self assert: (aGame shipCards: 'Jose') size equals: 2
+]
+
+{ #category : #tests }
+CardsTest >> testWhenShipWithMercenariesBattleAllOfThenThrowTheDice [
+
+	| aGame aBoard aCollectionOfNames aCollectionOfDie aTileArray collectionOfCardProbabilities aCardHandler |
+	aTileArray := OrderedCollection new.
+	10 timesRepeat: [ aTileArray add: NullEffect new ].
+
+	aBoard := Board
+		          withTileEffectCollection: aTileArray
+		          withLengthInUnits: (Parsec withNominalValue: 10)
+		          withAmountOfLaps: 1.
+	aCollectionOfNames := OrderedCollection
+		                      with: 'Juan'
+		                      with: 'Jose'
+		                      with: 'Pedro'.
+	aCollectionOfDie := OrderedCollection with:
+		                    (SequenceDie withSequence: #( 7 4 4 )).
+
+	collectionOfCardProbabilities := OrderedCollection with:
+		                                 (ProbabilityAssociation
+			                                  associate: MercenaryCard
+			                                  withProbability: 100).
+
+	aCardHandler := CardHandler withCardProbabilities:
+		                collectionOfCardProbabilities.
+
+	aGame := Game
+		         withBoard: aBoard
+		         withShipNames: aCollectionOfNames
+		         withDice: (Dice with: aCollectionOfDie)
+		         withCardHandler: aCardHandler.
+
+	aGame playTurn.
+	aGame playCard: MercenaryCard by: 'Jose' toTarget: 'Juan'.
+	aGame playTurn.
+	aGame playTurn.
+
+	self assert: (aGame allShipAmountOfShields at: 'Pedro') equals: 2
 ]

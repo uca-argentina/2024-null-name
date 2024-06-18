@@ -38,7 +38,7 @@ CardHandler >> addToActiveCards: aCard [
 { #category : #generating }
 CardHandler >> applyLastEffectOn: aTarget [
 
-	game repeateEffectTo: aTarget.
+	game repeatEffectTo: aTarget.
 ]
 
 { #category : #comparing }
@@ -129,5 +129,6 @@ CardHandler >> startingCards: aShipName [
 { #category : #comparing }
 CardHandler >> validateCard: aCard [
 
-	^ (deck select: [ :card | card = aCard ]) isEmpty
+	(deck select: [ :card | card = aCard ]) isEmpty ifTrue: [
+		CardExeption signal: 'Ship does not have that card' ]
 ]

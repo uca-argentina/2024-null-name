@@ -21,7 +21,15 @@ ShipBattle class >> withDice: aCollectionOfDice withShips: aCollectionOfShips [
 ]
 
 { #category : #adding }
-ShipBattle >> addCoalition: aShipCoalition [ 
+ShipBattle >> addCoalition: aShipCoalition [
+
+	| mercenaryShip |
+	mercenaryShip := aShipCoalition mercenary.
+	(listOfCoalitions anySatisfy: [ :coalition |
+		 coalition mercenary = mercenaryShip ]) ifTrue: [
+		CardExeption signal:
+			'Targeted ship is already a mercenary in another coalition' ].
+
 	listOfCoalitions add: aShipCoalition
 ]
 

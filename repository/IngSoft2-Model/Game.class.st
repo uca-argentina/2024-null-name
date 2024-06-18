@@ -142,19 +142,29 @@ Game >> playCard: aCard by: aShipName toTarget: aTarget [
 
 	| aCardToPlay |
 	aCardToPlay := aCard withHolder: aShipName.
-	
-	(gameCardHandler validateCard: aCardToPlay) ifTrue: [
-		^ 'Ship does not have that card' ].
+
+	[ gameCardHandler validateCard: aCardToPlay ]
+		on: CardExeption
+		do: [ :ex | ^ ex messageText ].
 
 	(aCardToPlay canPlayRightNow: theShipInCurrentTurn) ifFalse: [
 		^ 'Ship cannot throw this card as its not his turn' ].
 
-	(self targetIsValid: aTarget) ifFalse: [ ^ 'Target is not valid' ].
+	[ self targetIsValid: aTarget ]
+		on: CardExeption
+		do: [ :ex | ^ ex messageText , 'Target is not valid' ].
 
-	gameCardHandler activateCard: aCardToPlay withTarget: aTarget withGame: [:aLeaderName :aMercenaryName|
+	[
+	gameCardHandler
+		activateCard: aCardToPlay
+		withTarget: aTarget
+		withGame: [ :aLeaderName :aMercenaryName |
 			shipBattleHandler addCoalition: (ShipCoalition
-			 withLeader: (self shipWithName: aLeaderName)
-			 andMercenary: (self shipWithName: aMercenaryName)) ].
+					 withLeader: (self shipWithName: aLeaderName)
+					 andMercenary: (self shipWithName: aMercenaryName)) ] ]
+		on: CardExeption
+		do: [ :ex | ^ ex messageText ].
+
 	gameCardHandler removeCardFromShipDeck: aCardToPlay.
 
 	^ 'A ' , aCardToPlay class name , ' has been played'
@@ -187,14 +197,17 @@ Game >> playTurn [
 ]
 
 { #category : #accessing }
-Game >> repeateEffectTo: aShipName [
+Game >> repeatEffectTo: aShipName [
 
 	| aShip |
 	aShip := self shipWithName: aShipName.
 
-	(lastEffect respondsTo: #affectAShip:) ifFalse: [ ^ self ].
-	
-	lastEffect affectAShip: aShip
+	(lastEffect respondsTo: #affectAShip:) ifFalse: [
+		CardExeption signal: lastEffect class name
+			, ' is last effect, and doesnt target a single ship' ].
+
+	lastEffect affectAShip: aShip.
+	gameBoard adjustShipPosition: aShip
 ]
 
 { #category : #accessing }
@@ -241,8 +254,10 @@ Game >> skipTurn [
 { #category : #validating }
 Game >> targetIsValid: aTarget [
 
-	^ ((gameShips select: [ :ship | ship shipName = aTarget ]) isNotEmpty
-		  or: (gameCardHandler checkTarget: aTarget))or: aTarget = 'all'
+	(((gameShips select: [ :ship | ship shipName = aTarget ]) isNotEmpty)
+		 or: [
+		 (gameCardHandler checkTarget: aTarget) or: [ aTarget = 'all' ] ])
+		ifFalse: [ CardExeption signal: 'Target is not valid' ]
 ]
 
 { #category : #accessing }
