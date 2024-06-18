@@ -4,9 +4,6 @@ Please comment me using the following template inspired by Class Responsibility 
 Class {
 	#name : #CancellationCard,
 	#superclass : #Card,
-	#instVars : [
-		'target'
-	],
 	#category : #'IngSoft2-Model'
 }
 
@@ -20,16 +17,4 @@ CancellationCard >> activate: aCardHandler withTarget: aTarget [
 CancellationCard >> canPlayRightNow: theShipInTurn [
 
 	^ true
-]
-
-{ #category : #comparing }
-CancellationCard >> hasTarget: aTarget [
-
-	^ target = aTarget
-]
-
-{ #category : #comparing }
-CancellationCard >> withTarget: aTarget [
-
-	target := aTarget
 ]

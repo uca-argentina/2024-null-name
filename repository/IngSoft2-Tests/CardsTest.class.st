@@ -85,7 +85,7 @@ CardsTest >> testCannotPlayACardThatDoesNotBelongToAShip [
 		         withShipNames: aCollectionOfNames
 		         withDice: (Dice with: aCollectionOfDie).
 	
-	self assert: (aGame playCard: InstantCard by: 'Jose') equals: 'Ship does not have that card'.
+	self assert: (aGame playCard: AccelerationCard by: 'Jose') equals: 'Ship does not have that card'.
 	
 
 	

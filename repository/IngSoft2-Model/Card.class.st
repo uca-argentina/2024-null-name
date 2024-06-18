@@ -23,12 +23,6 @@ Card >> = aCard [
 ]
 
 { #category : #comparing }
-Card >> applyMovement [
-
-	^ 0
-]
-
-{ #category : #comparing }
 Card >> canPlayRightNow: theShipInTurn [
 
 	self subclassResponsibility

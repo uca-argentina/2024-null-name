@@ -13,11 +13,6 @@ CardGeneratorEffect class >> withProbabilities: aCollectionOfProbabilities [
 	^ self new initalizeWithProbabilities: aCollectionOfProbabilities
 ]
 
-{ #category : #'as yet unclassified' }
-CardGeneratorEffect class >> withProbabilities: aClass with: aProbabilityAssociation [ 
-	self shouldBeImplemented.
-]
-
 { #category : #applying }
 CardGeneratorEffect >> affectAShip: aShip [
 
