@@ -58,7 +58,6 @@ EffectsTest >> testMoonWalkDistanceCannotBeSmallerThanZero [
 EffectsTest >> testWhenApplying2DifferentHyperJumpEffectsShipsMoveTheBiggestAmountOfParsecsInArray [
 
 	| aBoard aShipName aGame aParsecArray aWormHolePair aProbabilityDistributionCollection aTileEffectsCreator |
-
 	aParsecArray := OrderedCollection
 		                with: (Parsec withNominalValue: 3)
 		                with: (Parsec withNominalValue: 5)
@@ -71,26 +70,26 @@ EffectsTest >> testWhenApplying2DifferentHyperJumpEffectsShipsMoveTheBiggestAmou
 		                                      (ProbabilityAssociation
 			                                       associate: [ NullEffect ]
 			                                       withProbability: 40)
-		                                      with:
-		                                      (ProbabilityAssociation
-			                                       associate: [ BlackHoleEffect ]
-			                                       withProbability: 20)
+		                                      with: (ProbabilityAssociation
+				                                       associate: [
+				                                       BlackHoleEffect ]
+				                                       withProbability: 20)
 		                                      with: (ProbabilityAssociation
 				                                       associate: [
 				                                       HyperSpaceJumpEffect ]
 				                                       withProbability: 20)
-		                                      with:
-		                                      (ProbabilityAssociation
-			                                       associate: [ MoonWalkEffect ]
-			                                       withProbability: 10)
-		                                      with:
-		                                      (ProbabilityAssociation
-			                                       associate: [ HyperJumpEffect ]
-			                                       withProbability: 8)
-		                                      with:
-		                                      (ProbabilityAssociation
-			                                       associate: [ AtomicBombEffect ]
-			                                       withProbability: 2).
+		                                      with: (ProbabilityAssociation
+				                                       associate: [
+				                                       MoonWalkEffect ]
+				                                       withProbability: 10)
+		                                      with: (ProbabilityAssociation
+				                                       associate: [
+				                                       HyperJumpEffect ]
+				                                       withProbability: 8)
+		                                      with: (ProbabilityAssociation
+				                                       associate: [
+				                                       AtomicBombEffect ]
+				                                       withProbability: 2).
 	aTileEffectsCreator := TileEffectsCreator
 		                       createWithProbabilityDistribution:
 		                       aProbabilityDistributionCollection.
@@ -100,7 +99,11 @@ EffectsTest >> testWhenApplying2DifferentHyperJumpEffectsShipsMoveTheBiggestAmou
 		          withAmountOfParsecs: 102
 		          withWormHolePair: aWormHolePair
 		          withHyperJumpArray: aParsecArray
-		          withAmountOfLaps: 1.
+		          withAmountOfLaps: 1
+		          withCardProbabilities:
+		          (ProbabilityAssociation
+			           associate: NullCard
+			           withProbability: 100).
 
 	aShipName := OrderedCollection with: 'Juan' with: 'Pedro'.
 	aGame := Game

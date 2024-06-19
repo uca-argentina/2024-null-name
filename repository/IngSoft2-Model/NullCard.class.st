@@ -8,6 +8,12 @@ Class {
 }
 
 { #category : #comparing }
+NullCard >> activate: aCardHandler withTarget: aTarget [ 
+
+	^ self
+]
+
+{ #category : #comparing }
 NullCard >> canPlayRightNow: theShipInTurn [
 
 	^true

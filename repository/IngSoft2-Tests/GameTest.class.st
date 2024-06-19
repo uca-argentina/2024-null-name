@@ -17,7 +17,7 @@ GameTest >> should: anErrorBlock raise: exceptionClass withMessage: anErrorMessa
 { #category : #tests }
 GameTest >> testAGameCanShowTheCurrentRanking [
 
-	| aGame aCollectionOfNames aCollectionOfDie aShipNameAndPosition aTileArray |
+	| aGame aCollectionOfNames aCollectionOfDie aTileArray |
 	aCollectionOfNames := OrderedCollection
 		                      with: 'Juan'
 		                      with: 'Pedro'
@@ -43,12 +43,6 @@ GameTest >> testAGameCanShowTheCurrentRanking [
 	aGame playTurn.
 	aGame playTurn.
 	aGame playTurn.
-	aGame playTurn.
-
-	aShipNameAndPosition := Dictionary new.
-	aShipNameAndPosition at: 'Juan' put: #( 10 1 ) asOrderedCollection.
-	aShipNameAndPosition at: 'Pedro' put: #( 2 2 ) asOrderedCollection.
-	aShipNameAndPosition at: 'Fran' put: #( 3 1 ) asOrderedCollection.
 
 	self assert: (aGame shipRankings at: 1) shipName equals: 'Pedro'.
 	self assert: (aGame shipRankings at: 2) shipName equals: 'Juan'.

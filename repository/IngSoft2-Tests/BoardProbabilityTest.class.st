@@ -55,26 +55,26 @@ BoardProbabilityTest >> testWhenBoardIsCreatedTheAmountOfEffectsFollowTheCorrect
 		                                      (ProbabilityAssociation
 			                                       associate: [ NullEffect ]
 			                                       withProbability: 40)
-		                                      with:
-		                                      (ProbabilityAssociation
-			                                       associate: [ BlackHoleEffect ]
-			                                       withProbability: 20)
+		                                      with: (ProbabilityAssociation
+				                                       associate: [
+				                                       BlackHoleEffect ]
+				                                       withProbability: 20)
 		                                      with: (ProbabilityAssociation
 				                                       associate: [
 				                                       HyperSpaceJumpEffect ]
 				                                       withProbability: 20)
-		                                      with:
-		                                      (ProbabilityAssociation
-			                                       associate: [ MoonWalkEffect ]
-			                                       withProbability: 10)
-		                                      with:
-		                                      (ProbabilityAssociation
-			                                       associate: [ HyperJumpEffect ]
-			                                       withProbability: 8)
-		                                      with:
-		                                      (ProbabilityAssociation
-			                                       associate: [ AtomicBombEffect ]
-			                                       withProbability: 2).
+		                                      with: (ProbabilityAssociation
+				                                       associate: [
+				                                       MoonWalkEffect ]
+				                                       withProbability: 10)
+		                                      with: (ProbabilityAssociation
+				                                       associate: [
+				                                       HyperJumpEffect ]
+				                                       withProbability: 8)
+		                                      with: (ProbabilityAssociation
+				                                       associate: [
+				                                       AtomicBombEffect ]
+				                                       withProbability: 2).
 
 	aTileEffectsCreator := TileEffectsCreator
 		                       createWithProbabilityDistribution:
@@ -85,7 +85,11 @@ BoardProbabilityTest >> testWhenBoardIsCreatedTheAmountOfEffectsFollowTheCorrect
 		          withAmountOfParsecs: 102
 		          withWormHolePair: aWormHolePair
 		          withHyperJumpArray: #( 1 1 1 )
-		          withAmountOfLaps: 1.
+		          withAmountOfLaps: 1
+		          withCardProbabilities:
+		          (ProbabilityAssociation
+			           associate: NullCard
+			           withProbability: 100).
 
 	self assert: (aBoard allTileEffectsAmount at: NullEffect) equals: 40.
 
@@ -110,52 +114,140 @@ BoardProbabilityTest >> testWhenBoardIsCreatedTheAmountOfEffectsFollowTheCorrect
 ]
 
 { #category : #tests }
+BoardProbabilityTest >> testWhenBoardIsCreatedTheAmountOfEffectsFollowTheCorrectDistributionVer2 [
+
+	| aBoard aPairOfLengths aWormHolePair aProbabilityDistributionCollection aTileEffectsCreator |
+	aWormHolePair := #( 101 102 ).
+	aPairOfLengths := #( 102 102 ).
+
+	aProbabilityDistributionCollection := OrderedCollection
+		                                      with:
+		                                      (ProbabilityAssociation
+			                                       associate: [ NullEffect ]
+			                                       withProbability: 30)
+		                                      with: (ProbabilityAssociation
+				                                       associate: [
+				                                       BlackHoleEffect ]
+				                                       withProbability: 20)
+		                                      with: (ProbabilityAssociation
+				                                       associate: [
+				                                       HyperSpaceJumpEffect ]
+				                                       withProbability: 20)
+		                                      with: (ProbabilityAssociation
+				                                       associate: [
+				                                       MoonWalkEffect ]
+				                                       withProbability: 10)
+		                                      with: (ProbabilityAssociation
+				                                       associate: [
+				                                       HyperJumpEffect ]
+				                                       withProbability: 8)
+		                                      with: (ProbabilityAssociation
+				                                       associate: [
+				                                       AtomicBombEffect ]
+				                                       withProbability: 2).
+	aProbabilityDistributionCollection add: (ProbabilityAssociation
+			 associate: [ CardGeneratorEffect ]
+			 withProbability: 10).
+
+	aTileEffectsCreator := TileEffectsCreator
+		                       createWithProbabilityDistribution:
+		                       aProbabilityDistributionCollection.
+
+	aBoard := aTileEffectsCreator
+		          generateLoadedBoardWithAmountOfTiles: 102
+		          withAmountOfParsecs: 102
+		          withWormHolePair: aWormHolePair
+		          withHyperJumpArray: #( 1 1 1 )
+		          withAmountOfLaps: 1
+		          withCardProbabilities: (OrderedCollection with:
+				           (ProbabilityAssociation
+					            associate: NullCard
+					            withProbability: 100)).
+
+	self assert: (aBoard allTileEffectsAmount at: NullEffect) equals: 30.
+
+	self
+		assert: (aBoard allTileEffectsAmount at: BlackHoleEffect)
+		equals: 20.
+	self
+		assert: (aBoard allTileEffectsAmount at: HyperSpaceJumpEffect)
+		equals: 20.
+	self
+		assert: (aBoard allTileEffectsAmount at: MoonWalkEffect)
+		equals: 10.
+	self
+		assert: (aBoard allTileEffectsAmount at: HyperJumpEffect)
+		equals: 8.
+	self
+		assert: (aBoard allTileEffectsAmount at: AtomicBombEffect)
+		equals: 2.
+	self
+		assert: (aBoard allTileEffectsAmount at: WormholeEffect)
+		equals: 2.
+	self
+		assert: (aBoard allTileEffectsAmount at: CardGeneratorEffect)
+		equals: 10
+]
+
+{ #category : #tests }
 BoardProbabilityTest >> testWhenBoardIsCreatedWithRandomizedEffectProbabilitiesItFollowsCorrespondingDistribution [
 	"
 	TEST FAILS WITH PHARO 12 CI
-	
-	| aBoard aPairOfLengths aWormHolePair numberOfIterations aDictonaryOfEffectApearences averageEffectDistribution aProbabilityDistributionCollection| 
-	
+
+	| aBoard aPairOfLengths aWormHolePair numberOfIterations aDictonaryOfEffectApearences averageEffectDistribution aProbabilityDistributionCollection |
 	aWormHolePair := #( 2 4 ).
 	aPairOfLengths := #( 102 102 ).
 	numberOfIterations := 100.
 	averageEffectDistribution := Dictionary new.
-	
-	aProbabilityDistributionCollection := OrderedCollection with:
-		                                      (EffectProbability
-			                                       effect: [ NullEffect new ]
-			                                       withProbability: 40)with:
-		                                      (EffectProbability
-			                                       effect: [ BlackHoleEffect  new ]
-			                                       withProbability: 20)with:
-		                                      (EffectProbability
-			                                       effect: [ HyperSpaceJumpEffect new ]
-			                                       withProbability: 20)with:
-		                                      (EffectProbability
-			                                       effect: [ MoonWalkEffect  new ]
-			                                       withProbability: 10)with:
-		                                      (EffectProbability
-			                                       effect: [ HyperJumpEffect  new ]
-			                                       withProbability: 8)with:
-		                                      (EffectProbability
-			                                       effect: [ AtomicBombEffect  new ]
-			                                       withProbability: 2).
-			
-	
+
+	aProbabilityDistributionCollection := OrderedCollection
+		                                      with:
+		                                      (ProbabilityAssociation
+			                                       associate: [ NullEffect ]
+			                                       withProbability: 30)
+		                                      with: (ProbabilityAssociation
+				                                       associate: [
+				                                       BlackHoleEffect ]
+				                                       withProbability: 20)
+		                                      with: (ProbabilityAssociation
+				                                       associate: [
+				                                       HyperSpaceJumpEffect ]
+				                                       withProbability: 20)
+		                                      with: (ProbabilityAssociation
+				                                       associate: [
+				                                       MoonWalkEffect ]
+				                                       withProbability: 10)
+		                                      with: (ProbabilityAssociation
+				                                       associate: [
+				                                       HyperJumpEffect ]
+				                                       withProbability: 8)
+		                                      with: (ProbabilityAssociation
+				                                       associate: [
+				                                       AtomicBombEffect ]
+				                                       withProbability: 2).
+	aProbabilityDistributionCollection add: (ProbabilityAssociation
+			 associate: [ CardGeneratorEffect ]
+			 withProbability: 10).
+
+
+
+
 	numberOfIterations timesRepeat: [
-		|aTileEffectsCreator aTileArray|
+		| aTileEffectsCreator |
 		aTileEffectsCreator := TileEffectsCreator
-				createWithBoardLength: #( 102 102 )
-				withWormHolePositions: aWormHolePair
-				withParsecArray: #( 1 1 1 )
-				withProbabilityDistribution: aProbabilityDistributionCollection.
-		aTileArray := aTileEffectsCreator generateRandomEffectArray.
-		
-		
-		aBoard := Board
-				withTileEffectCollection: aTileArray
-				withLength: #( 4 4 )
-				withAmountOfLaps: 1.
+			                       createWithProbabilityDistribution:
+			                       aProbabilityDistributionCollection.
+
+		aBoard := aTileEffectsCreator
+			          generateLoadedBoardWithAmountOfTiles: 102
+			          withAmountOfParsecs: 102
+			          withWormHolePair: aWormHolePair
+			          withHyperJumpArray: #( 1 1 1 )
+			          withAmountOfLaps: 1
+			          withCardProbabilities: (OrderedCollection with:
+					           (ProbabilityAssociation
+						            associate: NullCard
+						            withProbability: 100)).
 
 		aDictonaryOfEffectApearences := aBoard allTileEffectsAmount.
 		aDictonaryOfEffectApearences keysDo: [ :effect |
@@ -173,25 +265,25 @@ BoardProbabilityTest >> testWhenBoardIsCreatedWithRandomizedEffectProbabilitiesI
 						put: amountOfEffect / numberOfIterations ] ] ].
 
 
-	self assert: ((averageEffectDistribution at: NullEffect) between: 35 and: 45) .
+	self assert:
+		((averageEffectDistribution at: NullEffect) between: 25 and: 35).
 
-	self
-		assert: ((averageEffectDistribution at: BlackHoleEffect)
-		between: 18 and: 22).
-	self
-		assert: ((averageEffectDistribution at: HyperSpaceJumpEffect)
-		between: 18 and: 22).
-	self
-		assert: ((averageEffectDistribution at: MoonWalkEffect)
-		between: 9 and: 11).
-	self
-		assert: ((averageEffectDistribution at: HyperJumpEffect)
-		between: 7 and: 9 ).
-	self
-		assert: ((averageEffectDistribution at: AtomicBombEffect)
-		between: 1 and: 3).
-	self
-		assert: (averageEffectDistribution at: WormholeEffect)
-		equals: 2
-"
+	self assert: ((averageEffectDistribution at: CardGeneratorEffect)
+			 between: 9
+			 and: 11).
+
+	self assert:
+		((averageEffectDistribution at: BlackHoleEffect) between: 18 and: 22).
+	self assert: ((averageEffectDistribution at: HyperSpaceJumpEffect)
+			 between: 18
+			 and: 22).
+	self assert:
+		((averageEffectDistribution at: MoonWalkEffect) between: 9 and: 11).
+	self assert:
+		((averageEffectDistribution at: HyperJumpEffect) between: 7 and: 9).
+	self assert:
+		((averageEffectDistribution at: AtomicBombEffect) between: 1 and: 3).
+	self assert: (averageEffectDistribution at: WormholeEffect) equals: 2"
+
+	
 ]
