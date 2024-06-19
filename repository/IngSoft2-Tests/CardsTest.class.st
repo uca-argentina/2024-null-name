@@ -470,6 +470,53 @@ CardsTest >> testWhenGameIsStartedShipsHave2Cards [
 ]
 
 { #category : #tests }
+CardsTest >> testWhenMercenaryCardIsCancelledShipsCanBattleAgain [
+
+	| aGame aBoard aCollectionOfNames aCollectionOfDie aTileArray collectionOfCardProbabilities aCardHandler |
+	aTileArray := OrderedCollection new.
+	10 timesRepeat: [ aTileArray add: NullEffect new ].
+
+
+	aTileArray at: 6 put: (CardGeneratorEffect withProbabilities:
+			 (OrderedCollection with: (ProbabilityAssociation
+					   associate: CancellationCard
+					   withProbability: 100))).
+
+	aBoard := Board
+		          withTileEffectCollection: aTileArray
+		          withLengthInUnits: (Parsec withNominalValue: 10)
+		          withAmountOfLaps: 1.
+	aCollectionOfNames := OrderedCollection with: 'Juan' with: 'Jose'.
+	aCollectionOfDie := OrderedCollection with:
+		                    (SequenceDie withSequence: #( 5 )).
+
+	collectionOfCardProbabilities := OrderedCollection with:
+		                                 (ProbabilityAssociation
+			                                  associate: MercenaryCard
+			                                  withProbability: 100).
+
+	aCardHandler := CardHandler withCardProbabilities:
+		                collectionOfCardProbabilities.
+
+
+
+	aGame := Game
+		         withBoard: aBoard
+		         withShipNames: aCollectionOfNames
+		         withDice: (Dice with: aCollectionOfDie)
+		         withCardHandler: aCardHandler.
+
+	aGame playTurn.
+	aGame playCard: MercenaryCard by: 'Jose' toTarget: 'Juan'.
+	aGame playCard: CancellationCard by: 'Juan' toTarget: (MercenaryCard withHolder: 'Jose').
+	aGame playTurn.
+	
+	self assert: (aGame allShipAmountOfShields at: 'Juan') equals: 3.
+	self assert: (aGame allShipAmountOfShields at: 'Jose') equals: 2.
+	
+]
+
+{ #category : #tests }
 CardsTest >> testWhenMercenaryCardIsPlayedAlliedShipsDontBattle [
 
 	| aGame aBoard aCollectionOfNames aCollectionOfDie aTileArray collectionOfCardProbabilities aCardHandler |

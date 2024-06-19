@@ -1,10 +1,13 @@
+"
+a
+"
 Class {
 	#name : #ProbabilityManager,
 	#superclass : #Object,
 	#category : #'IngSoft2-Model'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #generating }
 ProbabilityManager >> elementAtRandom: probabilityElements [
 
 	| aRandomNumber aCardClass |
@@ -17,7 +20,7 @@ ProbabilityManager >> elementAtRandom: probabilityElements [
 	^ aCardClass
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #modifying }
 ProbabilityManager >> transformIntoProbabilityRanges: aProbabilityDistributionCollection [
 
 	| acc |

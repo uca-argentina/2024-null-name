@@ -160,6 +160,7 @@ Game >> playCard: aCard by: aShipName toTarget: aTarget [
 		on: CardExeption
 		do: [ :ex | ^ ex messageText , 'Target is not valid' ].
 
+
 	[ gameCardHandler activateCard: aCardToPlay withTarget: aTarget ]
 		on: CardExeption
 		do: [ :ex | ^ ex messageText ].
