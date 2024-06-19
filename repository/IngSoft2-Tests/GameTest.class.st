@@ -17,7 +17,7 @@ GameTest >> should: anErrorBlock raise: exceptionClass withMessage: anErrorMessa
 { #category : #tests }
 GameTest >> testAGameCanShowTheCurrentRanking [
 
-	| aGame aCollectionOfNames aCollectionOfDie aShipNameAndPosition aTileArray |
+	| aGame aCollectionOfNames aCollectionOfDie aTileArray |
 	aCollectionOfNames := OrderedCollection
 		                      with: 'Juan'
 		                      with: 'Pedro'
@@ -32,7 +32,7 @@ GameTest >> testAGameCanShowTheCurrentRanking [
 	aGame := Game
 		         withBoard: (Board
 				          withTileEffectCollection: aTileArray
-				          withLengthInParsecs: 15
+				          withLengthInUnits: (Parsec withNominalValue: 10)
 				          withAmountOfLaps: 3)
 		         withShipNames: aCollectionOfNames
 		         withDice: (Dice with: aCollectionOfDie).
@@ -43,12 +43,6 @@ GameTest >> testAGameCanShowTheCurrentRanking [
 	aGame playTurn.
 	aGame playTurn.
 	aGame playTurn.
-	aGame playTurn.
-
-	aShipNameAndPosition := Dictionary new.
-	aShipNameAndPosition at: 'Juan' put: #( 10 1 ) asOrderedCollection.
-	aShipNameAndPosition at: 'Pedro' put: #( 2 2 ) asOrderedCollection.
-	aShipNameAndPosition at: 'Fran' put: #( 3 1 ) asOrderedCollection.
 
 	self assert: (aGame shipRankings at: 1) shipName equals: 'Pedro'.
 	self assert: (aGame shipRankings at: 2) shipName equals: 'Juan'.
@@ -70,7 +64,7 @@ GameTest >> testGameCanTellAllShipPositions [
 	aGame := Game
 		         withBoard: (Board
 				          withTileEffectCollection: aTileArray
-				          withLengthInParsecs: 30
+				          withLengthInUnits: (Parsec withNominalValue: 10)
 				          withAmountOfLaps: 1)
 		         withShipNames: aCollectionOfNames
 		         withDice: (Dice with: aCollectionOfDie).

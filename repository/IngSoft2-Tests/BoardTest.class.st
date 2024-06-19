@@ -15,17 +15,36 @@ BoardTest >> should: anErrorBlock raise: exceptionClass withMessage: anErrorMess
 ]
 
 { #category : #tests }
-BoardTest >> testBoardHasANumberOfParsecs [
+BoardTest >> testBoardHasANumberOfLightYears [
 
-	| aBoard aTileArray |
+	| aBoard aTileArray aLightYearAmount |
 	aTileArray := OrderedCollection
 		              with: NullEffect new
 		              with: NullEffect new
 		              with: NullEffect new
 		              with: NullEffect new.
+	aLightYearAmount := LightYear withNominalValue: 6.
 	aBoard := Board
 		          withTileEffectCollection: aTileArray
-		          withLengthInParsecs: 2
+		          withLengthInUnits: aLightYearAmount
+		          withAmountOfLaps: 3.
+
+	self assert: aBoard numOfLightYears equals: 6
+]
+
+{ #category : #tests }
+BoardTest >> testBoardHasANumberOfParsecs [
+
+	| aBoard aTileArray aParsecAmount |
+	aTileArray := OrderedCollection
+		              with: NullEffect new
+		              with: NullEffect new
+		              with: NullEffect new
+		              with: NullEffect new.
+	aParsecAmount := Parsec withNominalValue: 2.
+	aBoard := Board
+		          withTileEffectCollection: aTileArray
+		          withLengthInUnits: aParsecAmount
 		          withAmountOfLaps: 3.
 
 	self assert: aBoard numOfParsecs equals: 2
@@ -34,14 +53,14 @@ BoardTest >> testBoardHasANumberOfParsecs [
 { #category : #tests }
 BoardTest >> testBoardHasANumberOfTiles [
 
-	| aBoard aTileArray|
+	| aBoard aTileArray aParsecAmount |
 	
 	aTileArray := OrderedCollection new.
 	3 timesRepeat: [ aTileArray add: NullEffect new ].
-	
+	aParsecAmount := Parsec withNominalValue: 3.
 	aBoard := Board
 				          withTileEffectCollection: aTileArray
-				          withLengthInParsecs: 3
+				          withLengthInUnits: aParsecAmount
 				          withAmountOfLaps: 1.
 
 	self assert: aBoard numbOfTiles equals: 3
@@ -54,8 +73,8 @@ BoardTest >> testWormHoleTilePairsCannotOverlap [
 	aWormHolePair := #( 3 3 ).
 
 	aProbabilityDistributionCollection := OrderedCollection with:
-		                                      (EffectProbability
-			                                       effect: [ NullEffect new ]
+		                                      (ProbabilityAssociation
+			                                       associate: [ NullEffect ]
 			                                       withProbability: 100).
 	aTileEffectsCreator := TileEffectsCreator
 		                       createWithProbabilityDistribution:
@@ -67,7 +86,7 @@ BoardTest >> testWormHoleTilePairsCannotOverlap [
 				generateRandomBoardWithAmountOfTiles: 3
 				withAmountOfParsecs: 3
 				withWormHolePair: aWormHolePair
-				withParsecArray: #( 1 1 1 )
+				withHyperJumpArray: #( 1 1 1 )
 				withAmountOfLaps: 1 ]
 		raise: Error
 		withMessage: 'Wormhole tiles cannot be in the same position'

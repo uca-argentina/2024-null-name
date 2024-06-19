@@ -49,6 +49,12 @@ Ship >> healFullShields [
 	numberOfShields := maxShields
 ]
 
+{ #category : #accessing }
+Ship >> inSamePositionAs: aShip [
+
+	^ currentPosition = aShip position and: self ~= aShip
+]
+
 { #category : #initialization }
 Ship >> initializeInTile: aPosition withName: aName [
 

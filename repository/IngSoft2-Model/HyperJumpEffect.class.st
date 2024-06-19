@@ -25,7 +25,8 @@ HyperJumpEffect class >> withParsecArray: aParsecArray andLengthInTiles: lengthI
 HyperJumpEffect >> affectAShip: aShip [
 
 	aShip moveTiles:
-		(parsecCollection at: self currentParsec) * boardParsecToTileRatio
+		((parsecCollection at: self currentParsec) toUnit: Parsec)
+			nominalValue asInteger * boardParsecToTileRatio
 ]
 
 { #category : #modifying }
