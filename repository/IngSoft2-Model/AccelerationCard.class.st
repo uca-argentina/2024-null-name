@@ -5,7 +5,7 @@ Class {
 }
 
 { #category : #comparing }
-AccelerationCard >> activate: aCardHandler withTarget: aShipName withBlockOfCode: aGame [
+AccelerationCard >> activate: aCardHandler withTarget: aShipName [
 
 	aCardHandler addToActiveCards: self.
 ]

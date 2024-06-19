@@ -5,7 +5,7 @@ Class {
 }
 
 { #category : #comparing }
-RepeatCard >> activate: aCardHandler withTarget: aTarget withBlockOfCode: aGame [
+RepeatCard >> activate: aCardHandler withTarget: aTarget [
 
 	aCardHandler applyLastEffectOn: aTarget
 ]

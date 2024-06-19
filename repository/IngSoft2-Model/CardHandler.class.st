@@ -23,11 +23,17 @@ CardHandler class >> withCardProbabilities: aCollectionOfCardProbabilities [
 ]
 
 { #category : #generating }
-CardHandler >> activateCard: aCardToPlay withTarget: aTarget withGame: aGame [
+CardHandler >> activateCard: aCardToPlay withTarget: aTarget [
 	
-	aCardToPlay activate: self withTarget: aTarget withBlockOfCode: aGame.
+	aCardToPlay activate: self withTarget: aTarget.
 	aCardToPlay class = RedoCard ifFalse: [ lastCardPlayed := aCardToPlay ]
 
+]
+
+{ #category : #comparing }
+CardHandler >> activeMercenaryCards [
+
+	^ activeCards select: [ :card | card class = MercenaryCard ]
 ]
 
 { #category : #comparing }
@@ -147,4 +153,13 @@ CardHandler >> validateCard: aCard [
 
 	(deck select: [ :card | card = aCard ]) isEmpty ifTrue: [
 		CardExeption signal: 'Ship does not have that card' ]
+]
+
+{ #category : #comparing }
+CardHandler >> verifyCoalition: mercenaryShip [
+
+	(self activeMercenaryCards anySatisfy: [ :card |
+		 card target = mercenaryShip ]) ifTrue: [
+		CardExeption signal:
+			'Targeted ship is already a mercenary in another coalition' ]
 ]

@@ -7,7 +7,8 @@ Class {
 	#instVars : [
 		'dice',
 		'ships',
-		'listOfCoalitions'
+		'listOfCoalitions',
+		'cards'
 	],
 	#category : #'IngSoft2-Model'
 }
@@ -51,21 +52,45 @@ ShipBattle >> checkShipBattle: currentTurnShip [
 			and: (self getMercenaries: aShipInSamePosition) ]
 ]
 
+{ #category : #initialization }
+ShipBattle >> checkShipBattle: currentTurnShip withCards: aCollectionOfCards [
+
+	| shipsInSamePosition |
+	cards := aCollectionOfCards.
+
+	currentTurnShip position = 1 ifTrue: [ ^ self ].
+	shipsInSamePosition := ships select: [ :aShip |
+		                       (currentTurnShip inSamePositionAs: aShip)
+			                       and:
+			                       (self
+				                        coalitionBetween: currentTurnShip
+				                        and: aShip) isEmpty ].
+	shipsInSamePosition do: [ :aShipInSamePosition |
+		currentTurnShip position = 1 ifTrue: [ ^ self ].
+		self
+			resolveBattleBetween: (self getMercenaries: currentTurnShip)
+			and: (self getMercenaries: aShipInSamePosition) ]
+]
+
 { #category : #verifying }
 ShipBattle >> coalitionBetween: aShip and: anotherShip [
 
-	^ listOfCoalitions select: [ :aCoallition |
-		  (aCoallition hasShip: aShip) and: (aCoallition hasShip: anotherShip) ]
+	^ cards select: [ :card |
+		  (card holder = aShip shipName or: card target = aShip shipName)
+			  and:
+			  (card holder = anotherShip shipName or:
+				   card target = anotherShip shipName) ]
 ]
 
 { #category : #accessing }
 ShipBattle >> getMercenaries: aShip [
 
 	| anArmy |
-	anArmy := (listOfCoalitions select: [ :aCoallition |
-		           aCoallition leaderIs: aShip ]) collect: [ :aCoallition |
-		          aCoallition mercenary ].
+	anArmy := (cards select: [ :card |
+		           card holder = aShip shipName ]) collect: [
+		          :card | self shipWithName: (card target) ].
 	anArmy add: aShip.
+	
 	^ anArmy
 ]
 
@@ -75,6 +100,7 @@ ShipBattle >> initializeWithShips: aCollectionOfShips withDice: aCollectionOfDic
 	dice := aCollectionOfDice.
 	ships := aCollectionOfShips.
 	listOfCoalitions := OrderedCollection new.
+	cards := OrderedCollection new.
 ]
 
 { #category : #event }
@@ -91,4 +117,9 @@ ShipBattle >> resolveBattleBetween: aShipArmy and: anotherShipArmy [
 	loserShipArmy do: [ :aShip |
 		aShip loseOneShield.
 		aShip moveToFirstTile ]
+]
+
+{ #category : #event }
+ShipBattle >> shipWithName: aShipName [ 
+	^ ships detect: [ :ship | ship shipName = aShipName ].
 ]

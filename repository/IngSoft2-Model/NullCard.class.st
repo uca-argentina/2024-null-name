@@ -8,7 +8,7 @@ Class {
 }
 
 { #category : #comparing }
-NullCard >> activate: aCardHandler withTarget: aTarget withBlockOfCode: aGame [
+NullCard >> activate: aCardHandler withTarget: aTarget [ 
 
 	^ self
 ]

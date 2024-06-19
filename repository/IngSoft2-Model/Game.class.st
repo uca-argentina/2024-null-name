@@ -160,14 +160,7 @@ Game >> playCard: aCard by: aShipName toTarget: aTarget [
 		on: CardExeption
 		do: [ :ex | ^ ex messageText , 'Target is not valid' ].
 
-	[
-	gameCardHandler
-		activateCard: aCardToPlay
-		withTarget: aTarget
-		withGame: [ :aLeaderName :aMercenaryName |
-			shipBattleHandler addCoalition: (ShipCoalition
-					 withLeader: (self shipWithName: aLeaderName)
-					 andMercenary: (self shipWithName: aMercenaryName)) ] ]
+	[ gameCardHandler activateCard: aCardToPlay withTarget: aTarget ]
 		on: CardExeption
 		do: [ :ex | ^ ex messageText ].
 
@@ -191,15 +184,14 @@ Game >> playTurn [
 	            (gameCardHandler movementCardsActivated:
 		             theShipInCurrentTurn).
 	theShipInCurrentTurn moveTiles: movement.
-	
+
 	self adjustShipPosition: theShipInCurrentTurn.
-	"
-	gameBoard adjustShipPosition: theShipInCurrentTurn.
-	gameBoard snapToFinishTile: theShipInCurrentTurn."
 	gameCardHandler lastEffect:
 		(gameBoard effectInPosition: theShipInCurrentTurn position).
 	gameBoard applyTileEffectOn: self at: theShipInCurrentTurn position.
-	shipBattleHandler checkShipBattle: theShipInCurrentTurn.
+	shipBattleHandler
+		checkShipBattle: theShipInCurrentTurn
+		withCards: gameCardHandler activeMercenaryCards.
 	gameTurnHandler checkForShipsWithNoShield.
 	gameTurnHandler nextTurn.
 	theShipInCurrentTurn := gameTurnHandler currentTurnShip

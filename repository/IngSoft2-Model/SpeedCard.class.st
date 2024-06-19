@@ -8,7 +8,7 @@ Class {
 }
 
 { #category : #comparing }
-SpeedCard >> activate: aCardHandler withTarget: aTarget withBlockOfCode: aGame [
+SpeedCard >> activate: aCardHandler withTarget: aTarget [
 
 	aCardHandler addToActiveCards: (self withTarget: aTarget)
 ]

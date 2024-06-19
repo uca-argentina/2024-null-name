@@ -5,7 +5,7 @@ Class {
 }
 
 { #category : #comparing }
-CancellationCard >> activate: aCardHandler withTarget: aTarget withBlockOfCode: aGame [
+CancellationCard >> activate: aCardHandler withTarget: aTarget [
 
 	aCardHandler removeFromActiveCard: aTarget.
 ]
