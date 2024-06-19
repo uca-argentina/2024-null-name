@@ -21,37 +21,6 @@ ShipBattle class >> withDice: aCollectionOfDice withShips: aCollectionOfShips [
 		  withDice: aCollectionOfDice
 ]
 
-{ #category : #adding }
-ShipBattle >> addCoalition: aShipCoalition [
-
-	| mercenaryShip |
-	mercenaryShip := aShipCoalition mercenary.
-	(listOfCoalitions anySatisfy: [ :coalition |
-		 coalition mercenary = mercenaryShip ]) ifTrue: [
-		CardExeption signal:
-			'Targeted ship is already a mercenary in another coalition' ].
-
-	listOfCoalitions add: aShipCoalition
-]
-
-{ #category : #initialization }
-ShipBattle >> checkShipBattle: currentTurnShip [
-
-	| shipsInSamePosition |
-	currentTurnShip position = 1 ifTrue: [ ^ self ].
-	shipsInSamePosition := ships select: [ :aShip |
-		                       (currentTurnShip inSamePositionAs: aShip)
-			                       and:
-			                       (self
-				                        coalitionBetween: currentTurnShip
-				                        and: aShip) isEmpty ].
-	shipsInSamePosition do: [ :aShipInSamePosition |
-		currentTurnShip position = 1 ifTrue: [ ^ self ].
-		self
-			resolveBattleBetween: (self getMercenaries: currentTurnShip)
-			and: (self getMercenaries: aShipInSamePosition) ]
-]
-
 { #category : #initialization }
 ShipBattle >> checkShipBattle: currentTurnShip withCards: aCollectionOfCards [
 
