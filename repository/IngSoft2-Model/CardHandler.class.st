@@ -17,9 +17,11 @@ Class {
 }
 
 { #category : #'class initialization' }
-CardHandler class >> withCardProbabilities: aCollectionOfCardProbabilities [ 
-	
-	^ (self new) initalizeWithProbabilities: aCollectionOfCardProbabilities.
+CardHandler class >> withCardProbabilities: aCollectionOfCardProbabilities andGame: aGame [
+
+	^ self new
+		  initalizeWithProbabilities: aCollectionOfCardProbabilities
+		  andGame: aGame
 ]
 
 { #category : #generating }
@@ -75,19 +77,13 @@ CardHandler >> deck [
 	^ deck
 ]
 
-{ #category : #generating }
-CardHandler >> forGame: aGame [
-
-	game := aGame
-]
-
 { #category : #modifying }
 CardHandler >> giveCard: aCard to: aShip [ 
 	deck add: (aCard withHolder: aShip).
 ]
 
 { #category : #initialization }
-CardHandler >> initalizeWithProbabilities: aCollectionOfCardProbabilities [
+CardHandler >> initalizeWithProbabilities: aCollectionOfCardProbabilities andGame: aGame [
 
 	probabilityManager := ProbabilityManager new.
 
@@ -96,7 +92,8 @@ CardHandler >> initalizeWithProbabilities: aCollectionOfCardProbabilities [
 		                    aCollectionOfCardProbabilities.
 	deck := OrderedCollection new.
 	activeCards := OrderedCollection new.
-	lastCardPlayed := NullCard new
+	lastCardPlayed := NullCard new.
+	game := aGame.
 ]
 
 { #category : #accessing }
