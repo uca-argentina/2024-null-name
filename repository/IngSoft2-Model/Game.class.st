@@ -10,7 +10,8 @@ Class {
 		'dice',
 		'gameTurnHandler',
 		'shipBattleHandler',
-		'theShipInCurrentTurn'
+		'theShipInCurrentTurn',
+		'gameCardHandler'
 	],
 	#classInstVars : [
 		'isFinished'
@@ -37,6 +38,27 @@ Game class >> withBoard: aBoard withShipNames: aNameCollection withDice: aDice [
 		  initializeGameWith: aBoard
 		  withShipNames: aNameCollection asSet
 		  withDice: aDice
+		  withGameCardHandler:
+			  (CardHandler withCardProbabilities: (OrderedCollection with:
+					    (ProbabilityAssociation associate: NullCard withProbability: 100)))
+]
+
+{ #category : #'class initialization' }
+Game class >> withBoard: aBoard withShipNames: aNameCollection withDice: aDice withCardHandler: aCardHandler [
+
+	self isValid: aBoard with: aNameCollection and: aDice.
+	^ self new
+		  initializeGameWith: aBoard
+		  withShipNames: aNameCollection
+		  withDice: aDice
+		  withGameCardHandler: aCardHandler
+]
+
+{ #category : #accessing }
+Game >> adjustShipPosition: aShip [
+
+	gameBoard adjustShipPosition: aShip.
+	gameBoard snapToFinishTile: aShip
 ]
 
 { #category : #accessing }
@@ -95,21 +117,57 @@ Game >> canPlayNextTurnOf [
 		Error signal: 'Game is Over you cant Keep Playing' ].
 ]
 
+{ #category : #event }
+Game >> giveCardToCurrentShip: aCardGeneratorEffect [ 
+	gameCardHandler giveCard: aCardGeneratorEffect to: (theShipInCurrentTurn shipName)
+]
+
 { #category : #initialization }
-Game >> initializeGameWith: aBoard withShipNames: aNameCollection withDice: aDice [
+Game >> initializeGameWith: aBoard withShipNames: aNameCollection withDice: aDice withGameCardHandler: aCardHandler [
 
 	gameBoard := aBoard.
 	gameShips := aNameCollection asOrderedCollection collect: [ :aName |
 		             Ship createWithName: aName ].
 	dice := aDice.
 	gameTurnHandler := TurnHandler withShips: gameShips.
-	shipBattleHandler := ShipBattle withDice: dice withShips: gameShips
+	shipBattleHandler := ShipBattle withDice: dice withShips: gameShips.
+	gameCardHandler := aCardHandler.
+	gameCardHandler forGame: self.
+	theShipInCurrentTurn := gameTurnHandler currentTurnShip.
+	gameShips do: [ :ship | gameCardHandler startingCards: ship shipName ]
 ]
 
 { #category : #testing }
 Game >> isFinished [
 
 	^ gameShips anySatisfy: [ :aShip | gameBoard isInLastTile: aShip ]
+]
+
+{ #category : #event }
+Game >> playCard: aCard by: aShipName toTarget: aTarget [
+
+	| aCardToPlay |
+	aCardToPlay := aCard withHolder: aShipName.
+
+	[ gameCardHandler validateCard: aCardToPlay ]
+		on: CardExeption
+		do: [ :ex | ^ ex messageText ].
+
+	(aCardToPlay canPlayRightNow: theShipInCurrentTurn) ifFalse: [
+		^ 'Ship cannot throw this card as its not his turn' ].
+
+	[ self targetIsValid: aTarget ]
+		on: CardExeption
+		do: [ :ex | ^ ex messageText , 'Target is not valid' ].
+
+
+	[ gameCardHandler activateCard: aCardToPlay withTarget: aTarget ]
+		on: CardExeption
+		do: [ :ex | ^ ex messageText ].
+
+	gameCardHandler removeCardFromShipDeck: aCardToPlay.
+
+	^ 'A ' , aCardToPlay class name , ' has been played'
 ]
 
 { #category : #modifying }
@@ -122,15 +180,28 @@ Game >> playTurn [
 		on: TurnExeption
 		do: [ :ex | ^ ex messageText ].
 
-	theShipInCurrentTurn := gameTurnHandler currentTurnShip.
-	movement := dice throw.
+	movement := dice throw
+	            +
+	            (gameCardHandler movementCardsActivated:
+		             theShipInCurrentTurn).
 	theShipInCurrentTurn moveTiles: movement.
-	gameBoard adjustShipPosition: theShipInCurrentTurn.
-	gameBoard snapToFinishTile: theShipInCurrentTurn.
+
+	self adjustShipPosition: theShipInCurrentTurn.
+	gameCardHandler lastEffect:
+		(gameBoard effectInPosition: theShipInCurrentTurn position).
 	gameBoard applyTileEffectOn: self at: theShipInCurrentTurn position.
-	shipBattleHandler checkShipBattle: theShipInCurrentTurn.
+	shipBattleHandler
+		checkShipBattle: theShipInCurrentTurn
+		withCards: gameCardHandler activeMercenaryCards.
 	gameTurnHandler checkForShipsWithNoShield.
-	gameTurnHandler nextTurn
+	gameTurnHandler nextTurn.
+	theShipInCurrentTurn := gameTurnHandler currentTurnShip
+]
+
+{ #category : #accessing }
+Game >> shipCards: aShip [
+
+	^ gameCardHandler deck select: [ :card | card holder = aShip ]
 ]
 
 { #category : #accessing }
@@ -147,20 +218,37 @@ Game >> shipRankings [
 	^ rankDictionary
 ]
 
+{ #category : #accessing }
+Game >> shipWithName: aShipName [ 
+	^ gameShips detect: [ :ship | ship shipName = aShipName ].
+]
+
 { #category : #modifying }
 Game >> skipTurn [
 
+	| skipedTurn |
 	self canPlayNextTurnOf.
-	
+
 	[ gameTurnHandler turnShipCanPlayTurn ]
 		on: TurnExeption
 		do: [ :ex | ^ ex messageText ].
-	
-	theShipInCurrentTurn := gameTurnHandler currentTurnShip.
 
 	theShipInCurrentTurn healFullShields.
+
 	gameTurnHandler nextTurn.
-	^ theShipInCurrentTurn shipName , ' skipped their turn'
+	skipedTurn := theShipInCurrentTurn shipName , ' skipped their turn'.
+	theShipInCurrentTurn := gameTurnHandler currentTurnShip.
+	
+	^ skipedTurn
+]
+
+{ #category : #validating }
+Game >> targetIsValid: aTarget [
+
+	(((gameShips select: [ :ship | ship shipName = aTarget ]) isNotEmpty)
+		 or: [
+		 (gameCardHandler checkTarget: aTarget) or: [ aTarget = 'all' ] ])
+		ifFalse: [ CardExeption signal: 'Target is not valid' ]
 ]
 
 { #category : #accessing }

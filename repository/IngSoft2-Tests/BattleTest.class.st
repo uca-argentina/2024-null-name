@@ -7,12 +7,12 @@ Class {
 { #category : #tests }
 BattleTest >> testShipsCannotBattleInTheFirstTileOfABoard [
 
-	| aGame aCollectionOfNames aWormHoleTilePair aCollectionOfDie aTileArray |
+	| aGame aCollectionOfNames aWormHoleTilePair aCollectionOfDie aTileArray aParsecAmount |
 	aCollectionOfNames := OrderedCollection with: 'Juan' with: 'Pedro'.
 	aWormHoleTilePair := #( 10 15 ).
 	aCollectionOfDie := OrderedCollection with:
 		                    (SequenceDie withSequence: #( 16 16 4 5 )).
-
+	aParsecAmount := Parsec withNominalValue: 16.
 	aTileArray := OrderedCollection new.
 
 	16 timesRepeat: [ aTileArray add: NullEffect new ].
@@ -20,7 +20,7 @@ BattleTest >> testShipsCannotBattleInTheFirstTileOfABoard [
 	aGame := Game
 		         withBoard: (Board
 				          withTileEffectCollection: aTileArray
-				          withLengthInParsecs: 16
+				          withLengthInUnits: aParsecAmount
 				          withAmountOfLaps: 3)
 		         withShipNames: aCollectionOfNames
 		         withDice: (Dice with: aCollectionOfDie).
@@ -47,7 +47,7 @@ BattleTest >> testWhenShipInAGameLandsInATileWithAnotherShipThenTheyBattle [
 	aGame := Game
 		         withBoard: (Board
 				          withTileEffectCollection: aTileArray
-				          withLengthInParsecs: 16
+				          withLengthInUnits: (Parsec withNominalValue: 16)
 				          withAmountOfLaps: 1)
 		         withShipNames: aCollectionOfNames
 		         withDice: (Dice with: aCollectionOfDie).
@@ -74,7 +74,7 @@ BattleTest >> testWhenShipLosesABattleThenGoBackToFirstTile [
 	aGame := Game
 		         withBoard: (Board
 				          withTileEffectCollection: aTileArray
-				          withLengthInParsecs: 16
+				          withLengthInUnits: (Parsec withNominalValue: 16)
 				          withAmountOfLaps: 1)
 		         withShipNames: aCollectionOfNames
 		         withDice: (Dice with: aCollectionOfDie).
