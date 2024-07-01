@@ -519,7 +519,7 @@ CardsTest >> testWhenMercenaryCardIsCancelledShipsCanBattleAgain [
 { #category : #tests }
 CardsTest >> testWhenMercenaryCardIsPlayedAlliedShipsDontBattle [
 
-	| aGame aBoard aCollectionOfNames aCollectionOfDie aTileArray collectionOfCardProbabilities aCardHandler |
+	| aGame aBoard aCollectionOfNames aCollectionOfDie aTileArray collectionOfCardProbabilities aCardHandler aPosition |
 	aTileArray := OrderedCollection new.
 	10 timesRepeat: [ aTileArray add: NullEffect new ].
 
@@ -548,9 +548,14 @@ CardsTest >> testWhenMercenaryCardIsPlayedAlliedShipsDontBattle [
 	aGame playTurn.
 	aGame playCard: MercenaryCard by: 'Jose' toTarget: 'Juan'.
 	aGame playTurn.
-	
+
+	aPosition := #( 6 1 ) asOrderedCollection.
+
+	self assert: (aGame allShipsPosition at: 'Juan') equals: aPosition.
+	self assert: (aGame allShipsPosition at: 'Jose') equals: aPosition.
+
 	self assert: (aGame allShipAmountOfShields at: 'Juan') equals: 3.
-	self assert: (aGame allShipAmountOfShields at: 'Jose') equals: 3.
+	self assert: (aGame allShipAmountOfShields at: 'Jose') equals: 3
 ]
 
 { #category : #tests }
