@@ -16,9 +16,11 @@ Class {
 { #category : #'class initialization' }
 ProbabilityAssociation class >> associate: anObject withProbability: aProbability [
 
+	
 	^ self new
 		  initializeWithAssociation: anObject
 		  withProbability: aProbability
+	
 ]
 
 { #category : #initialization }
