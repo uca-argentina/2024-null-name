@@ -114,7 +114,7 @@ CardHandler >> movementCardsActivated: theShipInTurn [
 	| sum |
 	sum := 0.
 	(activeCards select: [ :card |
-		 card hasTarget: theShipInTurn shipName ]) do: [ :card |
+		 card shouldApplyOn: theShipInTurn shipName ]) do: [ :card |
 		sum := sum + card applyMovement ].
 
 	^ sum

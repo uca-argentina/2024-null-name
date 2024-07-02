@@ -26,7 +26,7 @@ SpeedCard >> canPlayRightNow: theShipInTurn [
 ]
 
 { #category : #comparing }
-SpeedCard >> hasTarget: aTarget [
+SpeedCard >> shouldApplyOn: aTarget [
 
 	^ target = aTarget
 ]
