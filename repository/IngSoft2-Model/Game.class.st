@@ -107,8 +107,7 @@ Game >> applyEffectOnAllShipsButOne: anEffect [
 Game >> applyEffectOnOneShip: anEffect [
 
 	anEffect affectAShip: theShipInCurrentTurn.
-	gameShips do: [ :aShip |
-		gameBoard adjustShipPosition: aShip.]
+	gameBoard adjustShipPosition: theShipInCurrentTurn
 ]
 
 { #category : #testing }
@@ -245,8 +244,7 @@ Game >> skipTurn [
 { #category : #validating }
 Game >> targetIsValid: aTarget [
 
-	(((gameShips select: [ :ship | ship shipName = aTarget ]) isNotEmpty)
-		 or: [
+	((gameShips anySatisfy: [ :ship | ship shipName = aTarget ]) or: [
 		 (gameCardHandler checkTarget: aTarget) or: [ aTarget = 'all' ] ])
 		ifFalse: [ CardExeption signal: 'Target is not valid' ]
 ]
