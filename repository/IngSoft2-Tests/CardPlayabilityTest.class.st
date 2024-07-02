@@ -7,7 +7,7 @@ Class {
 { #category : #tests }
 CardPlayabilityTest >> testAnPermanentCardCanOnlyBePlayedDuringAShipsTurnInAGame [
 
-	| aGame aBoard aCollectionOfNames aCollectionOfDie aTileArray collectionOfCardProbabilities |
+	| aGame aBoard aCollectionOfNames aCollectionOfDie aTileArray collectionOfCards aDeck |
 	aTileArray := OrderedCollection new.
 	2 timesRepeat: [ aTileArray add: NullEffect new ].
 
@@ -18,21 +18,21 @@ CardPlayabilityTest >> testAnPermanentCardCanOnlyBePlayedDuringAShipsTurnInAGame
 	aCollectionOfNames := OrderedCollection with: 'Juan' with: 'Jose'.
 	aCollectionOfDie := OrderedCollection with: (LoadedDie of: 10).
 
-	collectionOfCardProbabilities := OrderedCollection with:
-		                                 (ProbabilityAssociation
-			                                  associate: AccelerationCard
-			                                  withProbability: 100).
+	collectionOfCards := OrderedCollection new.
+	10 timesRepeat: [ collectionOfCards add: AccelerationCard ].
+	aDeck := LoadedDeck withCards: collectionOfCards.
+
 	aGame := Game
 		         withBoard: aBoard
 		         withShipNames: aCollectionOfNames
 		         withDice: (Dice with: aCollectionOfDie)
-		         withCardProbabilities: collectionOfCardProbabilities.
+		         withDeck: aDeck.
 
 	self
 		should: [
 		aGame playCard: AccelerationCard by: 'Jose' toTarget: 'all' ]
 		raise: CardExeption
-		withMessage: 'Ship cannot throw this card as its not his turn'.
+		withMessage: 'Ship cannot throw this card as its not his turn'
 ]
 
 { #category : #tests }
@@ -65,7 +65,7 @@ CardPlayabilityTest >> testCannotPlayACardThatDoesNotBelongToAShip [
 { #category : #tests }
 CardPlayabilityTest >> testCannotPlayACardThatHasInvalidTarget [
 
-	| aGame aBoard aCollectionOfNames aCollectionOfDie aTileArray collectionOfCardProbabilities |
+	| aGame aBoard aCollectionOfNames aCollectionOfDie aTileArray collectionOfCards aDeck |
 	aTileArray := OrderedCollection new.
 	2 timesRepeat: [ aTileArray add: NullEffect new ].
 
@@ -77,15 +77,16 @@ CardPlayabilityTest >> testCannotPlayACardThatHasInvalidTarget [
 	aCollectionOfNames := OrderedCollection with: 'Jose'.
 	aCollectionOfDie := OrderedCollection with: (LoadedDie of: 10).
 
-	collectionOfCardProbabilities := OrderedCollection with:
-		                                 (ProbabilityAssociation
-			                                  associate: SpeedCard
-			                                  withProbability: 100).
+	collectionOfCards := OrderedCollection new.
+	10 timesRepeat: [ collectionOfCards add: SpeedCard ].
+	aDeck := LoadedDeck withCards: collectionOfCards.
+	
+	
 	aGame := Game
 		         withBoard: aBoard
 		         withShipNames: aCollectionOfNames
 		         withDice: (Dice with: aCollectionOfDie)
-		         withCardProbabilities: collectionOfCardProbabilities.
+		         withDeck: aDeck.
 
 	self
 		should: [ aGame playCard: SpeedCard by: 'Jose' toTarget: 'Juan' ]
@@ -96,7 +97,7 @@ CardPlayabilityTest >> testCannotPlayACardThatHasInvalidTarget [
 { #category : #tests }
 CardPlayabilityTest >> testWhenGameIsStartedShipsHave2Cards [
 
-	| aGame aBoard aCollectionOfNames aCollectionOfDie aTileArray |
+	| aGame aBoard aCollectionOfNames aCollectionOfDie aTileArray aDeck collectionOfCards|
 	aTileArray := OrderedCollection new.
 	10 timesRepeat: [ aTileArray add: NullEffect new ].
 
@@ -107,7 +108,11 @@ CardPlayabilityTest >> testWhenGameIsStartedShipsHave2Cards [
 		          withAmountOfLaps: 1.
 	aCollectionOfNames := OrderedCollection with: 'Juan'.
 	aCollectionOfDie := OrderedCollection with: (LoadedDie of: 10).
-
+	
+	collectionOfCards := OrderedCollection new.
+	10 timesRepeat: [ collectionOfCards add: SpeedCard ].
+	aDeck := LoadedDeck withCards: collectionOfCards.
+	
 	aGame := Game
 		         withBoard: aBoard
 		         withShipNames: aCollectionOfNames

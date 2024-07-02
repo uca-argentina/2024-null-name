@@ -7,7 +7,7 @@ Class {
 { #category : #tests }
 CardsEffectTest >> testWhenApplingRepeatCardLastEffectIsAppliedToTheTargetedShip [
 
-	| aGame aBoard aCollectionOfNames aCollectionOfDie aTileArray collectionOfCardProbabilities |
+	| aGame aBoard aCollectionOfNames aCollectionOfDie aTileArray collectionOfCards aDeck|
 	aTileArray := OrderedCollection new.
 	15 timesRepeat: [ aTileArray add: NullEffect new ].
 	
@@ -21,16 +21,16 @@ CardsEffectTest >> testWhenApplingRepeatCardLastEffectIsAppliedToTheTargetedShip
 	aCollectionOfDie := OrderedCollection with:
 		                    (SequenceDie withSequence: #( 9 4 )).
 
-	collectionOfCardProbabilities := OrderedCollection with:
-		                                 (ProbabilityAssociation
-			                                  associate: RepeatCard
-			                                  withProbability: 100).
-
+	collectionOfCards := OrderedCollection new.
+	10 timesRepeat: [ collectionOfCards add: RepeatCard ].
+	aDeck := LoadedDeck withCards: collectionOfCards.
+	
+	
 	aGame := Game
 		         withBoard: aBoard
 		         withShipNames: aCollectionOfNames
 		         withDice: (Dice with: aCollectionOfDie)
-		         withCardProbabilities: collectionOfCardProbabilities.
+		         withDeck: aDeck.
 
 	aGame playTurn.
 	aGame playCard: RepeatCard by: 'Jose' toTarget: 'Juan'.
@@ -41,7 +41,7 @@ CardsEffectTest >> testWhenApplingRepeatCardLastEffectIsAppliedToTheTargetedShip
 { #category : #tests }
 CardsEffectTest >> testWhenOneAccelerationCardIsPlayedShipsMoveOneExtraTile [
 
-	| aGame aBoard aCollectionOfNames aCollectionOfDie aTileArray collectionOfCardProbabilities |
+	| aGame aBoard aCollectionOfNames aCollectionOfDie aTileArray collectionOfCards aDeck|
 	aTileArray := OrderedCollection new.
 	10 timesRepeat: [ aTileArray add: NullEffect new ].
 
@@ -53,16 +53,16 @@ CardsEffectTest >> testWhenOneAccelerationCardIsPlayedShipsMoveOneExtraTile [
 	aCollectionOfDie := OrderedCollection with:
 		                    (SequenceDie withSequence: #( 5 4 )).
 
-	collectionOfCardProbabilities := OrderedCollection with:
-		                                 (ProbabilityAssociation
-			                                  associate: AccelerationCard
-			                                  withProbability: 100).
-
+	
+	collectionOfCards := OrderedCollection new.
+	10 timesRepeat: [ collectionOfCards add: AccelerationCard ].
+	aDeck := LoadedDeck withCards: collectionOfCards.
+	
 	aGame := Game
 		         withBoard: aBoard
 		         withShipNames: aCollectionOfNames
 		         withDice: (Dice with: aCollectionOfDie)
-		         withCardProbabilities: collectionOfCardProbabilities.
+		         withDeck: aDeck.
 
 	aGame playCard: AccelerationCard by: 'Juan' toTarget:  'all'.
 	aGame playTurn.
@@ -75,7 +75,7 @@ CardsEffectTest >> testWhenOneAccelerationCardIsPlayedShipsMoveOneExtraTile [
 { #category : #tests }
 CardsEffectTest >> testWhenOneSpeedCardIsPlayedTargetedShipMoveOneExtraTile [
 
-	| aGame aBoard aCollectionOfNames aCollectionOfDie aTileArray collectionOfCardProbabilities |
+	| aGame aBoard aCollectionOfNames aCollectionOfDie aTileArray collectionOfCards aDeck |
 	aTileArray := OrderedCollection new.
 	10 timesRepeat: [ aTileArray add: NullEffect new ].
 
@@ -87,16 +87,15 @@ CardsEffectTest >> testWhenOneSpeedCardIsPlayedTargetedShipMoveOneExtraTile [
 	aCollectionOfDie := OrderedCollection with:
 		                    (SequenceDie withSequence: #( 5 4 )).
 
-	collectionOfCardProbabilities := OrderedCollection with:
-		                                 (ProbabilityAssociation
-			                                  associate: SpeedCard
-			                                  withProbability: 100).
+	collectionOfCards := OrderedCollection new.
+	10 timesRepeat: [ collectionOfCards add: SpeedCard ].
+	aDeck := LoadedDeck withCards: collectionOfCards.
 
 	aGame := Game
 		         withBoard: aBoard
 		         withShipNames: aCollectionOfNames
 		         withDice: (Dice with: aCollectionOfDie)
-		         withCardProbabilities: collectionOfCardProbabilities.
+		         withDeck: aDeck.
 
 	aGame playCard: SpeedCard by: 'Juan' toTarget: 'Juan'.
 	aGame playTurn.
@@ -109,7 +108,7 @@ CardsEffectTest >> testWhenOneSpeedCardIsPlayedTargetedShipMoveOneExtraTile [
 { #category : #tests }
 CardsEffectTest >> testWhenShipWithMercenariesBattleAllOfThenThrowTheDice [
 
-	| aGame aBoard aCollectionOfNames aCollectionOfDie aTileArray collectionOfCardProbabilities |
+	| aGame aBoard aCollectionOfNames aCollectionOfDie aTileArray collectionOfCards aDeck|
 	aTileArray := OrderedCollection new.
 	10 timesRepeat: [ aTileArray add: NullEffect new ].
 
@@ -123,17 +122,16 @@ CardsEffectTest >> testWhenShipWithMercenariesBattleAllOfThenThrowTheDice [
 		                      with: 'Pedro'.
 	aCollectionOfDie := OrderedCollection with:
 		                    (SequenceDie withSequence: #( 7 4 4 )).
-
-	collectionOfCardProbabilities := OrderedCollection with:
-		                                 (ProbabilityAssociation
-			                                  associate: MercenaryCard
-			                                  withProbability: 100).
-
+	
+	collectionOfCards := OrderedCollection new.
+	10 timesRepeat: [ collectionOfCards add: MercenaryCard ].
+	aDeck := LoadedDeck withCards: collectionOfCards.
+	
 	aGame := Game
 		         withBoard: aBoard
 		         withShipNames: aCollectionOfNames
 		         withDice: (Dice with: aCollectionOfDie)
-		         withCardProbabilities: collectionOfCardProbabilities.
+		         withDeck: aDeck.
 
 	aGame playTurn.
 	aGame playCard: MercenaryCard by: 'Jose' toTarget: 'Juan'.

@@ -33,26 +33,29 @@ Game class >> isValid: aBoard with: aNameCollection and: aDice [
 { #category : #'class initialization' }
 Game class >> withBoard: aBoard withShipNames: aNameCollection withDice: aDice [
 
+	| collectionOfCards |
+	collectionOfCards := OrderedCollection new.
+	aNameCollection size * 2 timesRepeat: [
+		collectionOfCards add: NullCard ].
+
 	self isValid: aBoard with: aNameCollection and: aDice.
 	^ self new
 		  initializeGameWith: aBoard
 		  withShipNames: aNameCollection asSet
 		  withDice: aDice
-		  withGameCardProbabilities: (OrderedCollection with:
-				   (ProbabilityAssociation
-					    associate: NullCard
-					    withProbability: 100))
+		  withGameDeck:
+		  (LoadedDeck withCards: collectionOfCards)
 ]
 
 { #category : #'class initialization' }
-Game class >> withBoard: aBoard withShipNames: aNameCollection withDice: aDice withCardProbabilities: aCollectionOfCardProbabilities [
+Game class >> withBoard: aBoard withShipNames: aNameCollection withDice: aDice withDeck: aDeck [
 
 	self isValid: aBoard with: aNameCollection and: aDice.
 	^ self new
 		  initializeGameWith: aBoard
 		  withShipNames: aNameCollection
 		  withDice: aDice
-		  withGameCardProbabilities: aCollectionOfCardProbabilities
+		  withGameDeck: aDeck
 ]
 
 { #category : #accessing }
@@ -123,15 +126,18 @@ Game >> giveCardToCurrentShip: aCardGeneratorEffect [
 ]
 
 { #category : #initialization }
-Game >> initializeGameWith: aBoard withShipNames: aNameCollection withDice: aDice withGameCardProbabilities: aCollectionOfCardProbabilities [
+Game >> initializeGameWith: aBoard withShipNames: aNameCollection withDice: aDice withGameDeck: aDeck [
 
 	gameBoard := aBoard.
 	gameShips := aNameCollection asOrderedCollection collect: [ :aName |
 		             Ship createWithName: aName ].
+
 	dice := aDice.
 	gameTurnHandler := TurnHandler withShips: gameShips.
 	shipBattleHandler := ShipBattle withDice: dice withShips: gameShips.
-	gameCardHandler := CardHandler withCardProbabilities: aCollectionOfCardProbabilities andGame: self.
+	gameCardHandler := CardHandler
+		                   withDeck: aDeck
+		                   andGame: self.
 	theShipInCurrentTurn := gameTurnHandler currentTurnShip.
 	gameShips do: [ :ship | gameCardHandler startingCards: ship shipName ]
 ]

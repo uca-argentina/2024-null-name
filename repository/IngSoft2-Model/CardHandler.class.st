@@ -11,16 +11,17 @@ Class {
 		'lastCardPlayed',
 		'probabilityManager',
 		'lastEffect',
-		'inPlayDeck'
+		'inPlayDeck',
+		'gameDeck'
 	],
 	#category : #'IngSoft2-Model'
 }
 
 { #category : #'class initialization' }
-CardHandler class >> withCardProbabilities: aCollectionOfCardProbabilities andGame: aGame [
+CardHandler class >> withDeck: aDeck andGame: aGame [
 
 	^ self new
-		  initalizeWithProbabilities: aCollectionOfCardProbabilities
+		  initalizeWithDeck: aDeck
 		  andGame: aGame
 ]
 
@@ -83,13 +84,16 @@ CardHandler >> inPlayDeck [
 ]
 
 { #category : #initialization }
-CardHandler >> initalizeWithProbabilities: aCollectionOfCardProbabilities andGame: aGame [
+CardHandler >> initalizeWithDeck: aDeck andGame: aGame [
 
 	probabilityManager := ProbabilityManager new.
-
-	probabilityCards := probabilityManager
+	
+	gameDeck := aDeck.
+	
+"	probabilityCards := probabilityManager
 		                    transformIntoProbabilityRanges:
-		                    aCollectionOfCardProbabilities.
+		                    aCollectionOfCardProbabilities."
+	
 	inPlayDeck := OrderedCollection new.
 	activeCards := OrderedCollection new.
 	lastCardPlayed := NullCard new.
@@ -141,8 +145,8 @@ CardHandler >> removeFromActiveCard: aTarget [
 { #category : #generating }
 CardHandler >> startingCards: aShipName [
 
-	2 timesRepeat: [ inPlayDeck add: (self cardAtRandom withHolder: aShipName) ].
-
+	2 timesRepeat: [
+		inPlayDeck add: (gameDeck cardAtRandom withHolder: aShipName) ]
 ]
 
 { #category : #comparing }
