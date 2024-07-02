@@ -5,36 +5,6 @@ Class {
 }
 
 { #category : #tests }
-CardPlayabilityTest >> testACardCanBePlayedDuringAGame [
-
-	| aGame aBoard aCollectionOfNames aCollectionOfDie aTileArray|
-	aTileArray := OrderedCollection new.
-	2 timesRepeat: [ aTileArray add: NullEffect new ].
-	
-	aBoard := Board
-		          withTileEffectCollection: aTileArray
-		          withLengthInUnits: (Parsec withNominalValue: 10)
-		          withAmountOfLaps: 1.
-	aCollectionOfNames := OrderedCollection with: 'Juan'.
-	aCollectionOfDie := OrderedCollection with: (LoadedDie of: 10).
-
-	aGame := Game
-		         withBoard: aBoard
-		         withShipNames: aCollectionOfNames
-		         withDice: (Dice with: aCollectionOfDie).
-	
-	
-	self assert: (aGame playCard: NullCard  by: 'Juan' toTarget: 'all') equals: 'A NullCard has been played'.
-	
-
-	
-	
-		
-		
-	
-]
-
-{ #category : #tests }
 CardPlayabilityTest >> testAnPermanentCardCanOnlyBePlayedDuringAShipsTurnInAGame [
 
 	| aGame aBoard aCollectionOfNames aCollectionOfDie aTileArray collectionOfCardProbabilities |
@@ -59,9 +29,10 @@ CardPlayabilityTest >> testAnPermanentCardCanOnlyBePlayedDuringAShipsTurnInAGame
 		         withCardProbabilities: collectionOfCardProbabilities.
 
 	self
-		assert:
-		(aGame playCard: AccelerationCard by: 'Jose' toTarget: 'all')
-		equals: 'Ship cannot throw this card as its not his turn'
+		should: [
+		aGame playCard: AccelerationCard by: 'Jose' toTarget: 'all' ]
+		raise: CardExeption
+		withMessage: 'Ship cannot throw this card as its not his turn'.
 ]
 
 { #category : #tests }
@@ -82,11 +53,44 @@ CardPlayabilityTest >> testCannotPlayACardThatDoesNotBelongToAShip [
 		         withBoard: aBoard
 		         withShipNames: aCollectionOfNames
 		         withDice: (Dice with: aCollectionOfDie).
+	
+	self
+		should: [
+		aGame playCard: AccelerationCard by: 'Jose' toTarget: 'all' ]
+		raise: CardExeption
+		withMessage: 'Ship does not have that card'.
+	
+]
+
+{ #category : #tests }
+CardPlayabilityTest >> testCannotPlayACardThatHasInvalidTarget [
+
+	| aGame aBoard aCollectionOfNames aCollectionOfDie aTileArray collectionOfCardProbabilities |
+	aTileArray := OrderedCollection new.
+	2 timesRepeat: [ aTileArray add: NullEffect new ].
+
+	aBoard := Board
+		          withTileEffectCollection: aTileArray
+		          withLengthInUnits: (Parsec withNominalValue: 10)
+		          withAmountOfLaps: 1.
+
+	aCollectionOfNames := OrderedCollection with: 'Jose'.
+	aCollectionOfDie := OrderedCollection with: (LoadedDie of: 10).
+
+	collectionOfCardProbabilities := OrderedCollection with:
+		                                 (ProbabilityAssociation
+			                                  associate: SpeedCard
+			                                  withProbability: 100).
+	aGame := Game
+		         withBoard: aBoard
+		         withShipNames: aCollectionOfNames
+		         withDice: (Dice with: aCollectionOfDie)
+		         withCardProbabilities: collectionOfCardProbabilities.
 
 	self
-		assert:
-		(aGame playCard: AccelerationCard by: 'Jose' toTarget: 'all')
-		equals: 'Ship does not have that card'
+		should: [ aGame playCard: SpeedCard by: 'Jose' toTarget: 'Juan' ]
+		raise: CardExeption
+		withMessage: 'Target is not valid'
 ]
 
 { #category : #tests }

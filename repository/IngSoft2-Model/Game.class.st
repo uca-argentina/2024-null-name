@@ -148,25 +148,17 @@ Game >> playCard: aCard by: aShipName toTarget: aTarget [
 	| aCardToPlay |
 	aCardToPlay := aCard withHolder: aShipName.
 
-	[ gameCardHandler validateCard: aCardToPlay ]
-		on: CardExeption
-		do: [ :ex | ^ ex messageText ].
-
+	gameCardHandler validateCard: aCardToPlay.
+	self targetIsValid: aTarget.
 	(aCardToPlay canPlayRightNow: theShipInCurrentTurn) ifFalse: [
-		^ 'Ship cannot throw this card as its not his turn' ].
-
-	[ self targetIsValid: aTarget ]
-		on: CardExeption
-		do: [ :ex | ^ ex messageText , 'Target is not valid' ].
-
+		CardExeption signal:
+			'Ship cannot throw this card as its not his turn' ].
 
 	[ gameCardHandler activateCard: aCardToPlay withTarget: aTarget ]
 		on: CardExeption
 		do: [ :ex | ^ ex messageText ].
 
-	gameCardHandler removeCardFromShipDeck: aCardToPlay.
-
-	^ 'A ' , aCardToPlay class name , ' has been played'
+	gameCardHandler removeCardFromShipDeck: aCardToPlay
 ]
 
 { #category : #modifying }
@@ -200,7 +192,7 @@ Game >> playTurn [
 { #category : #accessing }
 Game >> shipCards: aShip [
 
-	^ gameCardHandler deck select: [ :card | card holder = aShip ]
+	^ gameCardHandler inPlayDeck select: [ :card | card holder = aShip ]
 ]
 
 { #category : #accessing }

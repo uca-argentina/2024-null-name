@@ -5,6 +5,16 @@ Class {
 }
 
 { #category : #tests }
+CardsTest >> should: anErrorBlock raise: exceptionClass withMessage: anErrorMessage [
+
+	self
+		should: anErrorBlock
+		raise: exceptionClass
+		withExceptionDo: [ :error |
+		self assert: error messageText equals: anErrorMessage ]
+]
+
+{ #category : #tests }
 CardsTest >> testAShipCannotBeHiredByMoreThanOneShip [
 
 	| aGame aBoard aCollectionOfNames aCollectionOfDie aTileArray collectionOfCardProbabilities |
@@ -329,12 +339,14 @@ CardsTest >> testWhenMercenaryCardIsCancelledShipsCanBattleAgain [
 
 	aGame playTurn.
 	aGame playCard: MercenaryCard by: 'Jose' toTarget: 'Juan'.
-	aGame playCard: CancellationCard by: 'Juan' toTarget: (MercenaryCard withHolder: 'Jose').
+	aGame
+		playCard: CancellationCard
+		by: 'Juan'
+		toTarget: (MercenaryCard withHolder: 'Jose').
 	aGame playTurn.
-	
+
 	self assert: (aGame allShipAmountOfShields at: 'Juan') equals: 3.
-	self assert: (aGame allShipAmountOfShields at: 'Jose') equals: 2.
-	
+	self assert: (aGame allShipAmountOfShields at: 'Jose') equals: 2
 ]
 
 { #category : #tests }
