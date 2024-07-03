@@ -20,6 +20,7 @@ LoadedDeck >> cardAtRandom [
 	currentCardPosition := currentCardPosition < deck size
 		                       ifTrue: [ currentCardPosition + 1 ]
 		                       ifFalse: [ 1 ].
+	
 	^ deck at: currentCardPosition
 ]
 

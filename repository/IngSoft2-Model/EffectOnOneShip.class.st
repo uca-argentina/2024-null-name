@@ -14,7 +14,7 @@ EffectOnOneShip >> affectAShip: aShip [
 ]
 
 { #category : #applying }
-EffectOnOneShip >> applyOn: aGame [
+EffectOnOneShip >> applyOn: aGame activatedBy: aShip [
 
-	aGame applyEffectOnOneShip: self.
+	aGame applyEffectOnOneShip: self triggeredBy: aShip
 ]

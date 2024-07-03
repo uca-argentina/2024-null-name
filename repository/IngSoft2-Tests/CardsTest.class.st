@@ -131,62 +131,13 @@ CardsTest >> testWhenACancelationCardIsPlayedItCannotTargetANonexistentCard [
 ]
 
 { #category : #tests }
-CardsTest >> testWhenApplingRepeatCardOnlyEffectsTargetedToOneShipCanBeRepeated [
-
-	| aGame aBoard aCollectionOfNames aCollectionOfDie aTileArray collectionOfCards aDeck|
-	aTileArray := OrderedCollection new.
-	15 timesRepeat: [ aTileArray add: NullEffect new ].
-
-	aTileArray at: 10 put: AtomicBombEffect new.
-
-	aBoard := Board
-		          withTileEffectCollection: aTileArray
-		          withLengthInUnits: (Parsec withNominalValue: 10)
-		          withAmountOfLaps: 1.
-	aCollectionOfNames := OrderedCollection with: 'Juan' with: 'Jose'.
-	aCollectionOfDie := OrderedCollection with:
-		                    (SequenceDie withSequence: #( 9 4 )).
-
-
-	collectionOfCards := OrderedCollection new.
-	10 timesRepeat: [ collectionOfCards add: RepeatCard  ].
-	aDeck := LoadedDeck withCards: collectionOfCards.
-	
-	
-	
-	aGame := Game
-		         withBoard: aBoard
-		         withShipNames: aCollectionOfNames
-		         withDice: (Dice with: aCollectionOfDie)
-		         withDeck: aDeck .
-
-	aGame playTurn.
-
-	self
-		assert: (aGame playCard: RepeatCard by: 'Jose' toTarget: 'Juan')
-		equals:
-		'AtomicBombEffect is last effect, and doesnt target a single ship'.
-
-	self
-		assert: (aGame allShipsPosition at: 'Juan')
-		equals: #( 1 1 ) asOrderedCollection.
-	self assert: (aGame allShipAmountOfShields at: 'Juan') equals: 2
-]
-
-{ #category : #tests }
 CardsTest >> testWhenApplyingRedoCardLastCardIsPlayedAgain [
 
-	| aGame aBoard aCollectionOfNames aCollectionOfDie aTileArray collectionOfCards aDeck|
+	| aGame aBoard aCollectionOfNames aCollectionOfDie aTileArray collectionOfCards aDeck |
 	aTileArray := OrderedCollection new.
 	15 timesRepeat: [ aTileArray add: NullEffect new ].
 
-	aTileArray
-		at: 6
-		put:
-			(CardGeneratorEffect withProbabilities: (OrderedCollection with:
-					  (ProbabilityAssociation
-						   associate: SpeedCard
-						   withProbability: 100))).
+	aTileArray at: 6 put: CardGeneratorEffect new.
 
 	aBoard := Board
 		          withTileEffectCollection: aTileArray
@@ -195,10 +146,11 @@ CardsTest >> testWhenApplyingRedoCardLastCardIsPlayedAgain [
 
 	aCollectionOfNames := OrderedCollection with: 'Juan' with: 'Jose'.
 	aCollectionOfDie := OrderedCollection with:
-		                    (SequenceDie withSequence: #( 5 1)).
+		                    (SequenceDie withSequence: #( 5 1 )).
 
 	collectionOfCards := OrderedCollection new.
-	10 timesRepeat: [ collectionOfCards add: RedoCard  ].
+	4 timesRepeat: [ collectionOfCards add: RedoCard ].
+	collectionOfCards add: SpeedCard.
 	aDeck := LoadedDeck withCards: collectionOfCards.
 
 	aGame := Game
@@ -207,11 +159,11 @@ CardsTest >> testWhenApplyingRedoCardLastCardIsPlayedAgain [
 		         withDice: (Dice with: aCollectionOfDie)
 		         withDeck: aDeck.
 
-	aGame playTurn. 
 	aGame playTurn.
-	aGame playCard: SpeedCard by: 'Juan' toTarget: 'Juan'. 
 	aGame playTurn.
-	aGame playCard: RedoCard by: 'Jose' toTarget: 'Jose'. 
+	aGame playCard: SpeedCard by: 'Juan' toTarget: 'Juan'.
+	aGame playTurn.
+	aGame playCard: RedoCard by: 'Jose' toTarget: 'Jose'.
 	aGame playTurn.
 
 	self
@@ -226,13 +178,7 @@ CardsTest >> testWhenApplyingRedoCardMultipleTimesApplyLastNonRedoCard [
 	aTileArray := OrderedCollection new.
 	15 timesRepeat: [ aTileArray add: NullEffect new ].
 
-	aTileArray
-		at: 6
-		put:
-			(CardGeneratorEffect withProbabilities: (OrderedCollection with:
-					  (ProbabilityAssociation
-						   associate: SpeedCard
-						   withProbability: 100))).
+	aTileArray at: 6 put: CardGeneratorEffect new.
 
 	aBoard := Board
 		          withTileEffectCollection: aTileArray
@@ -244,7 +190,8 @@ CardsTest >> testWhenApplyingRedoCardMultipleTimesApplyLastNonRedoCard [
 		                    (SequenceDie withSequence: #( 5 1 )).
 
 	collectionOfCards := OrderedCollection new.
-	10 timesRepeat: [ collectionOfCards add: RedoCard ].
+	4 timesRepeat: [ collectionOfCards add: RedoCard ].
+	collectionOfCards add: SpeedCard.
 	aDeck := LoadedDeck withCards: collectionOfCards.
 	aGame := Game
 		         withBoard: aBoard
@@ -308,10 +255,7 @@ CardsTest >> testWhenMercenaryCardIsCancelledShipsCanBattleAgain [
 	10 timesRepeat: [ aTileArray add: NullEffect new ].
 
 
-	aTileArray at: 6 put: (CardGeneratorEffect withProbabilities:
-			 (OrderedCollection with: (ProbabilityAssociation
-					   associate: CancellationCard
-					   withProbability: 100))).
+	aTileArray at: 6 put: CardGeneratorEffect new.
 
 	aBoard := Board
 		          withTileEffectCollection: aTileArray
@@ -320,11 +264,12 @@ CardsTest >> testWhenMercenaryCardIsCancelledShipsCanBattleAgain [
 	aCollectionOfNames := OrderedCollection with: 'Juan' with: 'Jose'.
 	aCollectionOfDie := OrderedCollection with:
 		                    (SequenceDie withSequence: #( 5 )).
-	
+
 	collectionOfCards := OrderedCollection new.
-	10 timesRepeat: [ collectionOfCards add: MercenaryCard  ].
+	4 timesRepeat: [ collectionOfCards add: MercenaryCard ].
+	collectionOfCards add: CancellationCard.
 	aDeck := LoadedDeck withCards: collectionOfCards.
-	
+
 	aGame := Game
 		         withBoard: aBoard
 		         withShipNames: aCollectionOfNames

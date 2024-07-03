@@ -8,7 +8,7 @@ Class {
 }
 
 { #category : #applying }
-NullEffect >> applyOn: aGame [
+NullEffect >> applyOn: aGame activatedBy: aShip [
 
-	^self
+	^ self
 ]

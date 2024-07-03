@@ -50,14 +50,7 @@ CardHandler >> applyLastEffectOn: aTarget [
 
 	| aShip |
 	aShip := game shipWithName: aTarget.
-
-	(lastEffect respondsTo: #affectAShip:) ifFalse: [
-		CardExeption signal: lastEffect class name
-			, ' is last effect, and doesnt target a single ship' ].
-
-	lastEffect affectAShip: aShip.
-
-	game adjustShipPosition: aShip
+	lastEffect applyOn: game activatedBy: aShip
 ]
 
 { #category : #'argument validation' }
@@ -67,8 +60,9 @@ CardHandler >> checkTarget: aTarget [
 ]
 
 { #category : #modifying }
-CardHandler >> giveCard: aCard to: aShip [ 
-	inPlayDeck add: (aCard withHolder: aShip).
+CardHandler >> giveCardTo: aShipName [
+
+	inPlayDeck add: (gameDeck cardAtRandom withHolder: aShipName)
 ]
 
 { #category : #accessing }

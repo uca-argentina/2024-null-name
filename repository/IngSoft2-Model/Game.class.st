@@ -98,19 +98,20 @@ Game >> applyEffectOnAllShips: anEffect [
 		gameBoard adjustShipPosition: aShip.]
 ]
 
-{ #category : #event }
-Game >> applyEffectOnAllShipsButOne: anEffect [
+{ #category : #'as yet unclassified' }
+Game >> applyEffectOnAllShipsButOne: anEffect triggerByShip: aShip [
 
-	anEffect affectAllShips: gameShips but: theShipInCurrentTurn.
-	gameShips do: [ :aShip |
-		gameBoard adjustShipPosition: aShip. ]
+	anEffect affectAllShips: gameShips but: aShip.
+	gameShips do: [ :anAffectedShip |
+		gameBoard adjustShipPosition: anAffectedShip ]
 ]
 
-{ #category : #event }
-Game >> applyEffectOnOneShip: anEffect [
+{ #category : #'as yet unclassified' }
+Game >> applyEffectOnOneShip: anEffect triggeredBy: aShip [
 
-	anEffect affectAShip: theShipInCurrentTurn.
-	gameBoard adjustShipPosition: theShipInCurrentTurn
+	
+	anEffect affectAShip: aShip.
+	gameBoard adjustShipPosition: aShip
 ]
 
 { #category : #testing }
@@ -121,8 +122,10 @@ Game >> canPlayNextTurnOf [
 ]
 
 { #category : #event }
-Game >> giveCardToCurrentShip: aCardGeneratorEffect [ 
-	gameCardHandler giveCard: aCardGeneratorEffect to: (theShipInCurrentTurn shipName)
+Game >> giveCardToCurrentShip: aShip [
+
+	gameCardHandler
+		giveCardTo: aShip shipName.
 ]
 
 { #category : #initialization }
@@ -186,7 +189,7 @@ Game >> playTurn [
 	self adjustShipPosition: theShipInCurrentTurn.
 	gameCardHandler lastEffect:
 		(gameBoard effectInPosition: theShipInCurrentTurn position).
-	gameBoard applyTileEffectOn: self at: theShipInCurrentTurn position.
+	gameBoard applyTileEffectOn: self triggeredBy: theShipInCurrentTurn.
 	shipBattleHandler
 		checkShipBattle: theShipInCurrentTurn
 		withCards: gameCardHandler activeMercenaryCards.

@@ -18,3 +18,9 @@ EffectOnAllShips >> applyOn: aGame [
 
 	aGame applyEffectOnAllShips: self
 ]
+
+{ #category : #applying }
+EffectOnAllShips >> applyOn: aGame activatedBy: aShip [
+
+	aGame applyEffectOnAllShips: self
+]

@@ -45,12 +45,6 @@ TileEffectsCreator >> determineRangeRandom [
 ]
 
 { #category : #comparing }
-TileEffectsCreator >> generateCardGeneratorParameters: anEffect [
-
-	anEffect initalizeWithProbabilities: cardProbabilities
-]
-
-{ #category : #comparing }
 TileEffectsCreator >> generateHyperJumpParameters: anEffect [
 
 	anEffect
