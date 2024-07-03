@@ -60,12 +60,6 @@ CardHandler >> applyLastEffectOn: aTarget [
 	game adjustShipPosition: aShip
 ]
 
-{ #category : #comparing }
-CardHandler >> cardAtRandom [
-	
-	^ probabilityManager elementAtRandom: probabilityCards
-]
-
 { #category : #'argument validation' }
 CardHandler >> checkTarget: aTarget [
 
