@@ -86,8 +86,8 @@ CardHandler >> lastCardPlayed [
 CardHandler >> movementCardsActivated: theShipInTurn [
 
 	^ ((activeCards select: [ :card |
-		    card shouldApplyOn: theShipInTurn shipName ]) sum: [ :card |
-		   card applyMovement ]) max: 0
+		    card shouldApplyOn: theShipInTurn shipName ]) sumNumbers: [
+		   :card | card applyMovement ]) max: 0
 ]
 
 { #category : #comparing }
