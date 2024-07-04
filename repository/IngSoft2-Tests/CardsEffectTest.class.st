@@ -112,6 +112,42 @@ CardsEffectTest >> testWhenOneSpeedCardIsPlayedTargetedShipMoveOneExtraTile [
 ]
 
 { #category : #tests }
+CardsEffectTest >> testWhenOneSpeedCardIsPlayedWhenShipBattelsItThrowResultIsIncreasedByOne [
+
+	| aGame aBoard aCollectionOfNames aCollectionOfDie aTileArray collectionOfCards aDeck aTarget|
+	aTileArray := OrderedCollection new.
+	10 timesRepeat: [ aTileArray add: NullEffect new ].
+
+	aBoard := Board
+		          withTileEffectCollection: aTileArray
+		          withLengthInUnits: (Parsec withNominalValue: 10)
+		          withAmountOfLaps: 1.
+	aCollectionOfNames := OrderedCollection with: 'Juan' with: 'Jose'.
+	aCollectionOfDie := OrderedCollection with:
+		                    (SequenceDie withSequence: #( 4 5 4 4)).
+
+	collectionOfCards := OrderedCollection new.
+	10 timesRepeat: [ collectionOfCards add: SpeedCard ].
+	aDeck := LoadedDeck withCards: collectionOfCards.
+
+	aGame := Game
+		         withBoard: aBoard
+		         withShipNames: aCollectionOfNames
+		         withDice: (Dice with: aCollectionOfDie)
+		         withDeck: aDeck.
+	
+	aTarget := ShipTarget withObjective: 'Juan'.
+	
+	aGame playCard: SpeedCard by: 'Juan' toTarget: aTarget.
+	aGame playTurn.
+	aGame playTurn.
+	
+	self assert: (aGame allShipAmountOfShields  at: 'Juan') equals: 3.
+	self assert: (aGame allShipAmountOfShields  at: 'Jose') equals: 2.
+	
+]
+
+{ #category : #tests }
 CardsEffectTest >> testWhenShipWithMercenariesBattleAllOfThenThrowTheDice [
 
 	| aGame aBoard aCollectionOfNames aCollectionOfDie aTileArray collectionOfCards aDeck aTarget |
