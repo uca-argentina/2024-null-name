@@ -29,7 +29,7 @@ ShipCoalition >> hasLeader: aShipName [
 { #category : #comparing }
 ShipCoalition >> hash [
 
-	^ leader hash , mercenary hash
+	^ leader hash + mercenary hash
 ]
 
 { #category : #initialization }
