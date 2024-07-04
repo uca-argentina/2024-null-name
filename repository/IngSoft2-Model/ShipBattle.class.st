@@ -46,25 +46,6 @@ ShipBattle >> initializeWithShips: aCollectionOfShips withDice: aCollectionOfDic
 ]
 
 { #category : #event }
-ShipBattle >> resolveBattleBetween: aShipNameCollection and: anotherShipNameCollection [
-
-	| aShipDiceRoll anotherShipDiceRoll loserShipArmy aShipArmy anotherShipArmy |
-	aShipArmy := self shipsNames: aShipNameCollection.
-	anotherShipArmy := self shipsNames: anotherShipNameCollection.
-
-	aShipDiceRoll := 0.
-	anotherShipDiceRoll := 0.
-	aShipArmy size timesRepeat: [ aShipDiceRoll + dice throw ].
-	anotherShipArmy size timesRepeat: [ aShipDiceRoll + dice throw ].
-	loserShipArmy := aShipDiceRoll > anotherShipDiceRoll
-		                 ifTrue: [ anotherShipArmy ]
-		                 ifFalse: [ aShipArmy ].
-	loserShipArmy do: [ :aShip |
-		aShip loseOneShield.
-		aShip moveToFirstTile ]
-]
-
-{ #category : #event }
 ShipBattle >> resolveBattleBetween: aShip and: anotherShip with: aCardHandler [
 
 	| aShipDiceRoll anotherShipDiceRoll loserShipArmy aShipArmy anotherShipArmy |
