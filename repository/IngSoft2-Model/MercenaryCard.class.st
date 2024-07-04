@@ -8,7 +8,7 @@ Class {
 MercenaryCard >> activate: aCardHandler withTarget: aTarget [
 
 	target := aTarget.
-	aCardHandler verifyCoalition: aTarget objective.
+	aCardHandler verifyCoalition: target objective.
 	aCardHandler addToActiveCards: self
 ]
 

@@ -162,7 +162,7 @@ Game >> isFinished [
 Game >> playCard: aCard by: aShipName toTarget: aTarget [
 
 	| aCardToPlay |
-	aCardToPlay := aCard withHolder: aShipName andTarget: aTarget.
+	aCardToPlay := aCard withHolder: aShipName andTarget: NullTarget new.
 
 	gameCardHandler validateCard: aCardToPlay.
 	self targetIsValid: aTarget.

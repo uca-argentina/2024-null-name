@@ -6,9 +6,9 @@ Class {
 
 { #category : #modifying }
 CancellationCard >> activate: aCardHandler withTarget: aTarget [
-	
-	target:= aTarget.
-	aCardHandler removeFromActiveCard: aTarget objective .
+
+	target := aTarget.
+	aCardHandler removeFromActiveCard: target objective
 ]
 
 { #category : #comparing }
