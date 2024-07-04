@@ -5,12 +5,9 @@ Class {
 	#name : #CardHandler,
 	#superclass : #Object,
 	#instVars : [
-		'probabilityCards',
 		'activeCards',
 		'game',
 		'lastCardPlayed',
-		'probabilityManager',
-		'lastEffect',
 		'inPlayDeck',
 		'gameDeck'
 	],
@@ -48,9 +45,7 @@ CardHandler >> addToActiveCards: aCard [
 { #category : #generating }
 CardHandler >> applyLastEffectOn: aTarget [
 
-	| aShip |
-	aShip := game shipWithName: aTarget.
-	lastEffect applyOn: game activatedBy: aShip
+	game applyLastEffectOn: aTarget
 ]
 
 { #category : #'argument validation' }
@@ -73,15 +68,8 @@ CardHandler >> inPlayDeck [
 
 { #category : #initialization }
 CardHandler >> initalizeWithDeck: aDeck andGame: aGame [
-
-	probabilityManager := ProbabilityManager new.
 	
 	gameDeck := aDeck.
-	
-"	probabilityCards := probabilityManager
-		                    transformIntoProbabilityRanges:
-		                    aCollectionOfCardProbabilities."
-	
 	inPlayDeck := OrderedCollection new.
 	activeCards := OrderedCollection new.
 	lastCardPlayed := NullCard new.
@@ -92,12 +80,6 @@ CardHandler >> initalizeWithDeck: aDeck andGame: aGame [
 CardHandler >> lastCardPlayed [
 
 	^ lastCardPlayed
-]
-
-{ #category : #comparing }
-CardHandler >> lastEffect: anEffect [
-
-	lastEffect := anEffect
 ]
 
 { #category : #modifying }

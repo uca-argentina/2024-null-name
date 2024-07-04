@@ -11,7 +11,8 @@ Class {
 		'gameTurnHandler',
 		'shipBattleHandler',
 		'theShipInCurrentTurn',
-		'gameCardHandler'
+		'gameCardHandler',
+		'lastEffect'
 	],
 	#classInstVars : [
 		'isFinished'
@@ -114,6 +115,13 @@ Game >> applyEffectOnOneShip: anEffect triggeredBy: aShip [
 	gameBoard adjustShipPosition: aShip
 ]
 
+{ #category : #generating }
+Game >> applyLastEffectOn: aTarget [
+	| aShip |
+	aShip := self shipWithName: aTarget.
+	lastEffect applyOn: self activatedBy: aShip
+]
+
 { #category : #testing }
 Game >> canPlayNextTurnOf [
 
@@ -138,10 +146,9 @@ Game >> initializeGameWith: aBoard withShipNames: aNameCollection withDice: aDic
 	dice := aDice.
 	gameTurnHandler := TurnHandler withShips: gameShips.
 	shipBattleHandler := ShipBattle withDice: dice withShips: gameShips.
-	gameCardHandler := CardHandler
-		                   withDeck: aDeck
-		                   andGame: self.
+	gameCardHandler := CardHandler withDeck: aDeck andGame: self.
 	theShipInCurrentTurn := gameTurnHandler currentTurnShip.
+	lastEffect := NullEffect new.
 	gameShips do: [ :ship | gameCardHandler startingCards: ship shipName ]
 ]
 
@@ -187,8 +194,9 @@ Game >> playTurn [
 	theShipInCurrentTurn moveTiles: movement.
 
 	self adjustShipPosition: theShipInCurrentTurn.
-	gameCardHandler lastEffect:
-		(gameBoard effectInPosition: theShipInCurrentTurn position).
+	lastEffect := gameBoard effectInPosition:
+		              theShipInCurrentTurn position.
+	
 	gameBoard applyTileEffectOn: self triggeredBy: theShipInCurrentTurn.
 	shipBattleHandler
 		checkShipBattle: theShipInCurrentTurn

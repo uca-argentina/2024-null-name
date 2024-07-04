@@ -4,10 +4,6 @@ a
 Class {
 	#name : #CardGeneratorEffect,
 	#superclass : #Effect,
-	#instVars : [
-		'probabilityCards',
-		'probabilityManager'
-	],
 	#category : #'IngSoft2-Model'
 }
 

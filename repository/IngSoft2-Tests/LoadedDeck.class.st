@@ -8,13 +8,13 @@ Class {
 	#category : #'IngSoft2-Tests'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #'class initialization' }
 LoadedDeck class >> withCards: aCollectionOfCards [
 
 	^ self new initalizeWithCards: aCollectionOfCards
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #generating }
 LoadedDeck >> cardAtRandom [
 
 	currentCardPosition := currentCardPosition < deck size
@@ -24,7 +24,7 @@ LoadedDeck >> cardAtRandom [
 	^ deck at: currentCardPosition
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #initialization }
 LoadedDeck >> initalizeWithCards: aCollectionOfCards [
 
 	deck := aCollectionOfCards.

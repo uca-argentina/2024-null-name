@@ -95,6 +95,49 @@ CardPlayabilityTest >> testCannotPlayACardThatHasInvalidTarget [
 ]
 
 { #category : #tests }
+CardPlayabilityTest >> testTotalSumOfCardsProbabilitiesIs100 [
+
+	| aBoard aCollectionOfNames aCollectionOfDie aTileArray aDeck |
+	aTileArray := OrderedCollection new.
+	2 timesRepeat: [ aTileArray add: NullEffect new ].
+
+	aBoard := Board
+		          withTileEffectCollection: aTileArray
+		          withLengthInUnits: (Parsec withNominalValue: 10)
+		          withAmountOfLaps: 1.
+
+	aCollectionOfNames := OrderedCollection with: 'Jose'.
+	aCollectionOfDie := OrderedCollection with: (LoadedDie of: 10).
+
+
+	self
+		should: [
+			aDeck := Deck withCardProbabilities:
+				         (OrderedCollection with: (ProbabilityAssociation
+						           associate: CancellationCard
+						           withProbability: 50)) ]
+		raise: Error
+		withMessage:
+		'Total card probabilities cannot be diferent from 100%'
+]
+
+{ #category : #tests }
+CardPlayabilityTest >> testWhenCardsAreTakenFormDeckTheyFollowTheProbabilityDistribution [
+
+	| aDeck aCollectionOfCards |
+	aDeck := Deck withCardProbabilities:
+		         (OrderedCollection with: (ProbabilityAssociation
+				           associate: CancellationCard
+				           withProbability: 100)).
+
+	aCollectionOfCards := OrderedCollection new.
+	10 timesRepeat: [ aCollectionOfCards add: aDeck cardAtRandom ].
+
+	self assert:
+		(aCollectionOfCards allSatisfy: [ :card | card = CancellationCard ])
+]
+
+{ #category : #tests }
 CardPlayabilityTest >> testWhenGameIsStartedShipsHave2Cards [
 
 	| aGame aBoard aCollectionOfNames aCollectionOfDie aTileArray aDeck collectionOfCards|
