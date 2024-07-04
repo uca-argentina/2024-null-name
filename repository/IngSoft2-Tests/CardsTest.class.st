@@ -56,6 +56,33 @@ CardsTest >> testAShipCannotBeHiredByMoreThanOneShip [
 ]
 
 { #category : #tests }
+CardsTest >> testTotalSumOfCardsProbabilitiesIs100 [
+
+	| aBoard aCollectionOfNames aCollectionOfDie aTileArray aDeck |
+	aTileArray := OrderedCollection new.
+	2 timesRepeat: [ aTileArray add: NullEffect new ].
+
+	aBoard := Board
+		          withTileEffectCollection: aTileArray
+		          withLengthInUnits: (Parsec withNominalValue: 10)
+		          withAmountOfLaps: 1.
+
+	aCollectionOfNames := OrderedCollection with: 'Jose'.
+	aCollectionOfDie := OrderedCollection with: (LoadedDie of: 10).
+
+
+	self
+		should: [
+			aDeck := Deck withCardProbabilities:
+				         (OrderedCollection with: (ProbabilityAssociation
+						           associate: CancellationCard
+						           withProbability: 50)) ]
+		raise: Error
+		withMessage:
+		'Total card probabilities cannot be diferent from 100%'
+]
+
+{ #category : #tests }
 CardsTest >> testWhenACancelationCardIsPlayedDeactivateTargetedCard [
 
 	| aGame aBoard aCollectionOfNames aCollectionOfDie aTileArray collectionOfCards aDeck aTarget anotherTarget |

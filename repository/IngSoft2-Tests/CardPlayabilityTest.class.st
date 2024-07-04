@@ -55,13 +55,41 @@ CardPlayabilityTest >> testCannotPlayACardThatDoesNotBelongToAShip [
 		         withBoard: aBoard
 		         withShipNames: aCollectionOfNames
 		         withDice: (Dice with: aCollectionOfDie).
+
+	self
+		should: [
+		aGame playCard: AccelerationCard by: 'Jose' toTarget: AllTarget new ]
+		raise: CardExeption
+		withMessage: 'Ship does not have that card'
+]
+
+{ #category : #tests }
+CardPlayabilityTest >> testCannotPlayACardThatDoesNotHaveASetTarget [
+
+	| aGame aBoard aCollectionOfNames aCollectionOfDie aTileArray |
+	aTileArray := OrderedCollection new.
+	2 timesRepeat: [ aTileArray add: NullEffect new ].
+
+	aBoard := Board
+		          withTileEffectCollection: aTileArray
+		          withLengthInUnits: (Parsec withNominalValue: 10)
+		          withAmountOfLaps: 1.
+	aCollectionOfNames := OrderedCollection with: 'Juan'.
+	aCollectionOfDie := OrderedCollection with: (LoadedDie of: 10).
+
+	aGame := Game
+		         withBoard: aBoard
+		         withShipNames: aCollectionOfNames
+		         withDice: (Dice with: aCollectionOfDie).
 	
 	self
 		should: [
-		aGame playCard: AccelerationCard by: 'Jose' toTarget: 'all' ]
-		raise: CardExeption
-		withMessage: 'Ship does not have that card'.
-	
+			aGame
+				playCard: NullCard
+				by: 'Juan'
+				toTarget: NullTarget new ]
+		raise: Error
+		withMessage: 'No target has been set'
 ]
 
 { #category : #tests }
@@ -96,33 +124,6 @@ CardPlayabilityTest >> testCannotPlayACardThatHasInvalidTarget [
 		should: [ aGame playCard: SpeedCard by: 'Jose' toTarget: aTarget ]
 		raise: CardExeption
 		withMessage: 'Target is not valid'
-]
-
-{ #category : #tests }
-CardPlayabilityTest >> testTotalSumOfCardsProbabilitiesIs100 [
-
-	| aBoard aCollectionOfNames aCollectionOfDie aTileArray aDeck |
-	aTileArray := OrderedCollection new.
-	2 timesRepeat: [ aTileArray add: NullEffect new ].
-
-	aBoard := Board
-		          withTileEffectCollection: aTileArray
-		          withLengthInUnits: (Parsec withNominalValue: 10)
-		          withAmountOfLaps: 1.
-
-	aCollectionOfNames := OrderedCollection with: 'Jose'.
-	aCollectionOfDie := OrderedCollection with: (LoadedDie of: 10).
-
-
-	self
-		should: [
-			aDeck := Deck withCardProbabilities:
-				         (OrderedCollection with: (ProbabilityAssociation
-						           associate: CancellationCard
-						           withProbability: 50)) ]
-		raise: Error
-		withMessage:
-		'Total card probabilities cannot be diferent from 100%'
 ]
 
 { #category : #tests }
