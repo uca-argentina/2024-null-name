@@ -25,7 +25,7 @@ CardHandler class >> withDeck: aDeck andGame: aGame [
 { #category : #generating }
 CardHandler >> activateCard: aCardToPlay withTarget: aTarget [
 	
-	aCardToPlay activate: self withTarget: aTarget.
+	aCardToPlay activate: self withTarget: aTarget .
 	aCardToPlay class = RedoCard ifFalse: [ lastCardPlayed := aCardToPlay ]
 
 ]

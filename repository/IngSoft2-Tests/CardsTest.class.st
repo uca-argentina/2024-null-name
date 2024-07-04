@@ -17,7 +17,7 @@ CardsTest >> should: anErrorBlock raise: exceptionClass withMessage: anErrorMess
 { #category : #tests }
 CardsTest >> testAShipCannotBeHiredByMoreThanOneShip [
 
-	| aGame aBoard aCollectionOfNames aCollectionOfDie aTileArray collectionOfCards aDeck|
+	| aGame aBoard aCollectionOfNames aCollectionOfDie aTileArray collectionOfCards aDeck aTarget |
 	aTileArray := OrderedCollection new.
 	10 timesRepeat: [ aTileArray add: NullEffect new ].
 
@@ -42,13 +42,15 @@ CardsTest >> testAShipCannotBeHiredByMoreThanOneShip [
 		         withShipNames: aCollectionOfNames
 		         withDice: (Dice with: aCollectionOfDie)
 		         withDeck: aDeck.
-
+	
+	aTarget := ShipTarget withObjective: 'Juan'.
+	
 	aGame playTurn.
-	aGame playCard: MercenaryCard by: 'Jose' toTarget: 'Juan'.
+	aGame playCard: MercenaryCard by: 'Jose' toTarget: aTarget .
 	aGame playTurn.
 
 	self
-		assert: (aGame playCard: MercenaryCard by: 'Pedro' toTarget: 'Juan')
+		assert: (aGame playCard: MercenaryCard by: 'Pedro' toTarget: aTarget)
 		equals: 'Targeted ship is already a mercenary in another coalition'.
 	self assert: (aGame shipCards: 'Pedro') size equals: 2
 ]
@@ -56,7 +58,7 @@ CardsTest >> testAShipCannotBeHiredByMoreThanOneShip [
 { #category : #tests }
 CardsTest >> testWhenACancelationCardIsPlayedDeactivateTargetedCard [
 
-	| aGame aBoard aCollectionOfNames aCollectionOfDie aTileArray collectionOfCards aDeck |
+	| aGame aBoard aCollectionOfNames aCollectionOfDie aTileArray collectionOfCards aDeck aTarget anotherTarget |
 	aTileArray := OrderedCollection new.
 	10 timesRepeat: [ aTileArray add: NullEffect new ].
 
@@ -73,7 +75,7 @@ CardsTest >> testWhenACancelationCardIsPlayedDeactivateTargetedCard [
 		                     with: AccelerationCard
 		                     with: CancellationCard
 		                     with: AccelerationCard.
-		
+
 	aDeck := LoadedDeck withCards: collectionOfCards.
 
 	aGame := Game
@@ -82,12 +84,14 @@ CardsTest >> testWhenACancelationCardIsPlayedDeactivateTargetedCard [
 		         withDice: (Dice with: aCollectionOfDie)
 		         withDeck: aDeck.
 
+	aTarget := CardTarget withObjective:
+		           (AccelerationCard withHolder: 'Jose').
+		
+	anotherTarget := AllTarget new.
+	
 	aGame playTurn.
-	aGame playCard: AccelerationCard by: 'Jose' toTarget: 'all'.
-	aGame
-		playCard: CancellationCard
-		by: 'Juan'
-		toTarget: (AccelerationCard withHolder: 'Jose').
+	aGame playCard: AccelerationCard by: 'Jose' toTarget: anotherTarget.
+	aGame playCard: CancellationCard by: 'Juan' toTarget: aTarget.
 	aGame playTurn.
 
 	self assert: (aGame allShipsPosition at: 'Jose') first equals: 5
@@ -96,7 +100,7 @@ CardsTest >> testWhenACancelationCardIsPlayedDeactivateTargetedCard [
 { #category : #tests }
 CardsTest >> testWhenACancelationCardIsPlayedItCannotTargetANonexistentCard [
 
-	| aGame aBoard aCollectionOfNames aCollectionOfDie aTileArray collectionOfCards aDeck |
+	| aGame aBoard aCollectionOfNames aCollectionOfDie aTileArray collectionOfCards aDeck aTarget anotherTarget |
 	aTileArray := OrderedCollection new.
 	10 timesRepeat: [ aTileArray add: NullEffect new ].
 
@@ -108,32 +112,38 @@ CardsTest >> testWhenACancelationCardIsPlayedItCannotTargetANonexistentCard [
 	aCollectionOfNames := OrderedCollection with: 'Juan' with: 'Jose'.
 	aCollectionOfDie := OrderedCollection with:
 		                    (SequenceDie withSequence: #( 5 4 )).
-	
+
 	collectionOfCards := OrderedCollection
 		                     with: CancellationCard
 		                     with: AccelerationCard
 		                     with: CancellationCard
 		                     with: AccelerationCard.
 	aDeck := LoadedDeck withCards: collectionOfCards.
-	
+
 	aGame := Game
 		         withBoard: aBoard
 		         withShipNames: aCollectionOfNames
 		         withDice: (Dice with: aCollectionOfDie)
 		         withDeck: aDeck.
 
+	aTarget := CardTarget withObjective:
+		           (AccelerationCard withHolder: 'Jose').
+
+	anotherTarget := AllTarget new.
+
+
 	aGame playTurn.
-	aGame playCard: AccelerationCard by: 'Jose' toTarget:  'all'.
-	aGame playCard: CancellationCard by: 'Juan' toTarget: (AccelerationCard withHolder: 'Jose').
+	aGame playCard: AccelerationCard by: 'Jose' toTarget: anotherTarget.
+	aGame playCard: CancellationCard by: 'Juan' toTarget: aTarget.
 	aGame playTurn.
-	
+
 	self assert: (aGame allShipsPosition at: 'Jose') first equals: 5
 ]
 
 { #category : #tests }
 CardsTest >> testWhenApplyingRedoCardLastCardIsPlayedAgain [
 
-	| aGame aBoard aCollectionOfNames aCollectionOfDie aTileArray collectionOfCards aDeck |
+	| aGame aBoard aCollectionOfNames aCollectionOfDie aTileArray collectionOfCards aDeck aTarget anotherTarget |
 	aTileArray := OrderedCollection new.
 	15 timesRepeat: [ aTileArray add: NullEffect new ].
 
@@ -159,11 +169,14 @@ CardsTest >> testWhenApplyingRedoCardLastCardIsPlayedAgain [
 		         withDice: (Dice with: aCollectionOfDie)
 		         withDeck: aDeck.
 
+	aTarget := ShipTarget withObjective: 'Juan'.
+	anotherTarget := ShipTarget withObjective: 'Jose'.
+
 	aGame playTurn.
 	aGame playTurn.
-	aGame playCard: SpeedCard by: 'Juan' toTarget: 'Juan'.
+	aGame playCard: SpeedCard by: 'Juan' toTarget: aTarget.
 	aGame playTurn.
-	aGame playCard: RedoCard by: 'Jose' toTarget: 'Jose'.
+	aGame playCard: RedoCard by: 'Jose' toTarget: anotherTarget.
 	aGame playTurn.
 
 	self
@@ -174,7 +187,7 @@ CardsTest >> testWhenApplyingRedoCardLastCardIsPlayedAgain [
 { #category : #tests }
 CardsTest >> testWhenApplyingRedoCardMultipleTimesApplyLastNonRedoCard [
 
-	| aGame aBoard aCollectionOfNames aCollectionOfDie aTileArray collectionOfCards aDeck |
+	| aGame aBoard aCollectionOfNames aCollectionOfDie aTileArray collectionOfCards aDeck aTarget anotherTarget |
 	aTileArray := OrderedCollection new.
 	15 timesRepeat: [ aTileArray add: NullEffect new ].
 
@@ -198,13 +211,17 @@ CardsTest >> testWhenApplyingRedoCardMultipleTimesApplyLastNonRedoCard [
 		         withShipNames: aCollectionOfNames
 		         withDice: (Dice with: aCollectionOfDie)
 		         withDeck: aDeck.
-
+	
+	aTarget := ShipTarget withObjective: 'Juan'.
+	anotherTarget := ShipTarget withObjective: 'Jose'.
+	
+	
 	aGame playTurn.
 	aGame playTurn.
-	aGame playCard: SpeedCard by: 'Juan' toTarget: 'Juan'.
-	aGame playCard: RedoCard by: 'Juan' toTarget: 'Juan'.
+	aGame playCard: SpeedCard by: 'Juan' toTarget: aTarget.
+	aGame playCard: RedoCard by: 'Juan' toTarget: aTarget.
 	aGame playTurn.
-	aGame playCard: RedoCard by: 'Jose' toTarget: 'Jose'.
+	aGame playCard: RedoCard by: 'Jose' toTarget: anotherTarget.
 	aGame playTurn.
 
 	self
@@ -215,7 +232,7 @@ CardsTest >> testWhenApplyingRedoCardMultipleTimesApplyLastNonRedoCard [
 { #category : #tests }
 CardsTest >> testWhenApplyingRepeatCardShipDoesNotMoveOutOfBounds [
 
-	| aGame aBoard aCollectionOfNames aCollectionOfDie aTileArray collectionOfCards aDeck |
+	| aGame aBoard aCollectionOfNames aCollectionOfDie aTileArray collectionOfCards aDeck aTarget |
 	aTileArray := OrderedCollection new.
 	10 timesRepeat: [ aTileArray add: NullEffect new ].
 
@@ -238,9 +255,11 @@ CardsTest >> testWhenApplyingRepeatCardShipDoesNotMoveOutOfBounds [
 		         withShipNames: aCollectionOfNames
 		         withDice: (Dice with: aCollectionOfDie)
 		         withDeck: aDeck.
-
+	
+	aTarget := ShipTarget withObjective: 'Juan'.
+	
 	aGame playTurn.
-	aGame playCard: RepeatCard by: 'Jose' toTarget: 'Juan'.
+	aGame playCard: RepeatCard by: 'Jose' toTarget: aTarget .
 
 	self
 		assert: (aGame allShipsPosition at: 'Juan')
@@ -250,7 +269,7 @@ CardsTest >> testWhenApplyingRepeatCardShipDoesNotMoveOutOfBounds [
 { #category : #tests }
 CardsTest >> testWhenMercenaryCardIsCancelledShipsCanBattleAgain [
 
-	| aGame aBoard aCollectionOfNames aCollectionOfDie aTileArray collectionOfCards aDeck |
+	| aGame aBoard aCollectionOfNames aCollectionOfDie aTileArray collectionOfCards aDeck aTarget anotherTarget |
 	aTileArray := OrderedCollection new.
 	10 timesRepeat: [ aTileArray add: NullEffect new ].
 
@@ -276,12 +295,17 @@ CardsTest >> testWhenMercenaryCardIsCancelledShipsCanBattleAgain [
 		         withDice: (Dice with: aCollectionOfDie)
 		         withDeck: aDeck.
 
+
+	aTarget := ShipTarget withObjective: 'Juan'.
+	anotherTarget := CardTarget withObjective:
+		                 (MercenaryCard withHolder: 'Jose').
+
 	aGame playTurn.
-	aGame playCard: MercenaryCard by: 'Jose' toTarget: 'Juan'.
+	aGame playCard: MercenaryCard by: 'Jose' toTarget: aTarget.
 	aGame
 		playCard: CancellationCard
 		by: 'Juan'
-		toTarget: (MercenaryCard withHolder: 'Jose').
+		toTarget: (anotherTarget).
 	aGame playTurn.
 
 	self assert: (aGame allShipAmountOfShields at: 'Juan') equals: 3.
@@ -291,7 +315,7 @@ CardsTest >> testWhenMercenaryCardIsCancelledShipsCanBattleAgain [
 { #category : #tests }
 CardsTest >> testWhenMercenaryCardIsPlayedAlliedShipsDontBattle [
 
-	| aGame aBoard aCollectionOfNames aCollectionOfDie aTileArray aPosition collectionOfCards aDeck |
+	| aGame aBoard aCollectionOfNames aCollectionOfDie aTileArray aPosition collectionOfCards aDeck aTarget |
 	aTileArray := OrderedCollection new.
 	10 timesRepeat: [ aTileArray add: NullEffect new ].
 
@@ -313,9 +337,10 @@ CardsTest >> testWhenMercenaryCardIsPlayedAlliedShipsDontBattle [
 		         withShipNames: aCollectionOfNames
 		         withDice: (Dice with: aCollectionOfDie)
 		         withDeck: aDeck.
-
+	
+	aTarget := ShipTarget withObjective: 'Juan'	.
 	aGame playTurn.
-	aGame playCard: MercenaryCard by: 'Jose' toTarget: 'Juan'.
+	aGame playCard: MercenaryCard by: 'Jose' toTarget: aTarget.
 	aGame playTurn.
 
 	aPosition := #( 6 1 ) asOrderedCollection.

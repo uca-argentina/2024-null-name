@@ -4,7 +4,7 @@ Class {
 	#category : #'IngSoft2-Model'
 }
 
-{ #category : #comparing }
+{ #category : #modifying }
 AccelerationCard >> activate: aCardHandler withTarget: aShipName [
 
 	aCardHandler addToActiveCards: self.

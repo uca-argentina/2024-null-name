@@ -7,7 +7,7 @@ Class {
 { #category : #tests }
 CardPlayabilityTest >> testAnPermanentCardCanOnlyBePlayedDuringAShipsTurnInAGame [
 
-	| aGame aBoard aCollectionOfNames aCollectionOfDie aTileArray collectionOfCards aDeck |
+	| aGame aBoard aCollectionOfNames aCollectionOfDie aTileArray collectionOfCards aDeck aTarget |
 	aTileArray := OrderedCollection new.
 	2 timesRepeat: [ aTileArray add: NullEffect new ].
 
@@ -27,10 +27,12 @@ CardPlayabilityTest >> testAnPermanentCardCanOnlyBePlayedDuringAShipsTurnInAGame
 		         withShipNames: aCollectionOfNames
 		         withDice: (Dice with: aCollectionOfDie)
 		         withDeck: aDeck.
-
+	
+	aTarget := AllTarget new.
+	
 	self
 		should: [
-		aGame playCard: AccelerationCard by: 'Jose' toTarget: 'all' ]
+		aGame playCard: AccelerationCard by: 'Jose' toTarget: aTarget ]
 		raise: CardExeption
 		withMessage: 'Ship cannot throw this card as its not his turn'
 ]
@@ -65,7 +67,7 @@ CardPlayabilityTest >> testCannotPlayACardThatDoesNotBelongToAShip [
 { #category : #tests }
 CardPlayabilityTest >> testCannotPlayACardThatHasInvalidTarget [
 
-	| aGame aBoard aCollectionOfNames aCollectionOfDie aTileArray collectionOfCards aDeck |
+	| aGame aBoard aCollectionOfNames aCollectionOfDie aTileArray collectionOfCards aDeck aTarget |
 	aTileArray := OrderedCollection new.
 	2 timesRepeat: [ aTileArray add: NullEffect new ].
 
@@ -87,9 +89,11 @@ CardPlayabilityTest >> testCannotPlayACardThatHasInvalidTarget [
 		         withShipNames: aCollectionOfNames
 		         withDice: (Dice with: aCollectionOfDie)
 		         withDeck: aDeck.
-
+	
+	aTarget := ShipTarget withObjective: 'Juan'.
+	
 	self
-		should: [ aGame playCard: SpeedCard by: 'Jose' toTarget: 'Juan' ]
+		should: [ aGame playCard: SpeedCard by: 'Jose' toTarget: aTarget ]
 		raise: CardExeption
 		withMessage: 'Target is not valid'
 ]
@@ -167,7 +171,7 @@ CardPlayabilityTest >> testWhenGameIsStartedShipsHave2Cards [
 { #category : #tests }
 CardPlayabilityTest >> testWhenPlayingACardShipCardsDeckSizeChanges [
 
-	| aGame aBoard aCollectionOfNames aCollectionOfDie aTileArray |
+	| aGame aBoard aCollectionOfNames aCollectionOfDie aTileArray aTarget |
 	aTileArray := OrderedCollection new.
 	2 timesRepeat: [ aTileArray add: NullEffect new ].
 
@@ -182,8 +186,9 @@ CardPlayabilityTest >> testWhenPlayingACardShipCardsDeckSizeChanges [
 		         withBoard: aBoard
 		         withShipNames: aCollectionOfNames
 		         withDice: (Dice with: aCollectionOfDie).
-
-	aGame playCard: NullCard by: 'Juan'  toTarget:  'all'.
+	
+	aTarget := ShipTarget withObjective: 'Juan'.
+	aGame playCard: NullCard by: 'Juan'  toTarget:  aTarget.
 
 	self assert: (aGame shipCards: 'Juan') size equals: 1.
 	self assert: (aGame shipCards: 'Jose') size equals: 2

@@ -7,7 +7,7 @@ Class {
 	#category : #'IngSoft2-Model'
 }
 
-{ #category : #comparing }
+{ #category : #modifying }
 NullCard >> activate: aCardHandler withTarget: aTarget [ 
 
 	^ self

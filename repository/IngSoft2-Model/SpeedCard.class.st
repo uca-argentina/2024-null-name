@@ -7,10 +7,10 @@ Class {
 	#category : #'IngSoft2-Model'
 }
 
-{ #category : #comparing }
+{ #category : #modifying }
 SpeedCard >> activate: aCardHandler withTarget: aTarget [
 
-	aCardHandler addToActiveCards: (self withTarget: aTarget)
+	aCardHandler addToActiveCards: (self withTarget: aTarget objective)
 ]
 
 { #category : #comparing }

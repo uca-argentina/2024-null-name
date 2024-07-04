@@ -4,10 +4,10 @@ Class {
 	#category : #'IngSoft2-Model'
 }
 
-{ #category : #comparing }
+{ #category : #modifying }
 CancellationCard >> activate: aCardHandler withTarget: aTarget [
 
-	aCardHandler removeFromActiveCard: aTarget.
+	aCardHandler removeFromActiveCard: aTarget objective .
 ]
 
 { #category : #comparing }

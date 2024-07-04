@@ -4,7 +4,7 @@ Class {
 	#category : #'IngSoft2-Model'
 }
 
-{ #category : #comparing }
+{ #category : #modifying }
 RepeatCard >> activate: aCardHandler withTarget: aTarget [
 
 	aCardHandler applyLastEffectOn: aTarget

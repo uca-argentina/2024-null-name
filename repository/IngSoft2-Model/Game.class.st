@@ -118,7 +118,7 @@ Game >> applyEffectOnOneShip: anEffect triggeredBy: aShip [
 { #category : #generating }
 Game >> applyLastEffectOn: aTarget [
 	| aShip |
-	aShip := self shipWithName: aTarget.
+	aShip := self shipWithName: aTarget objective .
 	lastEffect applyOn: self activatedBy: aShip
 ]
 
@@ -253,9 +253,8 @@ Game >> skipTurn [
 { #category : #validating }
 Game >> targetIsValid: aTarget [
 
-	((gameShips anySatisfy: [ :ship | ship shipName = aTarget ]) or: [
-		 (gameCardHandler checkTarget: aTarget) or: [ aTarget = 'all' ] ])
-		ifFalse: [ CardExeption signal: 'Target is not valid' ]
+	(aTarget isValidWith: gameShips and: gameCardHandler) ifFalse: [
+		CardExeption signal: 'Target is not valid' ]
 ]
 
 { #category : #accessing }

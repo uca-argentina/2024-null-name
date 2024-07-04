@@ -1,3 +1,6 @@
+"
+s
+"
 Class {
 	#name : #Deck,
 	#superclass : #Object,

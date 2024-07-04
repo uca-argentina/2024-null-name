@@ -4,7 +4,7 @@ Class {
 	#category : #'IngSoft2-Model'
 }
 
-{ #category : #comparing }
+{ #category : #modifying }
 RedoCard >> activate: aCardHandler withTarget: aShipName [
 
 	aCardHandler
