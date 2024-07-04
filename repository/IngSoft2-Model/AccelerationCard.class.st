@@ -7,7 +7,7 @@ Class {
 { #category : #modifying }
 AccelerationCard >> activate: aCardHandler withTarget: aShipName [
 
-	aCardHandler addToActiveCards: self.
+	aCardHandler addToActiveCards: self
 ]
 
 { #category : #comparing }
