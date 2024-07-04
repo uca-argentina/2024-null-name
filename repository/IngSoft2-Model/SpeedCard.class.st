@@ -1,16 +1,14 @@
 Class {
 	#name : #SpeedCard,
 	#superclass : #Card,
-	#instVars : [
-		'target'
-	],
 	#category : #'IngSoft2-Model'
 }
 
 { #category : #modifying }
 SpeedCard >> activate: aCardHandler withTarget: aTarget [
 
-	aCardHandler addToActiveCards: (self withTarget: aTarget objective)
+	target := aTarget.
+	aCardHandler addToActiveCards: self
 ]
 
 { #category : #comparing }
@@ -28,11 +26,5 @@ SpeedCard >> canPlayRightNow: theShipInTurn [
 { #category : #comparing }
 SpeedCard >> shouldApplyOn: aTarget [
 
-	^ target = aTarget
-]
-
-{ #category : #comparing }
-SpeedCard >> withTarget: aTarget [
-
-	target := aTarget
+	^ target objective  = aTarget
 ]

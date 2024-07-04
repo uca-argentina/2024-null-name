@@ -162,7 +162,7 @@ Game >> isFinished [
 Game >> playCard: aCard by: aShipName toTarget: aTarget [
 
 	| aCardToPlay |
-	aCardToPlay := aCard withHolder: aShipName.
+	aCardToPlay := aCard withHolder: aShipName andTarget: aTarget.
 
 	gameCardHandler validateCard: aCardToPlay.
 	self targetIsValid: aTarget.
@@ -173,7 +173,7 @@ Game >> playCard: aCard by: aShipName toTarget: aTarget [
 	[ gameCardHandler activateCard: aCardToPlay withTarget: aTarget ]
 		on: CardExeption
 		do: [ :ex | ^ ex messageText ].
-
+		
 	gameCardHandler removeCardFromShipDeck: aCardToPlay
 ]
 

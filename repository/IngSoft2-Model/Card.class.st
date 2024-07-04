@@ -5,15 +5,22 @@ Class {
 	#name : #Card,
 	#superclass : #Object,
 	#instVars : [
-		'holder'
+		'holder',
+		'target'
 	],
 	#category : #'IngSoft2-Model'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #'class initialization' }
 Card class >> withHolder: aShipName [
 
-	^ self new initalizeWithHolder: aShipName
+	^ self new initalizeWithHolder: aShipName withTarget: NullTarget new
+]
+
+{ #category : #'class initialization' }
+Card class >> withHolder: aShipName andTarget: aTarget [
+
+	^ self new initalizeWithHolder: aShipName withTarget: aTarget
 ]
 
 { #category : #comparing }
@@ -53,9 +60,10 @@ Card >> holder [
 ]
 
 { #category : #initialization }
-Card >> initalizeWithHolder: aShipName [
+Card >> initalizeWithHolder: aShipName withTarget: aTarget [
 
-	holder := aShipName
+	holder := aShipName.
+	target := aTarget.
 ]
 
 { #category : #comparing }

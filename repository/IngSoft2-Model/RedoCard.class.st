@@ -6,7 +6,8 @@ Class {
 
 { #category : #modifying }
 RedoCard >> activate: aCardHandler withTarget: aShipName [
-
+	
+	target:= aShipName.
 	aCardHandler
 		activateCard: (aCardHandler lastCardPlayed class withHolder: holder)
 		withTarget: aShipName

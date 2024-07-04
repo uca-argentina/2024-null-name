@@ -7,6 +7,7 @@ Class {
 { #category : #modifying }
 RepeatCard >> activate: aCardHandler withTarget: aTarget [
 
+	target:= aTarget.
 	aCardHandler applyLastEffectOn: aTarget
 ]
 

@@ -1,17 +1,15 @@
 Class {
 	#name : #MercenaryCard,
 	#superclass : #Card,
-	#instVars : [
-		'target'
-	],
 	#category : #'IngSoft2-Model'
 }
 
 { #category : #modifying }
 MercenaryCard >> activate: aCardHandler withTarget: aTarget [
-	
+
+	target := aTarget.
 	aCardHandler verifyCoalition: aTarget objective.
-	aCardHandler addToActiveCards: (self withTarget: aTarget objective)
+	aCardHandler addToActiveCards: self
 ]
 
 { #category : #comparing }
@@ -23,11 +21,5 @@ MercenaryCard >> canPlayRightNow: theShipInTurn [
 { #category : #comparing }
 MercenaryCard >> target [
 
-	^ target
-]
-
-{ #category : #comparing }
-MercenaryCard >> withTarget: aTarget [
-
-	target := aTarget.
+	^ target objective
 ]

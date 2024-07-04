@@ -8,8 +8,9 @@ Class {
 }
 
 { #category : #modifying }
-NullCard >> activate: aCardHandler withTarget: aTarget [ 
+NullCard >> activate: aCardHandler withTarget: aTarget [
 
+	target := aTarget.
 	^ self
 ]
 
