@@ -26,9 +26,3 @@ MercenaryCard >> deactivate: aCardHandler [
 
 	aCardHandler removeCoalitionOf: holder and: target
 ]
-
-{ #category : #comparing }
-MercenaryCard >> target [
-
-	^ target objective
-]
