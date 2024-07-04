@@ -196,11 +196,11 @@ Game >> playTurn [
 	self adjustShipPosition: theShipInCurrentTurn.
 	lastEffect := gameBoard effectInPosition:
 		              theShipInCurrentTurn position.
-	
+
 	gameBoard applyTileEffectOn: self triggeredBy: theShipInCurrentTurn.
 	shipBattleHandler
 		checkShipBattle: theShipInCurrentTurn
-		withCards: gameCardHandler activeMercenaryCards.
+		withCardHandler: gameCardHandler.
 	gameTurnHandler checkForShipsWithNoShield.
 	gameTurnHandler nextTurn.
 	theShipInCurrentTurn := gameTurnHandler currentTurnShip
@@ -227,8 +227,9 @@ Game >> shipRankings [
 ]
 
 { #category : #accessing }
-Game >> shipWithName: aShipName [ 
-	^ gameShips detect: [ :ship | ship shipName = aShipName ].
+Game >> shipWithName: aShipName [
+
+	^ gameShips detect: [ :ship | ship shipName = aShipName ]
 ]
 
 { #category : #modifying }

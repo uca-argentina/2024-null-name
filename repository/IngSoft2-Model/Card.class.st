@@ -29,7 +29,7 @@ Card >> = aCard [
 	^ self hash = aCard hash and: self class = aCard class
 ]
 
-{ #category : #modifying }
+{ #category : #event }
 Card >> activate: aCardHandler withTarget: aShipName [
 
 	^ self subclassResponsibility
@@ -45,6 +45,12 @@ Card >> applyMovement [
 Card >> canPlayRightNow: theShipInTurn [
 
 	self subclassResponsibility
+]
+
+{ #category : #event }
+Card >> deactivate: aCardHandler [
+
+	^ self
 ]
 
 { #category : #comparing }

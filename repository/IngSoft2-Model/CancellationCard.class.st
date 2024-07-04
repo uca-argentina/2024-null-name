@@ -4,10 +4,12 @@ Class {
 	#category : #'IngSoft2-Model'
 }
 
-{ #category : #modifying }
-CancellationCard >> activate: aCardHandler withTarget: aTarget [
+{ #category : #event }
+CancellationCard >> activate: aCardHandler withTarget: aCard [
 
-	target := aTarget.
+	target := aCard.
+	
+	aCardHandler deactivate: aCard.
 	aCardHandler removeFromActiveCard: target objective
 ]
 

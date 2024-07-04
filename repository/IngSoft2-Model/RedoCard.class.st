@@ -4,7 +4,7 @@ Class {
 	#category : #'IngSoft2-Model'
 }
 
-{ #category : #modifying }
+{ #category : #event }
 RedoCard >> activate: aCardHandler withTarget: aShipName [
 	
 	target:= aShipName.

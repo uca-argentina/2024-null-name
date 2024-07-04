@@ -4,7 +4,7 @@ Class {
 	#category : #'IngSoft2-Model'
 }
 
-{ #category : #modifying }
+{ #category : #event }
 RepeatCard >> activate: aCardHandler withTarget: aTarget [
 
 	target:= aTarget.

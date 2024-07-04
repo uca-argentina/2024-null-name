@@ -9,7 +9,8 @@ Class {
 		'game',
 		'lastCardPlayed',
 		'inPlayDeck',
-		'gameDeck'
+		'gameDeck',
+		'coalitions'
 	],
 	#category : #'IngSoft2-Model'
 }
@@ -36,6 +37,12 @@ CardHandler >> activeMercenaryCards [
 	^ activeCards select: [ :card | card class = MercenaryCard ]
 ]
 
+{ #category : #accessing }
+CardHandler >> addCoalition: aCoalition [
+
+	coalitions add: aCoalition
+]
+
 { #category : #comparing }
 CardHandler >> addToActiveCards: aCard [
 
@@ -54,6 +61,13 @@ CardHandler >> checkTarget: aTarget [
 	^ (activeCards select: [ :card | aTarget = card ]) isNotEmpty
 ]
 
+{ #category : #generating }
+CardHandler >> deactivate: aTarget [
+
+	aTarget objective deactivate: self.
+
+]
+
 { #category : #modifying }
 CardHandler >> giveCardTo: aShipName [
 
@@ -68,18 +82,33 @@ CardHandler >> inPlayDeck [
 
 { #category : #initialization }
 CardHandler >> initalizeWithDeck: aDeck andGame: aGame [
-	
+
 	gameDeck := aDeck.
 	inPlayDeck := OrderedCollection new.
 	activeCards := OrderedCollection new.
 	lastCardPlayed := NullCard new.
 	game := aGame.
+	coalitions := OrderedCollection new
 ]
 
 { #category : #accessing }
 CardHandler >> lastCardPlayed [
 
 	^ lastCardPlayed
+]
+
+{ #category : #comparing }
+CardHandler >> mercenaryOf: aShip [
+
+	| mercenaryCollection |
+	mercenaryCollection := OrderedCollection new.
+
+	mercenaryCollection := (coalitions select: [ :coalition |
+		                        coalition hasLeader: aShip shipName ])
+		                       collect: [ :coalition | coalition mercenary ].
+	mercenaryCollection add: aShip shipName.
+
+	^ mercenaryCollection
 ]
 
 { #category : #modifying }
@@ -96,6 +125,15 @@ CardHandler >> removeCardFromShipDeck: aCard [
 	inPlayDeck
 		remove: aCard
 		ifAbsent: [ Error signal: 'Card was not found in Ship Deck' ]
+]
+
+{ #category : #comparing }
+CardHandler >> removeCoalitionOf: aLeader and: aMercenary [
+
+	coalitions removeAllSuchThat: [ :coalition |
+		coalition = (ShipCoalition
+			withLeader: aLeader
+			andMercenary: aMercenary objective) ]
 ]
 
 { #category : #comparing }

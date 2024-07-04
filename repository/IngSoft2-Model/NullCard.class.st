@@ -7,7 +7,7 @@ Class {
 	#category : #'IngSoft2-Model'
 }
 
-{ #category : #modifying }
+{ #category : #event }
 NullCard >> activate: aCardHandler withTarget: aTarget [
 
 	target := aTarget.

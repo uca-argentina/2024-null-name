@@ -324,15 +324,13 @@ CardsTest >> testWhenMercenaryCardIsCancelledShipsCanBattleAgain [
 
 
 	aTarget := ShipTarget withObjective: 'Juan'.
-	anotherTarget := CardTarget withObjective:
-		                 (MercenaryCard withHolder: 'Jose').
+	anotherTarget := CardTarget withObjective: (MercenaryCard
+			                  withHolder: 'Jose'
+			                  andTarget: (ShipTarget withObjective: 'Juan')).
 
 	aGame playTurn.
 	aGame playCard: MercenaryCard by: 'Jose' toTarget: aTarget.
-	aGame
-		playCard: CancellationCard
-		by: 'Juan'
-		toTarget: (anotherTarget).
+	aGame playCard: CancellationCard by: 'Juan' toTarget: anotherTarget.
 	aGame playTurn.
 
 	self assert: (aGame allShipAmountOfShields at: 'Juan') equals: 3.

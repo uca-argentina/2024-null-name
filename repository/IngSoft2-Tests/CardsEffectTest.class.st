@@ -122,10 +122,12 @@ CardsEffectTest >> testWhenShipWithMercenariesBattleAllOfThenThrowTheDice [
 		          withTileEffectCollection: aTileArray
 		          withLengthInUnits: (Parsec withNominalValue: 10)
 		          withAmountOfLaps: 1.
+		
 	aCollectionOfNames := OrderedCollection
 		                      with: 'Juan'
 		                      with: 'Jose'
 		                      with: 'Pedro'.
+		
 	aCollectionOfDie := OrderedCollection with:
 		                    (SequenceDie withSequence: #( 7 4 4 )).
 	
