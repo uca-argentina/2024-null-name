@@ -20,8 +20,9 @@ Target >> initializeWithObjective: anObjective [
 ]
 
 { #category : #testing }
-Target >> isValidWith: aCollection and: aCardHandler [ 
-	self subclassResponsibility .
+Target >> isValidWith: aCollection and: aCardHandler [
+
+	self subclassResponsibility
 ]
 
 { #category : #testing }

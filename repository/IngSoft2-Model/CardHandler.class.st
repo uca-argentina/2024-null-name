@@ -26,15 +26,9 @@ CardHandler class >> withDeck: aDeck andGame: aGame [
 { #category : #generating }
 CardHandler >> activateCard: aCardToPlay withTarget: aTarget [
 	
-	aCardToPlay activate: self withTarget: aTarget .
+	aCardToPlay activate: self withTarget: aTarget.
 	aCardToPlay class = RedoCard ifFalse: [ lastCardPlayed := aCardToPlay ]
 
-]
-
-{ #category : #comparing }
-CardHandler >> activeMercenaryCards [
-
-	^ activeCards select: [ :card | card class = MercenaryCard ]
 ]
 
 { #category : #accessing }
@@ -58,7 +52,7 @@ CardHandler >> applyLastEffectOn: aTarget [
 { #category : #'argument validation' }
 CardHandler >> checkTarget: aTarget [
 
-	^ (activeCards select: [ :card | aTarget = card ]) isNotEmpty
+	^ activeCards anySatisfy: [ :card | aTarget = card ]
 ]
 
 { #category : #generating }
@@ -106,8 +100,8 @@ CardHandler >> mercenaryOf: aShip [
 	mercenaryCollection := (coalitions select: [ :coalition |
 		                        coalition hasLeader: aShip shipName ])
 		                       collect: [ :coalition | coalition mercenary ].
+	
 	mercenaryCollection add: aShip shipName.
-
 	^ mercenaryCollection
 ]
 
@@ -152,15 +146,16 @@ CardHandler >> startingCards: aShipName [
 { #category : #comparing }
 CardHandler >> validateCard: aCard [
 
-	(inPlayDeck select: [ :card | card = aCard ]) isEmpty ifTrue: [
-		CardExeption signal: 'Ship does not have that card' ]
+	inPlayDeck
+		detect: [ :card | card = aCard ]
+		ifNone: [ CardExeption signal: 'Ship does not have that card' ]
 ]
 
 { #category : #comparing }
 CardHandler >> verifyCoalition: mercenaryShip [
 
-	(self activeMercenaryCards anySatisfy: [ :card |
-		 card target = mercenaryShip ]) ifTrue: [
+	(coalitions anySatisfy: [ :coalition |
+		 coalition mercenary = mercenaryShip ]) ifTrue: [
 		CardExeption signal:
 			'Targeted ship is already a mercenary in another coalition' ]
 ]
