@@ -9,8 +9,7 @@ Class {
 		'currentPosition',
 		'playerName',
 		'numberOfShields',
-		'currentLap',
-		'maxShields'
+		'currentLap'
 	],
 	#category : #'IngSoft2-Model'
 }
@@ -46,7 +45,7 @@ Ship >> amountOfShieldsActive [
 { #category : #modifying }
 Ship >> healFullShields [
 
-	numberOfShields := maxShields
+	numberOfShields := self maxShields
 ]
 
 { #category : #accessing }
@@ -60,8 +59,7 @@ Ship >> initializeInTile: aPosition withName: aName [
 
 	currentPosition := aPosition.
 	playerName := aName.
-	maxShields := 3.
-	numberOfShields := maxShields.
+	numberOfShields := self maxShields.
 	currentLap := 1
 ]
 
@@ -77,10 +75,16 @@ Ship >> loseOneShield [
 	numberOfShields := numberOfShields - 1 max: 0.
 ]
 
+{ #category : #initialization }
+Ship >> maxShields [
+
+	^ 3
+]
+
 { #category : #modifying }
 Ship >> modifyLap: aLapAmount [
 
-	currentLap := currentLap + aLapAmount max: 1
+	currentLap := currentLap + aLapAmount
 ]
 
 { #category : #modifying }

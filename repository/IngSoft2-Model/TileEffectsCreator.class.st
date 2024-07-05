@@ -79,7 +79,8 @@ TileEffectsCreator >> generateLoadedBoardWithAmountOfTiles: anAmountOfTiles with
 			              ifFalse: [ tileNumber + 1 ].
 
 		anEffect := (probabilityEffects detect: [ :aProbabilityEffect |
-			             aProbabilityEffect rangeIncludes: tileNumber ]) associatedObject.
+			             aProbabilityEffect rangeIncludes: tileNumber ])
+			            associatedObject.
 
 		tileEffectArray add: (anEffect new generateParameters: self) ].
 
