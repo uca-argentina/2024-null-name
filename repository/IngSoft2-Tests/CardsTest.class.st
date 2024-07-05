@@ -114,7 +114,7 @@ CardsTest >> testWhenACancelationCardIsPlayedDeactivateTargetedCard [
 	aTarget := CardTarget withObjective:
 		           (AccelerationCard withHolder: 'Jose').
 		
-	anotherTarget := AllTarget new.
+	anotherTarget := AllShipsTarget new.
 	
 	aGame playTurn.
 	aGame playCard: AccelerationCard by: 'Jose' toTarget: anotherTarget.
@@ -156,7 +156,7 @@ CardsTest >> testWhenACancelationCardIsPlayedItCannotTargetANonexistentCard [
 	aTarget := CardTarget withObjective:
 		           (AccelerationCard withHolder: 'Jose').
 
-	anotherTarget := AllTarget new.
+	anotherTarget := AllShipsTarget new.
 
 
 	aGame playTurn.

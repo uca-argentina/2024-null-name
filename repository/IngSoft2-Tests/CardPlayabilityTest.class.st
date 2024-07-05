@@ -28,7 +28,7 @@ CardPlayabilityTest >> testAnPermanentCardCanOnlyBePlayedDuringAShipsTurnInAGame
 		         withDice: (Dice with: aCollectionOfDie)
 		         withDeck: aDeck.
 	
-	aTarget := AllTarget new.
+	aTarget := AllShipsTarget new.
 	
 	self
 		should: [
@@ -58,7 +58,7 @@ CardPlayabilityTest >> testCannotPlayACardThatDoesNotBelongToAShip [
 
 	self
 		should: [
-		aGame playCard: AccelerationCard by: 'Jose' toTarget: AllTarget new ]
+		aGame playCard: AccelerationCard by: 'Jose' toTarget: AllShipsTarget new ]
 		raise: CardExeption
 		withMessage: 'Ship does not have that card'
 ]

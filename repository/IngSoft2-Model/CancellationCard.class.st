@@ -11,6 +11,7 @@ CancellationCard >> activate: aCardHandler withTarget: aCard [
 	
 	aCardHandler deactivate: aCard.
 	aCardHandler removeFromActiveCard: target objective.
+	
 	aCardHandler changeLastCardTo: self.
 ]
 

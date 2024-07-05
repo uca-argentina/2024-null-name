@@ -110,15 +110,15 @@ Game >> applyEffectOnAllShipsButOne: anEffect triggerByShip: aShip [
 { #category : #'as yet unclassified' }
 Game >> applyEffectOnOneShip: anEffect triggeredBy: aShip [
 
-	
 	anEffect affectAShip: aShip.
 	gameBoard adjustShipPosition: aShip
 ]
 
 { #category : #generating }
 Game >> applyLastEffectOn: aTarget [
+
 	| aShip |
-	aShip := self shipWithName: aTarget objective .
+	aShip := self shipWithName: aTarget objective.
 	lastEffect applyOn: self activatedBy: aShip
 ]
 

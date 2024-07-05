@@ -38,12 +38,12 @@ Deck >> cardAtRandom [
 ]
 
 { #category : #initialization }
-Deck >> initalizeWithCards: aCollectionOfCards [
+Deck >> initalizeWithCards: aCollectionOfProbabilities [
 	
 	probabilityManager := ProbabilityManager new.
 
 	probabilityCards := probabilityManager
 		                    transformIntoProbabilityRanges:
-		                    aCollectionOfCards.
+		                    aCollectionOfProbabilities.
 
 ]

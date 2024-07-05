@@ -66,7 +66,7 @@ CardsEffectTest >> testWhenOneAccelerationCardIsPlayedShipsMoveOneExtraTile [
 		         withDice: (Dice with: aCollectionOfDie)
 		         withDeck: aDeck.
 	
-	aTarget := AllTarget new.
+	aTarget := AllShipsTarget new.
 	
 	aGame playCard: AccelerationCard by: 'Juan' toTarget:  aTarget.
 	aGame playTurn.
