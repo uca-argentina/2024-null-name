@@ -1,17 +1,19 @@
 Class {
 	#name : #MercenaryCard,
 	#superclass : #Card,
-	#instVars : [
-		'target'
-	],
 	#category : #'IngSoft2-Model'
 }
 
-{ #category : #comparing }
+{ #category : #event }
 MercenaryCard >> activate: aCardHandler withTarget: aTarget [
+
+	target := aTarget.
 	
-	aCardHandler verifyCoalition: aTarget.
-	aCardHandler addToActiveCards: (self withTarget: aTarget)
+	aCardHandler verifyCoalition: target objective.
+	aCardHandler addCoalition:
+		(ShipCoalition withLeader: holder andMercenary: target objective).
+	aCardHandler addToActiveCards: self.
+	aCardHandler changeLastCardTo: self.
 ]
 
 { #category : #comparing }
@@ -20,14 +22,8 @@ MercenaryCard >> canPlayRightNow: theShipInTurn [
 	^ theShipInTurn shipName = holder
 ]
 
-{ #category : #comparing }
-MercenaryCard >> target [
+{ #category : #event }
+MercenaryCard >> deactivate: aCardHandler [
 
-	^ target
-]
-
-{ #category : #comparing }
-MercenaryCard >> withTarget: aTarget [
-
-	target := aTarget.
+	aCardHandler removeCoalitionOf: holder and: target
 ]

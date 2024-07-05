@@ -34,6 +34,9 @@ ProbabilityAssociation >> initializeWithAssociation: anObject withProbability: a
 
 	associatedObject := anObject.
 	probability := aProbability.
+	
+	lowerBound := 0.
+	upperBound := aProbability
 ]
 
 { #category : #initialization }

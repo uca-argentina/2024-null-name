@@ -4,12 +4,14 @@ Class {
 	#category : #'IngSoft2-Model'
 }
 
-{ #category : #comparing }
-RedoCard >> activate: aCardHandler withTarget: aShipName [
+{ #category : #event }
+RedoCard >> activate: aCardHandler withTarget: aTarget [
 
+	target := aTarget.
 	aCardHandler
 		activateCard: (aCardHandler lastCardPlayed class withHolder: holder)
-		withTarget: aShipName
+		withTarget: aTarget
+	
 ]
 
 { #category : #comparing }

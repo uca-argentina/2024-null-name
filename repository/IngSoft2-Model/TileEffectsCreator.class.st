@@ -9,7 +9,6 @@ Class {
 		'tiles',
 		'parsecs',
 		'hyperJumpArray',
-		'cardProbabilities',
 		'probabilityManager'
 	],
 	#category : #'IngSoft2-Model'
@@ -45,12 +44,6 @@ TileEffectsCreator >> determineRangeRandom [
 ]
 
 { #category : #comparing }
-TileEffectsCreator >> generateCardGeneratorParameters: anEffect [
-
-	anEffect initalizeWithProbabilities: cardProbabilities
-]
-
-{ #category : #comparing }
 TileEffectsCreator >> generateHyperJumpParameters: anEffect [
 
 	anEffect
@@ -70,7 +63,6 @@ TileEffectsCreator >> generateLoadedBoardWithAmountOfTiles: anAmountOfTiles with
 	tiles := anAmountOfTiles.
 	parsecs := anAmountOfParsecs.
 	hyperJumpArray := aHyperJumpArray.
-	cardProbabilities := aCardProbability.
 
 	1 to: tiles do: [ :i |
 		| anEffect |

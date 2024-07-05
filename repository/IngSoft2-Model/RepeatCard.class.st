@@ -4,10 +4,13 @@ Class {
 	#category : #'IngSoft2-Model'
 }
 
-{ #category : #comparing }
+{ #category : #event }
 RepeatCard >> activate: aCardHandler withTarget: aTarget [
 
-	aCardHandler applyLastEffectOn: aTarget
+	target:= aTarget.
+	aCardHandler applyLastEffectOn: aTarget.
+	aCardHandler changeLastCardTo: self.
+	
 ]
 
 { #category : #comparing }

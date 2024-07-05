@@ -4,10 +4,15 @@ Class {
 	#category : #'IngSoft2-Model'
 }
 
-{ #category : #comparing }
-CancellationCard >> activate: aCardHandler withTarget: aTarget [
+{ #category : #event }
+CancellationCard >> activate: aCardHandler withTarget: aCard [
 
-	aCardHandler removeFromActiveCard: aTarget.
+	target := aCard.
+	
+	aCardHandler deactivate: aCard.
+	aCardHandler removeFromActiveCard: target objective.
+	
+	aCardHandler changeLastCardTo: self.
 ]
 
 { #category : #comparing }

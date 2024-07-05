@@ -7,9 +7,11 @@ Class {
 	#category : #'IngSoft2-Model'
 }
 
-{ #category : #comparing }
-NullCard >> activate: aCardHandler withTarget: aTarget [ 
+{ #category : #event }
+NullCard >> activate: aCardHandler withTarget: aTarget [
 
+	target := aTarget.
+	aCardHandler changeLastCardTo: self.
 	^ self
 ]
 

@@ -8,7 +8,7 @@ Class {
 }
 
 { #category : #applying }
-Effect >> applyOn: aGame [
+Effect >> applyOn: aGame activatedBy: aShip [
 
 	self subclassResponsibility.
 ]
