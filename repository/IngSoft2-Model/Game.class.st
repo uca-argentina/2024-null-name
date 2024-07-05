@@ -11,7 +11,8 @@ Class {
 		'gameTurnHandler',
 		'shipBattleHandler',
 		'theShipInCurrentTurn',
-		'gameCardHandler'
+		'gameCardHandler',
+		'lastEffect'
 	],
 	#classInstVars : [
 		'isFinished'
@@ -33,26 +34,29 @@ Game class >> isValid: aBoard with: aNameCollection and: aDice [
 { #category : #'class initialization' }
 Game class >> withBoard: aBoard withShipNames: aNameCollection withDice: aDice [
 
+	| collectionOfCards |
+	collectionOfCards := OrderedCollection new.
+	aNameCollection size * 2 timesRepeat: [
+		collectionOfCards add: NullCard ].
+
 	self isValid: aBoard with: aNameCollection and: aDice.
 	^ self new
 		  initializeGameWith: aBoard
 		  withShipNames: aNameCollection asSet
 		  withDice: aDice
-		  withGameCardProbabilities: (OrderedCollection with:
-				   (ProbabilityAssociation
-					    associate: NullCard
-					    withProbability: 100))
+		  withGameDeck:
+		  (LoadedDeck withCards: collectionOfCards)
 ]
 
 { #category : #'class initialization' }
-Game class >> withBoard: aBoard withShipNames: aNameCollection withDice: aDice withCardProbabilities: aCollectionOfCardProbabilities [
+Game class >> withBoard: aBoard withShipNames: aNameCollection withDice: aDice withDeck: aDeck [
 
 	self isValid: aBoard with: aNameCollection and: aDice.
 	^ self new
 		  initializeGameWith: aBoard
 		  withShipNames: aNameCollection
 		  withDice: aDice
-		  withGameCardProbabilities: aCollectionOfCardProbabilities
+		  withGameDeck: aDeck
 ]
 
 { #category : #accessing }
@@ -95,19 +99,27 @@ Game >> applyEffectOnAllShips: anEffect [
 		gameBoard adjustShipPosition: aShip.]
 ]
 
-{ #category : #event }
-Game >> applyEffectOnAllShipsButOne: anEffect [
+{ #category : #'as yet unclassified' }
+Game >> applyEffectOnAllShipsButOne: anEffect triggerByShip: aShip [
 
-	anEffect affectAllShips: gameShips but: theShipInCurrentTurn.
-	gameShips do: [ :aShip |
-		gameBoard adjustShipPosition: aShip. ]
+	anEffect affectAllShips: gameShips but: aShip.
+	gameShips do: [ :anAffectedShip |
+		gameBoard adjustShipPosition: anAffectedShip ]
 ]
 
-{ #category : #event }
-Game >> applyEffectOnOneShip: anEffect [
+{ #category : #'as yet unclassified' }
+Game >> applyEffectOnOneShip: anEffect triggeredBy: aShip [
 
-	anEffect affectAShip: theShipInCurrentTurn.
-	gameBoard adjustShipPosition: theShipInCurrentTurn
+	anEffect affectAShip: aShip.
+	gameBoard adjustShipPosition: aShip
+]
+
+{ #category : #generating }
+Game >> applyLastEffectOn: aTarget [
+
+	| aShip |
+	aShip := self shipWithName: aTarget objective.
+	lastEffect applyOn: self activatedBy: aShip
 ]
 
 { #category : #testing }
@@ -118,21 +130,25 @@ Game >> canPlayNextTurnOf [
 ]
 
 { #category : #event }
-Game >> giveCardToCurrentShip: aCardGeneratorEffect [ 
-	gameCardHandler giveCard: aCardGeneratorEffect to: (theShipInCurrentTurn shipName)
+Game >> giveCardToCurrentShip: aShip [
+
+	gameCardHandler
+		giveCardTo: aShip shipName.
 ]
 
 { #category : #initialization }
-Game >> initializeGameWith: aBoard withShipNames: aNameCollection withDice: aDice withGameCardProbabilities: aCollectionOfCardProbabilities [
+Game >> initializeGameWith: aBoard withShipNames: aNameCollection withDice: aDice withGameDeck: aDeck [
 
 	gameBoard := aBoard.
 	gameShips := aNameCollection asOrderedCollection collect: [ :aName |
 		             Ship createWithName: aName ].
+
 	dice := aDice.
 	gameTurnHandler := TurnHandler withShips: gameShips.
 	shipBattleHandler := ShipBattle withDice: dice withShips: gameShips.
-	gameCardHandler := CardHandler withCardProbabilities: aCollectionOfCardProbabilities andGame: self.
+	gameCardHandler := CardHandler withDeck: aDeck andGame: self.
 	theShipInCurrentTurn := gameTurnHandler currentTurnShip.
+	lastEffect := NullEffect new.
 	gameShips do: [ :ship | gameCardHandler startingCards: ship shipName ]
 ]
 
@@ -146,7 +162,7 @@ Game >> isFinished [
 Game >> playCard: aCard by: aShipName toTarget: aTarget [
 
 	| aCardToPlay |
-	aCardToPlay := aCard withHolder: aShipName.
+	aCardToPlay := aCard withHolder: aShipName andTarget: NullTarget new.
 
 	gameCardHandler validateCard: aCardToPlay.
 	self targetIsValid: aTarget.
@@ -157,7 +173,7 @@ Game >> playCard: aCard by: aShipName toTarget: aTarget [
 	[ gameCardHandler activateCard: aCardToPlay withTarget: aTarget ]
 		on: CardExeption
 		do: [ :ex | ^ ex messageText ].
-
+		
 	gameCardHandler removeCardFromShipDeck: aCardToPlay
 ]
 
@@ -178,12 +194,13 @@ Game >> playTurn [
 	theShipInCurrentTurn moveTiles: movement.
 
 	self adjustShipPosition: theShipInCurrentTurn.
-	gameCardHandler lastEffect:
-		(gameBoard effectInPosition: theShipInCurrentTurn position).
-	gameBoard applyTileEffectOn: self at: theShipInCurrentTurn position.
+	lastEffect := gameBoard effectInPosition:
+		              theShipInCurrentTurn position.
+
+	gameBoard applyTileEffectOn: self triggeredBy: theShipInCurrentTurn.
 	shipBattleHandler
 		checkShipBattle: theShipInCurrentTurn
-		withCards: gameCardHandler activeMercenaryCards.
+		withCardHandler: gameCardHandler.
 	gameTurnHandler checkForShipsWithNoShield.
 	gameTurnHandler nextTurn.
 	theShipInCurrentTurn := gameTurnHandler currentTurnShip
@@ -210,8 +227,9 @@ Game >> shipRankings [
 ]
 
 { #category : #accessing }
-Game >> shipWithName: aShipName [ 
-	^ gameShips detect: [ :ship | ship shipName = aShipName ].
+Game >> shipWithName: aShipName [
+
+	^ gameShips detect: [ :ship | ship shipName = aShipName ]
 ]
 
 { #category : #modifying }
@@ -236,9 +254,8 @@ Game >> skipTurn [
 { #category : #validating }
 Game >> targetIsValid: aTarget [
 
-	((gameShips anySatisfy: [ :ship | ship shipName = aTarget ]) or: [
-		 (gameCardHandler checkTarget: aTarget) or: [ aTarget = 'all' ] ])
-		ifFalse: [ CardExeption signal: 'Target is not valid' ]
+	(aTarget isValidWith: gameShips and: gameCardHandler) ifFalse: [
+		CardExeption signal: 'Target is not valid' ]
 ]
 
 { #category : #accessing }

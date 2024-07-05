@@ -5,37 +5,34 @@ Class {
 	#name : #CardHandler,
 	#superclass : #Object,
 	#instVars : [
-		'probabilityCards',
 		'activeCards',
 		'game',
 		'lastCardPlayed',
-		'probabilityManager',
-		'lastEffect',
-		'inPlayDeck'
+		'inPlayDeck',
+		'gameDeck',
+		'coalitions'
 	],
 	#category : #'IngSoft2-Model'
 }
 
 { #category : #'class initialization' }
-CardHandler class >> withCardProbabilities: aCollectionOfCardProbabilities andGame: aGame [
+CardHandler class >> withDeck: aDeck andGame: aGame [
 
 	^ self new
-		  initalizeWithProbabilities: aCollectionOfCardProbabilities
+		  initalizeWithDeck: aDeck
 		  andGame: aGame
 ]
 
 { #category : #generating }
 CardHandler >> activateCard: aCardToPlay withTarget: aTarget [
-	
-	aCardToPlay activate: self withTarget: aTarget.
-	aCardToPlay class = RedoCard ifFalse: [ lastCardPlayed := aCardToPlay ]
 
+	aCardToPlay activate: self withTarget: aTarget
 ]
 
-{ #category : #comparing }
-CardHandler >> activeMercenaryCards [
+{ #category : #accessing }
+CardHandler >> addCoalition: aCoalition [
 
-	^ activeCards select: [ :card | card class = MercenaryCard ]
+	coalitions add: aCoalition
 ]
 
 { #category : #comparing }
@@ -47,33 +44,32 @@ CardHandler >> addToActiveCards: aCard [
 { #category : #generating }
 CardHandler >> applyLastEffectOn: aTarget [
 
-	| aShip |
-	aShip := game shipWithName: aTarget.
-
-	(lastEffect respondsTo: #affectAShip:) ifFalse: [
-		CardExeption signal: lastEffect class name
-			, ' is last effect, and doesnt target a single ship' ].
-
-	lastEffect affectAShip: aShip.
-
-	game adjustShipPosition: aShip
+	game applyLastEffectOn: aTarget
 ]
 
-{ #category : #comparing }
-CardHandler >> cardAtRandom [
-	
-	^ probabilityManager elementAtRandom: probabilityCards
+{ #category : #accessing }
+CardHandler >> changeLastCardTo: aCard [
+
+	lastCardPlayed := aCard
 ]
 
 { #category : #'argument validation' }
 CardHandler >> checkTarget: aTarget [
 
-	^ (activeCards select: [ :card | aTarget = card ]) isNotEmpty
+	^ activeCards anySatisfy: [ :card | aTarget = card ]
+]
+
+{ #category : #generating }
+CardHandler >> deactivate: aTarget [
+
+	aTarget objective deactivate: self.
+
 ]
 
 { #category : #modifying }
-CardHandler >> giveCard: aCard to: aShip [ 
-	inPlayDeck add: (aCard withHolder: aShip).
+CardHandler >> giveCardTo: aShipName [
+
+	inPlayDeck add: (gameDeck cardAtRandom withHolder: aShipName)
 ]
 
 { #category : #accessing }
@@ -83,17 +79,14 @@ CardHandler >> inPlayDeck [
 ]
 
 { #category : #initialization }
-CardHandler >> initalizeWithProbabilities: aCollectionOfCardProbabilities andGame: aGame [
+CardHandler >> initalizeWithDeck: aDeck andGame: aGame [
 
-	probabilityManager := ProbabilityManager new.
-
-	probabilityCards := probabilityManager
-		                    transformIntoProbabilityRanges:
-		                    aCollectionOfCardProbabilities.
+	gameDeck := aDeck.
 	inPlayDeck := OrderedCollection new.
 	activeCards := OrderedCollection new.
 	lastCardPlayed := NullCard new.
 	game := aGame.
+	coalitions := OrderedCollection new
 ]
 
 { #category : #accessing }
@@ -103,25 +96,24 @@ CardHandler >> lastCardPlayed [
 ]
 
 { #category : #comparing }
-CardHandler >> lastEffect: anEffect [
+CardHandler >> mercenariesOf: aShip [
 
-	lastEffect := anEffect
+	| mercenaryCollection |
+
+	mercenaryCollection := (coalitions select: [ :coalition |
+		                        coalition hasLeader: aShip shipName ])
+		                       collect: [ :coalition | coalition mercenary ].
+	
+	mercenaryCollection add: aShip shipName.
+	^ mercenaryCollection
 ]
 
 { #category : #modifying }
 CardHandler >> movementCardsActivated: theShipInTurn [
 
-	| sum |
-	sum := 0.
-	(activeCards select: [ :card |
-		 card shouldApplyOn: theShipInTurn shipName ]) do: [ :card |
-		sum := sum + card applyMovement ].
-
-	^ sum
-
-	"((activeCards select: [ :card |
-		    card hasTarget: theShipInTurn shipName ]) sum: [ :card |
-		   card applyMovement ]) max: 0"
+	^ ((activeCards select: [ :card |
+		    card shouldApplyOn: theShipInTurn shipName ]) sumNumbers: [
+		   :card | card applyMovement ]) max: 0
 ]
 
 { #category : #comparing }
@@ -133,6 +125,15 @@ CardHandler >> removeCardFromShipDeck: aCard [
 ]
 
 { #category : #comparing }
+CardHandler >> removeCoalitionOf: aLeader and: aMercenary [
+
+	coalitions removeAllSuchThat: [ :coalition |
+		coalition = (ShipCoalition
+			withLeader: aLeader
+			andMercenary: aMercenary objective) ]
+]
+
+{ #category : #comparing }
 CardHandler >> removeFromActiveCard: aTarget [
 
 	activeCards remove: aTarget
@@ -141,22 +142,23 @@ CardHandler >> removeFromActiveCard: aTarget [
 { #category : #generating }
 CardHandler >> startingCards: aShipName [
 
-	2 timesRepeat: [ inPlayDeck add: (self cardAtRandom withHolder: aShipName) ].
-
+	2 timesRepeat: [
+		inPlayDeck add: (gameDeck cardAtRandom withHolder: aShipName) ]
 ]
 
 { #category : #comparing }
 CardHandler >> validateCard: aCard [
 
-	(inPlayDeck select: [ :card | card = aCard ]) isEmpty ifTrue: [
-		CardExeption signal: 'Ship does not have that card' ]
+	inPlayDeck
+		detect: [ :card | card = aCard ]
+		ifNone: [ CardExeption signal: 'Ship does not have that card' ]
 ]
 
 { #category : #comparing }
 CardHandler >> verifyCoalition: mercenaryShip [
 
-	(self activeMercenaryCards anySatisfy: [ :card |
-		 card target = mercenaryShip ]) ifTrue: [
+	(coalitions anySatisfy: [ :coalition |
+		 coalition mercenary = mercenaryShip ]) ifTrue: [
 		CardExeption signal:
 			'Targeted ship is already a mercenary in another coalition' ]
 ]
