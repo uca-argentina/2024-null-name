@@ -8,7 +8,9 @@ Class {
 RepeatCard >> activate: aCardHandler withTarget: aTarget [
 
 	target:= aTarget.
-	aCardHandler applyLastEffectOn: aTarget
+	aCardHandler applyLastEffectOn: aTarget.
+	aCardHandler changeLastCardTo: self.
+	
 ]
 
 { #category : #comparing }

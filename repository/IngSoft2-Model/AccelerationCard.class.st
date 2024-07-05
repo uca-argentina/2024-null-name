@@ -9,7 +9,8 @@ AccelerationCard >> activate: aCardHandler withTarget: aShipName [
 	
 	
 	target := aShipName.
-	aCardHandler addToActiveCards: self
+	aCardHandler addToActiveCards: self.
+	aCardHandler changeLastCardTo: self.
 ]
 
 { #category : #comparing }

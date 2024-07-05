@@ -27,7 +27,7 @@ ShipBattle >> checkShipBattle: currentTurnShip withCardHandler: gameCardHandler 
 	shipsInSamePosition := ships select: [ :aShip |
 		                       (currentTurnShip inSamePositionAs: aShip)
 			                       and:
-				                       ((gameCardHandler mercenaryOf:
+				                       ((gameCardHandler mercenariesOf:
 					                         currentTurnShip) includes:
 					                        aShip shipName) not ].
 	shipsInSamePosition do: [ :aShipInSamePosition |
@@ -49,9 +49,9 @@ ShipBattle >> initializeWithShips: aCollectionOfShips withDice: aCollectionOfDic
 ShipBattle >> resolveBattleBetween: aShip and: anotherShip with: aCardHandler [
 
 	| aShipDiceRoll anotherShipDiceRoll loserShipArmy aShipArmy anotherShipArmy |
-	aShipArmy := self shipsNames: (aCardHandler mercenaryOf: aShip).
+	aShipArmy := self shipsNames: (aCardHandler mercenariesOf: aShip).
 	anotherShipArmy := self shipsNames:
-		                   (aCardHandler mercenaryOf: anotherShip).
+		                   (aCardHandler mercenariesOf: anotherShip).
 
 	aShipDiceRoll := 0.
 	anotherShipDiceRoll := 0.

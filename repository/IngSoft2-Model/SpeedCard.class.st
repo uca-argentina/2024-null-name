@@ -4,11 +4,12 @@ Class {
 	#category : #'IngSoft2-Model'
 }
 
-{ #category : #modifying }
+{ #category : #event }
 SpeedCard >> activate: aCardHandler withTarget: aTarget [
 
 	target := aTarget.
-	aCardHandler addToActiveCards: self
+	aCardHandler addToActiveCards: self.
+	aCardHandler changeLastCardTo: self.
 ]
 
 { #category : #comparing }

@@ -10,7 +10,8 @@ CancellationCard >> activate: aCardHandler withTarget: aCard [
 	target := aCard.
 	
 	aCardHandler deactivate: aCard.
-	aCardHandler removeFromActiveCard: target objective
+	aCardHandler removeFromActiveCard: target objective.
+	aCardHandler changeLastCardTo: self.
 ]
 
 { #category : #comparing }

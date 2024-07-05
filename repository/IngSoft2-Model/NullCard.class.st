@@ -11,6 +11,7 @@ Class {
 NullCard >> activate: aCardHandler withTarget: aTarget [
 
 	target := aTarget.
+	aCardHandler changeLastCardTo: self.
 	^ self
 ]
 

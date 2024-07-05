@@ -13,6 +13,7 @@ MercenaryCard >> activate: aCardHandler withTarget: aTarget [
 	aCardHandler addCoalition:
 		(ShipCoalition withLeader: holder andMercenary: target objective).
 	aCardHandler addToActiveCards: self.
+	aCardHandler changeLastCardTo: self.
 ]
 
 { #category : #comparing }
