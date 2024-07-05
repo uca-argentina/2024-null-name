@@ -22,6 +22,12 @@ Card >> = aCard [
 	^ self hash = aCard hash and: self class = aCard class
 ]
 
+{ #category : #modifying }
+Card >> activate: aCardHandler withTarget: aShipName [
+
+	^ self subclassResponsibility
+]
+
 { #category : #comparing }
 Card >> applyMovement [
 
@@ -32,12 +38,6 @@ Card >> applyMovement [
 Card >> canPlayRightNow: theShipInTurn [
 
 	self subclassResponsibility
-]
-
-{ #category : #comparing }
-Card >> hasTarget: aTarget [
-
-	^true
 ]
 
 { #category : #comparing }
@@ -56,4 +56,10 @@ Card >> holder [
 Card >> initalizeWithHolder: aShipName [
 
 	holder := aShipName
+]
+
+{ #category : #comparing }
+Card >> shouldApplyOn: aTarget [
+
+	^ true
 ]

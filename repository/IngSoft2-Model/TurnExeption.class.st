@@ -4,5 +4,5 @@ Turn Exeption
 Class {
 	#name : #TurnExeption,
 	#superclass : #Error,
-	#category : #'IngSoft2-Tests'
+	#category : #'IngSoft2-Model'
 }

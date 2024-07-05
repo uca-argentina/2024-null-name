@@ -5,21 +5,23 @@ Class {
 	#name : #CardHandler,
 	#superclass : #Object,
 	#instVars : [
-		'deck',
 		'probabilityCards',
 		'activeCards',
 		'game',
 		'lastCardPlayed',
 		'probabilityManager',
-		'lastEffect'
+		'lastEffect',
+		'inPlayDeck'
 	],
 	#category : #'IngSoft2-Model'
 }
 
 { #category : #'class initialization' }
-CardHandler class >> withCardProbabilities: aCollectionOfCardProbabilities [ 
-	
-	^ (self new) initalizeWithProbabilities: aCollectionOfCardProbabilities.
+CardHandler class >> withCardProbabilities: aCollectionOfCardProbabilities andGame: aGame [
+
+	^ self new
+		  initalizeWithProbabilities: aCollectionOfCardProbabilities
+		  andGame: aGame
 ]
 
 { #category : #generating }
@@ -69,34 +71,29 @@ CardHandler >> checkTarget: aTarget [
 	^ (activeCards select: [ :card | aTarget = card ]) isNotEmpty
 ]
 
-{ #category : #accessing }
-CardHandler >> deck [
-
-	^ deck
-]
-
-{ #category : #generating }
-CardHandler >> forGame: aGame [
-
-	game := aGame
-]
-
 { #category : #modifying }
 CardHandler >> giveCard: aCard to: aShip [ 
-	deck add: (aCard withHolder: aShip).
+	inPlayDeck add: (aCard withHolder: aShip).
+]
+
+{ #category : #accessing }
+CardHandler >> inPlayDeck [
+
+	^ inPlayDeck
 ]
 
 { #category : #initialization }
-CardHandler >> initalizeWithProbabilities: aCollectionOfCardProbabilities [
+CardHandler >> initalizeWithProbabilities: aCollectionOfCardProbabilities andGame: aGame [
 
 	probabilityManager := ProbabilityManager new.
 
 	probabilityCards := probabilityManager
 		                    transformIntoProbabilityRanges:
 		                    aCollectionOfCardProbabilities.
-	deck := OrderedCollection new.
+	inPlayDeck := OrderedCollection new.
 	activeCards := OrderedCollection new.
-	lastCardPlayed := NullCard new
+	lastCardPlayed := NullCard new.
+	game := aGame.
 ]
 
 { #category : #accessing }
@@ -117,7 +114,7 @@ CardHandler >> movementCardsActivated: theShipInTurn [
 	| sum |
 	sum := 0.
 	(activeCards select: [ :card |
-		 card hasTarget: theShipInTurn shipName ]) do: [ :card |
+		 card shouldApplyOn: theShipInTurn shipName ]) do: [ :card |
 		sum := sum + card applyMovement ].
 
 	^ sum
@@ -130,7 +127,7 @@ CardHandler >> movementCardsActivated: theShipInTurn [
 { #category : #comparing }
 CardHandler >> removeCardFromShipDeck: aCard [
 
-	deck
+	inPlayDeck
 		remove: aCard
 		ifAbsent: [ Error signal: 'Card was not found in Ship Deck' ]
 ]
@@ -144,14 +141,14 @@ CardHandler >> removeFromActiveCard: aTarget [
 { #category : #generating }
 CardHandler >> startingCards: aShipName [
 
-	2 timesRepeat: [ deck add: (self cardAtRandom withHolder: aShipName) ].
+	2 timesRepeat: [ inPlayDeck add: (self cardAtRandom withHolder: aShipName) ].
 
 ]
 
 { #category : #comparing }
 CardHandler >> validateCard: aCard [
 
-	(deck select: [ :card | card = aCard ]) isEmpty ifTrue: [
+	(inPlayDeck select: [ :card | card = aCard ]) isEmpty ifTrue: [
 		CardExeption signal: 'Ship does not have that card' ]
 ]
 

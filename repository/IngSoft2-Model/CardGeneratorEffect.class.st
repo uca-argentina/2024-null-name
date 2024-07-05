@@ -3,7 +3,7 @@ a
 "
 Class {
 	#name : #CardGeneratorEffect,
-	#superclass : #EffectOnOneShip,
+	#superclass : #Effect,
 	#instVars : [
 		'probabilityCards',
 		'probabilityManager'
@@ -25,9 +25,9 @@ CardGeneratorEffect >> affectAShip: aShip [
 
 { #category : #applying }
 CardGeneratorEffect >> applyOn: aGame [
-	
+
 	self affectAShip: self.
-	aGame giveCardToCurrentShip: (self generateRandomCard)
+	aGame giveCardToCurrentShip: self generateRandomCard
 ]
 
 { #category : #generators }
